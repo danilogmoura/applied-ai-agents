@@ -17,7 +17,8 @@ import os
 import sys
 from pathlib import Path
 
-# Adiciona root do projeto ao path
+# Adiciona a raiz do projeto ao Python para ele encontrar os módulos compartilhados (shared/)
+# Sem isso, 'from shared.cost import ...' falharia porque Python procura só na pasta atual
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from rich.console import Console

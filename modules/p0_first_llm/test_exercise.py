@@ -15,6 +15,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+# Adiciona a raiz do projeto ao Python para ele encontrar os módulos compartilhados (shared/)
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from rich.console import Console
@@ -186,13 +187,46 @@ def test_05_error_handling():
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# TESTE 6: Reflexão Conceitual — Autoavaliação (sem assert)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+def test_06_reflection():
+    """
+    Autoavaliação conceitual. Não há assert — escreva sua resposta
+    e compare com o gabarito no MATERIAL.md.
+    
+    Pergunta 1: Um LLM pode alucinar ao classificar tickets? Dê um exemplo.
+    Pergunta 2: Explique a relação entre next-token prediction e temperature.
+    """
+    console.print(Panel("🧠 Reflexão Conceitual — Compare sua resposta com o MATERIAL.md!",
+                        title="Teste 6: Autoavaliação",
+                        border_style="yellow"))
+    
+    console.print("\n[bold yellow]Pergunta 1 — Alucinação em classificação[/]")
+    console.print("Um LLM pode alucinar ao classificar tickets? Dê um exemplo.")
+    console.print("\n💡 Sua resposta:")
+    console.print("  [dim]→ Sim, se o prompt for ambíguo ou o ticket contiver informações contraditórias.[/]")
+    console.print("  [dim]→ Exemplo: 'Minha conta está bloqueada mas quero cancelar' → modelo pode hesitar[/]")
+    console.print("  [dim]→ Mitigação: temperature=0 + prompt claro com definições de categoria[/]")
+    
+    console.print("\n[bold yellow]Pergunta 2 — Next-Token × Temperature[/]")
+    console.print("Como temperature=0 transforma amostragem aleatória em decisão determinística?")
+    console.print("\n💡 Sua resposta:")
+    console.print("  [dim]→ temperature > 0: amostra do distribution (pode escolher qualquer token)[/]")
+    console.print("  [dim]→ temperature = 0: sempre escolhe o token com maior probabilidade (argmax)[/]")
+    console.print("  [dim]→ Analogia: dado viciado (temp>0) vs. dado que sempre mostra o mesmo número (temp=0)[/]\n")
+    
+    console.print("[yellow]✓[/yellow] Compare suas respostas com o gabarito no MATERIAL.md seção 'Reflexão Final'")
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # RUN ALL
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def run_all():
     tests = [test_01_token_counting, test_02_cost_estimation,
              test_03_ticket_classification, test_04_batch_processing,
-             test_05_error_handling]
+             test_05_error_handling, test_06_reflection]
     
     console.print(Panel("🧪 Testes do Exercício — IMPLEMENTE os TODOs para fazer passar!",
                         title="[bold cyan]P0: Primeiro Fluxo com LLM[/bold cyan]",

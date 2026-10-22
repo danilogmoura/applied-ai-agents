@@ -165,6 +165,14 @@ flowchart TD
 
 **Next-token prediction**: o modelo gera uma palavra por vez. Cada palavra gerada vira input para gerar a próxima. É por isso que prompts mal escritos produzem respostas piores — o modelo só vê tokens, não significado.
 
+> 🛑 **Checkpoint:** Pause aqui. Tente responder:
+>
+> - O que é attention e como ela influencia a classificação de um ticket?
+> - Se o prompt diz "sem senha", qual token o modelo tende a gerar primeiro e por quê?
+> - Explique next-token prediction com suas próprias palavras (não copie do material).
+
+---
+
 ### O Problema da Alucinação
 
 LLMs **inventam fatos** com confiança. Não é um bug — é consequência direta de como funcionam:
@@ -210,6 +218,14 @@ Ele prevê o próximo token baseado em padrões, não em verdade.
 ```
 
 **Regra de ouro:** Nunca confie em um LLM para fatos sem verificar. Para tarefas criativas (gerar código, escrever emails), alucinação importa menos. Para tarefas factuais (classificação, extração de dados), alucinação é o problema número 1.
+
+> 🛑 **Checkpoint:** Pause aqui. Tente responder:
+>
+> - Um LLM pode alucinar ao classificar tickets? Dê um exemplo onde isso aconteceria.
+> - Qual técnica de mitigação listada acima seria mais útil para classificação e por quê?
+> - Por que `temperature=0` ajuda a reduzir alucinações em tarefas factuais?
+
+---
 
 ### Algoritmo: Byte Pair Encoding (BPE) — Visão geral
 
@@ -396,6 +412,45 @@ Retorne apenas: BAIXA, MEDIA ou ALTA"""
 | **Latency** | Tempo entre envio e resposta | Ping em jogos online |
 | **Fallback** | Plano B quando falha | Rota alternativa |
 | **JSON** | Formato de dados tipo dicionário Python | Nota estruturada |
+
+---
+
+## 🧠 Reflexão Final — Autoavaliação Conceitual
+
+Estas perguntas verificam se você entendeu os conceitos, não só o código. Compare sua resposta com o gabarito abaixo.
+
+### Pergunta 1 — Alucinação
+
+> Analise este prompt:
+>
+> ```
+> "Quais são as melhores práticas de segurança para APIs REST em 2025?"
+> ```
+>
+> O LLM responde com 5 recomendações detalhadas. Porém, nenhuma delas está correta.
+>
+> **Pergunta:** Por que o LLM alucinou neste caso? Que tipo de tarefa é essa (criativa ou factual)? Qual mitigação você aplicaria?
+>
+> <details>
+> <summary>📝 Gabarito (clique para ver)</summary>
+>
+> - **Tipo:** Factual — exige conhecimento preciso, não criatividade
+> - **Por que alucinou:** O LLM prevê tokens prováveis, não consulta verdade. Ele "sabe" que o formato da pergunta pede uma lista e gerou uma plausível, mas errada.
+> - **Mitigação:** Prompt engineering ("Baseie sua resposta SOMENTE nos dados abaixo") + RAG (forçar resposta apenas sobre documentos fornecidos) + temperature=0 para reduzir variação.
+>
+> </details>
+
+### Pergunta 2 — Next-Token Prediction × Temperature
+
+> **Pergunta:** Explique a relação entre next-token prediction e temperature. Como temperature=0 transforma o processo de "amostragem aleatória" em "decisão determinística"?
+>
+> <details>
+> <summary>📝 Gabarito (clique para ver)</summary>
+>
+> - **Next-token prediction:** O modelo calcula probabilidades para cada token possível e escolhe um. Com temperature > 0, ele amostra (pode escolher qualquer um, com peso na probabilidade). Com temperature = 0, ele sempre pega o token com maior probabilidade (argmax). É como trocar um dado viciado (temp > 0) por um dado que sempre mostra o mesmo número (temp = 0).
+> - **Resultado:** Classificação consistente vs. geração criativa variada.
+>
+> </details>
 
 ---
 
