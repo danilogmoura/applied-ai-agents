@@ -301,7 +301,6 @@ Você chegou ao final do curso! Aqui estão sugestões de como continuar:
 
 ---
 
-## Referências
+## Material Complementar
 
 (empty)
-- [Grafana Dashboards](https://grafana.com/docs/) — Grafana Docs

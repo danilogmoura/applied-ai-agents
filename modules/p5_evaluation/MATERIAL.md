@@ -276,17 +276,9 @@ Com avaliação em produção, seus agentes entregam respostas consistentes. Mas
 
 ---
 
-## Referências
+## Material Complementar
 
-### Livros
-
-- **"Machine Learning Engineering"** by Andrey Burtenshaw — Capítulos sobre testing e evaluation
-- **"Designing Machine Learning Systems"** by Chip Huyen — Capítulos sobre model evaluation
-
-### Documentação Oficial
-
-- [OpenAI Evals](https://platform.openai.com/docs/guides/evals) — OpenAI Docs
-- [LangSmith Evaluation](https://smith.langchain.com/docs/concepts/evaluation/) — LangSmith Docs
+(empty)
 
 ### Tutoriais
 

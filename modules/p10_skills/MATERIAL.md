@@ -348,7 +348,6 @@ Com skills versionadas e pipelines compostos, seu sistema está organizado. Mas 
 
 ---
 
-## Referências
+## Material Complementar
 
 (empty)
-- [Skill Design Patterns](https://github.com/langchain-ai/langchain/tree/master/templates) — LangChain Templates

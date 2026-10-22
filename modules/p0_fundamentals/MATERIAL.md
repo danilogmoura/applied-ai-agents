@@ -368,11 +368,9 @@ Escolha UM dos prompts que você reescreveu na Parte A. Envie-o para um LLM (pod
 
 ---
 
-## Referências
+## Material Complementar
 
 (empty)
-
-- **"The Hundred-Page Machine Learning Book"** by Andriy Burkov — Visão geral concisa de ML
 
 ### Livros em Inglês
 

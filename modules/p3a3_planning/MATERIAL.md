@@ -253,7 +253,7 @@ Com resilience patterns, seu agente individual sobrevive a falhas. Mas tarefas c
 
 ---
 
-## Referências
+## Material Complementar
 
 (empty)
 

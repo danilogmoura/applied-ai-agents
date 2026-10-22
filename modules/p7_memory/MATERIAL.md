@@ -308,8 +308,6 @@ Com memória implementada, seus agentes mantêm contexto entre conversas. Mas re
 
 ---
 
-## Referências
+## Material Complementar
 
 (empty)
-- [Conversation Memory Patterns](https://langchain-ai.github.io/langgraph/concepts/memory/) — LangGraph Docs
-- [Vector Store for Memory](https://docs.trychroma.com/) — ChromaDB Docs

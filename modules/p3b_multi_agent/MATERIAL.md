@@ -332,6 +332,6 @@ Com multi-agentes, você tem um sistema inteligente mas ainda local. Para usar e
 
 ---
 
-## Referências
+## Material Complementar
 
 (empty)

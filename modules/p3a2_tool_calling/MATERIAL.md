@@ -275,6 +275,6 @@ Com tool calling, seu agente pode executar ações. Mas o mundo real é caótico
 
 ---
 
-## Referências
+## Material Complementar
 
 (empty)

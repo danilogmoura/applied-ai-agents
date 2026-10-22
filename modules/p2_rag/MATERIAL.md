@@ -384,6 +384,6 @@ Com RAG, seu agente pode responder perguntas com base em documentos. Mas no mund
 
 ---
 
-## Referências
+## Material Complementar
 
 (empty)

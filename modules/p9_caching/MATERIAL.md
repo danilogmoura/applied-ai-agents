@@ -303,7 +303,6 @@ Com caching, seus agentes são econômicos. Mas como organizar código em compon
 
 ---
 
-## Referências
+## Material Complementar
 
 (empty)
-- [Prompt Engineering Guide](https://www.promptingguide.ai/) — Prompting Guide
