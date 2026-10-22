@@ -125,9 +125,10 @@ Este curso usa OpenAI porque é a mais documentada, mas os conceitos aplicam-se 
 | **OpenAI** | gpt-4o-mini | $$ |
 | **Anthropic** | claude-haiku | $$ |
 | **Google** | gemini-flash | $ |
+| **Alibaba Cloud** | Qwen (Tongyi Qianwen) | $ |
 | **Local (grátis)** | Ollama + Llama 3 | Gratuito, mas mais lento |
 
-Para rodar localmente sem custo, explore [Ollama](https://ollama.ai).
+Para rodar localmente sem custo, explore [Ollama](https://ollama.ai). Para APIs cloud acessíveis, [Alibaba Cloud DashScope](https://dashscope.aliyun.com/) oferece acesso aos modelos Qwen com preços competitivos.
 
 ### Estimativa de Custos
 
@@ -425,32 +426,6 @@ Retorne apenas: BAIXA, MEDIA ou ALTA"""
 - Use variáveis de ambiente (`.env`)
 - Valide que todas as chaves necessárias estão presentes antes de chamar a API
 - Nunca exponha chaves nos logs
-
----
-
-## ❓ Erros Comuns e Como Resolver
-
-| Erro | Causa | Solução |
-| ------ | ------- | --------- |
-| `ModuleNotFoundError: No module named 'openai'` | SDK não instalado | Execute `pip install openai` |
-| `ValueError: OPENAI_API_KEY não definida` | `.env` ausente | Crie `.env` na raiz com `OPENAI_API_KEY=sua_chave` |
-| `AuthenticationError: Incorrect API key` | Chave inválida | Regenerue em platform.openai.com/api-keys |
-| `RateLimitError` | Muitas requisições rápido | Espere 5s e tente novamente |
-| `ModuleNotFoundError: No module named 'shared'` | Path incorreto | Execute da raiz do projeto |
-
----
-
-## 📖 Glossário Rápido
-
-| Termo | Definição | Analogia |
-| ------- | ----------- | ---------- |
-| **Token** | Pedaço de texto (palavra, parte de palavra) | Sílabas na leitura |
-| **Temperature** | Controle de criatividade (0=determinístico, 1=variado) | Modificador de dado |
-| **Prompt** | Texto enviado ao LLM como instrução | Instruções para um assistente muito literal |
-| **API Key** | Senha para acessar serviços de IA | Senha para um serviço online |
-| **Latency** | Tempo entre envio e resposta | Ping em jogos online |
-| **Fallback** | Plano B quando falha | Rota alternativa |
-| **JSON** | Formato de dados tipo dicionário Python | Nota estruturada |
 
 ---
 

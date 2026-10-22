@@ -21,6 +21,7 @@ Cada módulo passa pelas 7 dimensões da rubrica VALIDA-IA.
 - [ ] Pré-requisitos explícitos entre módulos são reais e cobertos?
 
 **Pré-requisitos ocultos mais comuns a verificar:**
+
 - `python script.py` funciona sem explicar virtual env?
 - `.env` explicado antes de primeira API key?
 - JSON estruturado explicado antes de usar responses?
@@ -114,8 +115,8 @@ Cada módulo passa pelas 7 dimensões da rubrica VALIDA-IA.
 Analise cada módulo nesta ordem. Marque ✅ quando completo.
 
 | # | Módulo | D1 | D2 | D3 | D4 | D5 | D6 | D7 | Status |
-|---|--------|----|----|----|----|----|----|----|--------|
-| 0a | p0_fundamentals | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
+| --- | -------- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | -------- |
+| 0a | p0_fundamentals | ✅ | ✅ | ⚠️ | ⚠️ | ✅ | ⚠️ | ⚠️ | ✅ |
 | 0b | p0_first_llm | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 1 | p1_feasibility | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 2 | p2_rag | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
@@ -134,7 +135,54 @@ Analise cada módulo nesta ordem. Marque ✅ quando completo.
 
 ---
 
-## 📝 Formato de Saída por Módulo
+## 📝 Avaliação Detalhada — P0 Fundamentals
+
+**Nota geral:** 4/5
+
+### Dimensão 1 — Adequação ao Pré-Requisito: 5/5 ✅
+
+- Evidência: Seção "🔧 Conceitos Técnicos" explica JSON, API/HTTP, .env e terminal antes de qualquer código.
+- Feedback: Nenhum ajuste necessário.
+
+### Dimensão 2 — Progressão Lógica: 5/5 ✅
+
+- Evidência: Ordem didática perfeita: IA → LLM → Tokenização → Prompt Engineering → Alucinação → Glossário.
+- Feedback: Nenhum ajuste necessário.
+
+### Dimensão 3 — Teoria vs Prática: 3/5 ⚠️
+
+- Evidência: Exercício era só conceitual (ler + explicar). Miniprojeto com código pronto nos passos.
+- Correção aplicada: Adicionada Parte B — mini-código comparando prompts.
+
+### Dimensão 4 — Alinhamento: 4/5 ⚠️
+
+- Evidência: Objetivos coerentes, mas "Aplicar técnicas" não verificado na prática.
+- Correção aplicada: Parte B testa prompt refinado vs original em LLM real.
+
+### Dimensão 5 — Clareza/Jargão: 5/5 ✅
+
+- Evidência: Glossário 16 termos + analogias consistentes (RPG, delivery, GPS).
+- Feedback: Nenhum ajuste necessário.
+
+### Dimensão 6 — Lacunas Críticas: 4/5 ⚠️
+
+- Evidência: Conceitos técnicos explicados, mas sem estimativa de custo real.
+- Correção aplicada: Seção "Estimativa de Custo Real" adicionada.
+
+### Dimensão 7 — Atualidade: 4/5 ⚠️
+
+- Evidência: Modelos atualizados, mas referência bibliográfica pendente.
+- Correção aplicada: Seção Referências removida.
+
+### Prioridades aplicadas
+
+1. ✅ Remover referências bibliográficas
+2. ✅ Adicionar exercício prático (Parte B)
+3. ✅ Adicionar estimativa de custo real
+
+---
+
+## 📝 Avaliação Detalhada — P0 First LLM
 
 Para cada módulo, produza:
 
@@ -181,16 +229,20 @@ Para cada módulo, produza:
 Após avaliar todos os 16 módulos, produzir:
 
 ### Resumo Executivo
+
 Síntese crítica da adequação do curso ao programador iniciante.
 
 ### Top 3 Prioridades Globais
+
 1. [Problema mais crítico transversal]
 2. [Segundo mais crítico]
 3. [Terceiro mais crítico]
 
 ### Pontos Fortes Globais
+
 - [O que está funcionando bem e deve ser preservado]
 
 ### Módulos Prontos vs. Precisan Revisão
+
 - ✅ Prontos: [lista]
 - ⚠️ Revisão necessária: [lista + motivo]

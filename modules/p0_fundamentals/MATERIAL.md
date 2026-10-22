@@ -311,6 +311,19 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 
 > ⚠️ Se marcou menos de 4 itens, releia as seções correspondentes antes de prosseguir.
 
+### Estimativa de Custo Real
+
+Antes de começar a programar, saiba quanto custa brincar com IA:
+
+| Operação | Modelo | Custo aproximado |
+| ---------- | -------- | ------------------ |
+| 1 chamada simples | gpt-4o-mini | ~$0.003 (0,3 centavos) |
+| Prompt longo (5K tokens) | gpt-4o | ~$0.05 (5 centavos) |
+| 100 chamadas de teste | gpt-4o-mini | ~$0,30 |
+| Golden dataset com 100 exemplos | gpt-4o-mini | ~$0,30 |
+
+**Regra prática:** No início do curso, use **sempre gpt-4o-mini**. Custa ~10× menos que gpt-4o e é suficiente para aprender. Só troque quando um módulo exigir especificamente um modelo mais poderoso.
+
 ---
 
 ## 🔗 Próximos Passos
@@ -331,6 +344,10 @@ Agora que você entende o que é um LLM e como ele funciona por dentro, está pr
 
 ## Exercício Prático
 
+Este exercício tem duas partes: conceitual + mini-código.
+
+### Parte A — Conceitual (sem código)
+
 Leia este material duas vezes. Na segunda leitura, tente explicar cada um dos 6 tópicos em voz alta como se estivesse ensinando para alguém:
 
 1. Explique o que é um LLM usando uma analogia do dia a dia (cozinha, biblioteca, etc.)
@@ -339,15 +356,22 @@ Leia este material duas vezes. Na segunda leitura, tente explicar cada um dos 6 
 4. Liste 3 situações onde um LLM provavelmente alucinará e 3 mitigações para cada
 5. Consulte o glossário e explique 5 termos para alguém
 
-> 💡 Não precisa escrever código aqui. O exercício é conceitual — dominar a teoria antes de programar.
+### Parte B — Mini-código (comparação de prompts)
+
+Escolha UM dos prompts que você reescreveu na Parte A. Envie-o para um LLM (pode ser o chat da OpenAI, Claude, ou qualquer outro) e compare:
+
+1. **Prompt original (ruim):** envie e anote a resposta
+2. **Prompt refinado:** envie e anote a resposta
+3. **Compare:** qual foi melhor? Por quê? O que mudou?
+
+> 💡 Não precisa instalar nada aqui. Use qualquer interface de chat com LLM disponível. O objetivo é sentir na prática a diferença entre um bom e um mau prompt.
 
 ---
 
 ## Referências
 
-### Livros
+(empty)
 
-- **"Natural Language Processing with Transformers"** by Lewis et al. (O'Reilly) — Fundamentos teóricos
 - **"The Hundred-Page Machine Learning Book"** by Andriy Burkov — Visão geral concisa de ML
 
 ### Livros em Inglês
