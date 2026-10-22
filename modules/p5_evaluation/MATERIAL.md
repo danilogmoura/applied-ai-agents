@@ -244,7 +244,7 @@ Avaliação sistemática é o que separa produção de experimentação:
 
 1. **Golden dataset (conjunto dourado) = ground truth** — conjunto curado de entradas/saídas esperadas. Sem ele, você não sabe se melhorou ou piorou.
 
-2. **Métricas importam** — precisão/recall para classificação, BLEU/ROUGE para geração, LLM-as-Judge para qualidade subjetiva. Cada métrica responde uma pergunta diferente.
+2. **Métricas importam** — exact match para classificações discretas, fuzzy match para textos livres, LLM-as-Judge para qualidade subjetiva, embedding similarity para paráfrases. Cada métrica responde uma pergunta diferente.
 
 3. **Testes A/B com significância estatística** — diferença de 2% pode ser ruído. Teste t e intervalo de confiança dizem se a mudança real ou sorteio.
 

@@ -196,13 +196,13 @@ Segurança em IA é diferente de segurança tradicional:
 
 1. **Prompt injection ≠ SQL injection** — atacante usa linguagem natural, não código. "Ignore previous instructions" é a arma mais simples e eficaz.
 
-2. **Defense in layers** — nunca confie em uma única defesa. Input validation + output filtering + rate limiting + monitoring = segurança real.
+2. **Defense in layers** — nunca confie em uma única defesa. Detector de prompt injection + filtro de conteúdo + máscara de dados sensíveis + whitelist por risco = segurança real.
 
 3. **Data leakage é silencioso** — dados sensíveis podem vazar via prompt ou resposta. Sempre validar entrada E saída contra patterns (CPF, email, credit card).
 
 4. **Least privilege = princípio fundamental** — cada agente só deve ter acesso ao mínimo necessário. Tool calling com permissões granulares reduz superfície de ataque.
 
-5. **Monitoramento contínuo** — logs de todas as interações, alertas para padrões suspeitos, revisões periódicas de prompts. Segurança não é one-time.
+5. **Validação contínua** — logs de todas as interações, alertas para padrões suspeitos, revisões periódicas de prompts. Segurança não é one-time.
 
 > ✅ **Você está pronto para:** Agora que seu sistema é seguro, precisa gerenciar contexto das conversas.
 
@@ -230,16 +230,4 @@ Com guardrails implementados, seus agentes estão protegidos contra ataques. Mas
 
 ## Referências
 
-### Livros
-
-- **"Security Engineering"** by Ross Anderson — Princípios gerais de segurança
-
-### Documentação Oficial
-
-- [OWASP Top 10 for LLM](https://owasp.org/www-project-top-10-for-large-language-model-applications/) — OWASP
-- [OpenAI Safety Filters](https://platform.openai.com/docs/guides/safety-policies) — OpenAI Docs
-
-### Tutoriais
-
-- [Prompt Injection Prevention Guide](https://www.promptingguide.ai/introduction/safety) — Prompting Guide
-- [Guardrails for LLMs](https://github.com/NVIDIA/guardrails-ai) — NVIDIA Guardrails
+(empty)
