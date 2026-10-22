@@ -66,11 +66,25 @@ Cache resolve isso memorizando respostas já geradas. Mas há um trade-off:
 | Escolher LRU para FAQ | Pergunta popular é removida porque foi usada há muito | LFU para dados repetidos, LRU para conversas |
 | Ignorar cache invalidation | Dados mudam mas cache ainda serve versão antiga | Invalidar cache quando fonte de dados atualiza |
 | Cache só em memória (RAM) | Reiniciar servidor = perder tudo | Redis ou SQLite para persistência |
+
+### O Problema do Custo em Escala
+
+Sem cache, cada pergunta idêntica custa dinheiro novamente:
+
+```
+Usuário A: "Qual a capital da França?" → $0.001
+Usuário B: "Qual a capital da França?" → $0.001 ❌ MESMA PERGUNTA!
+Usuário C: "Qual a capital da França?" → $0.001 ❌ TRÊS VEZES O MESMO!
+```
+
+Em escala, isso é desperdício enorme:
+
+```
+1000 chamadas × 500 tokens input × $0.15/1M = $0.075
 1000 chamadas × 200 tokens output × $0.60/1M = $0.12
 Total por dia: ~$0.20 → $6/mês para 1 usuário
 
 Mas se tiver 10.000 usuários? $600/mês só em API calls!
-
 ```
 
 ### Cache de Respostas

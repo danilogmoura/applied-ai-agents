@@ -155,11 +155,11 @@ Prioridade: ALTA
 | --------- | --------- | -------- |
 | **Ser específico** | "Retorne apenas BAIXA/MEDIA/ALTA" vs "Classifique" | Reduz alucinação |
 | **Dar contexto** | "Você é um analista de suporte técnico..." | Melhora relevância |
-| **Exemp few-shot** | Incluir exemplos de input/output no prompt | Aumenta consistência |
+| **Few-shot examples** | Incluir exemplos de input/output no prompt | Aumenta consistência |
 | **Chain of thought** | "Pense passo a passo antes de responder" | Melhora raciocínio |
 | **Formato estruturado** | Pedir JSON, tabela ou lista | Facilita parsing posterior |
 
-### Erros comuns de iniciantes
+### Erros Comuns de Iniciantes
 
 | Erro | Por que é ruim | Correção |
 | ------ | ---------------- | ---------- |

@@ -80,23 +80,6 @@ O supervisor:
 
 ### Roteamento: LLM vs Heurísticas
 
-```mermaid
-flowchart TD
-    User["👤 Tarefa do Usuário"] --> Supervisor["🧠 SUPERVISOR\n(Router)"]
-    Supervisor -->|Decide qual especialista| Data["📊 Análise de Dados"]
-    Supervisor -->|Decide qual especialista| Web["🌐 Pesquisa Web"]
-    Supervisor -->|Decide qual especialista| Trans["🌍 Tradução"]
-```
-
-O supervisor:
-
-1. **Entende** a intenção da tarefa
-2. **Roteia** para o especialista mais adequado
-3. **Coordena** retries e fallbacks
-4. **Consolida** a resposta final
-
-### Roteamento: LLM vs Heurísticas
-
 Dois approaches para decidir qual especialista chamar:
 
 **LLM-based routing** (produção):

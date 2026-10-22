@@ -115,11 +115,11 @@ HTTP/1.1 200 OK
 Content-Type: text/event-stream
 Cache-Control: no-cache
 Connection: keep-alive
-         ↓
-[Conexão TCP permanece aberta]
-         ↓
-Servidor envia chunks periodicamente:
+```
 
+A conexão TCP permanece aberta e o servidor envia chunks periodicamente:
+
+```
 event: message
 data: {"chunk": "Hello", "index": 0}
 
