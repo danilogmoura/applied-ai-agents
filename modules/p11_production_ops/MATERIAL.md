@@ -56,6 +56,75 @@ Logs em JSON para facilitar análise:
 }
 ```
 
+### Algoritmo: Exponential Backoff com Jitter
+
+Quando uma API falha, nunca repita imediatamente. Use backoff exponencial — mas com aleatoriedade:
+
+```
+Falha na API → espera antes de tentar de novo:
+
+Sem jitter (pior caso):
+  Tentativa 1: falha → espera 1s
+  Tentativa 2: falha → espera 2s
+  Tentativa 3: falha → espera 4s
+  Tentativa 4: falha → espera 8s
+  ... todos os clientes esperam EXATAMENTE o mesmo tempo
+  → quando reiniciam, TODOS tentam juntos de novo
+  → thundering herd = mais carga no servidor
+
+Com jitter (recomendado):
+  Tentativa 1: falha → espera 1s ± 0.5s (random)
+  Tentativa 2: falha → espera 2s ± 1s (random)
+  Tentativa 3: falha → espera 4s ± 2s (random)
+  Tentativa 4: falha → espera 8s ± 4s (random)
+  → cada cliente tenta em momento diferente
+  → carga distribuída = servidor se recupera
+```
+
+#### A fórmula que todo engenheiro precisa saber
+
+```
+wait_time = min(max_delay, base_delay × 2^attempt) + random_jitter
+
+base_delay = 1 segundo
+max_delay = 60 segundos
+attempt = número da tentativa (0, 1, 2, ...)
+random_jitter = random(0, wait_time / 2)
+
+Exemplo prático:
+  attempt=0: min(60, 1×2⁰) + rand(0, 0.5) = 1 + 0.3 = 1.3s
+  attempt=1: min(60, 1×2¹) + rand(0, 1)   = 2 + 0.7 = 2.7s
+  attempt=2: min(60, 1×2²) + rand(0, 2)   = 4 + 1.1 = 5.1s
+  attempt=3: min(60, 1×2³) + rand(0, 4)   = 8 + 2.4 = 10.4s
+  attempt=5: min(60, 1×2⁵) + rand(0, 8)   = 32 + 3.2 = 35.2s
+  attempt=7: min(60, 1×2⁷) + rand(0, 16)  = 60 + 8.1 = 68.1s → capped at 60
+```
+
+**Por que jitter é obrigatório?**
+
+Sem jitter, N clientes que falham juntos vão tentar reiniciar juntos. Se N=10.000, você cria um pico de 10.000 requisições simultâneas — exatamente o que causou a falha original. Com jitter, esses 10.000 clientes se espalham por vários segundos, reduzindo a carga instantânea.
+
+**Implementação prática:**
+
+```python
+import random
+import time
+
+def call_with_retry(api_call, max_retries=5):
+    for attempt in range(max_retries):
+        try:
+            return api_call()
+        except Exception as e:
+            if attempt == max_retries - 1:
+                raise  # último retry, não tenta de novo
+            
+            wait = min(60, 2 ** attempt) + random.uniform(0, 2 ** (attempt - 1))
+            print(f"Tentativa {attempt+1} falhou, esperando {wait:.1f}s")
+            time.sleep(wait)
+```
+
+Este padrão é usado por AWS SDK, Google Cloud, OpenAI Python client e praticamente toda API de produção.
+
 ---
 
 ## Exercício Prático

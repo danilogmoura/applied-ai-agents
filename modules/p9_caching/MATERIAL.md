@@ -29,6 +29,65 @@ response = cache.get("capital+frança")  # $0.000 ✅
 
 Em produção: Redis com TTL (Time To Live).
 
+### Algoritmo: LRU vs LFU (Eviction Policy)
+
+Quando o cache enche, precisa decidir o que remover. Duas estratégias principais:
+
+```
+LRU (Least Recently Used): remove o menos usado RECENTEMENTE
+┌─────────────────────────────────────┐
+│ Cache: [A, B, C, D, E] (cheio!)    │
+│ Acesso: A(10h), B(10:05), C(10:10) │
+│         D(10:15), E(10:20)         │
+│                                     │
+│ Novo item F entra → remove A       │
+│ (foi o último acessado há mais     │
+│  tempo — 10h, faz 2 horas!)        │
+└─────────────────────────────────────┘
+
+LFU (Least Frequently Used): remove o menos usado em GERAL
+┌─────────────────────────────────────┐
+│ Cache: [A, B, C, D, E] (cheio!)    │
+│ Frequência: A(1x), B(3x), C(10x)   │
+│           D(50x), E(2x)            │
+│                                     │
+│ Novo item F entra → remove A       │
+│ (foi acessado poucas vezes total)  │
+└─────────────────────────────────────┘
+```
+
+**Qual escolher?**
+
+| Cenário | Melhor | Por quê? |
+| --------- | -------- | ---------- |
+| Chatbot (conversas sequenciais) | **LRU** | O que foi usado agora provavelmente será usado de novo |
+| FAQ (perguntas repetidas) | **LFU** | As perguntas mais populares merecem ficar |
+| Dados temporais (previsão do tempo) | **TTL puro** | Nem LRU nem LFU importam — dados expiram |
+| Logs de sistema | **Nenhum** | Nunca reutiliza logs |
+
+#### Como funciona internamente
+
+```python
+# LRU usa um Hash Map + Doubly Linked List
+# Hash Map: O(1) para get/put
+# Lista duplamente encadeada: ordena por recência
+
+get(key):
+    node = hashmap[key]
+    move_to_front(node)  # marca como "recente"
+    return node.value
+
+put(key, value):
+    if key exists:
+        update_and_move_to_front()
+    else:
+        if cache full:
+            evict_tail()  # remove o menos recente
+        insert_at_head(key, value)
+```
+
+Redis implementa LRU aproximado (`maxmemory-policy allkeys-lru`) e LFU (`allkeys-lfu`). O LRU aproximado é uma otimização: em vez de verificar TODOS os keys, sorteia N amostras e remove o menos recente delas. Trade-off entre precisão e CPU.
+
 ### Model Routing
 
 Nem toda tarefa precisa do modelo mais caro:
@@ -80,7 +139,6 @@ Execute `python modules/p9_caching/run.py` e observe:
 
 - [OpenAI Pricing](https://openai.com/api/pricing/) — OpenAI Docs
 - [Redis Caching Best Practices](https://redis.io/docs/manual/caching/) — Redis Docs
-
 
 ### Tutoriais
 

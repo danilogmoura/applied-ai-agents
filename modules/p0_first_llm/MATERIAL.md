@@ -90,6 +90,42 @@ Amostra (sampling) → "URGENTE"
 
 **Next-token prediction**: o modelo gera uma palavra por vez. Cada palavra gerada vira input para gerar a próxima. É por isso que prompts mal escritos produzem respostas piores — o modelo só vê tokens, não significado.
 
+### Algoritmo: Byte Pair Encoding (BPE)
+
+Tokens não são palavras — são pedaços de bytes combinados por frequência. O BPE é um algoritmo de compressão adaptativo:
+
+```
+Treino do BPE (pré-processamento):
+Texto: "don't don't don't cannot can"
+         ↓
+[Split em chars]: d,o,n,',t,c,a,n
+         ↓
+[Frequência]:
+  (d,o) → aparece em "don't" (4x), "cannot" (1x) = 5x
+  (o,n) → aparece em "don't" (3x), "cannot" (1x) = 4x
+  (n,',t) → aparece em "don't" (4x) = 4x
+         ↓
+[Merge mais frequente]: (d,o) → novo token "do"
+Novo vocabulário: "do", "n", "'", "t", "c", "a", ...
+         ↓
+Repetir N vezes (geralmente 50.000 merges)
+Vocabulário final: ~50.000 tokens
+
+Tokenização de entrada:
+"don't" → ["do", "n',t"]  (2 tokens, não 5!)
+"cannot" → ["ca", "n", "not"] (3 tokens)
+```
+
+**Por que isso importa na prática?**
+
+| Texto | Tokens sem BPE | Tokens com BPE | Custo |
+| ------- | --------------- | ---------------- | ------- |
+| "I don't know" | 6 (I,d,o,n,',t,k,n,o,w) | 4 (I,do,n't,know) | 33% menos |
+| Chinês: "你好世界" | 4 chars | 4 chars | Igual (sem subword) |
+| Inglês longo | ~1.3× chars | ~0.4× chars | Muito mais barato |
+
+O BPE economiza dinheiro porque aprende padrões frequentes e os compacta em tokens únicos. Palavras comuns = 1 token. Palavras raras = múltiplos tokens.
+
 ### Exemplo Completo: Classificação de Ticket
 
 ```python
