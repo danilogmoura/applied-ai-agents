@@ -1,5 +1,19 @@
 # Material Didático — P2: Pipeline RAG (Recuperação de Contexto)
 
+## 🎯 Objetivos de Aprendizagem
+
+Ao final deste módulo, você será capaz de:
+
+- [ ] **Explicar** o problema que RAG resolve (contexto limitado + custo de tokens)
+- [ ] **Implementar** um pipeline RAG com ChromaDB (ingestão → busca → geração)
+- [ ] **Compreender** como embeddings capturam significado semântico (não apenas palavras-chave)
+- [ ] **Aplicar** chunking inteligente para manter contexto nos documentos
+- [ ] **Avaliar** técnicas avançadas (busca híbrida, re-ranking, parent-child chunking, query rewriting)
+
+> 💡 **Dica:** RAG é o padrão mais usado em produção hoje. Se você dominar este módulo, consegue construir 80% dos agentes de IA empresariais.
+
+---
+
 ## Conceitos Fundamentais
 
 ### O Problema do Contexto Limitado
@@ -254,6 +268,32 @@ Execute `python modules/p2_rag/run.py` e observe:
 1. Por que usar embeddings ao invés de busca por palavras-chave? Dê um exemplo onde busca semântica supera busca lexical.
 2. Se você tivesse 10.000 documentos, como o pipeline mudaria?
 3. Qual o impacto de usar um embedder ruim? Como você mediria a qualidade da recuperação?
+
+---
+
+## 📌 Resumo do Módulo
+
+RAG é o padrão mais usado em produção para dar conhecimento interno ao LLM:
+
+1. **O problema** — enviar 50 documentos para cada chamada é caro, lento e ineficiente. A maioria não é relevante para a pergunta.
+
+2. **A solução RAG** — busca semântica (embeddings) encontra só os docs relevantes → combina com a pergunta → LLM responde com contexto certo. Custo só na geração, busca é gratuita.
+
+3. **Embeddings capturam significado** — não é busca por palavra-chave. "Como resetar minha senha" e "Esqueci a senha de acesso" têm vetores próximos (cosine 0.94) mesmo sem palavras em comum.
+
+4. **Chunking inteligente importa** — chunks pequenos = embedding preciso. Devolver o pai = contexto rico. Query rewriting mantém contexto conversacional.
+
+5. **Técnicas avançadas** — busca híbrida (vetorial + BM25) resolve códigos/IDs exatos. Re-ranking (cross-encoder) reavalia top-K com precisão. ROI real: $0.0001 de rewrite vs resposta mais precisa.
+
+> ✅ **Você está pronto para:** Agora que seu agente pode buscar conhecimento, vamos aprender a fazer ele **agir** — tool calling.
+
+---
+
+## 🔗 Próximos Passos
+
+Com RAG, seu agente pode responder perguntas com base em documentos. Mas no mundo real, agentes precisam ir além de responder — eles precisam **executar ações**.
+
+→ Leia o módulo [P3a-1: Autoavaliação](../p3a1_self_eval/MATERIAL.md) para aprender a verificar qualidade antes de entregar respostas.
 
 ---
 

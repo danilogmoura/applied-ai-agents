@@ -1,5 +1,19 @@
 # Material Didático — P1: Análise de Viabilidade
 
+## 🎯 Objetivos de Aprendizagem
+
+Ao final deste módulo, você será capaz de:
+
+- [ ] **Comparar** lado a lado uma solução baseada em IA vs regras heurísticas
+- [ ] **Medir** latência (avg + p95), custo e manutenção de ambas as abordagens
+- [ ] **Construir** um memorando técnico baseado em dados reais de benchmark
+- [ ] **Decidir** quando IA vale a pena vs quando regras bastam (threshold de escala)
+- [ ] **Explicar** trade-offs de performance/custo/qualidade para stakeholders não-técnicos
+
+> 💡 **Dica:** O objetivo não é provar que IA é sempre melhor. É aprender a tomar decisões baseadas em dados — às vezes a resposta correta é "não usar IA".
+
+---
+
 ## Conceitos Fundamentais
 
 ### Por que Benchmark Antes de Decidir?
@@ -89,6 +103,32 @@ Execute `python modules/p1_feasibility/run.py` e observe:
 1. Se o volume de tickets triplicasse, qual abordagem se tornaria mais vantajosa?
 2. Como você mediria a "qualidade" da classificação além da latência e custo?
 3. Quando faria sentido usar AMBAS as abordagens juntas (regras para triagem rápida, IA para casos complexos)?
+
+---
+
+## 📌 Resumo do Módulo
+
+Este módulo ensinou a tomar decisões baseadas em dados, não em intuição:
+
+1. **Benchmark antes de decidir** — nunca invista em IA sem comparar lado a lado com regras heurísticas. Meça latência (avg + p95), custo e manutenção.
+
+2. **Trade-offs dependem de escala** — para 100 tickets/mês, regras podem bastar. Para 100.000 tickets/mês, IA se paga pela escalabilidade. O threshold muda tudo.
+
+3. **Memorando técnico = decisão baseada em dados** — contexto + dados reais + critérios claros + recomendação fundamentada. Stakeholders não-técnicos entendem dados, não slides.
+
+4. **IA vs Regras** — IA entende contexto e adapta-se (mas é lenta e cara). Regras são instantâneas e baratas (mas não entendem nuances). Às vezes usar AMBAS faz sentido.
+
+5. **Manutenção importa** — regras precisam de ajuste contínuo de keywords. IA precisa de monitoramento de qualidade + ajuste de prompts. Ambos têm custo de manutenção.
+
+> ✅ **Você está pronto para:** Agora que sabe quando usar IA, vamos construir um agente que responde perguntas com conhecimento interno — o pipeline RAG.
+
+---
+
+## 🔗 Próximos Passos
+
+Com a viabilidade estabelecida, o próximo passo é resolver o problema mais comum em produção: **como fazer o agente responder perguntas usando documentos internos sem enviar tudo para o LLM**.
+
+→ Leia o módulo [P2: Pipeline RAG](../p2_rag/MATERIAL.md) para aprender recuperação de contexto com embeddings.
 
 ---
 

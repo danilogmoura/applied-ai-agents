@@ -9,6 +9,20 @@ Leia antes:
 
 ---
 
+## 🎯 Objetivos de Aprendizagem
+
+Ao final deste módulo, você será capaz de:
+
+- [ ] **Construir** um golden dataset confiável com exemplos de input + resposta esperada
+- [ ] **Implementar** diferentes métricas de avaliação (exact match, fuzzy, LLM-as-a-Judge)
+- [ ] **Realizar** testes A/B para comparar duas versões do mesmo agente
+- [ ] **Calcular** significância estatística (teste Z) para saber quando uma diferença é real
+- [ ] **Aplicar** benchmarking regressivo para detectar degradação antes de deploy
+
+> 💡 **Dica:** Este é o módulo que separa desenvolvimento amador de produção profissional. Sem avaliação automatizada, qualquer mudança no seu agente é uma roleta russa — pode melhorar, pode piorar silenciosamente.
+
+---
+
 ## Conceitos Fundamentais
 
 ### O Problema da Qualidade Invisível
@@ -200,6 +214,34 @@ Execute `python modules/p5_evaluation/run.py` e observe:
 1. Como construir um golden dataset confiável? Quem valida as respostas esperadas?
 2. Se o LLM-as-a-judge também pode errar, como garantir que ele é justo?
 3. Qual tamanho mínimo de dataset para resultados estatisticamente significativos?
+
+---
+
+---
+
+## 📌 Resumo do Módulo
+
+Avaliação sistemática é o que separa produção de experimentação:
+
+1. **Golden dataset = verdade fundamental** — conjunto curado de entradas/saídas esperadas. Sem ele, você não sabe se melhorou ou piorou.
+
+2. **Métricas importam** — precisão/recall para classificação, BLEU/ROUGE para geração, LLM-as-Judge para qualidade subjetiva. Cada métrica responde uma pergunta diferente.
+
+3. **Testes A/B com significância estatística** — diferença de 2% pode ser ruído. Teste t e intervalo de confiança dizem se a mudança real ou sorteio.
+
+4. **Benchmarking regressivo** — cada nova versão deve superar a anterior. Se regression test falha, deploy bloqueado. CI/CD com gates de qualidade.
+
+5. **LLM-as-Judge vs Humanos** — LLM judge escala mas tem viés. Humanos são precisos mas caros. Use AMBAS: LLM para triagem, humanos para amostragem.
+
+> ✅ **Você está pronto para:** Agora que sabe avaliar qualidade, precisa garantir segurança das respostas.
+
+---
+
+## 🔗 Próximos Passos
+
+Com avaliação em produção, seus agentes entregam respostas consistentes. Mas como garantir que essas respostas são seguras contra ataques?
+
+→ Leia o módulo [P6: Segurança e Guardrails](../p6_safety/MATERIAL.md) para aprender defesa contra prompt injection.
 
 ---
 

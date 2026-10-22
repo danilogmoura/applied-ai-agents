@@ -9,6 +9,20 @@ Leia antes:
 
 ---
 
+## 🎯 Objetivos de Aprendizagem
+
+Ao final deste módulo, você será capaz de:
+
+- [ ] **Explicar** por que segurança de IA é fundamentalmente diferente de segurança tradicional
+- [ ] **Implementar** defense in layers (múltiplas camadas de proteção)
+- [ ] **Detectar** prompt injection usando combinação regex + LLM judge
+- [ ] **Proteger** contra data leakage (mascarar CPF, emails, tokens nos outputs)
+- [ ] **Aplicar** principle of least privilege em tool calling (whitelist + risk levels)
+
+> 💡 **Dica:** Segurança em IA não é opcional — é requisito mínimo para produção. Um agente inseguro pode vazar dados, executar comandos maliciosos ou ser manipulado por qualquer usuário. Nunca confie em uma única camada de defesa.
+
+---
+
 ## Conceitos Fundamentais
 
 ### Por que Segurança de IA é Diferente?
@@ -155,6 +169,34 @@ Execute `python modules/p6_safety/run.py` e observe:
 1. Se o prompt injection vem dentro do input legítimo, como distinguir sem falsos positivos?
 2. Que técnicas adversariais existem além das listadas aqui?
 3. Como balancear segurança vs usabilidade (muitos guardrails = UX ruim)?
+
+---
+
+---
+
+## 📌 Resumo do Módulo
+
+Segurança em IA é diferente de segurança tradicional:
+
+1. **Prompt injection ≠ SQL injection** — atacante usa linguagem natural, não código. "Ignore previous instructions" é a arma mais simples e eficaz.
+
+2. **Defense in layers** — nunca confie em uma única defesa. Input validation + output filtering + rate limiting + monitoring = segurança real.
+
+3. **Data leakage é silencioso** — dados sensíveis podem vazar via prompt ou resposta. Sempre validar entrada E saída contra patterns (CPF, email, credit card).
+
+4. **Least privilege = princípio fundamental** — cada agente só deve ter acesso ao mínimo necessário. Tool calling com permissões granulares reduz superfície de ataque.
+
+5. **Monitoramento contínuo** — logs de todas as interações, alertas para padrões suspeitos, revisões periódicas de prompts. Segurança não é one-time.
+
+> ✅ **Você está pronto para:** Agora que seu sistema é seguro, precisa gerenciar contexto das conversas.
+
+---
+
+## 🔗 Próximos Passos
+
+Com guardrails implementados, seus agentes estão protegidos contra ataques. Mas como lidar com conversas longas que excedem o context window?
+
+→ Leia o módulo [P7: Memória](../p7_memory/MATERIAL.md) para aprender gestão de contexto e sumarização.
 
 ---
 

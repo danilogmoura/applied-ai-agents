@@ -10,6 +10,20 @@ Leia antes:
 
 ---
 
+## 🎯 Objetivos de Aprendizagem
+
+Ao final deste módulo, você será capaz de:
+
+- [ ] **Implementar** o pattern Circuit Breaker para proteger contra falhas em cascata
+- [ ] **Criar** checkpoints para salvar progresso e recuperar após crashes
+- [ ] **Aplicar** retry com exponential backoff + jitter para chamadas instáveis
+- [ ] **Projetar** estratégias de fallback por tipo de erro (não genérico)
+- [ ] **Entender** trade-offs entre resiliência e custo/latência
+
+> 💡 **Dica:** Em produção, coisas VÃO falhar — APIs caem, rate limits são atingidos, timeouts acontecem. Este módulo ensina a construir agentes que não quebram completamente quando um passo falha.
+
+---
+
 ## Conceitos Fundamentais
 
 ### Por que Planejadores Precisam Ser Resilientes?
@@ -139,11 +153,31 @@ Execute `python modules/p3a3_planning/run.py` e observe:
 3. O checkpoint sendo salvo após cada passo
 4. Como o planner recupera estado ao restaurar checkpoint
 
-## Perguntas para Reflexão
+---
 
-1. Qual threshold de falhas seria ideal para um circuit breaker em produção? Mais ou menos que 3?
-2. Se você tivesse múltiplas APIs dependentes, como gerenciaria os circuit breakers?
-3. Que informações seriam críticas salvar no checkpoint para recuperação completa?
+## 📌 Resumo do Módulo
+
+Resilience patterns são o que separam protótipos de produção:
+
+1. **Circuit Breaker protege contra cascata** — quando uma API falha repetidamente, parar de tentar evita sobrecarregar ainda mais e economiza tokens/custo.
+
+2. **Checkpoints = salvar estado** — se um pipeline de 5 etapas falha na etapa 4, checkpoint permite retomar da etapa 3 sem recomeçar. Essencial para processos longos.
+
+3. **Retry com backoff+jitter** — esperar cada vez mais entre tentativas (exponencial) + variação aleatória (jitter) resolve problemas temporários sem sobrecarregar.
+
+4. **Fallbacks = plano B** — quando nada funciona, entregar algo imperfeito é melhor que nada. Cache antigo > erro 500.
+
+5. **Trade-offs reais** — circuit breaker adiciona latência, checkpoints ocupam armazenamento, retry aumenta tempo total. Tudo tem custo.
+
+> ✅ **Você está pronto para:** Agora que seu agente é resiliente, vamos escalar para múltiplos agentes especializados.
+
+---
+
+## 🔗 Próximos Passos
+
+Com resilience patterns, seu agente individual sobrevive a falhas. Mas tarefas complexas exigem especialização — ninguém espera que um único agente faça tudo bem.
+
+→ Leia o módulo [P3b: Multi-Agent Supervisor](../p3b_multi_agent/MATERIAL.md) para aprender arquitetura multiagente.
 
 ---
 

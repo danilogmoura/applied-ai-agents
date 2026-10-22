@@ -9,6 +9,20 @@ Leia antes:
 
 ---
 
+## 🎯 Objetivos de Aprendizagem
+
+Ao final deste módulo, você será capaz de:
+
+- [ ] **Explicar** por que autoavaliação é necessária antes de entregar respostas ao usuário
+- [ ] **Implementar** um loop de refinamento (gera → avalia → refina → reavalia)
+- [ ] **Usar** Pydantic structured outputs para garantir JSON consistente e validado
+- [ ] **Configurar** limites seguros de iteração (max_iterations) para evitar gasto infinito
+- [ ] **Entender** quando a autoavaliação pode ser "o lobo guardando o próprio aprisco"
+
+> 💡 **Dica:** Este módulo introduz o conceito mais importante de qualidade em agentes: nunca confie na primeira resposta sem verificar. Todo agente de produção precisa desse loop.
+
+---
+
 ## Conceitos Fundamentais
 
 ### O Problema da Confiança
@@ -108,6 +122,32 @@ Execute `python modules/p3a1_self_eval/run.py` e observe:
 1. Se a autoavaliação também fosse feita por um LLM, ela não seria "o lobo guardando o próprio aprisco"? Como mitigar?
 2. Que critérios adicionais você adicionaria além de accuracy/completeness/clarity?
 3. Como você saberia quantas iterações são suficientes para um caso de uso real?
+
+---
+
+## 📌 Resumo do Módulo
+
+Autoavaliação é o conceito mais importante de qualidade em agentes:
+
+1. **Nunca confie na primeira resposta** — LLMs podem alucinar, ser incompletos ou plausíveis mas errados. Sempre verifique antes de entregar.
+
+2. **Structured outputs (Pydantic) são obrigatórios** — JSON validado garante consistência e permite tomar decisões programáticas baseadas em scores. Nunca use texto livre para avaliação.
+
+3. **Loop de refinamento = gera → avalia → refina → reavalia** — inspirado em como humanos revisam textos. Score >= MIN_SCORE? Entrega. Não? Feedback específico → reescreve.
+
+4. **Limite iterações (max=3)** — sem limite, loop infinito gastando tokens. 3 iterações é equilíbrio entre custo e qualidade. Diminishing returns após isso.
+
+5. **Temperature=0 SEMPRE para avaliação** — se score muda a cada chamada, impossível comparar. Avaliação precisa ser determinística.
+
+> ✅ **Você está pronto para:** Agora que seu agente se autoavalia, vamos dar a ele poder de **agir** — tool calling.
+
+---
+
+## 🔗 Próximos Passos
+
+Com autoavaliação, seu agente verifica a qualidade antes de entregar. Mas ainda só gera texto — não executa ações no mundo real.
+
+→ Leia o módulo [P3a-2: Tool Calling](../p3a2_tool_calling/MATERIAL.md) para aprender como agentes usam ferramentas externas.
 
 ---
 

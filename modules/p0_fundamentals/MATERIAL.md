@@ -4,6 +4,20 @@ Este módulo é o **ponto de partida obrigatório** para quem nunca estudou IA o
 
 ---
 
+## 🎯 Objetivos de Aprendizagem
+
+Ao final deste módulo, você será capaz de:
+
+- [ ] **Explicar** o que é um LLM e como ele funciona internamente (predição de tokens)
+- [ ] **Entender** por que texto vira números (tokenização BPE) e por que isso importa pra custo
+- [ ] **Aplicar** técnicas básicas de prompt engineering para obter respostas melhores
+- [ ] **Reconhecer** sinais de alucinação e saber mitigá-las na prática
+- [ ] **Usar** o glossário de 16 termos sempre que encontrar siglas ou jargões
+
+> 💡 **Dica:** Marque cada checkbox APÓS conseguir explicar o conceito para alguém sem olhar suas anotações. Se não consegue explicar simples, ainda precisa revisar.
+
+---
+
 ## 1. O que é Inteligência Artificial (IA)?
 
 IA é um campo da ciência da computação que busca criar sistemas capazes de realizar tarefas que normalmente requerem inteligência humana: entender linguagem, reconhecer imagens, tomar decisões, aprender com dados.
@@ -202,12 +216,30 @@ Termos que aparecerão repetidamente ao longo do curso:
 
 ---
 
-## Resumo
+## 📌 Resumo do Módulo
 
-Antes de construir agentes, você precisa entender três coisas:
+Este módulo plantou as bases que você usará em TODO o curso:
 
-1. **LLMs não pensam** — eles predizem o próximo token baseado em padrões aprendidos durante o treino
-2. **Tokens = dinheiro** — cada palavra/parte de palavra custa algo, então eficiência importa
-3. **Alucinação é inevitável** — a única defesa é validar respostas críticas
+1. **LLMs não pensam** — eles predizem o próximo token baseado em padrões aprendidos durante o treino. Não há "entendimento" real, apenas estatística sofisticada. Mais parâmetros = mais capacidade, mas também mais custo.
 
-Estes conceitos aparecem em TODOS os módulos seguintes. Se algo parecer confuso, volte aqui para revisar.
+2. **Tokens = dinheiro** — cada palavra/parte de palavra custa algo. BPE compacta palavras frequentes em tokens únicos (don't → 2 tokens vs 5 chars). Inglês usa menos tokens que português ou chinês. Prompt engineering eficiente começa entendendo tokenização.
+
+3. **Alucinação é inevitável** — a única defesa é validar respostas críticas. LLMs foram treinados para prever próximo token, NÃO para dizer a verdade. Use RAG para fatos, temperature baixa para classificação, e validação posterior para dados críticos.
+
+4. **Prompt engineering importa** — ser específico, dar contexto, usar few-shot examples, chain of thought e pedir formato estruturado faz diferença enorme na qualidade da resposta. System prompt define a "personalidade" do modelo — nunca ignore.
+
+5. **Glossário é seu amigo** — sempre que encontrar siglas (LLM, RAG, BPE, SSE), consulte a tabela de 16 termos. Dominar essa vocabulária acelera muito o aprendizado dos módulos seguintes.
+
+> ⚠️ **Importante:** Se algum conceito ainda parece confuso, releia esta seção ANTES de prosseguir. Os próximos módulos assumem que você entende estes fundamentos.
+
+---
+
+## 🔗 Próximos Passos
+
+Agora que você entende o que é um LLM e como ele funciona por dentro, está pronto para construir seu primeiro agente de IA.
+
+→ Leia o módulo [P0-First-LLM](../p0_first_llm/MATERIAL.md) para implementar um classificador de tickets com esqueleto mínimo.
+
+---
+
+## Referências

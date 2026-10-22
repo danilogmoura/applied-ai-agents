@@ -9,6 +9,20 @@ Leia antes:
 
 ---
 
+## 🎯 Objetivos de Aprendizagem
+
+Ao final deste módulo, você será capaz de:
+
+- [ ] **Construir** uma API REST com FastAPI para expor seu agente como serviço
+- [ ] **Validar** inputs do usuário com Pydantic models (contrato cliente-servidor)
+- [ ] **Implementar** middleware de monitoramento (timing, request-id, logging estruturado)
+- [ ] **Dockerizar** sua aplicação para deploy consistente em qualquer ambiente
+- [ ] **Entender** como o Docker funciona internamente (namespaces, cgroups, layers)
+
+> 💡 **Dica:** Este é o módulo que transforma seu script local em um produto real. Sem uma API, seu agente é um brinquedo pessoal. Com uma API, vira algo que 100 pessoas podem usar simultaneamente.
+
+---
+
 ## Conceitos Fundamentais
 
 ### De Script a Produto
@@ -220,6 +234,34 @@ docker-compose up --build
 1. Por que usar async/await na API? Quando isso faz diferença vs quando não faz?
 2. Se você tivesse 1000 requisições por segundo, que mudanças seriam necessárias?
 3. Como você implementaria autenticação (API keys, JWT) nesta API?
+
+---
+
+---
+
+## 📌 Resumo do Módulo
+
+Deploy em produção é onde protótipos viram produtos:
+
+1. **FastAPI = padrão para APIs de IA** — validação automática com Pydantic, async nativo, documentação Swagger/OpenAPI gerada automaticamente.
+
+2. **Pydantic models = contrato** — cada endpoint tem input/output definido. Se o cliente enviar formato errado, FastAPI rejeita antes de chamar seu código.
+
+3. **Middleware = observabilidade** — logging estruturado (JSON) permite monitorar latência, tokens usados e erros em tempo real. Sem logging, você está cego.
+
+4. **Docker = portabilidade** — containeriza sua API para rodar em qualquer lugar (local, cloud, edge). Docker Compose orquestra múltiplos containers.
+
+5. **Internals do Docker** — imagens são imutáveis, containers são efêmeros. Volume mount para dados, network para comunicação entre containers.
+
+> ✅ **Você está pronto para:** Agora que sua API está em produção, precisa saber como avaliar a qualidade das respostas.
+
+---
+
+## 🔗 Próximos Passos
+
+Com sua API em produção, seus agentes estão respondendo perguntas. Mas como saber se as respostas estão boas? Precisamos de avaliação sistemática.
+
+→ Leia o módulo [P5: Avaliação de Qualidade](../p5_evaluation/MATERIAL.md) para aprender golden datasets e testes A/B.
 
 ---
 

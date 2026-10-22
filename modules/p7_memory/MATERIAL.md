@@ -9,6 +9,20 @@ Leia antes:
 
 ---
 
+## 🎯 Objetivos de Aprendizagem
+
+Ao final deste módulo, você será capaz de:
+
+- [ ] **Explicar** a diferença entre memória de curto prazo (conversa atual) e longo prazo (persistente entre sessões)
+- [ ] **Implementar** estratégias de gestão de contexto (sliding window, token budget, summarization)
+- [ ] **Compreender** como sumarização automática funciona na prática (custo vs economia)
+- [ ] **Projetar** sistema de memória hierárquica (resumo global + últimas mensagens)
+- [ ] **Identificar** o que preservar vs resumir (dados do usuário vs conversa trivial)
+
+> 💡 **Dica:** Memória é o que transforma um chatbot sem graça em um agente que "lembra" de você. Mas memória custa tokens — cada mensagem adicional ocupa espaço no contexto e custa dinheiro. Este módulo ensina o equilíbrio.
+
+---
+
 ## Conceitos Fundamentais
 
 ### O Problema do Contexto Limitado
@@ -173,6 +187,34 @@ Execute `python modules/p7_memory/run.py` e observe:
 1. Quando resumir vs quando deletar? Que critérios definiriam isso?
 2. Se você tivesse 1000 interações, quantas memórias de longo prazo seriam razoáveis?
 3. Como evitar que memórias incorretas ou enviesadas persistam?
+
+---
+
+---
+
+## 📌 Resumo do Módulo
+
+Memória é o que diferencia agentes conversacionais de ferramentas stateless:
+
+1. **Memória de curto prazo = contexto atual** — tudo que está no context window agora. Limitado (4K-128K tokens), mas essencial para manter fluidez da conversa.
+
+2. **Memória de longo prazo = persistência** — dados salvos entre sessões. Vector store (embeddings) para busca semântica, ou database relacional para dados estruturados.
+
+3. **Sumarização automática = gestão inteligente** — quando contexto enche, sumarizar conversas antigas em vez de deletar. Preserva informação importante sem ocupar espaço.
+
+4. **Hierarquia de memória** — curto prazo (contexto atual) → médio prazo (sessão atual) → longo prazo (entre sessões). Cada nível tem estratégia diferente de gestão.
+
+5. **Preservar vs Resumir** — nem tudo deve ser resumido. Dados críticos (nomes, datas, decisões) devem ser preservados intactos. Contexto conversacional pode ser resumido.
+
+> ✅ **Você está pronto para:** Agora que seu agente lembra de conversas, vamos melhorar a experiência do usuário com streaming.
+
+---
+
+## 🔗 Próximos Passos
+
+Com memória implementada, seus agentes mantêm contexto entre conversas. Mas respostas longas podem parecer lentas para o usuário — streaming resolve isso.
+
+→ Leia o módulo [P8: Streaming](../p8_streaming/MATERIAL.md) para aprender SSE e latência percebida.
 
 ---
 

@@ -9,6 +9,20 @@ Leia antes:
 
 ---
 
+## 🎯 Objetivos de Aprendizagem
+
+Ao final deste módulo, você será capaz de:
+
+- [ ] **Calcular** o ROI de cache (quanto se economiza vs custo de implementação)
+- [ ] **Implementar** cache de respostas com TTL para perguntas repetidas (FAQ)
+- [ ] **Escolher** entre LRU e LFU baseado no padrão de acesso (conversas vs FAQ)
+- [ ] **Entender** como funciona internamente (hash map + doubly linked list para LRU)
+- [ ] **Aplicar** model routing (enviar tarefas simples para modelos baratos)
+
+> 💡 **Dica:** Cache é a otimização com maior ROI em produção. Se 30% das perguntas são repetidas (o que é comum), você corta custos em 30% sem mudar NADA no seu agente — só adicionando uma camada de cache.
+
+---
+
 ## Conceitos Fundamentais
 
 ### O Problema do Custo em Escala
@@ -164,6 +178,32 @@ Execute `python modules/p9_caching/run.py` e observe:
 1. Quando NÃO usar cache? Que respostas não devem ser cacheadas?
 2. Se você tivesse 1 milhão de usuários, quantos GB de cache precisaria?
 3. Como balancear velocidade vs qualidade ao escolher modelos?
+
+---
+
+## 📌 Resumo do Módulo
+
+Caching é a otimização de custo mais impactante em produção:
+
+1. **ROI claro** — cada resposta cacheada custa $0.00 vs $0.0001 de lookup. Para prompts repetidos, economia é quase 100%. Cache é a primeira otimização a implementar.
+
+2. **TTL = frescor vs economia** — TTL curto = dados frescos mas menos hits. TTL longo = mais hits mas risco de dados desatualizados. Balanceamento depende do domínio.
+
+3. **LRU vs LFU** — LRU (Least Recently Used) funciona bem para acesso temporal. LFU (Least Frequently Used) melhor para acesso por frequência. Escolha depende do padrão de uso.
+
+4. **Model routing inteligente** — tarefas simples → modelo barato; tarefas complexas → modelo caro. Reduz custo médio sem perder qualidade.
+
+5. **Compressão de prompts** — remover tokens redundantes reduz custo por chamada. Prompt engineering não é só qualidade, é economia.
+
+> ✅ **Você está pronto para:** Agora que custos estão otimizados, vamos estruturar skills reutilizáveis.
+
+---
+
+## 🔗 Próximos Passos
+
+Com caching, seus agentes são econômicos. Mas como organizar código em componentes reutilizáveis e versionados?
+
+→ Leia o módulo [P10: Skills](../p10_skills/MATERIAL.md) para aprender design e versionamento de skills.
 
 ---
 

@@ -10,6 +10,20 @@ Leia antes:
 
 ---
 
+## 🎯 Objetivos de Aprendizagem
+
+Ao final deste módulo, você será capaz de:
+
+- [ ] **Definir** uma skill com interface clara (input/output schemas + descrição)
+- [ ] **Implementar** versionamento SemVer para evoluir skills sem quebrar consumidores
+- [ ] **Compor** pipelines encadeando múltiplas skills como LEGO blocks
+- [ ] **Aplicar** filtros no pipeline (confiança mínima, rate limiting, conteúdo proibido)
+- [ ] **Gerenciar** error handling em pipelines (fail-fast, fallback, partial success)
+
+> 💡 **Dica:** Skills são o conceito que transforma código bagunçado em sistema modular. Cada skill faz UMA coisa bem — e isso parece simples até você ter 50 skills trabalhando juntas. Este módulo ensina a escalar.
+
+---
+
 ## Conceitos Fundamentais
 
 ### O que é uma Skill?
@@ -240,6 +254,32 @@ Execute `python modules/p10_skills/run.py` e observe:
 1. Quando criar uma nova skill vs combinar existentes?
 2. Se uma skill falha no meio do pipeline, como rollback?
 3. Como testar pipelines sem chamar LLMs reais?
+
+---
+
+## 📌 Resumo do Módulo
+
+Skills são blocos de construção reutilizáveis de agentes:
+
+1. **Interface consistente** — toda skill tem input/output definido. Isso permite compor pipelines como LEGO: cada peça encaixa independentemente da implementação interna.
+
+2. **Versionamento SemVer** — v1.0.0, v1.1.0, v2.0.0. Mudanças breaking exigem novo major. Sem versionamento, update quebra tudo.
+
+3. **Pipeline = composição** — [A] → [B] → [C]. Cada etapa processa output da anterior. Filtros podem abortar se condições não forem satisfeitas (confiança baixa, toxicity, timeout).
+
+4. **Error handling** — fail-fast (padrão), retry (transiente), fallback (degradar). Escolher estratégia depende do custo de falha.
+
+5. **Registry centralizado** — todas as skills registradas em um lugar. Novas skills descobertas automaticamente. Desacoplamento entre definição e uso.
+
+> ✅ **Você está pronto para:** Agora que skills estão organizadas, vamos colocar tudo em produção com CI/CD.
+
+---
+
+## 🔗 Próximos Passos
+
+Com skills versionadas e pipelines compostos, seu sistema está organizado. Mas como fazer deploy automático com monitoramento e rollback?
+
+→ Leia o módulo [P11: Production Ops](../p11_production_ops/MATERIAL.md) para aprender CI/CD, monitoring e métricas.
 
 ---
 

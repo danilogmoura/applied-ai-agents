@@ -10,6 +10,20 @@ Leia antes:
 
 ---
 
+## 🎯 Objetivos de Aprendizagem
+
+Ao final deste módulo, você será capaz de:
+
+- [ ] **Implementar** logging estruturado (JSON) para análise programática de logs
+- [ ] **Monitorar** métricas essenciais (latência percentil, erro rate, custo/request)
+- [ ] **Executar** testes A/B automatizados antes de deploy de prompts
+- [ ] **Configurar** rollback automático baseado em degradação de métricas
+- [ ] **Aplicar** exponential backoff com jitter para chamadas a APIs instáveis
+
+> 💡 **Dica:** Este é o módulo final do curso — e talvez o mais importante para quem quer trabalhar profissionalmente. Um agente bonito que ninguém monitora é uma bomba-relógio. Ops é o que transforma código funcional em produto confiável.
+
+---
+
 ## Conceitos Fundamentais
 
 ### Por que Monitorar Agentes?
@@ -178,6 +192,37 @@ Execute `python modules/p11_production_ops/run.py` e observe:
 1. Se você tivesse 100 prompts ativos, como monitorar tudo sem ser invadido por alerts?
 2. Quando fazer rollback manual vs automático?
 3. Como criar um dataset de testes representativo para prompts?
+
+---
+
+## 📌 Resumo do Módulo
+
+Production Ops é o que separa protótipos de sistemas em produção:
+
+1. **Logging estruturado = visibilidade** — logs em JSON com trace_id permitem rastrear cada requisição. Sem logging, debugging em produção é impossível.
+
+2. **Métricas essenciais** — latência (p50/p95/p99), taxa de erro, tokens usados, custo por chamada. Dashboards em tempo real alertam antes de usuários reclamarem.
+
+3. **Testes A/B com gates** — nova versão só vai para produção se success_rate > threshold. Rollback automático se métricas pioram. CI/CD com qualidade.
+
+4. **Rollback automático** — se error_rate sobe > 5% após deploy, reverter automaticamente para última versão estável. Tempo de recovery < 5 minutos.
+
+5. **Exponential backoff + jitter** — quando serviços dependentes falham, esperar cada vez mais entre tentativas + variação aleatória. Resolve problemas temporários sem cascata.
+
+> ✅ **Parabéns!** Você completou todo o curso de Agentes de IA Aplicada. Agora tem conhecimento para construir, avaliar, proteger e operar agentes em produção.
+
+---
+
+## 🔗 Próximos Passos
+
+Você chegou ao final do curso! Aqui estão sugestões de como continuar:
+
+- **Revisar todos os módulos** — volte aos módulos que achou mais difíceis e pratique novamente
+- **Construir projeto próprio** — escolha um problema real e implemente um agente completo usando todas as técnicas aprendidas
+- **Explorar frameworks** — LangChain, LlamaIndex, CrewAI, AutoGen — implemente os mesmos padrões em diferentes frameworks
+- **Contribuir** — este curso é open source! Envie PRs com melhorias, correções ou novos exercícios
+
+→ Volte ao [README](../../README.md) para ver o roadmap completo do curso.
 
 ---
 

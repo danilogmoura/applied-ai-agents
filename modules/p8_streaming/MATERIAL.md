@@ -9,6 +9,20 @@ Leia antes:
 
 ---
 
+## 🎯 Objetivos de Aprendizagem
+
+Ao final deste módulo, você será capaz de:
+
+- [ ] **Explicar** a diferença entre latência percebida vs real (por que streaming muda UX)
+- [ ] **Implementar** Server-Sent Events (SSE) para enviar respostas progressivamente
+- [ ] **Entender** o formato SSE no wire (text/event-stream, \n\n separator)
+- [ ] **Implementar** abort/cancel para permitir que usuário cancele geração
+- [ ] **Aplicar** buffering inteligente (2-4 tokens por envio) para evitar jitter aparente
+
+> 💡 **Dica:** Streaming é pura psicologia do usuário. O tempo total pode ser o mesmo, mas ver progresso imediato muda completamente a percepção. É uma das melhorias de UX com maior ROI em qualquer aplicação de IA.
+
+---
+
 ## Conceitos Fundamentais
 
 ### Por que Streaming?
@@ -152,6 +166,32 @@ Execute `python modules/p8_streaming/run.py` e observe:
 1. Se você fosse implementar FastAPI + SSE, como seria o endpoint?
 2. Quando abortar automaticamente? Que critérios seriam razoáveis?
 3. Como calcular custo estimado antes de começar a gerar?
+
+---
+
+## 📌 Resumo do Módulo
+
+Streaming é sobre percepção do usuário, não velocidade real:
+
+1. **Latência percebida vs real** — usuário espera <2s para ver primeira palavra. Se esperar 10s sem nada, acha que travou. Streaming resolve percepção, não latência.
+
+2. **SSE = protocolo simples** — servidor envia chunks `data: {"token": "..."}` via HTTP keep-alive. Cliente lê incrementalmente. Formato padrão da indústria.
+
+3. **Buffering inteligente** — mostrar palavras completas (não caracteres) evita flickering. Buffer de 3-5 tokens = fluidez sem delay.
+
+4. **Abort/cancel = controle do usuário** — se usuário percebe erro, pode cancelar geração. Implementar com asyncio.CancelledError e cleanup adequado.
+
+5. **Custo estimado antes de gerar** — contar tokens do input, estimativa do output, custo por token. Alertar usuário ANTES de gastar $0.50 em resposta.
+
+> ✅ **Você está pronto para:** Agora que respostas são responsivas, vamos otimizar custos com cache.
+
+---
+
+## 🔗 Próximos Passos
+
+Com streaming, seus agentes respondem rapidamente. Mas respostas repetidas gastam tokens desnecessariamente — cache resolve isso.
+
+→ Leia o módulo [P9: Caching](../p9_caching/MATERIAL.md) para aprender estratégias de cache e políticas de evicção.
 
 ---
 

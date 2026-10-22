@@ -14,6 +14,20 @@ Este módulo pressupõe que você já entende esses conceitos fundamentais.
 
 ---
 
+## 🎯 Objetivos de Aprendizagem
+
+Ao final deste módulo, você será capaz de:
+
+- [ ] **Construir** o esqueleto mínimo de um agente usando a API da OpenAI
+- [ ] **Montar** um prompt completo (system + user messages) para classificação de tickets
+- [ ] **Calcular** o custo estimado por chamada baseado no número de tokens
+- [ ] **Explicar** como next-token prediction funciona na prática (attention → probs → sampling)
+- [ ] **Identificar** quando um LLM vai alucinar e saber mitigar
+
+> 💡 **Dica:** Se você consegue explicar pra um colega por que `temperature=0` é obrigatório para classificação sem olhar o material, está pronto pro próximo módulo.
+
+---
+
 ## Conceitos Fundamentais
 
 ### O que é um Agente de IA?
@@ -288,6 +302,32 @@ Execute `python modules/p0_first_llm/run.py` e observe:
 1. Por que comparar IA com regras heurísticas? Qual a vantagem de cada abordagem?
 2. Como você saberia se o LLM está classificando corretamente?
 3. O que aconteceria se você processasse 10.000 tickets? Como os custos escalariam?
+
+---
+
+## 📌 Resumo do Módulo
+
+Este foi seu primeiro contato prático com agentes de IA:
+
+1. **Agente = entrada → LLM → saída** — o esqueleto mínimo é simples, mas poderoso. Classificação de tickets é uma das tarefas mais comuns em automação.
+
+2. **Next-token prediction é tudo** — o modelo não "entende" seu prompt, ele calcula probabilidades para cada token seguinte. Attention faz cada palavra influenciar todas as outras. Sampling escolhe entre as probabilidades.
+
+3. **Alucinação é real** — o modelo inventa fatos com confiança. Mitigações: RAG (responder só com docs), temperature=0 para classificação, e prompts explícitos como "se não sabe, diga 'não sei'".
+
+4. **Tokens = custo** — cada chamada custa dinheiro. Para 100 tickets/mês, regras podem bastar. Para 100.000 tickets/mês, IA se paga pela escalabilidade. Sempre rastreie custos.
+
+5. **Segurança primeiro** — nunca hardcode chaves de API. Use variáveis de ambiente (.env). Valide que todas as chaves estão presentes antes de chamar a API.
+
+> ✅ **Você está pronto para:** O próximo módulo (P1) vai te ensinar a comparar IA vs regras com dados reais de benchmark.
+
+---
+
+## 🔗 Próximos Passos
+
+Agora que você construiu seu primeiro agente, o próximo passo é aprender a **decidir quando usar IA**. Nem toda tarefa precisa de um LLM — às vezes regras heurísticas são melhores (mais rápidas, mais baratas, mais previsíveis).
+
+→ Leia o módulo [P1: Análise de Viabilidade](../p1_feasibility/MATERIAL.md) para aprender a fazer benchmarks comparativos.
 
 ---
 

@@ -10,6 +10,20 @@ Leia antes:
 
 ---
 
+## 🎯 Objetivos de Aprendizagem
+
+Ao final deste módulo, você será capaz de:
+
+- [ ] **Explicar** por que múltiplos agentes especializados superam um agente genérico único
+- [ ] **Projetar** uma arquitetura supervisor-especialista com roteamento adequado
+- [ ] **Comparar** roteamento baseado em LLM vs heurísticas (custo vs flexibilidade)
+- [ ] **Implementar** graceful degradation quando um especialista falha
+- [ ] **Calcular** custos adicionais do multiagente (supervisor + especialistas)
+
+> 💡 **Dica:** Multiagente é mais caro que agente único, mas entrega qualidade muito superior. O segredo é usar modelos pequenos no supervisor e só escalar para modelos grandes nos especialistas quando necessário.
+
+---
+
 ## Conceitos Fundamentais
 
 ### Por que Múltiplos Agentes?
@@ -139,11 +153,31 @@ Execute `python modules/p3b_multi_agent/run.py` e observe:
 3. Como o fallback redistribui para outro especialista
 4. O log completo de roteamento gerado
 
-## Perguntas para Reflexão
+---
 
-1. Se você tivesse 20 especialistas, o roteamento ficaria caro demais? Que alternativa existiria?
-2. Como coordenar dois especialistas que precisam trabalhar juntos na mesma tarefa?
-3. Quando faria sentido ter agentes hierárquicos (supervisor → sub-supervisores → especialistas)?
+## 📌 Resumo do Módulo
+
+Multi-agent supervisor é a arquitetura mais usada para tarefas complexas:
+
+1. **Especialização > Generalização** — um supervisor roteia perguntas para especialistas. Cada especialista domina uma área, não precisa entender tudo.
+
+2. **Roteamento LLM vs Heurística** — heurística (keyword matching) é barata e rápida mas inflexível. LLM routing entende intenção mas custa tokens. Use heurística para categorias claras, LLM para ambíguas.
+
+3. **Graceful degradation = plano B** — se o especialista de finanças falha, fallback para generalista é melhor que erro 500. Sempre tenha fallbacks.
+
+4. **Custos multiplicados** — cada especialista adiciona chamadas. Supervisor → Especialista = 2 chamadas por pergunta. Para 10 especialistas, custo pode subir 10x.
+
+5. **Hierarquia escala** — supervisor → sub-supervisores → especialistas funciona para dezenas de agentes. Mas cada nível adicionia latência.
+
+> ✅ **Você está pronto para:** Agora que seu agente é multi-especializado, vamos colocá-lo em produção com API REST.
+
+---
+
+## 🔗 Próximos Passos
+
+Com multi-agentes, você tem um sistema inteligente mas ainda local. Para usar em produção, precisa de uma interface acessível — uma API REST.
+
+→ Leia o módulo [P4: Deploy em Produção](../p4_production/MATERIAL.md) para aprender FastAPI e Docker.
 
 ---
 
