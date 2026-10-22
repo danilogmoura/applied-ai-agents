@@ -1,33 +1,82 @@
-# Applied AI Agents 🤖
+# AI Agents Course — Formação Prática em Agentes de IA com Python
 
-Repositório dedicado ao estudo e desenvolvimento de Agentes de Inteligência Artificial utilizando **Python**. O foco desta trilha não é apenas "fazer funcionar", mas sim construir soluções orientadas a engenharia, considerando **Custo**, **Observabilidade**, **Segurança** e **Governança**.
+Curso técnico para desenvolvedores juniores seguindo **Aprendizagem Baseada em Problemas (PBL)**.
+Toda teoria é apresentada sob demanda para destravar o código.
 
-A metodologia aplicada é o **PBL (Aprendizagem Baseada em Problemas)**, onde cada módulo resolve um desafio prático de negócios e a tecnologia entra apenas como ferramenta de solução.
+## Princípios
 
-## 📌 Arquitetura da Trilha
+- **Problema antes de ferramenta** — A tecnologia entra só quando se justifica
+- **Evidência antes de opinião** — Escolhas arquiteturais exigem testes e medições reais
+- **Simplicidade antes de complexidade** — Se um `if/else` resolve melhor que LLM, vence
+- **Tópicos transversais obrigatórios**: Custo · Observabilidade · Segurança · Governança
 
-Este repositório está estruturado em 8 laboratórios progressivos:
+## Trilha de Desafios
 
-| Módulo | Desafio | Foco Principal |
-| :--- | :--- | :--- |
-| **[P0](./P0-Primeiro-Fluxo)** | Primeiro fluxo com LLM | Automação via API, proteção de chaves (secrets), tratamento de erros e métricas de custo. |
-| **[P1](./P1-Analise-Viabilidade)** | Análise de viabilidade | Avaliação técnica (IA vs. Algoritmo tradicional), latência e custo-benefício. |
-| **[P2](./P2-RAG)** | Recuperação de Contexto (RAG) | Busca de informações locais, vetorização, redução de alucinações e consumo de tokens. |
-| **[P3a-1](./P3a1-Reflexao)** | Autoavaliação e reflexão | LLMs criticando a própria saída, Structured Outputs e controle de loops infinitos. |
-| **[P3a-2](./P3a2-Tool-Calling)** | Uso autônomo de ferramentas | Tool calling, princípio do menor privilégio e *Human-in-the-loop* (aprovação humana). |
-| **[P3a-3](./P3a3-Resiliencia)** | Planejamento e retomada | Circuit breakers, tratamento de indisponibilidade de APIs externas e checkpoints. |
-| **[P3b](./P3b-Multiagente)** | Sistema multiagente | Roteamento de tarefas (Router), agentes especialistas e degradação elegante. |
-| **[P4](./P4-Producao)** | Produto em produção | Exposição via API (FastAPI), empacotamento com Docker, documentação e monitoramento. |
+| Módulo | Nome | Duração Estimada | Entregável |
+| -------- | ------ | ------------------- | ------------ |
+| **P0** | Primeiro fluxo com LLM | 2h | Botão autônomo com custo visível |
+| **P1** | Análise de viabilidade | 1.5h | Memorando técnico comparativo |
+| **P2** | RAG (Recuperação de Contexto) | 3h | Pipeline completo com ChromaDB |
+| **P3a-1** | Autoavaliação e reflexão | 2.5h | Loop de crítica estruturada |
+| **P3a-2** | Tool Calling | 3h | Agente com funções reais + HITL |
+| **P3a-3** | Planejamento e retomada | 2.5h | Circuit breaker + checkpoints |
+| **P3b** | Sistema multiagente | 4h | Supervisor + especialistas |
+| **P4** | Produto em produção | 3h | API FastAPI + Docker + Swagger |
 
-## 🛠️ Stack Tecnológico Base
+## Pré-requisitos
 
-*   **Linguagem:** Python 3.12+
-*   **Frameworks de IA:** *A definir conforme o módulo (LangChain, LangGraph, OpenAI SDK)*
-*   **APIs e Backend:** FastAPI, Uvicorn, Pydantic
-*   **Ferramentas:** Docker, python-dotenv (gestão de variáveis de ambiente), tiktoken (cálculo de custos)
+- Python 3.11+
+- Conta na OpenAI (ou compatível)
+- Docker (módulo P4)
 
-## 🚀 Como iniciar
+## Instalação
 
-1. Clone o repositório:
-   ```bash
-   git clone [https://github.com/seu-usuario/applied-ai-agents.git](https://github.com/seu-usuario/applied-ai-agents.git)
+```bash
+python -m venv .venv
+source .venv/bin/activate  # Linux/Mac
+pip install -e ".[dev]"
+cp .env.example .env       # Configure suas chaves
+```
+
+## Executar módulos
+
+```bash
+# Cada módulo tem seu script principal
+python modules/p0_first_llm/run.py
+python modules/p1_feasibility/run.py
+python modules/p2_rag/run.py
+# ... etc
+```
+
+## Estrutura do Projeto
+
+```
+ai-agents-course/
+├── shared/                 # Utilitários compartilhados
+│   ├── cost.py             # Estimativa de custos (tiktoken)
+│   ├── logging_config.py   # Logs estruturados
+│   ├── security.py         # Gestão de secrets (.env)
+│   └── governance.py       # Human-in-the-loop
+├── modules/                # Módulos do curso
+│   ├── p0_first_llm/       # Automação com LLM
+│   ├── p1_feasibility/     # Análise de viabilidade
+│   ├── p2_rag/             # Pipeline RAG
+│   ├── p3a1_self_eval/     # Autoavaliação
+│   ├── p3a2_tool_calling/  # Tool Calling
+│   ├── p3a3_planning/      # Planejamento e retomada
+│   ├── p3b_multi_agent/    # Multiagente
+│   └── p4_production/      # Deploy em produção
+├── tests/                  # Testes por módulo
+├── data/                   # Dados de exemplo
+├── docs/                   # Documentação
+└── docker-compose.yml      # Infraestrutura P4
+```
+
+## Avaliação
+
+Cada módulo deve ser entregue como repositório GitHub com:
+
+- Código funcional e testado
+- Relatório de custos (tokens/gasto)
+- Logs estruturados demonstrando observabilidade
+- Comentários sobre trade-offs arquiteturais

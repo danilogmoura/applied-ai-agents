@@ -1,0 +1,22 @@
+[
+    {
+        "id": "doc_001",
+        "title": "Política de Reembolso",
+        "content": "A política de reembolso permite solicitações dentro de 30 dias após a compra. Reembolsos completos são aplicados para produtos em até 7 dias. Produtos digitais têm política de 14 dias. Processamento leva de 5 a 10 dias úteis."
+    },
+    {
+        "id": "doc_002",
+        "title": "Guia de Segurança",
+        "content": "Todos os dados sensíveis devem ser criptografados com AES-256. Autenticação multifator é obrigatória para acesso a produção. Logs de auditoria devem ser mantidos por no mínimo 1 ano. Senhas devem ter mínimo de 12 caracteres com complexidade."
+    },
+    {
+        "id": "doc_003",
+        "title": "SLA de Disponibilidade",
+        "content": "O SLA garante 99.9% de uptime mensal. Tempo máximo de downtime permitido: 43 minutos por mês. Notificação de manutenção deve ser enviada com 48h de antecedência. Créditos de serviço: 10% para downtime entre 1-4h, 25% para 4-8h, 50% para >8h."
+    },
+    {
+        "id": "doc_004",
+        "title": "Onboarding de Clientes",
+        "content": "O processo de onboarding inclui: configuração inicial (dia 1), treinamento (dias 2-3), período de acompanhamento (semana 1), e revisão de satisfação (semana 2). Cada cliente recebe um success manager dedicado por 90 dias."
+    }
+]
