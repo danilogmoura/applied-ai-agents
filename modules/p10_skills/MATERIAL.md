@@ -1,5 +1,15 @@
 # Material Didático — P10: Design e Composição de Skills
 
+## ⚠️ Pré-requisito
+
+Leia antes:
+
+- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
+- [p3a2_tool_calling/MATERIAL.md](../p3a2_tool_calling/MATERIAL.md) — Tool Calling
+- [p3b_multi_agent/MATERIAL.md](../p3b_multi_agent/MATERIAL.md) — Multiagente
+
+---
+
 ## Conceitos Fundamentais
 
 ### O que é uma Skill?
@@ -14,6 +24,33 @@ class SentimentSkill(BaseSkill):
 ```
 
 Skills são como APIs internas — cada uma faz UMA coisa bem.
+
+### Por que isso existe?
+
+Em projetos pequenos, você pode colocar tudo em um arquivo. Mas conforme o sistema cresce:
+
+```
+prompts espalhados por 10 arquivos → difícil manter consistência
+funções com nomes genéricos (process(), analyze()) → ninguém sabe o que fazem
+sem versionamento → atualizar uma skill quebra outro módulo
+```
+
+Skills resolvem isso criando **módulos independentes** com contrato claro:
+
+- Cada skill faz UMA coisa bem definida
+- Input/output são schemas JSON explícitos
+- Versionamento permite evoluir sem quebrar consumidores
+- Pipeline composition encadeia skills como LEGO blocks
+
+### Erros Comuns de Iniciantes
+
+| Erro | Consequência | Correção |
+| ------ | -------------- | ---------- |
+| Skill com muitas responsabilidades | Difícil de testar, debugar, reusar | Uma skill = uma função específica |
+| Schema de input/output vago | Pipeline quebra silenciosamente entre skills | JSON Schema rigoroso + validação |
+| Não versionar | Atualização quebra pipelines existentes | SemVer: v1.x.x (feature), v2.0.0 (breaking) |
+| Hardcode dependências entre skills | Pipeline não funciona se ordem mudar | Registry centralizado com lookup por nome |
+| Ignorar erro na skill | Pipeline continua com dado corrompido | Lançar Exception clara + fallback no pipeline |
 
 ### Interface Padrão de uma Skill
 

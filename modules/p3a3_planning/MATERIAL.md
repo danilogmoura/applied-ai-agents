@@ -1,5 +1,15 @@
 # Material Didático — P3a-3: Planejamento e Retomada
 
+## ⚠️ Pré-requisito
+
+Leia antes:
+
+- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
+- [p3a1_self_eval/MATERIAL.md](../p3a1_self_eval/MATERIAL.md) — Autoavaliação
+- [p3a2_tool_calling/MATERIAL.md](../p3a2_tool_calling/MATERIAL.md) — Tool Calling
+
+---
+
 ## Conceitos Fundamentais
 
 ### Por que Planejadores Precisam Ser Resilientes?
@@ -17,6 +27,27 @@ Um planejador ingênuo falha completamente quando um passo falha. Um planejador 
 2. **Protege** contra retries inúteis (circuit breaker)
 3. **Salva** progresso periodicamente (checkpoint)
 4. **Recupera** de onde parou ao tentar novamente
+
+### Por que isso existe?
+
+Imagine um agente que precisa executar 10 passos para completar uma tarefa complexa:
+
+```
+Passo 1 ✅ → Passo 2 ✅ → ... → Passo 8 ✅ → Passo 9 ❌ (API caiu)
+```
+
+Sem resiliência: tudo perdido. Você teria que recomeçar do passo 1. Se cada passo custa tokens e leva segundos, isso é caro e frustrante.
+
+Com resiliência: salva checkpoint a cada 2 passos, retry com backoff no passo 9, e continua do passo 10 se o retry falhar.
+
+### Erros Comuns de Iniciantes
+
+| Erro | Consequência | Correção |
+| ------ | -------------- | ---------- |
+| Retry sem limite | Loop infinito gastando dinheiro | Circuit breaker + max_retries |
+| Backoff fixo (sempre 1s) | Thundering herd — todos tentam junto | Jitter aleatório no backoff |
+| Não salvar checkpoint | Perde todo progresso se crashar | Salvar estado a cada N passos |
+| Fallback genérico | Resposta ruim pior que erro claro | Fallback específico por tipo de erro |
 
 ### Circuit Breaker Pattern
 

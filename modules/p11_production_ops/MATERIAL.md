@@ -1,5 +1,15 @@
 # Material Didático — P11: Operations de Produção (CI/CD + Monitoramento)
 
+## ⚠️ Pré-requisito
+
+Leia antes:
+
+- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
+- [p4_production/MATERIAL.md](../p4_production/MATERIAL.md) — Produção com API
+- [p5_evaluation/MATERIAL.md](../p5_evaluation/MATERIAL.md) — Avaliação
+
+---
+
 ## Conceitos Fundamentais
 
 ### Por que Monitorar Agentes?
@@ -8,6 +18,39 @@ Em produção, você precisa saber:
 
 - Quantas chamadas estão sendo feitas?
 - Quanto está custando?
+
+### Por que isso existe?
+
+Um agente sem monitoramento é como um carro sem painel: você não sabe se está indo bem ou prestes a quebrar.
+
+```
+Sem monitoramento: "Acho que está funcionando..."
+Com monitoramento: "95% das chamadas < 2s, custo $0.003/call, erro rate 2%"
+```
+
+Além disso, agentes de IA têm métricas ÚNICAS que não existem em software convencional:
+
+- **Token consumption**: quanto cada usuário/gastou vs lucro
+- **Prompt drift**: prompts mudaram após deploy? Qualidade caiu?
+- **Hallucination rate**: quantas respostas foram questionadas pelo usuário?
+- **Tool failure rate**: quais ferramentas falham mais?
+
+Sem monitoramento, você descobre problemas quando o cliente reclama — não antes.
+
+### Erros Comuns de Iniciantes
+
+| Erro | Consequência | Correção |
+| ------ | -------------- | ---------- |
+| Logar tudo sem estrutura | Impossível analisar logs manualmente | JSON estruturado com campos padronizados |
+| Não alertar sobre custo | Conta explode sem ninguém perceber | Alerta automático se custo > threshold |
+| Só olhar média (mean) | P95 pode ser 10x pior que média | Sempre monitorar percentis (P50, P95, P99) |
+| Teste A/B manual | Viés humano na escolha do melhor prompt | Golden dataset + testes automatizados |
+| Deploy sem rollback | Bug em produção = horas para corrigir | Rollback automático se métricas degradarem |
+
+---
+
+## Exercício Prático
+
 - Qual a latência média?
 - Algum prompt quebrou após deploy?
 

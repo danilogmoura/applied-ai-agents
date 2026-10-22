@@ -1,5 +1,14 @@
 # Material Didático — P5: Avaliação e Testes
 
+## ⚠️ Pré-requisito
+
+Leia antes:
+
+- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
+- [p3a1_self_eval/MATERIAL.md](../p3a1_self_eval/MATERIAL.md) — Autoavaliação
+
+---
+
 ## Conceitos Fundamentais
 
 ### O Problema da Qualidade Invisível
@@ -7,6 +16,29 @@
 Sem avaliação, você está cego. Mudou o prompt? Trocou de modelo? Adicionou uma feature? Sem métricas, não sabe se melhorou ou piorou.
 
 **Avaliação é o que separa desenvolvimento amador de produção profissional.**
+
+### Por que isso existe?
+
+Imagine que você gastou 3 horas ajustando o prompt do seu agente. Como saber se valeu a pena? Sem um dataset de teste (golden dataset), você só tem uma sensação subjetiva — "acho que ficou melhor".
+
+Em produção, decisões precisam de dados:
+
+```
+Sem avaliação: "O prompt novo parece bom" → Deploy arriscado
+Com avaliação: "O prompt v2 subiu de 78% para 92% no golden dataset" → Deploy seguro
+```
+
+Além disso, sem testes automatizados, qualquer mudança pode quebrar algo silenciosamente — o agente continua respondendo, mas com qualidade pior.
+
+### Erros Comuns de Iniciantes
+
+| Erro | Consequência | Correção |
+| ------ | -------------- | ---------- |
+| Golden dataset pequeno (< 20 exemplos) | Score não é representativo | Mínimo 30 exemplos, ideal 100+ |
+| Usar só exact match para texto livre | Penaliza paráfrases válidas | Combinar fuzzy + embedding similarity |
+| Não testar com modelo diferente | Prompt otimizado só para um modelo | Testar em gpt-4o-mini E gpt-4o |
+| Avaliar só acurácia | Ignora latência, custo, segurança | Métrica composta: accuracy + latency + cost |
+| Dataset vaza para treino | Modelo memoriza respostas → score inflado | Manter dataset de teste separado do ajuste |
 
 ### Pipeline de Avaliação
 

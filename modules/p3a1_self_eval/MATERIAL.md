@@ -1,5 +1,14 @@
 # Material Didático — P3a-1: Autoavaliação e Reflexão
 
+## ⚠️ Pré-requisito
+
+Leia antes:
+
+- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
+- [p0_first_llm/MATERIAL.md](../p0_first_llm/MATERIAL.md) — Primeiro fluxo com LLM
+
+---
+
 ## Conceitos Fundamentais
 
 ### O Problema da Confiança
@@ -12,6 +21,25 @@ LLMs são poderosos mas não são perfeitos. Eles podem:
 - Gerar respostas plausíveis mas erradas
 
 Como saber se a resposta está boa **antes** de entregá-la ao usuário?
+
+### Por que isso existe?
+
+Nos primeiros módulos, o agente gerava uma resposta e pronto. Mas em produção, você **não pode entregar respostas sem verificar**. Imagine um agente que:
+
+- Classifica um ticket como "BAIXA" quando na verdade é "URGENTE" → cliente frustrado
+- Extrai dados errados de um formulário → processo administrativo travado
+- Gera código com bug silencioso → vulnerabilidade de segurança
+
+A autoavaliação resolve isso criando um **loop de qualidade** antes da entrega.
+
+### Erros Comuns de Iniciantes
+
+| Erro | Consequência | Correção |
+| ------ | -------------- | ---------- |
+| Usar `temperature > 0` na avaliação | Score muda a cada chamada → impossível comparar | Sempre `temperature=0` para avaliação |
+| Não limitar iterações | Loop infinito gastando tokens | `max_iterations=3` como padrão |
+| Avaliar com texto livre | JSON inválido, parsing falha | SEMPRE usar Pydantic structured output |
+| Feedback genérico no refinamento | Modelo não sabe o que corrigir | Feedback específico: "Falta X", "Y está errado" |
 
 ### Autoavaliação com Structured Outputs
 

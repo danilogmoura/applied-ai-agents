@@ -1,5 +1,14 @@
 # Material Didático — P7: Memória e Contexto
 
+## ⚠️ Pré-requisito
+
+Leia antes:
+
+- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
+- [p2_rag/MATERIAL.md](../p2_rag/MATERIAL.md) — RAG (embeddings)
+
+---
+
 ## Conceitos Fundamentais
 
 ### O Problema do Contexto Limitado
@@ -7,6 +16,36 @@
 LLMs têm um limite de tokens que podem processar por vez (gpt-4o-mini: 128K tokens). Mas em conversas longas, esse limite é rapidamente excedido. Como gerenciar?
 
 ### Short-Term Memory = Conversation History
+
+### Por que isso existe?
+
+Sem memória, cada conversa com o agente começa do zero:
+
+```
+Usuário: "Meu nome é João"
+Agente: "Olá! Como posso ajudar?"
+
+Usuário: "Qual meu nome?"
+Agente: "Não sei quem você é 😅"
+```
+
+Isso é frustrante para o usuário e impraticável para qualquer aplicação real. A memória permite que o agente **lembre** do que foi dito antes.
+
+Mas há um problema: memória custa tokens. Cada mensagem da conversa ocupa espaço no contexto, e cada token custa dinheiro. Precisamos equilibrar:
+
+- **Muito pouca memória**: agente esquece tudo → experiência ruim
+- **Toda a memória**: custo explode → conta alta
+
+As estratégias deste módulo (sliding window, token budget, summarization) são trade-offs entre esses dois extremos.
+
+### Erros Comuns de Iniciantes
+
+| Erro | Consequência | Correção |
+| ------ | -------------- | ---------- |
+| Enviar TODA a conversa ao modelo | Custo explode, ultrapassa limite de tokens | Usar sliding window ou token budget |
+| Sumarizar sem preservar dados importantes | Agente esquece nome, preferências do usuário | Separar dados persistentes (nome) de histórico (conversa) |
+| Não testar com conversa longa | Bug só aparece após 50+ mensagens | Testar com simulação de 100+ mensagens |
+| Guardar senhas/tokens na memória | Vazamento em logs ou respostas | Sanitizar memória, nunca guardar dados sensíveis |
 
 Memória de curto prazo é o histórico da conversa atual:
 
@@ -69,9 +108,6 @@ flowchart TD
     
     Original["50 mensagens × 200 tokens = 10.000 tokens"] --> Resume["Resumo: 'Usuário saudou e pediu ajuda com X.'"]
     Resume --> New["1 summary × 100 tokens = 100 tokens\nEconomia: 99% de espaço liberado"]
-    
-    style Original fill:#f9f,stroke:#333
-    style New fill:#9f9,stroke:#333
 ```
 
 **O que se resume vs o que se mantém:**

@@ -1,5 +1,14 @@
 # Material Didático — P9: Cache e Otimização de Custo
 
+## ⚠️ Pré-requisito
+
+Leia antes:
+
+- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
+- [p4_production/MATERIAL.md](../p4_production/MATERIAL.md) — Produção com API
+
+---
+
 ## Conceitos Fundamentais
 
 ### O Problema do Custo em Escala
@@ -12,6 +21,42 @@ LLMs cobram por token. Em produção, isso pode somar rapidamente:
 Total por dia: ~$0.20 → $6/mês para 1 usuário
 
 Mas se tiver 10.000 usuários? $600/mês só em API calls!
+```
+
+### Por que isso existe?
+
+Sem cache, cada pergunta idêntica custa dinheiro novamente:
+
+```
+
+Usuário A: "Qual a capital da França?" → $0.001
+Usuário B: "Qual a capital da França?" → $0.001 ❌ MESMA PERGUNTA!
+Usuário C: "Qual a capital da França?" → $0.001 ❌ TRÊS VEZES O MESMO!
+
+```
+
+Em escala, isso é desperdício enorme. Se 30% das perguntas são repetidas (FAQ comum), você está pagando 30% a mais sem necessidade.
+
+Cache resolve isso memorizando respostas já geradas. Mas há um trade-off:
+
+- **Cache hit**: resposta instantânea + custo zero ✅
+- **Cache miss**: precisa chamar o modelo + custo normal ❌
+- **Cache cheio**: precisa decidir o que remover (eviction policy)
+
+### Erros Comuns de Iniciantes
+
+| Erro | Consequência | Correção |
+| ------ | -------------- | ---------- |
+| Não usar TTL no cache | Respostas ficam para sempre → memória vazia | TTL de 24h-7d dependendo do domínio |
+| Usar hash simples do texto | "França" vs "frança" = dois caches diferentes | Normalizar texto (lowercase, strip) |
+| Escolher LRU para FAQ | Pergunta popular é removida porque foi usada há muito | LFU para dados repetidos, LRU para conversas |
+| Ignorar cache invalidation | Dados mudam mas cache ainda serve versão antiga | Invalidar cache quando fonte de dados atualiza |
+| Cache só em memória (RAM) | Reiniciar servidor = perder tudo | Redis ou SQLite para persistência |
+1000 chamadas × 200 tokens output × $0.60/1M = $0.12
+Total por dia: ~$0.20 → $6/mês para 1 usuário
+
+Mas se tiver 10.000 usuários? $600/mês só em API calls!
+
 ```
 
 ### Cache de Respostas

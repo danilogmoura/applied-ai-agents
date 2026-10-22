@@ -1,5 +1,19 @@
 # Material Didático — P0: Primeiro Fluxo com LLM
 
+## ⚠️ Pré-requisito: Leia os Fundamentos Primeiro
+
+Se você **não sabe nada sobre IA ou LLM**, leia primeiro o módulo [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md). Ele cobre:
+
+- O que é um LLM (e por que ele não "pensa")
+- Tokenização e custo
+- Prompt engineering básico
+- Por que LLMs alucinam
+- Glossário de termos essenciais
+
+Este módulo pressupõe que você já entende esses conceitos fundamentais.
+
+---
+
 ## Conceitos Fundamentais
 
 ### O que é um Agente de IA?

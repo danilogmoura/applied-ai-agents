@@ -1,5 +1,15 @@
 # Material Didático — P3b: Sistema Multiagente
 
+## ⚠️ Pré-requisito
+
+Leia antes:
+
+- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
+- [p3a2_tool_calling/MATERIAL.md](../p3a2_tool_calling/MATERIAL.md) — Tool Calling
+- [p3a3_planning/MATERIAL.md](../p3a3_planning/MATERIAL.md) — Planejamento
+
+---
+
 ## Conceitos Fundamentais
 
 ### Por que Múltiplos Agentes?
@@ -13,7 +23,49 @@ Um único agente tentando fazer tudo é como um generalista tentando ser expert 
 | Custo alto (contexto grande) | Custo otimizado (cada agente tem contexto mínimo) |
 | Dificil de debugar | Isolamento de problemas por especialista |
 
+### Por que isso existe?
+
+Agentes únicos têm um problema fundamental: **quanto mais fazem, pior ficam**.
+
+Quando você dá a um único modelo 5 tarefas diferentes (analisar dados, pesquisar na web, traduzir, classificar texto, gerar código), o prompt precisa cobrir todos os casos. Isso significa:
+
+- Prompt enorme e confuso
+- Modelo se confunde entre contextos diferentes
+- Se uma tarefa falha, todas as outras também
+
+Com múltiplos agentes especializados:
+
+- Cada um tem um prompt focado na sua área
+- Falha isolada não derruba o sistema
+- Fácil de adicionar novos especialistas sem tocar nos existentes
+
+### Erros Comuns de Iniciantes
+
+| Erro | Consequência | Correção |
+| ------ | -------------- | ---------- |
+| Supervisor muito inteligente | Custa mais (LLM grande no roteamento) | Usar modelo pequeno (gpt-4o-mini) para rotear |
+| Especialistas com prompts sobrepostos | Supervisor não sabe qual chamar | Delimitar claramente o escopo de cada especialista |
+| Sem fallback | Um especialista falha = sistema para | Graceful degradation: tenta outro ou retorna parcial |
+| Contexto compartilhado demais | Custo explode (cada agente vê tudo) | Cada agente recebe APENAS o necessário |
+
 ### Arquitetura Supervisor-Especialista
+
+```mermaid
+flowchart TD
+    User["👤 Tarefa do Usuário"] --> Supervisor["🧠 SUPERVISOR\n(Router)"]
+    Supervisor -->|Decide qual especialista| Data["📊 Análise de Dados"]
+    Supervisor -->|Decide qual especialista| Web["🌐 Pesquisa Web"]
+    Supervisor -->|Decide qual especialista| Trans["🌍 Tradução"]
+```
+
+O supervisor:
+
+1. **Entende** a intenção da tarefa
+2. **Roteia** para o especialista mais adequado
+3. **Coordena** retries e fallbacks
+4. **Consolida** a resposta final
+
+### Roteamento: LLM vs Heurísticas
 
 ```mermaid
 flowchart TD

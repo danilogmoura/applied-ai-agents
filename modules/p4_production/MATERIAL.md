@@ -1,5 +1,14 @@
 # Material Didático — P4: Produção (API REST com FastAPI)
 
+## ⚠️ Pré-requisito
+
+Leia antes:
+
+- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
+- [p3a2_tool_calling/MATERIAL.md](../p3a2_tool_calling/MATERIAL.md) — Tool Calling
+
+---
+
 ## Conceitos Fundamentais
 
 ### De Script a Produto
@@ -13,6 +22,31 @@ Até agora, executamos scripts Python isolados. Em produção, precisamos de:
 | Sem autenticação | Com validação e segurança |
 | Logs no terminal | Logs estruturados em arquivo |
 | Sem versionamento | Com versionamento e docs |
+
+### Por que isso existe?
+
+Um script local funciona perfeitamente quando você está desenvolvendo. Mas imagine seu agente sendo usado por 100 pessoas ao mesmo tempo:
+
+```
+Script local:    Usuário A → [processa] → Resposta → Usuário B espera...
+                ↑ TRAVA aqui!
+
+API produção:   Usuário A → [processa] ↘
+                Usuário B → [processa] →→ Respostas simultâneas
+                Usuário C → [processa] ↗
+```
+
+Sem uma API, seu agente é um produto de uso individual. Com uma API, vira um **produto escalável**.
+
+### Erros Comuns de Iniciantes
+
+| Erro | Consequência | Correção |
+| ------ | -------------- | ---------- |
+| Não validar input do usuário | Modelo recebe texto malicioso ou corrompido | SEMPRE usar Pydantic models para validar |
+| Expor chaves de API no código | Qualquer pessoa pode roubar e gastar sua chave | Variáveis de ambiente (.env), nunca hardcode |
+| Ignorar timeouts | Requisição fica presa indefinidamente | Timeout de 30s como padrão |
+| Logar dados sensíveis | Vaza tokens, emails, CPF nos logs | Sanitizar logs, nunca logar conteúdo completo |
+| Não testar localmente antes de deploy | Bug só aparece em produção | Testar com `--serve` antes de dockerizar |
 
 ### FastAPI — Framework Moderno
 
@@ -138,10 +172,6 @@ flowchart TB
     C1App -->|Limitado por| CG["Cgroups\nCPU, memory, I/O"]
     NS --> Kernel["Kernel Linux\nUnionFS layers"]
     CG --> Kernel
-    
-    style C1App fill:#9f9,stroke:#333
-    style NS fill:#ff9,stroke:#333
-    style CG fill:#ff9,stroke:#333
 ```
 
 **Namespaces**: cada container acha que tem seu próprio sistema de arquivos, rede e processos. É ilusão — o kernel separa tudo.

@@ -1,5 +1,14 @@
 # Material Didático — P8: Streaming e Tempo Real
 
+## ⚠️ Pré-requisito
+
+Leia antes:
+
+- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
+- [p4_production/MATERIAL.md](../p4_production/MATERIAL.md) — Produção com API
+
+---
+
 ## Conceitos Fundamentais
 
 ### Por que Streaming?
@@ -13,6 +22,32 @@ Sem streaming:          Com streaming:
                        [Generating AI Assistant]
 Espera 5s              Usuário vê progresso
 ```
+
+### Por que isso existe?
+
+LLMs são lentos para gerar texto completo. Um modelo pode levar 3-10 segundos para escrever uma resposta razoável. Sem streaming, o usuário fica olhando para uma tela em branco sem saber se:
+
+- O sistema travou
+- Está processando
+- Vai demorar mais
+
+Com streaming, o usuário **vê progresso imediato** — a primeira palavra aparece em ~200ms. Isso muda completamente a percepção de velocidade, mesmo que o tempo total seja o mesmo.
+
+Além da UX, streaming permite:
+
+- **Abort/cancel**: usuário cancela geração se perceber que o agente está errado
+- **Feedback visual**: indicador de carregamento natural
+- **Responsividade**: interface não bloqueia enquanto gera
+
+### Erros Comuns de Iniciantes
+
+| Erro | Consequência | Correção |
+| ------ | -------------- | ---------- |
+| Gerar tudo antes de enviar | UX ruim, timeout em respostas longas | Usar SSE para enviar chunks progressivos |
+| Não implementar abort | Usuário precisa recarregar página inteira | Implementar sinal de abort + verificar no loop |
+| Enviar chunk por chunk sem buffer | Rede sobrecarregada, jitter aparente | Buffer de 2-4 tokens por envio |
+| Esquecer de fechar conexão SSE | Vazamento de recursos no servidor | Sempre fechar após `done` ou erro |
+| Não testar com rede lenta | Streaming parece travado em mobile | Testar com throttling (3G simulation) |
 
 ### Server-Sent Events (SSE)
 
@@ -95,9 +130,6 @@ flowchart LR
     Stream1["⚡ 0.4s"] --> Word2["📝 Mais palavras..."]
     Stream2["⚡ 0.6s"] --> Word3["📝 Continua..."]
     Word3 --> UX2["UX percebida instantânea"]
-    
-    style UX1 fill:#f99,stroke:#333
-    style UX2 fill:#9f9,stroke:#333
 ```
 
 **Tempo até UX:** 0.2s (streaming) vs 5.0s (wait-for-complete)

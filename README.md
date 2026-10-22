@@ -14,6 +14,7 @@ Toda teoria é apresentada sob demanda para destravar o código.
 
 | Módulo | Nome | Duração Estimada | Entregável |
 | -------- | ------ | ------------------- | ------------ |
+| **P0-F** | Fundamentos (IA + LLM) | 1h | **Obrigatório antes de começar** |
 | **P0** | Primeiro fluxo com LLM | 2h | Botão autônomo com custo visível |
 | **P1** | Análise de viabilidade | 1.5h | Memorando técnico comparativo |
 | **P2** | RAG (Recuperação de Contexto) | 3h | Pipeline completo com ChromaDB |
@@ -65,7 +66,8 @@ ai-agents-course/
 │   ├── security.py         # Gestão de secrets (.env)
 │   └── governance.py       # Human-in-the-loop
 ├── modules/                # Módulos do curso
-│   ├── p0_first_llm/       # Automação com LLM
+│   ├── p0_fundamentals/    # Fundamentos (IA, LLM, tokens)
+│   ├── p0_first_llm/       # Primeiro fluxo com LLM
 │   ├── p1_feasibility/     # Análise de viabilidade
 │   ├── p2_rag/             # Pipeline RAG
 │   ├── p3a1_self_eval/     # Autoavaliação

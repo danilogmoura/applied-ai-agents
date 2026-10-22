@@ -1,5 +1,15 @@
 # Material Didático — P3a-2: Tool Calling (Uso Autônomo de Ferramentas)
 
+## ⚠️ Pré-requisito
+
+Leia antes:
+
+- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
+- [p0_first_llm/MATERIAL.md](../p0_first_llm/MATERIAL.md) — Primeiro fluxo com LLM
+- [p3a1_self_eval/MATERIAL.md](../p3a1_self_eval/MATERIAL.md) — Autoavaliação
+
+---
+
 ## Conceitos Fundamentais
 
 ### Do Texto à Ação
@@ -12,6 +22,25 @@ Até agora, nossos agentes só **geravam texto**. Mas no mundo real, agentes pre
 - Modificar estados
 
 Tool calling transforma um LLM passivo em um agente ativo.
+
+### Por que isso existe?
+
+Sem tool calling, o agente é apenas um chatbot — ele pode responder perguntas mas não pode **fazer nada**. Imagine um assistente que sabe a resposta mas não consegue:
+
+- Abrir um arquivo para ler dados reais
+- Enviar um email quando solicitado
+- Consultar uma API de clima para dar informação atualizada
+
+Com tool calling, o LLM deixa de ser um dicionário e vira um **assistente que age**.
+
+### Erros Comuns de Iniciantes
+
+| Erro | Consequência | Correção |
+| ------ | -------------- | ---------- |
+| Schema de tool sem `description` | Modelo não sabe quando chamar a tool | Sempre descrever claramente o que cada tool faz |
+| Permitir ferramentas perigosas sem restrição | Agente pode apagar arquivos, executar comandos maliciosos | Whitelist + risk levels + HITL |
+| Não validar JSON da resposta | Crash se modelo retorna JSON inválido | SEMPRE usar Pydantic validation |
+| Tool muito genérica | Modelo confunde quando usar qual tool | Uma tool = uma função específica bem definida |
 
 ### O Pattern de Tool Calling
 
