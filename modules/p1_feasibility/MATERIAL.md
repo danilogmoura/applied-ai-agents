@@ -180,17 +180,8 @@ Com a viabilidade estabelecida, o próximo passo é resolver o problema mais com
 
 → Leia o módulo [P2: Pipeline RAG](../p2_rag/MATERIAL.md) para aprender recuperação de contexto com embeddings.
 
-### Livros
+---
 
-- **"Designing Machine Learning Systems"** by Chip Huyen (O'Reilly) — Capítulos sobre avaliação e monitoring
-- **"The Mythical Man-Month"** by Frederick Brooks — Sobre trade-offs em engenharia
+## Referências
 
-### Documentação Oficial
-
-- [OpenAI Rate Limits & Throughput](https://platform.openai.com/docs/guides/rate-limits) — Limites de taxa e throughput (antigo "Latency Benchmarks")
-- [ML System Design Principles](https://developers.google.com/machine-learning/guidelines/rules-of-ml) — Princípios de design de ML em escala
-
-### Tutoriais
-
-- [ML Observability Guide](https://mlflow.org/docs/latest/index.html) — MLflow Docs
-- [Benchmarking LLM Applications](https://github.com/openai/openai-cookbook/tree/main/examples/benchmarking) — OpenAI Cookbook
+(empty)
