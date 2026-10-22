@@ -1,6 +1,6 @@
 # AI Agents Course — Formação Prática em Agentes de IA com Python
 
-Curso técnico para desenvolvedores juniores seguindo **Aprendizagem Baseada em Problemas (PBL)**.
+Curso técnico seguindo **Aprendizagem Baseada em Problemas (PBL)**.
 Toda teoria é apresentada sob demanda para destravar o código.
 
 ## Princípios
