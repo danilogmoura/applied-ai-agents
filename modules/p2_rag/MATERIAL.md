@@ -64,7 +64,7 @@ Geração:      input_tokens (pergunta + docs) + output_tokens (resposta)
 
 O custo está apenas na geração — a busca é gratuita quando usa embedder local.
 
-### Por Baixo dos Panos: Como Embeddings Capturam Significado
+### Como Embeddings Capturam Significado
 
 Embeddings transformam texto em **vetores de números** (geralmente 768 ou 1536 dimensões). A mágica não é matemática — é **treino**.
 

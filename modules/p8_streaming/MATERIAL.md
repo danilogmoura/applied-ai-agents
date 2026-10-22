@@ -57,7 +57,7 @@ if agent._abort_event.is_set():
 
 O tempo total é o mesmo, mas a percepção é completamente diferente.
 
-### Por Baixo dos Panos: Como SSE Funciona no Wire
+### Como SSE Funciona no Wire
 
 SSE não é mágica — é **HTTP com conexão mantida aberta** e um formato de texto simples:
 

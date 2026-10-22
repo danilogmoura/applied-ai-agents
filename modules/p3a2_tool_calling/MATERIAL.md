@@ -51,7 +51,7 @@ Cada ferramenta tem um schema que define seus parâmetros:
 
 Este schema é enviado ao LLM junto com o prompt. O modelo responde com JSON estruturado que pode ser validado e executado programaticamente.
 
-### Por Baixo dos Panos: Como o Modelo Decide Chamar uma Tool
+### Como o Modelo Decide Chamar uma Tool
 
 O modelo **não tem um switch ligado/desligado** para ferramentas. Ele foi **fine-tuned** durante o treinamento para reconhecer padrões nos prompts que indicam necessidade de ação.
 

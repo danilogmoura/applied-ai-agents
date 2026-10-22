@@ -54,7 +54,7 @@ Juiz avaliador       → gpt-4o
 
 O juiz recebe: pergunta + resposta esperada + resposta real → retorna score 0-1.
 
-### Por Baixo dos Panos: Como Fuzzy Match Calcula Similaridade
+### Como Fuzzy Match Calcula Similaridade
 
 Fuzzy match usa **Distância de Levenshtein**: número mínimo de edições para transformar uma string na outra.
 

@@ -119,7 +119,7 @@ Vantagens:
 - Dependências congeladas
 - Isolamento de ambientes
 
-### Por Baixo dos Panos: Como o Docker Realmente Funciona
+### Como o Docker Realmente Funciona
 
 Docker **não é uma VM**. Ele não virtualiza hardware — usa recursos do kernel Linux:
 
