@@ -2,11 +2,10 @@
 
 ## ⚠️ Pré-requisito
 
-Leia antes:
+Você precisa ter concluído o módulo [P3a-3: Planejamento](../p3a3_planning/MATERIAL.md). Especificamente, precisa saber:
 
-- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
-- [p3a2_tool_calling/MATERIAL.md](../p3a2_tool_calling/MATERIAL.md) — Tool Calling
-- [p3a3_planning/MATERIAL.md](../p3a3_planning/MATERIAL.md) — Planejamento
+- Como planejar sequências de ações para agentes autônomos
+- Quando um agente deve agir sozinho vs. coordenar com outros
 
 ---
 

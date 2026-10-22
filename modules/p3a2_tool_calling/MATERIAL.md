@@ -2,11 +2,10 @@
 
 ## ⚠️ Pré-requisito
 
-Leia antes:
+Você precisa ter concluído o módulo [P3a-1: Autoavaliação](../p3a1_self_eval/MATERIAL.md). Especificamente, precisa saber:
 
-- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
-- [p0_first_llm/MATERIAL.md](../p0_first_llm/MATERIAL.md) — Primeiro fluxo com LLM
-- [p3a1_self_eval/MATERIAL.md](../p3a1_self_eval/MATERIAL.md) — Autoavaliação
+- Por que avaliar a resposta antes de entregá-la ao usuário
+- Como configurar limites seguros de iteração (max_iterations)
 
 ---
 

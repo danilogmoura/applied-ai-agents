@@ -2,10 +2,10 @@
 
 ## ⚠️ Pré-requisito
 
-Leia antes:
+Você precisa ter concluído o módulo [P4: Produção](../p4_production/MATERIAL.md). Especificamente, precisa saber:
 
-- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
-- [p3a1_self_eval/MATERIAL.md](../p3a1_self_eval/MATERIAL.md) — Autoavaliação
+- Como construir uma API REST com FastAPI para expor seu agente
+- Como Dockerizar aplicações para deploy consistente
 
 ---
 

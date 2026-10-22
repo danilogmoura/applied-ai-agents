@@ -2,10 +2,10 @@
 
 ## ⚠️ Pré-requisito
 
-Leia antes:
+Você precisa ter concluído o módulo [P7: Memória e Contexto](../p7_memory/MATERIAL.md). Especificamente, precisa saber:
 
-- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
-- [p4_production/MATERIAL.md](../p4_production/MATERIAL.md) — Produção com API
+- Como gerenciar contexto em agentes de longo prazo
+- Patterns de memória de curto e longo prazo
 
 ---
 

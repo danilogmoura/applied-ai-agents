@@ -2,10 +2,10 @@
 
 ## ⚠️ Pré-requisito
 
-Leia antes:
+Você precisa ter concluído o módulo [P5: Avaliação](../p5_evaluation/MATERIAL.md). Especificamente, precisa saber:
 
-- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
-- [p4_production/MATERIAL.md](../p4_production/MATERIAL.md) — Produção com API
+- Como construir golden datasets e métricas de avaliação
+- Como realizar testes A/B e calcular significância estatística
 
 ---
 

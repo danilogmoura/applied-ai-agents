@@ -2,10 +2,9 @@
 
 ## ⚠️ Pré-requisito
 
-Leia antes:
+Você precisa ter concluído o módulo [P2-RAG](../p2_rag/MATERIAL.md). Especificamente, precisa saber:
 
-- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
-- [p0_first_llm/MATERIAL.md](../p0_first_llm/MATERIAL.md) — Primeiro fluxo com LLM
+- Como um agente gera respostas usando LLMs e por que a autoavaliação é necessária antes de entregar
 
 ---
 

@@ -2,11 +2,10 @@
 
 ## ⚠️ Pré-requisito
 
-Leia antes:
+Você precisa ter concluído o módulo [P9: Cache e Otimização](../p9_caching/MATERIAL.md). Especificamente, precisa saber:
 
-- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
-- [p3a2_tool_calling/MATERIAL.md](../p3a2_tool_calling/MATERIAL.md) — Tool Calling
-- [p3b_multi_agent/MATERIAL.md](../p3b_multi_agent/MATERIAL.md) — Multiagente
+- Como implementar cache para reduzir custo e latência
+- Estratégias de invalidation e TTL para caches de LLM
 
 ---
 

@@ -2,11 +2,11 @@
 
 ## ⚠️ Pré-requisito
 
-Leia antes:
+Você precisa ter concluído o módulo [P3a-2: Tool Calling](../p3a2_tool_calling/MATERIAL.md). Especificamente, precisa saber:
 
-- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
-- [p3a1_self_eval/MATERIAL.md](../p3a1_self_eval/MATERIAL.md) — Autoavaliação
-- [p3a2_tool_calling/MATERIAL.md](../p3a2_tool_calling/MATERIAL.md) — Tool Calling
+- Como definir schemas JSON para ferramentas com descrições claras
+- O pattern de tool calling (decide → executa → retorna resultado)
+- Camadas de segurança (whitelist, risk levels, HITL)
 
 ---
 

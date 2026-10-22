@@ -2,10 +2,10 @@
 
 ## ⚠️ Pré-requisito
 
-Leia antes:
+Você precisa ter concluído o módulo [P3b: Multiagente](../p3b_multi_agent/MATERIAL.md). Especificamente, precisa saber:
 
-- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
-- [p3a2_tool_calling/MATERIAL.md](../p3a2_tool_calling/MATERIAL.md) — Tool Calling
+- Como construir sistemas multiagente coordenados
+- Quando usar arquitetura single-agent vs. multi-agent
 
 ---
 

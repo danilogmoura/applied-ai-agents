@@ -2,10 +2,10 @@
 
 ## ⚠️ Pré-requisito
 
-Leia antes:
+Você precisa ter concluído o módulo [P6: Segurança e Guardrails](../p6_safety/MATERIAL.md). Especificamente, precisa saber:
 
-- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
-- [p2_rag/MATERIAL.md](../p2_rag/MATERIAL.md) — RAG (embeddings)
+- Como implementar validação de inputs e outputs
+- Patterns de guardrails para prevenir comportamentos indesejados
 
 ---
 

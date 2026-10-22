@@ -2,10 +2,10 @@
 
 ## ⚠️ Pré-requisito
 
-Leia antes:
+Você precisa ter concluído o módulo [P8: Streaming e Tempo Real](../p8_streaming/MATERIAL.md). Especificamente, precisa saber:
 
-- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
-- [p4_production/MATERIAL.md](../p4_production/MATERIAL.md) — Produção com API
+- Como implementar streaming de respostas em tempo real
+- Padrões de SSE (Server-Sent Events) e WebSockets
 
 ---
 

@@ -2,11 +2,10 @@
 
 ## ⚠️ Pré-requisito
 
-Leia antes:
+Você precisa ter concluído o módulo [P10: Design e Composição de Skills](../p10_skills/MATERIAL.md). Especificamente, precisa saber:
 
-- [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md) — Fundamentos de IA e LLM
-- [p4_production/MATERIAL.md](../p4_production/MATERIAL.md) — Produção com API
-- [p5_evaluation/MATERIAL.md](../p5_evaluation/MATERIAL.md) — Avaliação
+- Como projetar skills reutilizáveis e composáveis
+- Patterns de composição de skills para agentes complexos
 
 ---
 
