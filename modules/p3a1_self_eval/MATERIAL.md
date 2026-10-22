@@ -181,18 +181,4 @@ Com autoavaliação, seu agente verifica a qualidade antes de entregar. Mas aind
 
 ## Referências
 
-### Livros
-
-- **"Human Compatible"** by Stuart Russell — Sobre controle e alinhamento de IA
-- **"The AI Engineering Revolution"** by Thomas Palmer — Capítulos sobre quality gates
-
-### Documentação Oficial
-
-- [OpenAI Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
-- [Pydantic v2 Documentation](https://docs.pydantic.dev/latest/)
-- [Function Calling Guide](https://platform.openai.com/docs/guides/function-calling)
-
-### Tutoriais
-
-- [Pydantic AI Examples](https://github.com/pydantic/pydantic-ai) — Pydantic GitHub
-- [OpenAI Cookbook: Structured Outputs](https://github.com/openai/openai-cookbook/tree/main/examples/structured_outputs) — GitHub
+(empty)
