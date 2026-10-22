@@ -22,6 +22,13 @@ Toda teoria é apresentada sob demanda para destravar o código.
 | **P3a-3** | Planejamento e retomada | 2.5h | Circuit breaker + checkpoints |
 | **P3b** | Sistema multiagente | 4h | Supervisor + especialistas |
 | **P4** | Produto em produção | 3h | API FastAPI + Docker + Swagger |
+| **P5** | Avaliação e testes | 2.5h | Golden dataset + AB testing |
+| **P6** | Segurança e guardrails | 2.5h | Prompt injection + content filter |
+| **P7** | Memória e contexto | 3h | Short/long-term memory + summarization |
+| **P8** | Streaming e tempo real | 2h | SSE token-by-token + abort |
+| **P9** | Cache e otimização de custo | 2.5h | Response cache + model routing |
+| **P10** | Design de skills | 3h | Skill registry + pipelines composáveis |
+| **P11** | Ops de produção | 3h | Prompt testing A/B + métricas + rollback |
 
 ## Pré-requisitos
 
@@ -65,7 +72,14 @@ ai-agents-course/
 │   ├── p3a2_tool_calling/  # Tool Calling
 │   ├── p3a3_planning/      # Planejamento e retomada
 │   ├── p3b_multi_agent/    # Multiagente
-│   └── p4_production/      # Deploy em produção
+│   ├── p4_production/      # Deploy em produção
+│   ├── p5_evaluation/      # Avaliação e testes
+│   ├── p6_safety/          # Segurança e guardrails
+│   ├── p7_memory/          # Memória e contexto
+│   ├── p8_streaming/       # Streaming e tempo real
+│   ├── p9_caching/         # Cache e otimização de custo
+│   ├── p10_skills/         # Design de skills
+│   └── p11_production_ops/ # Ops de produção (CI/CD + monitoring)
 ├── tests/                  # Testes por módulo
 ├── data/                   # Dados de exemplo
 ├── docs/                   # Documentação

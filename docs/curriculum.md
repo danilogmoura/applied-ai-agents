@@ -50,6 +50,34 @@ ai-agents-course/
 │       │       └── monitoring.py    # Métricas e latência
 │       └── run.py                   # Execução da API
 │
+│   ├── p5_evaluation/              # P5: Avaliação e testes
+│   │   ├── run.py                   # Golden dataset + AB testing
+│   │   └── MATERIAL.md              # Material didático
+│   │
+│   ├── p6_safety/                  # P6: Segurança e guardrails
+│   │   ├── run.py                   # Prompt injection + content filter
+│   │   └── MATERIAL.md              # Material didático
+│   │
+│   ├── p7_memory/                  # P7: Memória e contexto
+│   │   ├── run.py                   # Short/long-term memory
+│   │   └── MATERIAL.md              # Material didático
+│   │
+│   ├── p8_streaming/               # P8: Streaming e tempo real
+│   │   ├── run.py                   # SSE token-by-token
+│   │   └── MATERIAL.md              # Material didático
+│   │
+│   ├── p9_caching/                 # P9: Cache e otimização
+│   │   ├── run.py                   # Response cache + model routing
+│   │   └── MATERIAL.md              # Material didático
+│   │
+│   ├── p10_skills/                 # P10: Design de skills
+│   │   ├── run.py                   # Skill registry + pipelines
+│   │   └── MATERIAL.md              # Material didático
+│   │
+│   └── p11_production_ops/         # P11: Ops de produção
+│       ├── run.py                   # Prompt testing A/B + métricas
+│       └── MATERIAL.md              # Material didático
+│
 ├── tests/                           # Testes unitários
 │   └── test_shared.py               # Testes dos utilitários
 │
@@ -99,6 +127,18 @@ ai-agents-course/
 | Módulo | Conceito | Ferramentas | Entregável |
 |--------|----------|-------------|------------|
 | **P4** | API REST | FastAPI, Docker, Swagger | Produto deployável |
+
+### Fase 5: Maturidade de Produção (P5–P11)
+
+| Módulo | Conceito | Ferramentas | Entregável |
+|--------|----------|-------------|------------|
+| **P5** | Avaliação e testes | Pydantic, golden dataset | Relatório AB testing |
+| **P6** | Segurança e guardrails | Regex patterns, output validator | Sistema de filtros |
+| **P7** | Memória e contexto | Short/long-term memory | Agente com memória |
+| **P8** | Streaming e tempo real | Async generators, SSE | Resposta token-by-token |
+| **P9** | Cache e otimização | Response cache, model routing | Redução de custos |
+| **P10** | Design de skills | Skill registry, pipelines | Workflow composável |
+| **P11** | Ops de produção | Prompt testing A/B, métricas | Dashboard + rollback |
 
 ## Tópicos Transversais
 
@@ -171,6 +211,27 @@ python modules/p3b_multi_agent/run.py
 
 # P4 — API de produção
 python modules/p4_production/run.py --serve
+
+# P5 — Avaliação e testes
+python modules/p5_evaluation/run.py
+
+# P6 — Segurança e guardrails
+python modules/p6_safety/run.py
+
+# P7 — Memória e contexto
+python modules/p7_memory/run.py
+
+# P8 — Streaming e tempo real
+python modules/p8_streaming/run.py
+
+# P9 — Cache e otimização
+python modules/p9_caching/run.py
+
+# P10 — Design de skills
+python modules/p10_skills/run.py
+
+# P11 — Ops de produção
+python modules/p11_production_ops/run.py
 ```
 
 ### Executar Testes
@@ -197,7 +258,17 @@ Cada módulo deve ser entregue com:
 4. ✅ **Segurança** - Secrets protegidas
 5. ✅ **Trade-offs documentados** - Por que escolheu X sobre Y
 
-## Próximos Passos Sugeridos
+## Próximos Passos
+
+Todos os 12 módulos (P0-P11) estão completos. Para continuar evoluindo o curso:
+
+1. **Adicionar testes unitários** para cada módulo P5-P11
+2. **Criar notebooks Jupyter** para demonstrações interativas
+3. **Integrar com LLMs reais** (substituir simulações por chamadas API)
+4. **Adicionar mais skills** ao registry do P10
+5. **Implementar Redis real** para cache do P9
+6. **Criar dashboard Grafana** conectado às métricas do P11
+7. **Adicionar mais idiomas** ao tradutor do P10
 
 Após completar os 8 módulos:
 
