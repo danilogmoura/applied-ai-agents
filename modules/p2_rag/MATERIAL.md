@@ -128,6 +128,7 @@ Nenhum banco vetorial faz busca híbrida nativamente — é código na aplicaç�
 #### Por que BM25 ainda existe?
 
 BM25 é um algoritmo de busca lexical de 1994 que conta palavras com ponderação IDF (termos raros valem mais). Ele é:
+
 - **Determinístico**: "INC-4892" sempre encontra "INC-4892"
 - **Rápido**: sem cálculo de vetores
 - **Barato**: roda em qualquer servidor
@@ -153,7 +154,7 @@ Passo 2 — Reranker (slow, preciso):
 **Diferença fundamental:**
 
 | Embedding (Bi-Encoder) | Reranker (Cross-Encoder) |
-|------------------------|--------------------------|
+| ------------------------ | -------------------------- |
 | Processa pergunta e doc separadamente | Processa pergunta E doc juntos |
 | ~10ms por par | ~100ms por par |
 | Escala para milhões de docs | Só escala para centenas |
@@ -161,7 +162,7 @@ Passo 2 — Reranker (slow, preciso):
 
 Empresas usam APIs cloud (Cohere Rerank, Azure AI Search Semantic Ranker) ou modelos locais (`bge-reranker` em GPU, otimizado via ONNX/TensorRT).
 
-#### Por Baixo dos Panos: Bi-Encoder vs Cross-Encoder
+#### Bi-Encoder vs Cross-Encoder: Interação entre Palavras
 
 ```
 Bi-Encoder (embedding tradicional):
@@ -239,7 +240,7 @@ Pergunta atual: {user_question}
 Responda APENAS com a pergunta reescrita, sem explicação."""
 ```
 
-#### Por Baixo dos Panos: Custo do Rewriting
+#### Custo do Rewriting: ROI Real
 
 ```
 Sem rewriting:        Com rewriting:
