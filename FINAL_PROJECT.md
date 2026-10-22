@@ -6,32 +6,46 @@
 
 Você vai construir **"AgentForge"** — uma plataforma completa para criar, deployar e operar agentes IA em produção.
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    AgentForge Platform                      │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐   │
-│  │ P0       │→ │ P1       │→ │ P2       │→ │ P3a1     │   │
-│  │ Fundamentos│ Viabilidade│ RAG      ││ Self-Eval  │   │
-│  └──────────┘  └──────────┘  └──────────┘  └──────────┘   │
-│                                                             │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐   │
-│  │ P3a2     │→ │ P3a3     │→ │ P3b      │→ │ P4       │   │
-│  │ Tool Call│→ │ Planning │→ │ Multi-Ag │→ │ Production│   │
-│  └──────────┘  └──────────┘  └──────────┘  └──────────┘   │
-│                                                             │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐   │
-│  │ P5       │→ │ P6       │→ │ P7       │→ │ P8       │   │
-│  │ Evaluation│ Safety    ││ Memory    ││ Streaming  │   │
-│  └──────────┘  └──────────┘  └──────────┘  └──────────┘   │
-│                                                             │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐   │
-│  │ P9       │→ │ P10      │→ │ P11      │              │
-│  │ Caching  │→ │ Skills   │→ │ ProdOps  │              │
-│  └──────────┘  └──────────┘  └──────────┘              │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    classDef foundation fill:#e3f2fd,stroke:#90caf9,color:#000,stroke-width:2px
+    classDef core fill:#fff3e0,stroke:#ffcc80,color:#000,stroke-width:2px
+    classDef production fill:#e8f5e9,stroke:#a5d6a7,color:#000,stroke-width:2px
+
+    subgraph G1 [Fase 1: Foundation]
+        direction LR
+        P0["P0<br/>Fundamentos"] --> P1["P1<br/>Viabilidade"]
+    end
+
+    subgraph G2 [Fase 2: Core e Agents]
+        direction LR
+        P2["P2<br/>RAG"] --> P3a1["P3a1<br/>Self-Eval"]
+        P3a1 --> P3a2["P3a2<br/>Tool Calling"]
+        P3a2 --> P3a3["P3a3<br/>Planning"]
+        P3a3 --> P3b["P3b<br/>Multi-Agent"]
+    end
+
+    subgraph G3 [Fase 3: Production - Parte 1]
+        direction LR
+        P4["P4<br/>API"] --> P5["P5<br/>Evaluation"]
+        P5 --> P6["P6<br/>Safety"]
+        P6 --> P7["P7<br/>Memory"]
+    end
+
+    subgraph G4 [Fase 3: Production - Parte 2]
+        direction LR
+        P8["P8<br/>Streaming"] --> P9["P9<br/>Caching"]
+        P9 --> P10["P10<br/>Skills"]
+        P10 --> P11["P11<br/>ProdOps"]
+    end
+
+    P1 --> P2
+    P3b --> P4
+    P7 --> P8
+
+    class P0,P1 foundation
+    class P2,P3a1,P3a2,P3a3,P3b core
+    class P4,P5,P6,P7,P8,P9,P10,P11 production
 ```
 
 ## Arquitetura do Sistema
