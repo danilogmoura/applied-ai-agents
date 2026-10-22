@@ -64,6 +64,39 @@ Geração:      input_tokens (pergunta + docs) + output_tokens (resposta)
 
 O custo está apenas na geração — a busca é gratuita quando usa embedder local.
 
+### Por Baixo dos Panos: Como Embeddings Capturam Significado
+
+Embeddings transformam texto em **vetores de números** (geralmente 768 ou 1536 dimensões). A mágica não é matemática — é **treino**.
+
+```
+Texto: "Como resetar minha senha"
+         ↓
+[Modelo BERT/Text-Embedding processa]
+         ↓
+Vetor (768 dimensões):
+[-0.023, 0.145, -0.089, ..., 0.034]
+         ↓
+Texto: "Esqueci a senha de acesso"
+         ↓
+Vetor:
+[-0.021, 0.142, -0.091, ..., 0.031]
+         ↓
+Cosine Similarity = 0.94 → Altamente similares!
+```
+
+**Cosine Similarity**: mede o ângulo entre dois vetores, não a distância.
+
+```
+Cosine(A, B) = (A · B) / (||A|| × ||B||)
+
+Resultado: -1 (opostos) → +1 (idênticos) → 0 (independentes)
+
+"Senha" vs "Contraseña"    → 0.92 (diferente idioma, mesmo sentido)
+"Senha" vs "Preço do produto" → 0.31 (sem relação)
+```
+
+O modelo aprendeu durante o treino que textos com significado similar produzem vetores próximos no espaço multidimensional. Não é busca por palavra-chave — é busca por **significado**.
+
 ---
 
 ## Exercício Prático

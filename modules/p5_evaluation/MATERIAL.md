@@ -54,6 +54,38 @@ Juiz avaliador       → gpt-4o
 
 O juiz recebe: pergunta + resposta esperada + resposta real → retorna score 0-1.
 
+### Por Baixo dos Panos: Como Fuzzy Match Calcula Similaridade
+
+Fuzzy match usa **Distância de Levenshtein**: número mínimo de edições para transformar uma string na outra.
+
+```
+"URGENTE" vs "Urgente"
+         ↓
+Edições necessárias:
+  1. Maiúscula → minúscula no primeiro char
+         ↓
+Distância = 1
+Similaridade = 1 - (1 / max_len) = 1 - (1/7) = 0.86
+
+"ALTA" vs "MÉDIA"
+         ↓
+Edições necessárias:
+  4 substituições (A→M, L→É, T→D, A→I)
+         ↓
+Distância = 4
+Similaridade = 1 - (4/5) = 0.20
+```
+
+**Por que score 0.85 ≠ 0.90 é significativo?**
+
+Em avaliação de agentes, cada ponto de percentual representa dezenas de exemplos no dataset. Um salto de 0.85 para 0.90 pode ser a diferença entre "pronto para produção" e "precisa melhorar mais".
+
+**Limitações do fuzzy match:**
+
+- Não entende sinônimos: "urgente" vs "crítico" → similaridade baixa
+- Sensível a ordem: "resposta longa" vs "longa resposta" → penaliza
+- Por isso LLM-as-a-Judge existe: entende significado, não só texto
+
 ### Testes A/B
 
 Compara duas variantes lado a lado no mesmo dataset:

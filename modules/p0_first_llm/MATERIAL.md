@@ -65,6 +65,31 @@ Cada chamada à API tem um custo baseado no número de tokens. Tokens são peda�
 
 Para um ticket de 200 tokens, o custo é ~$0.00003 — quase nada, mas importante rastrear em escala.
 
+### Por Baixo dos Panos: Como o LLM Gera Texto
+
+O LLM **não pensa**. Ele faz uma coisa muito específica: prevê o próximo token.
+
+```
+Prompt: "Classifique este ticket: sem senha"
+         ↓
+[Tokenização] → ["Classifique", "este", "ticket", ":", "sem", "senha"]
+         ↓
+[Modelo processa cada token com Attention]
+         ↓
+[Probabilidades para próximo token]:
+  "URGENTE"    → 78%
+  "ALTA"       → 12%
+  "MÉDIA"      → 5%
+  "BAIXA"      → 3%
+  "NORMAL"     → 2%
+         ↓
+Amostra (sampling) → "URGENTE"
+```
+
+**Attention**: cada palavra no prompt influencia todas as outras. Em "sem senha", a palavra "sem" aumenta a probabilidade de "URGENTE" porque o modelo aprendeu que essa combinação indica prioridade alta.
+
+**Next-token prediction**: o modelo gera uma palavra por vez. Cada palavra gerada vira input para gerar a próxima. É por isso que prompts mal escritos produzem respostas piores — o modelo só vê tokens, não significado.
+
 ### Exemplo Completo: Classificação de Ticket
 
 ```python

@@ -57,6 +57,44 @@ if agent._abort_event.is_set():
 
 O tempo total é o mesmo, mas a percepção é completamente diferente.
 
+### Por Baixo dos Panos: Como SSE Funciona no Wire
+
+SSE não é mágica — é **HTTP com conexão mantida aberta** e um formato de texto simples:
+
+```
+HTTP/1.1 200 OK
+Content-Type: text/event-stream
+Cache-Control: no-cache
+Connection: keep-alive
+         ↓
+[Conexão TCP permanece aberta]
+         ↓
+Servidor envia chunks periodicamente:
+
+event: message
+data: {"chunk": "Hello", "index": 0}
+
+event: message
+data: {"chunk": ", World", "index": 1}
+
+event: done
+data: {"total_tokens": 15, "cost": 0.001}
+```
+
+**Regra crítica**: cada evento deve terminar com **duas quebras de linha** (`\n\n`). O cliente lê até encontrar `\n\n` e então processa o evento.
+
+**Por que streaming é mais rápido que wait-for-complete?**
+
+```
+Wait-for-complete:          Streaming:
+Cliente → [espera 5s] ←──   Cliente → [0.2s] Primeira palavra!
+                              Cliente → [0.4s] Mais palavras...
+                              Cliente → [0.6s] Continua...
+                              Tempo até UX: 0.2s vs 5.0s
+```
+
+O servidor usa `yield` (generator) para enviar cada chunk sem esperar o resto. No Python com FastAPI, isso é `StreamingResponse` + async generator.
+
 ---
 
 ## Exercício Prático

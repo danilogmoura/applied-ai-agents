@@ -119,6 +119,32 @@ Vantagens:
 - Dependências congeladas
 - Isolamento de ambientes
 
+### Por Baixo dos Panos: Como o Docker Realmente Funciona
+
+Docker **não é uma VM**. Ele não virtualiza hardware — usa recursos do kernel Linux:
+
+```
+┌─────────────────────────────────────┐
+│  Host OS (Linux)                    │
+│  ┌──────────┐  ┌────────────────┐  │
+│  │ Container│  │ Kernel         │  │
+│  │ App      │←→│ Namespaces     │  │ ← Isola: PID, network, filesystem
+│  │ Python   │←→│ Cgroups        │  │ ← Limita: CPU, memory, I/O
+│  │ pip install│←→│ UnionFS       │  │ ← Layers sobrepostas (read-only)
+│  └──────────┘  └────────────────┘  │
+│                                     │
+│  Outro Container (isolado!)         │
+└─────────────────────────────────────┘
+```
+
+**Namespaces**: cada container acha que tem seu próprio sistema de arquivos, rede e processos. É ilusão — o kernel separa tudo.
+
+**Cgroups**: controlam quanto CPU/memória um container pode usar. Sem eles, um container poderia consumir todo o host.
+
+**Layers**: cada `RUN`/`COPY` no Dockerfile cria uma layer read-only. Se você muda só o código (`COPY . .`), as camadas de dependência (`pip install`) são reutilizadas → build mais rápido.
+
+Por isso `docker build` é lento na primeira vez (baixa todas as layers) mas rápido depois (cache de layers).
+
 ### docker-compose — Infraestrutura Completa
 
 ```yaml
@@ -172,7 +198,6 @@ docker-compose up --build
 - [FastAPI Documentation](https://fastapi.tiangolo.com/) — Docs oficiais
 - [Pydantic v2 Models](https://docs.pydantic.dev/latest/concepts/models/) — Validação de dados
 - [Uvicorn ASGI Server](https://www.uvicorn.org/) — Servidor assíncrono
-
 
 ### Tutoriais
 
