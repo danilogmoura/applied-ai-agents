@@ -146,32 +146,114 @@ Resumido: "Nome: João, 30 anos, SP" → PRESERVOU DADOS
 Resumido: "João, 30, SP, gosta de café" → IDEAL
 
 A qualidade do resumo depende do prompt de sumarização.
+
+### 🏗️ Arquitetura do Sistema de Memória
+
+> Referência completa: [architecture.md](architecture.md)
+
+O sistema de memória é composto por 3 camadas independentes:
+
 ```
 
-**Estratégia recomendada: sumarização hierárquica**
+[Conversa Atual] → [Short-Term Manager] → [Summarizer]
+                        ↓                        ↓
+              [Token Budget]            [Long-Term Store]
+                        ↓                        ↓
+              [Contexto Montado] ←── [Retriever] ← [Vector DB]
 
 ```
-Nível 1 (frequente): resumir últimas 10 mensagens → 1 summary
-Nível 2 (menos frequente): resumir summaries antigos → 1 summary global
-Nível 3 (raro): salvar estado persistente no banco
 
-Exemplo após 100 mensagens:
-[system] + [summary_global] + [últimas 10 msgs]
-≈ 200 tokens total (vs 20.000 originais)
-```
+| Camada | Responsabilidade | O que armazena |
+|--------|------------------|----------------|
+| **Short-Term** | Histórico da conversa atual | Últimas N mensagens |
+| **Summarizer** | Resume segmentos antigos | 1 summary por segmento |
+| **Long-Term Store** | Persiste entre sessões | Memórias com embedding |
+| **Token Budget** | Controla limite de tokens | Orçamento por chamada |
+| **Retriever** | Busca memórias relevantes | top_k memórias por query |
+
+**Fluxo completo:**
+1. Nova mensagem chega → Short-Term Manager adiciona ao histórico
+2. Token Budget verifica se contexto está cheio
+3. Se cheio → Summarizer resume primeiros segmentos
+4. Simultaneamente → Retriever busca memórias relevantes no Vector DB
+5. Contexto montado = [system] + [summary_global] + [short-term] + [memórias recuperadas]
+6. Enviado ao LLM
+
+**Trade-off chave:** mais memórias longas = melhor personalização mas mais custo; menos summaries = mais contexto curto prazo mas risco de exceder token limit.
 
 Custo da sumarização: cada resumo custa tokens. Se sumarizar a cada 30 mensagens e cada resumo tem 100 tokens input + 50 output, o custo extra é ~$0.00002 por sumarização — insignificante comparado à economia de 9.900 tokens.
 
 ### Importância e Forgetting
 
-Nem tudo na memória é igualmente importante:
+Nem tudo na memória é igualmente importante. Um sistema sofisticado precisa decidir **o que manter, o que resumir e o que deletar**:
 
-- **Alta importância**: Preferências do usuário, dados pessoais
-- **Baixa importância**: Conversas triviais, saudações
+| Critério | Alta Prioridade (manter) | Baixa Prioridade (esquecer) |
+| ---------- | ------------------------ | ---------------------------- |
+| **Conteúdo** | Dados pessoais, preferências, decisões | Saudações, conversas triviais |
+| **Tempo** | Últimas 5-10 mensagens | Mensagens > 30 min atrás |
+| **Frequência** | Tópicos mencionados repetidamente | Tópicos únicos sem relevância |
+| **Emoção** | Frustração, urgência, satisfação | Conversa neutra e factual |
 
-Sistema de forgetting remove memórias de baixa importância automaticamente.
+#### Como o Forgetting Funciona na Prática
 
----
+O forgetting não é aleatório — usa **score decay** (decaimento por tempo) + **frequência de acesso**:
+
+```python
+class MemoryScore:
+    def calculate(self, memory_entry):
+        # Score baseia-se em:
+        time_decay = 1.0 / (1 + memory_entry.age_hours)  # diminui com tempo
+        access_freq = min(memory_entry.access_count / 10, 1.0)  # normaliza
+        importance = self._assess_importance(memory_entry.content)  # heurística
+        
+        return (time_decay * 0.4 + 
+                access_freq * 0.3 + 
+                importance * 0.3)
+    
+    def should_forget(self, score):
+        return score < 0.1  # limiar mínimo
+```
+
+**Estratégias combinadas:**
+
+1. **Time-based decay**: cada memória perde 5% do score por hora sem acesso
+2. **Frequency boost**: memórias acessadas frequentemente ganham +20% no score
+3. **Priority override**: dados críticos (nome, preferências) têm score mínimo garantido
+4. **Summarization fallback**: quando score está baixo mas não zero, sumarizar em vez de deletar
+
+**Trade-off inevitável:**
+
+```
+Esquecer cedo → perde contexto importante
+Esquecer tarde → custo alto, contexto poluído
+
+Solução: summarização hierárquica
+- Nível 1 (frequent): resumir últimas 10 msgs → 1 summary
+- Nível 2 (menos freq): resumir summaries antigos → 1 global
+- Nível 3 (raro): salvar estado persistente no banco
+```
+
+## 🎬 O que você vai ver
+
+Antes de rodar o código, aqui está uma prévia do que o programa vai fazer:
+
+```
+$ python modules/p7_memory/run.py
+
+💾 Armazenando memória...
+   "Experiência: Python backend" → salva (curto prazo)
+
+🔍 Consultando memória...
+   Q: "O que eu disse sobre minha experiência?"
+   A: "Você mencionou Python backend"
+
+🔄 Contexto enchendo...
+   Summarização automática: 10 msgs → 1 resumo
+
+📊 Status da memória:
+   Curto prazo: 8/10 mensagens
+   Longo prazo: 3 memórias salvas
+```
 
 ## Exercício Prático
 
@@ -188,10 +270,6 @@ Execute `python modules/p7_memory/run.py` e observe:
 2. Se você tivesse 1000 interações, quantas memórias de longo prazo seriam razoáveis?
 3. Como evitar que memórias incorretas ou enviesadas persistam?
 
----
-
----
-
 ## 📌 Resumo do Módulo
 
 Memória é o que diferencia agentes conversacionais de ferramentas stateless:
@@ -207,6 +285,18 @@ Memória é o que diferencia agentes conversacionais de ferramentas stateless:
 5. **Preservar vs Resumir** — nem tudo deve ser resumido. Dados críticos (nomes, datas, decisões) devem ser preservados intactos. Contexto conversacional pode ser resumido.
 
 > ✅ **Você está pronto para:** Agora que seu agente lembra de conversas, vamos melhorar a experiência do usuário com streaming.
+
+## ✅ Checklist: Como Saber Se Você Atingiu o Objetivo
+
+Marque cada item **só se conseguir fazer sem olhar o material**:
+
+- [ ] Explico a diferença entre memória curto prazo e longo prazo
+- [ ] Descrevo quando sumarização deve ser acionada
+- [ ] Explico por que preservar dados críticos vs resumir contexto
+- [ ] Rodo `run.py` e explico o status de ambos os tipos de memória
+- [ ] Digo 2 estratégias de gestão de memória (summarização hierárquica, etc.)
+
+> ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
 
 ---
 

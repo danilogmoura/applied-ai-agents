@@ -105,7 +105,24 @@ A API da OpenAI com `beta.chat.completions.parse()` faz mágica:
 
 Isso elimina parsing manual e garante tipagem forte.
 
----
+## 🎬 O que você vai ver
+
+Antes de rodar o código, aqui está uma prévia do que o programa vai fazer:
+
+```
+$ python modules/p3a1_self_eval/run.py
+
+🤖 Gerando resposta inicial...
+   Iteração 1: "Resposta parcial..."
+
+🔍 Avaliando qualidade...
+   Feedback: "Faltam detalhes sobre segurança"
+
+🔄 Refinando resposta...
+   Iteração 2: "Resposta completa com segurança..."
+
+✅ Aprovado! (custo total: $0.008)
+```
 
 ## Exercício Prático
 
@@ -139,6 +156,18 @@ Autoavaliação é o conceito mais importante de qualidade em agentes:
 5. **Temperature=0 SEMPRE para avaliação** — se score muda a cada chamada, impossível comparar. Avaliação precisa ser determinística.
 
 > ✅ **Você está pronto para:** Agora que seu agente se autoavalia, vamos dar a ele poder de **agir** — tool calling.
+
+## ✅ Checklist: Como Saber Se Você Atingiu o Objetivo
+
+Marque cada item **só se conseguir fazer sem olhar o material**:
+
+- [ ] Explico por que avaliar a resposta antes de entregá-la ao usuário
+- [ ] Mostro como max_iterations previne loops infinitos
+- [ ] Explico a diferença entre feedback construtivo e validação simples
+- [ ] Rodo `run.py` e explico como custos acumulam com iterações
+- [ ] Digo 3 sinais de que uma resposta precisa ser refinada
+
+> ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
 
 ---
 

@@ -102,6 +102,40 @@ response = cache.get("capital+frança")  # $0.000 ✅
 
 Em produção: Redis com TTL (Time To Live).
 
+### 🏗️ Arquitetura da Cache Layer
+
+> Referência completa: [architecture.md](architecture.md)
+
+A cache layer é um proxy que intercepta todas as chamadas ao LLM:
+
+```
+[Usuário] → [Cache Proxy] → [LLM API]
+              ↑         ↘
+         [Lookup]    [Fill + Store]
+              ↓
+      [Eviction Policy]
+```
+
+| Componente | Responsabilidade | O que decide |
+| ------------ | ------------------ | -------------- |
+| **Cache Proxy** | Intercepta requests antes do LLM | Hit ou miss? |
+| **Key Generator** | Cria hash único por query | `hash(prompt + model + params)` |
+| **Lookup** | Verifica se chave existe no cache | Redis/SQLite/memory |
+| **Fill** | Chama LLM em caso de miss | Preenche cache |
+| **Store** | Salva resposta no cache | Com TTL definido |
+| **Eviction** | Remove entradas antigas/full | LRU/LFU/TTL |
+
+**Fluxo completo:**
+
+1. Usuário envia query → Cache Proxy gera key = `hash(normalize(query))`
+2. Lookup verifica se key existe no cache
+3. Se HIT → retorna resposta instantaneamente ($0, 0 tokens)
+4. Se MISS → chama LLM → Fill armazena resposta → Store define TTL
+5. Quando cache enche → Eviction remove entrada menos útil (LRU/LFU)
+6. Se dados subjacentes mudam → Invalida cache correspondente
+
+**Trade-off chave:** cache em memória (RAM) = mais rápido mas perde ao reiniciar; Redis = persistente mas adiciona latência de rede.
+
 ### Algoritmo: LRU vs LFU (Eviction Policy)
 
 Quando o cache enche, precisa decidir o que remover. Duas estratégias principais:
@@ -132,7 +166,7 @@ flowchart LR
 | Dados temporais (previsão do tempo) | **TTL puro** | Nem LRU nem LFU importam — dados expiram |
 | Logs de sistema | **Nenhum** | Nunca reutiliza logs |
 
-#### Como funciona internamente
+#### Como funciona internamente (OPCIONAL — avançado)
 
 ```python
 # LRU usa um Hash Map + Doubly Linked List
@@ -157,14 +191,28 @@ Redis implementa LRU aproximado (`maxmemory-policy allkeys-lru`) e LFU (`allkeys
 
 ### Model Routing
 
-Nem toda tarefa precisa do modelo mais caro:
+Nem toda tarefa precisa do modelo mais caro. O princípio é simples: **use o menor modelo que resolve a tarefa**.
 
-| Tarefa | Modelo Recomendado | Custo Relativo |
-| -------- | ------------------- | ---------------- |
-| Classificar spam | gpt-4o-mini | 1x |
-| Chat básico | gpt-4o-mini | 1x |
-| Analisar sentimento | gpt-4o | 15x |
-| Gerar conteúdo crítico | claude-opus | 100x |
+| Tarefa | Modelo Recomendado | Custo Relativo | Por quê? |
+| -------- | ------------------- | ---------------- | ---------- |
+| Classificar spam | gpt-4o-mini | 1x | Tarefa discreta, não precisa raciocínio complexo |
+| Chat básico | gpt-4o-mini | 1x | Respostas curtas e diretas |
+| Analisar sentimento | gpt-4o | 15x | Precisa entender nuance e ironia |
+| Gerar conteúdo crítico | claude-opus | 100x | Qualidade irreprezível necessária |
+
+Em produção, um **router inteligente** decide qual modelo usar baseado na complexidade da tarefa:
+
+```python
+complexity = estimate_complexity(user_query)  # heurística simples
+if complexity < 0.3:
+    model = "gpt-4o-mini"   # tarefas triviais
+elif complexity < 0.7:
+    model = "gpt-4o"        # tarefas moderadas
+else:
+    model = "claude-opus"   # tarefas críticas
+```
+
+Isso pode reduzir o custo médio em 40-60% sem perder qualidade perceptível.
 
 ### Prompt Compression
 
@@ -176,7 +224,29 @@ Comprimido: 350 tokens
 Economia: 30%
 ```
 
----
+## 🎬 O que você vai ver
+
+Antes de rodar o código, aqui está uma prévia do que o programa vai fazer:
+
+```
+$ python modules/p9_caching/run.py
+
+🔄 Model routing: tarefa_classificação → gpt-4o-mini
+   Custo: $0.002 | Latência: 0.8s
+
+🔍 Segunda chamada idêntica...
+   ✅ HIT no cache! Custo: $0.000 | Latência: 0.001s
+
+📦 Compressão de prompt:
+   Original: 500 tokens
+   Comprimido: 350 tokens
+   Economia: 30%
+
+📊 Estatísticas:
+   Chamadas: 10 | Cache hits: 7 (70%)
+   Tokens economizados: 1.200
+   Custo evitado: $0.014
+```
 
 ## Exercício Prático
 
@@ -210,6 +280,18 @@ Caching é a otimização de custo mais impactante em produção:
 5. **Compressão de prompts** — remover tokens redundantes reduz custo por chamada. Prompt engineering não é só qualidade, é economia.
 
 > ✅ **Você está pronto para:** Agora que custos estão otimizados, vamos estruturar skills reutilizáveis.
+
+## ✅ Checklist: Como Saber Se Você Atingiu o Objetivo
+
+Marque cada item **só se conseguir fazer sem olhar o material**:
+
+- [ ] Explico o problema que cache resolve (respostas repetidas custam dinheiro)
+- [ ] Descrevo quando usar cache vs quando não usar (determinístico vs criativo)
+- [ ] Explico a diferença entre model routing e cache simples
+- [ ] Rodo `run.py` e explico as estatísticas de economia
+- [ ] Digo 2 estratégias de evicção de cache (LRU, TTL, etc.)
+
+> ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
 
 ---
 

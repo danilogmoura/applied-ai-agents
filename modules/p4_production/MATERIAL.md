@@ -94,13 +94,35 @@ sequenceDiagram
 
 Cada requisição passa por 4 camadas antes de chegar ao LLM.
 
-```python
-@app.post("/chat", response_model=AgentResponse)
-async def chat(request: AgentRequest) -> AgentResponse:
-    # request já é validado e tipado aqui
-    result = await agent_service.process_request(...)
-    return result  # FastAPI serializa automaticamente
+### 🏗️ Arquitetura de Produção
+
+> Referência completa: [architecture.md](architecture.md)
+
+A aplicação de produção é composta por 5 camadas independentes:
+
 ```
+[Cliente] → [Gateway HTTP] → [Router] → [AgentService] → [LLM API]
+              ↑                  ↓            ↓              ↓
+         [Docker]        [Middleware] [Pydantic] [Retry/Timeout]
+```
+
+| Camada | Responsabilidade | Framework |
+| -------- | ------------------ | ----------- |
+| **Gateway** | Expõe endpoints HTTP | FastAPI |
+| **Middleware** | Timing, request-id, logging | fastapi.middleware |
+| **Router** | Roteia para service correto | fastapi.APIRouter |
+| **AgentService** | Lógica de negócio + LLM call | openai.OpenAI |
+| **Pydantic** | Validação de input/output | pydantic.BaseModel |
+
+**Fluxo completo:**
+
+1. Cliente envia HTTP request → Gateway recebe
+2. Middleware adiciona timing + request-id
+3. Router valida input com Pydantic (rejeita inválidos)
+4. AgentService processa (chama LLM, usa tools se necessário)
+5. Response volta pelo mesmo caminho invertido
+
+**Deploy:** Docker containeriza todas as camadas num ambiente consistente.
 
 ### Modelos Pydantic como Contrato
 
@@ -172,7 +194,7 @@ Vantagens:
 - Dependências congeladas
 - Isolamento de ambientes
 
-### Como o Docker Realmente Funciona
+### Como o Docker Realmente Funciona (OPCIONAL — avançado)
 
 Docker **não é uma VM**. Ele não virtualiza hardware — usa recursos do kernel Linux:
 
@@ -212,7 +234,26 @@ services:
 
 Orquestra múltiplos serviços com dependências e volumes persistentes.
 
----
+## 🎬 O que você vai ver
+
+Antes de rodar o código, aqui está uma prévia do que o programa vai fazer:
+
+```
+$ python modules/p4_production/run.py --serve
+
+🚀 Iniciando API FastAPI...
+   Servindo em http://0.0.0.0:8000
+   Docs Swagger: http://localhost:8000/docs
+
+✅ ChromaDB conectado (volumes persistentes)
+✅ Modelos carregados
+
+📥 POST /classify {"text": "Ticket urgente"}
+   Resposta: {"priority": "URGENTE", "confidence": 0.95}
+
+📊 GET /metrics
+   requests_total=15 | avg_latency=1.2s | errors=0
+```
 
 ## Exercício Prático
 
@@ -237,8 +278,6 @@ docker-compose up --build
 
 ---
 
----
-
 ## 📌 Resumo do Módulo
 
 Deploy em produção é onde protótipos viram produtos:
@@ -254,6 +293,18 @@ Deploy em produção é onde protótipos viram produtos:
 5. **Internals do Docker** — imagens são imutáveis, containers são efêmeros. Volume mount para dados, network para comunicação entre containers.
 
 > ✅ **Você está pronto para:** Agora que sua API está em produção, precisa saber como avaliar a qualidade das respostas.
+
+## ✅ Checklist: Como Saber Se Você Atingiu o Objetivo
+
+Marque cada item **só se conseguir fazer sem olhar o material**:
+
+- [ ] Explico por que FastAPI é usado em produção (async, auto-docs)
+- [ ] Descrevo o que um Dockerfile faz (imagem → container)
+- [ ] Explico a diferença entre imagem e container
+- [ ] Rodo `run.py --serve` e acesso o Swagger docs
+- [ ] Digo 2 vantagens de usar Docker Compose vs docker run
+
+> ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
 
 ---
 

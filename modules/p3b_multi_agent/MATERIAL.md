@@ -61,6 +61,37 @@ Com múltiplos agentes especializados:
 | Sem fallback | Um especialista falha = sistema para | Graceful degradation: tenta outro ou retorna parcial |
 | Contexto compartilhado demais | Custo explode (cada agente vê tudo) | Cada agente recebe APENAS o necessário |
 
+### 🏗️ Arquitetura Multiagente
+
+> Referência completa: [architecture.md](architecture.md)
+
+A topologia supervisor-especialista é composta por 4 camadas:
+
+```
+[Usuário] → [Gateway] → [Supervisor] → [Especialistas]
+              ↑              ↓              ↓
+         [Cache]     [Monitor/Custo]  [Fallback Router]
+```
+
+| Camada | Responsabilidade | Modelo recomendado |
+| -------- | ------------------ | -------------------- |
+| **Gateway** | Recebe task, valida input | Nenhum (HTTP) |
+| **Supervisor** | Classifica intenção + roteia | gpt-4o-mini (barato) |
+| **Especialistas** | Executam tarefas específicas | gpt-4o-mini ou gpt-4o |
+| **Fallback Router** | Redireciona se especialista falha | Mesma classe ou genérico |
+
+**Fluxo completo:**
+
+1. Usuário envia task → Gateway valida
+2. Supervisor recebe task → analisa intenção com modelo barato
+3. Supervisor roteia para especialista mais adequado
+4. Especialista executa tarefa com prompt focado no domínio
+5. Se especialista falha → Fallback Router tenta outro ou retorna parcial
+6. Supervisor consolida resposta final
+7. Monitor conta tokens/custo por caminho
+
+**Trade-off chave:** supervisor inteligente (gpt-4o) = melhor roteamento mas mais caro; supervisor simples (gpt-4o-mini) = barato mas pode rotear errado.
+
 ### Arquitetura Supervisor-Especialista
 
 ```mermaid
@@ -112,19 +143,137 @@ Quando um especialista falha, o sistema não para — ele tenta alternativas:
 Especialista A falha → Tenta Especialista B → Se B também falhar → Resposta parcial + aviso
 ```
 
-Isso é chamado de **graceful degradation**: o sistema continua funcionando (mesmo que parcialmente) ao invés de crashar completamente.
+Isso é chamado de **graceful degradation** (degradação elegante/falha graciosa): o sistema continua funcionando (mesmo que parcialmente) ao invés de crashar completamente.
+
+### Pipeline na Prática — Passo a Passo
+
+Antes de calcular custos, veja como uma tarefa real flui pelo sistema. Quando um usuário envia:
+
+> *"Analise os dados do relatório Q3 e gere um resumo"*
+
+O sistema executa este ciclo:
+
+```
+1️⃣  USUÁRIO envia → "Analise os dados do relatório Q3..."
+         ↓
+2️⃣  SUPERVISOR recebe → analisa intenção: "análise de dados"
+         ↓
+3️⃣  ROTEIA para → data_analyst_agent (especialista em dados)
+         ↓
+4️⃣  ESPECIALISTA processa → lê dados, gera análise
+         ↓
+5️⃣  ESPECIALISTA retorna → resultado da análise
+         ↓
+6️⃣  SUPERVISOR consolida → formata resposta final
+         ↓
+7️⃣  USUÁRIO recebe → resposta completa
+```
+
+**Diagrama de sequência** (visão temporal):
+
+```mermaid
+sequenceDiagram
+    participant U as 👤 Usuário
+    participant S as 🧠 Supervisor
+    participant D as 📊 Data Analyst
+    participant W as 🌐 Web Search
+    
+    U->>S: "Analise dados Q3"
+    S->>D: roteia para data_analyst
+    D->>D: processa dados internos
+    D-->>S: retorna análise
+    S-->>U: resposta consolidada
+```
+
+**E se o especialista falhar?** O pipeline continua com fallback:
+
+```mermaid
+sequenceDiagram
+    participant U as 👤 Usuário
+    participant S as 🧠 Supervisor
+    participant D as 📊 Data Analyst
+    participant G as 🧑 Generalista
+    
+    U->>S: "Analise dados Q3"
+    S->>D: roteia para data_analyst
+    D--xS: ❌ ERRO (API indisponível)
+    S->>G: fallback → generalista
+    G->>G: usa conhecimento geral
+    G-->>S: retorna resposta parcial
+    S-->>U: resposta + aviso de degradação
+```
+
+**Código mínimo funcional** — o que acontece em cada etapa:
+
+```python
+# Etapa 1-2: Receber e analisar intenção
+task = "Analise os dados do relatório Q3"
+intention = classify_intention(task)  # → "data_analysis"
+
+# Etapa 3: Roteamento
+specialist = ROUTER[intention]  # → data_analyst_agent
+
+# Etapa 4-5: Execução com fallback
+try:
+    result = specialist.execute(task)
+except SpecialistError:
+    console.print("[yellow]⚠️ Especialista indisponível, usando fallback[/]")
+    result = generalist_agent.execute(task)
+
+# Etapa 6-7: Consolidação e resposta
+response = format_response(result, intention)
+print(response)
+```
+
+> 💡 **Checkpoint:** Se você entendeu o fluxo acima, está pronto para entender por que multiagente custa mais que agente único. Cada seta no diagrama = uma chamada ao LLM = tokens = dinheiro.
 
 ### Custos em Multiagente
 
-Cada chamada ao LLM custa tokens. Em multiagente, temos custos adicionais:
+Cada chamada ao LLM custa tokens. Em multiagente, temos custos adicionais porque o supervisor faz uma chamada extra para rotear antes dos especialistas:
 
 ```
-Custo Total = Custo_Supervisor + Σ Custo_Especialistas
+Custo_Total = Custo_Supervisor + Σ Custo_Especialistas
 ```
 
-O supervisor faz pelo menos 1 chamada (roteamento), e cada especialista pode fazer múltiplas chamadas (com retry). Isso significa que multiagente é tipicamente **mais caro** que agente único — mas entrega **melhor qualidade**.
+Exemplo prático com 3 especialistas:
 
----
+| Etapa | Chamadas | Modelo | Custo Estimado |
+| ------- | -------- | ------ | -------------- |
+| Roteamento | 1 | gpt-4o-mini | $0.0003 |
+| Especialista A (chamado) | 1 | gpt-4o-mini | $0.0015 |
+| Especialista B (não chamado) | 0 | — | $0.0000 |
+| Especialista C (fallback) | 1 | gpt-4o-mini | $0.0015 |
+| **Total** | **3** | — | **$0.0033** |
+
+Compare com agente único na mesma tarefa: ~$0.0020.
+
+O supervisor faz pelo menos 1 chamada (roteamento), e cada especialista pode fazer múltiplas chamadas (com retry). Isso significa que multiagente é tipicamente **mais caro** que agente único — mas entrega **melhor qualidade**. O trade-off vale a pena quando:
+
+- Qualidade > custo (produção real)
+- Especialistas especializados reduzem erros (menos retrabalho)
+- Fallbacks previnem falhas totais (disponibilidade maior)
+
+## 🎬 O que você vai ver
+
+Antes de rodar o código, aqui está uma prévia do que o programa vai fazer:
+
+```
+$ python modules/p3b_multi_agent/run.py
+
+👤 Supervisor recebe: "Classificar ticket urgente"
+
+🔄 Roteamento:
+   Tipo: classificação → Especialista A
+
+🤖 Especialista A processa...
+   Output: "URGENTE - Prioridade máxima"
+
+⚡ Especialista B falhou (simulado)
+   Fallback: redistribuindo para Especialista A
+
+📊 Log de roteamento gerado
+💰 Custo total: $0.015
+```
 
 ## Exercício Prático
 
@@ -159,7 +308,21 @@ Multi-agent supervisor é a arquitetura mais usada para tarefas complexas:
 
 > ✅ **Você está pronto para:** Agora que seu agente é multi-especializado, vamos colocá-lo em produção com API REST.
 
+## ✅ Checklist: Como Saber Se Você Atingiu o Objetivo
+
+Marque cada item **só se conseguir fazer sem olhar o material**:
+
+- [ ] Explico por que dividir trabalho entre especialistas reduz erros
+- [ ] Descrevo o papel do supervisor no roteamento de tarefas
+- [ ] Explico como fallback funciona quando um especialista falha
+- [ ] Rodo `run.py` e explico o log de roteamento gerado
+- [ ] Digo 2 situações onde multi-agentes vale a pena vs agente único
+
+> ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
+
 ---
+
+## 🔗 Próximos Passos
 
 ## 🔗 Próximos Passos
 

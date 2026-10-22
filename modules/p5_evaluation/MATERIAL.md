@@ -67,7 +67,7 @@ Cada exemplo do dataset passa por este pipeline, gerando scores comparáveis ent
 
 ### Golden Dataset — Respostas Esperadas
 
-Um golden dataset é um conjunto de exemplos com input + resposta esperada (ground truth):
+Um golden dataset é um conjunto de exemplos com input + resposta esperada (ground truth / verdade fundamental — resultado esperado):
 
 ```python
 GoldenExample(
@@ -198,7 +198,30 @@ Salva resultados de cada execução. Antes de qualquer mudança:
 3. Roda novamente → compara com baseline
 4. Se score caiu → rollback automático
 
----
+## 🎬 O que você vai ver
+
+Antes de rodar o código, aqui está uma prévia do que o programa vai fazer:
+
+```
+$ python modules/p5_evaluation/run.py
+
+📊 Avaliando agente...
+
+📋 Exemplo 1/10:
+   Input: "Qual a prioridade?"
+   Expected: "URGENTE"
+   Got: "URGENTE"
+   Score: exact=1.0 fuzzy=1.0
+
+📈 Relatório estatístico:
+   Média: 0.85 | Mediana: 0.90
+   Min: 0.40 | Max: 1.00
+
+⚔️ Teste A/B: Heurística vs Agente
+   Heurística: score=0.60 custo=$0.001
+   Agente:     score=0.95 custo=$0.045
+   Veredito: Agente vale o custo (+58% qualidade)
+```
 
 ## Exercício Prático
 
@@ -215,15 +238,11 @@ Execute `python modules/p5_evaluation/run.py` e observe:
 2. Se o LLM-as-a-judge também pode errar, como garantir que ele é justo?
 3. Qual tamanho mínimo de dataset para resultados estatisticamente significativos?
 
----
-
----
-
 ## 📌 Resumo do Módulo
 
 Avaliação sistemática é o que separa produção de experimentação:
 
-1. **Golden dataset = verdade fundamental** — conjunto curado de entradas/saídas esperadas. Sem ele, você não sabe se melhorou ou piorou.
+1. **Golden dataset (conjunto dourado) = ground truth** — conjunto curado de entradas/saídas esperadas. Sem ele, você não sabe se melhorou ou piorou.
 
 2. **Métricas importam** — precisão/recall para classificação, BLEU/ROUGE para geração, LLM-as-Judge para qualidade subjetiva. Cada métrica responde uma pergunta diferente.
 
@@ -234,6 +253,18 @@ Avaliação sistemática é o que separa produção de experimentação:
 5. **LLM-as-Judge vs Humanos** — LLM judge escala mas tem viés. Humanos são precisos mas caros. Use AMBAS: LLM para triagem, humanos para amostragem.
 
 > ✅ **Você está pronto para:** Agora que sabe avaliar qualidade, precisa garantir segurança das respostas.
+
+## ✅ Checklist: Como Saber Se Você Atingiu o Objetivo
+
+Marque cada item **só se conseguir fazer sem olhar o material**:
+
+- [ ] Explico o que é golden dataset e por que é necessário
+- [ ] Descrevo a diferença entre score exact e fuzzy
+- [ ] Explico como funciona teste A/B entre heurística vs agente
+- [ ] Rodo `run.py` e interpreto o relatório estatístico
+- [ ] Digo 2 limitações do LLM-as-Judge
+
+> ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
 
 ---
 

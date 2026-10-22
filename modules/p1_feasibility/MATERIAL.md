@@ -1,12 +1,14 @@
 # Material Didático — P1: Análise de Viabilidade
 
+> ⚠️ **MÓDULO OPCIONAL / BÔNUS** — Este módulo pode ser estudado DEPOIS de construir seu primeiro agente funcional (p0_first_llm) ou até após o módulo multiagente (p3b). Ele não bloqueia os próximos módulos, mas é recomendado para quem quer tomar decisões técnicas baseadas em dados.
+
 Este módulo ensina a tomar decisões entre IA e regras heurísticas usando dados reais de benchmark.
 
 ---
 
 ## ⚠️ Pré-requisito
 
-Você precisa ter concluído o módulo [P0-Fundamentals](../p0_fundamentals/MATERIAL.md). Especificamente, precisa entender:
+**Opcional:** Você pode pular este módulo e voltar depois de construir um agente funcional (p0_first_llm ou p3b). Se quiser estudar agora, precisa ter concluído o módulo [P0-Fundamentals](../p0_fundamentals/MATERIAL.md). Especificamente, precisa entender:
 
 - O que é um LLM e como ele prediz tokens
 - Por que tokens custam dinheiro
@@ -104,7 +106,27 @@ graph TD
 Para 100 tickets/mês → regras podem bastar.
 Para 100.000 tickets/mês → IA se paga pela escalabilidade.
 
----
+## 🎬 O que você vai ver
+
+Antes de rodar o código, aqui está uma prévia do que o programa vai fazer:
+
+```
+$ python modules/p1_feasibility/run.py
+
+📊 Benchmarking: IA vs Regras
+
+🤖 LLM (gpt-4o-mini):
+   Latência avg: 1.2s | p95: 2.1s
+   Custo total: $0.045
+
+⚡ Regras (if/else):
+   Latência avg: 0.001s
+   Custo: $0.000
+
+📋 Memorando gerado:
+   Recomendação: Use regras para volume < 10k/mês
+   Justificativa: Custo-benefício 45× melhor
+```
 
 ## Exercício Prático
 
@@ -138,6 +160,18 @@ Este módulo ensinou a tomar decisões baseadas em dados, não em intuição:
 
 > ✅ **Você está pronto para:** Agora que sabe quando usar IA, vamos construir um agente que responde perguntas com conhecimento interno — o pipeline RAG.
 
+## ✅ Checklist: Como Saber Se Você Atingiu o Objetivo
+
+Marque cada item **só se conseguir fazer sem olhar o material**:
+
+- [ ] Explico a diferença entre IA e regras heurísticas em 3 frases
+- [ ] Comparo latência e custo das duas abordagens com números
+- [ ] Explico por que escala muda a decisão (100 vs 100.000 tickets)
+- [ ] Rodo `run.py` e interpreto o memorando gerado
+- [ ] Digo 3 situações onde regras são melhores que IA
+
+> ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
+
 ---
 
 ## 🔗 Próximos Passos
@@ -146,10 +180,6 @@ Com a viabilidade estabelecida, o próximo passo é resolver o problema mais com
 
 → Leia o módulo [P2: Pipeline RAG](../p2_rag/MATERIAL.md) para aprender recuperação de contexto com embeddings.
 
----
-
-## Referências
-
 ### Livros
 
 - **"Designing Machine Learning Systems"** by Chip Huyen (O'Reilly) — Capítulos sobre avaliação e monitoring
@@ -157,8 +187,8 @@ Com a viabilidade estabelecida, o próximo passo é resolver o problema mais com
 
 ### Documentação Oficial
 
-- [OpenAI Latency Benchmarks](https://platform.openai.com/docs/guides/rate-limits)
-- [ML System Design Principles](https://developers.google.com/machine-learning/guidelines/rules-of-ml)
+- [OpenAI Rate Limits & Throughput](https://platform.openai.com/docs/guides/rate-limits) — Limites de taxa e throughput (antigo "Latency Benchmarks")
+- [ML System Design Principles](https://developers.google.com/machine-learning/guidelines/rules-of-ml) — Princípios de design de ML em escala
 
 ### Tutoriais
 

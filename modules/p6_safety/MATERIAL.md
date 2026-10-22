@@ -153,7 +153,27 @@ Um detector baseado em LLM compara o **intento** vs o **padrão permitido**. Mas
 
 **Token-level manipulation**: alguns ataques inserem caracteres invisíveis ou usam Unicode homoglyphs para confundir detectores sem afetar o modelo.
 
----
+## 🎬 O que você vai ver
+
+Antes de rodar o código, aqui está uma prévia do que o programa vai fazer:
+
+```
+$ python modules/p6_safety/run.py
+
+🛡️ Testando segurança do agente...
+
+⚠️ Input malicioso detectado!
+   Tipo: prompt_injection
+   Severidade: HIGH
+   Ação: Bloqueado
+
+🔍 Scan de dados sensíveis...
+   Encontrado: email (mascarado → j***@exemplo.com)
+   Encontrado: CPF (mascarado → ***.***.***-00)
+
+✅ Output seguro gerado
+📋 Relatório: 3 ameaças bloqueadas, 2 dados mascarados
+```
 
 ## Exercício Prático
 
@@ -170,10 +190,6 @@ Execute `python modules/p6_safety/run.py` e observe:
 2. Que técnicas adversariais existem além das listadas aqui?
 3. Como balancear segurança vs usabilidade (muitos guardrails = UX ruim)?
 
----
-
----
-
 ## 📌 Resumo do Módulo
 
 Segurança em IA é diferente de segurança tradicional:
@@ -189,6 +205,18 @@ Segurança em IA é diferente de segurança tradicional:
 5. **Monitoramento contínuo** — logs de todas as interações, alertas para padrões suspeitos, revisões periódicas de prompts. Segurança não é one-time.
 
 > ✅ **Você está pronto para:** Agora que seu sistema é seguro, precisa gerenciar contexto das conversas.
+
+## ✅ Checklist: Como Saber Se Você Atingiu o Objetivo
+
+Marque cada item **só se conseguir fazer sem olhar o material**:
+
+- [ ] Explico o que é prompt injection e como funciona
+- [ ] Descrevo a diferença entre HIGH e CRITICAL severity
+- [ ] Explico como dados sensíveis devem ser mascarados
+- [ ] Rodo `run.py` e explico o relatório de segurança
+- [ ] Digo 2 técnicas avançadas para burlar guardrails
+
+> ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
 
 ---
 

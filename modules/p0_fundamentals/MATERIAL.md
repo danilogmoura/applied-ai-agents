@@ -12,6 +12,62 @@ Se você já tem experiência com programação, vai entender os exemplos mais r
 
 ---
 
+## 🔧 Conceitos Técnicos que Usaremos (leitura rápida)
+
+Antes de entrar em IA, precisamos entender 4 conceitos técnicos que aparecerão o tempo todo no curso. **Não precisa dominar agora** — só ter uma intuição geral.
+
+### O que é JSON?
+
+JSON é um formato de texto para organizar dados em pares `chave: valor`. Parece uma ficha de personagem de RPG:
+
+```json
+{
+  "nome": "João",
+  "nivel": 5,
+  "equipamento": ["espada", "escudo"]
+}
+```
+
+**Por que importa?** Toda comunicação entre seu código e a API da OpenAI usa JSON. Quando você envia um prompt, ele vai dentro de um JSON. Quando recebe a resposta, vem em JSON também.
+
+### O que é uma API / HTTP?
+
+API é como um **delivery de comida**: você faz um pedido (requisição) e recebe uma resposta. HTTP é o protocolo — a "linguagem" que seu código fala com servidores na internet.
+
+```
+Seu código → POST /chat → {"message": "Olá"} → Servidor OpenAI → Resposta
+```
+
+**Por que importa?** Você vai chamar APIs o tempo todo. Cada chamada custa tokens (e dinheiro). Entender que é "pedido → resposta" ajuda a debugar quando algo dá errado.
+
+### O que são variáveis de ambiente e `.env`?
+
+São **chaves secretas** — como a senha do seu jogo. Você coloca num arquivo `.env` que nunca vai para o repositório:
+
+```
+OPENAI_API_KEY=sk-abc123def456...
+```
+
+Seus códigos leem essa variável ao invés de escrever a chave direto no código. Assim, se alguém clonar seu projeto, não rouba sua chave.
+
+**Por que importa?** Todo módulo do curso usa pelo menos uma variável de ambiente. Se o código diz "não encontrou OPENAI_API_KEY", é porque o `.env` não está configurado corretamente.
+
+### Terminal básico
+
+Você vai usar 3 comandos no terminal:
+
+| Comando | O que faz | Analogia |
+| --------- | ----------- | ---------- |
+| `cd pasta` | Entra numa pasta | Abrir uma gaveta |
+| `ls` ou `dir` | Lista arquivos da pasta | Olhar dentro da gaveta |
+| `python arquivo.py` | Executa um script Python | Apertar o botão de play |
+
+**Por que importa?** Todos os exercícios rodam no terminal. Se não sabe navegar pastas, vai travar nos exercícios.
+
+> 💡 **Teste rápido:** Abra o terminal e digite `python --version`. Se mostrar a versão do Python, você está pronto. Se não, siga o SETUP.md antes de continuar.
+
+---
+
 ## 🎯 Objetivos de Aprendizagem
 
 Ao final deste módulo, você será capaz de:
@@ -242,6 +298,21 @@ Este módulo plantou as bases que você usará em TODO o curso:
 
 ---
 
+## ✅ Checklist: Como Saber Se Você Atingiu o Objetivo
+
+Marque cada item **só se conseguir fazer sem olhar o material**:
+
+- [ ] Explico o que é um LLM para alguém usando uma analogia do dia a dia
+- [ ] Explico a diferença entre treino e inferência em 2 frases
+- [ ] Mostro por que "don't" = menos tokens que "do not"
+- [ ] Escrevo um prompt usando pelo menos 2 técnicas (few-shot, chain of thought, formato estruturado)
+- [ ] Digo 3 causas de alucinação e 3 mitigações
+- [ ] Consulto o glossário quando encontro siglas desconhecidas
+
+> ⚠️ Se marcou menos de 4 itens, releia as seções correspondentes antes de prosseguir.
+
+---
+
 ## 🔗 Próximos Passos
 
 Agora que você entende o que é um LLM e como ele funciona por dentro, está pronto para construir seu primeiro agente de IA.
@@ -273,3 +344,23 @@ Leia este material duas vezes. Na segunda leitura, tente explicar cada um dos 6 
 ---
 
 ## Referências
+
+### Livros
+
+- **"Natural Language Processing with Transformers"** by Lewis et al. (O'Reilly) — Fundamentos teóricos
+- **"The Hundred-Page Machine Learning Book"** by Andriy Burkov — Visão geral concisa de ML
+
+### Livros em Inglês
+
+- **"Designing Machine Learning Systems"** by Chip Huyen (O'Reilly) — Capítulos sobre avaliação e monitoring
+- **"The Mythical Man-Month"** by Frederick Brooks — Sobre trade-offs em engenharia
+
+### Documentação Oficial
+
+- [OpenAI API Documentation](https://platform.openai.com/docs) — Referência completa da API
+- [Python Documentation](https://docs.python.org/3/) — Documentação oficial do Python
+
+### Tutoriais Online
+
+- [Hugging Face Course](https://huggingface.co/course) — Curso gratuito de NLP
+- [DeepLearning.AI Short Courses](https://www.deeplearning.ai/short-courses/) — Microcursos sobre IA

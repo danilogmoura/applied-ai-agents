@@ -16,7 +16,7 @@ Ao final deste módulo, você será capaz de:
 
 - [ ] **Implementar** o pattern Circuit Breaker para proteger contra falhas em cascata
 - [ ] **Criar** checkpoints para salvar progresso e recuperar após crashes
-- [ ] **Aplicar** retry com exponential backoff + jitter para chamadas instáveis
+- [ ] **Aplicar** retry com exponential backoff + jitter (retrocesso exponencial com variação aleatória) para chamadas instáveis
 - [ ] **Projetar** estratégias de fallback por tipo de erro (não genérico)
 - [ ] **Entender** trade-offs entre resiliência e custo/latência
 
@@ -142,7 +142,59 @@ class SimulatedService:
 
 Isso permite testar estados do circuit breaker de forma determinística.
 
----
+### 🏗️ Arquitetura do Planner Resiliente
+
+> Referência completa: [architecture.md](architecture.md)
+
+O planner é um pipeline com 6 componentes interconectados:
+
+```
+[Usuário] → [Planner] → [Executor] → [API Externa]
+              ↑            ↓            ↓
+         [Checkpoint] ←── [Monitor] ←── [Circuit Breaker]
+```
+
+| Componente | Responsabilidade | Estado salva |
+| ------------ | ------------------ | -------------- |
+| **Planner** | Gera plano de passos + decide ordem | Nenhum (stateless) |
+| **Executor** | Roda cada passo do plano | Resultado do passo |
+| **Circuit Breaker** | Bloqueia chamadas se falhas > threshold | state (CLOSED/OPEN/HALF_OPEN) + failure_count |
+| **Checkpoint** | Snapshot do progresso | step_index + tokens + custo + circuits_status |
+| **Monitor** | Conta falhas + tempo + tokens | métricas por passo |
+| **Retry Policy** | Backoff exponencial + jitter | retry_count + next_delay |
+
+**Fluxo completo:**
+
+1. Planner gera plano: `[passo1, passo2, passo3, ...]`
+2. Executor roda passo N → Monitor conta sucesso/falha
+3. Se falha ≥ threshold → Circuit Breaker abre (bloqueia próximas chamadas)
+4. A cada N passos → Checkpoint salva estado no disco
+5. Se API falha → Retry com backoff exponencial + jitter
+6. Se tudo falhar → Fallback específico por tipo de erro
+7. Crash/restart → Carrega último checkpoint e continua do passo salvo
+
+**Trade-off chave:** mais checkpoints = mais recuperação mas mais I/O; mais retries = mais chance de sucesso mas mais custo.
+
+## 🎬 O que você vai ver
+
+Antes de rodar o código, aqui está uma prévia do que o programa vai fazer:
+
+```
+$ python modules/p3a3_planning/run.py
+
+📋 Planner gera plano: [passo1, passo2, passo3]
+
+▶️ Executando passo 1/3... OK
+▶️ Executando passo 2/3... FALHOU
+
+🔌 Circuit breaker aberto — pulando passo 2
+↪️ Fallback ativado: tentar abordagem alternativa
+
+✅ Passo 3 executado com sucesso
+💾 Checkpoint salvo para recuperação
+
+💰 Custo total: $0.012 | Passos: 4 tentativas
+```
 
 ## Exercício Prático
 
@@ -177,7 +229,21 @@ Resilience patterns são o que separam protótipos de produção:
 
 > ✅ **Você está pronto para:** Agora que seu agente é resiliente, vamos escalar para múltiplos agentes especializados.
 
+## ✅ Checklist: Como Saber Se Você Atingiu o Objetivo
+
+Marque cada item **só se conseguir fazer sem olhar o material**:
+
+- [ ] Explico o que é circuit breaker e seus 3 estados (closed/open/half-open)
+- [ ] Descrevo quando checkpoint deve ser salvo durante execução
+- [ ] Explico a diferença entre retry simples e exponential backoff (retrocesso exponencial)
+- [ ] Rodo `run.py` e explico como planner recupera estado do checkpoint
+- [ ] Digo 2 trade-offs de adicionar resilience ao sistema
+
+> ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
+
 ---
+
+## 🔗 Próximos Passos
 
 ## 🔗 Próximos Passos
 
@@ -203,3 +269,6 @@ Com resilience patterns, seu agente individual sobrevive a falhas. Mas tarefas c
 
 - [Pydantic for State Management](https://docs.pydantic.dev/latest/concepts/models/) — Pydantic Docs
 - [JSON Serialization Best Practices](https://realpython.com/python-json/) — Real Python
+- [Checkpoint Patterns in ML Pipelines](https://mlflow.org/docs/latest/tracking.html) — MLflow Tracking
+
+→ Leia o módulo [P3b: Multi-Agent Supervisor](../p3b_multi_agent/MATERIAL.md) para aprender arquitetura multiagente.

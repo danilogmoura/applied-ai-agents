@@ -105,9 +105,9 @@ Logs em JSON para facilitar análise:
 }
 ```
 
-### Algoritmo: Exponential Backoff com Jitter
+### Algoritmo: Exponential Backoff com Jitter (retrocesso exponencial com variação aleatória)
 
-Quando uma API falha, nunca repita imediatamente. Use backoff exponencial — mas com aleatoriedade:
+Quando uma API falha, nunca repita imediatamente. Use exponential backoff (backoff exponencial) — mas com aleatoriedade:
 
 ```mermaid
 flowchart LR
@@ -167,7 +167,68 @@ def call_with_retry(api_call, max_retries=5):
 
 Este padrão é usado por AWS SDK, Google Cloud, OpenAI Python client e praticamente toda API de produção.
 
----
+### 🏗️ Arquitetura de Operations de Produção
+
+> Referência completa: [architecture.md](architecture.md)
+
+O sistema de operations é composto por 4 pilares independentes:
+
+```
+[Agentes] → [Metrics Collector] → [Dashboard]
+              ↑                      ↓
+         [Alert Manager]    [A/B Tester]
+              ↑                      ↓
+         [Rollback Trigger] [Logging Pipeline]
+```
+
+| Pilar | Responsabilidade | Ferramenta |
+| ------- | ------------------ | ----------- |
+| **Metrics Collector** | Coleta latência, erro rate, custo | openmetrics/prometheus |
+| **Logging Pipeline** | Estrutura logs em JSON | logging + JSON formatter |
+| **A/B Tester** | Compara prompts contra golden dataset | pytest + custom tester |
+| **Rollback Trigger** | Detecta degradação e reverte | threshold-based alert |
+| **Alert Manager** | Notifica equipe sobre anomalias | email/slack webhook |
+
+**Fluxo completo:**
+
+1. Agentes rodam em produção → Metrics Collector coleta métricas por request
+2. Logging Pipeline estrutura cada evento em JSON com campos padronizados
+3. A/B Tester compara nova versão vs atual em golden dataset antes de deploy
+4. Se métricas degradam (erro_rate > 10%) → Rollback Trigger reverte automaticamente
+5. Alert Manager notifica equipe se anomaly persiste após rollback
+
+**Trade-off chave:** monitorar tudo = visibilidade total mas mais custo de storage; monitorar só o essencial = barato mas pode perder problemas sutis.
+
+## 🎬 O que você vai ver
+
+Antes de rodar o código, aqui está uma prévia do que o programa vai fazer:
+
+```
+$ python modules/p11_production_ops/run.py
+
+📋 Registrando prompts...
+   prompt_v1: "Classifique a prioridade"
+   prompt_v2: "Analise e classifique o ticket"
+
+🧪 Testando prompt_v1...
+   Sucesso: 85/100 | Taxa: 85%
+
+🔄 A/B Testing: v1 vs v2
+   v1: score=0.85 custo=$0.045
+   v2: score=0.92 custo=$0.052
+   ✅ v2 aprovado — iniciando deploy
+
+🚀 Deploy progressivo...
+   Fase 1: 10% do tráfego → OK
+   Fase 2: 50% do tráfego → OK
+   Fase 3: 100% do tráfego → ✅ Completo
+
+📊 Dashboard:
+   requests/min: 120 | error_rate: 0.5%
+   p95_latency: 1.8s | uptime: 99.9%
+
+💓 Health check: todos os serviços OK
+```
 
 ## Exercício Prático
 
@@ -202,6 +263,28 @@ Production Ops é o que separa protótipos de sistemas em produção:
 5. **Exponential backoff + jitter** — quando serviços dependentes falham, esperar cada vez mais entre tentativas + variação aleatória. Resolve problemas temporários sem cascata.
 
 > ✅ **Parabéns!** Você completou todo o curso de Agentes de IA Aplicada. Agora tem conhecimento para construir, avaliar, proteger e operar agentes em produção.
+
+## ✅ Checklist Final: O Que Você Dominou
+
+Marque cada item **só se conseguir explicar para alguém**:
+
+- [ ] Entendo o que é LLM e como next-token prediction funciona
+- [ ] Sei comparar IA vs regras heurísticas com dados de benchmark
+- [ ] Construí um pipeline RAG com embeddings
+- [ ] Implementei autoavaliação com max_iterations
+- [ ] Dei ferramentas ao agente com tool calling + HITL
+- [ ] Adicionei resilience com circuit breaker e checkpoints
+- [ ] Entendi arquitetura multi-agentes com supervisor
+- [ ] Deployei API com FastAPI + Docker
+- [ ] Avaliei qualidade com golden dataset e teste A/B
+- [ ] Implementei guardrails contra prompt injection
+- [ ] Gerenciei memória de curto e longo prazo
+- [ ] Usei streaming para melhor UX
+- [ ] Otimizei custos com caching
+- [ ] Organizei código com skills versionadas
+- [ ] Configurei CI/CD com monitoring e rollback
+
+> 🎓 Se marcou todos os itens, você está pronto para construir agentes de IA em produção!
 
 ---
 

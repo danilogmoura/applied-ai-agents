@@ -165,6 +165,45 @@ flowchart TD
 
 **Next-token prediction**: o modelo gera uma palavra por vez. Cada palavra gerada vira input para gerar a próxima. É por isso que prompts mal escritos produzem respostas piores — o modelo só vê tokens, não significado.
 
+---
+
+### 🐛 Depuração: Erros Comuns de API
+
+Antes de prosseguir, saiba o que fazer quando a API falha. Estes são os 3 erros mais comuns:
+
+| Erro | Causa | Solução |
+| ------ | ------- | --------- |
+| `InvalidAPIKey` | Chave inválida ou expirada | Verifique `.env` — a chave começa com `sk-`? Está toda copiada? |
+| `RateLimitError` | Você excedeu o limite de chamadas | Espere 1 minuto e tente de novo. Configure limites de gasto na dashboard da OpenAI |
+| `TimeoutError` | A resposta demorou demais (geralmente >30s) | Tente novamente. Se persistir, use `temperature=0` para respostas mais rápidas |
+
+**Como debugar passo a passo:**
+
+```python
+from openai import OpenAI
+import os
+
+# 1. Verifique se a variável existe
+print("API Key:", os.getenv("OPENAI_API_KEY")[:8] + "...")  # Mostra só os 8 primeiros chars
+
+# 2. Teste com uma chamada mínima
+try:
+    client = OpenAI()
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": "Olá"}],
+        max_tokens=10
+    )
+    print("✅ Funcionando!", response.choices[0].message.content)
+except Exception as e:
+    print(f"❌ Erro: {e}")
+    print("Dica: verifique seu .env e sua conexão com a internet.")
+```
+
+Se este teste não funcionar, **não continue** até resolver. Nenhum módulo seguinte vai rodar sem acesso à API.
+
+> 💡 **Dica de segurança:** NUNCA compartilhe sua API key. Se alguém tiver acesso a ela, pode gastar seu crédito. Rotacione (gere uma nova) na [dashboard da OpenAI](https://platform.openai.com/api-keys) se suspeitar que foi exposta.
+
 > 🛑 **Checkpoint:** Pause aqui. Tente responder:
 >
 > - O que é attention e como ela influencia a classificação de um ticket?
@@ -245,7 +284,7 @@ O BPE economiza dinheiro porque palavras comuns viram 1 token. Palavras raras vi
 
 ---
 
-#### 🔬 Avançado: Como o BPE funciona (opcional)
+#### 🔬 Avançado: Como o BPE funciona (OPCIONAL — avançado)
 
 Tokens são pedaços de bytes combinados por frequência. O BPE é um algoritmo de compressão adaptativo:
 
@@ -454,6 +493,24 @@ Estas perguntas verificam se você entendeu os conceitos, não só o código. Co
 
 ---
 
+## 🎬 O que você vai ver
+
+Antes de rodar o código, aqui está uma prévia do que o programa vai fazer:
+
+```
+$ python modules/p0_first_llm/run.py
+
+📥 Processando 5 tickets...
+🤖 Classificando com LLM (gpt-4o-mini)...
+
+Ticket #1 → URGENTE (custo: $0.001)
+Ticket #2 → BAIXA (custo: $0.001)
+...
+
+✅ Batch completo!
+💰 Custo total: $0.005 | Tempo: 2.3s
+```
+
 ## Exercício Prático
 
 Execute `python modules/p0_first_llm/run.py` e observe:
@@ -488,6 +545,21 @@ Este foi seu primeiro contato prático com agentes de IA:
 
 ---
 
+## ✅ Checklist: Como Saber Se Você Atingiu o Objetivo
+
+Marque cada item **só se conseguir fazer sem olhar o material**:
+
+- [ ] Explico o que é um LLM e next-token prediction em 3 frases
+- [ ] Mostro como temperature afeta classificação vs geração criativa
+- [ ] Escrevo um prompt anti-alucinação ("se não sabe, diga 'não sei'")
+- [ ] Configuro `.env` com API key sem expor a chave no código
+- [ ] Rodo `run.py` e explico o que cada linha do output significa
+- [ ] Identifico 3 erros comuns de API e como resolvê-los
+
+> ⚠️ Se marcou menos de 4 itens, releia as seções correspondentes antes de prosseguir.
+
+---
+
 ## 🔗 Próximos Passos
 
 Agora que você construiu seu primeiro agente, o próximo passo é aprender a **decidir quando usar IA**. Nem toda tarefa precisa de um LLM — às vezes regras heurísticas são melhores (mais rápidas, mais baratas, mais previsíveis).
@@ -496,19 +568,23 @@ Agora que você construiu seu primeiro agente, o próximo passo é aprender a **
 
 ---
 
-## Referências
+## 📚 Referências
 
 ### Livros
 
-- **"Natural Language Processing with Transformers"** by Lewis et al. (O'Reilly)
+- **"Natural Language Processing with Transformers"** by Lewis et al. (O'Reilly) — Fundamentos teóricos
+- **"Designing Machine Learning Systems"** by Chip Huyen (O'Reilly) — Capítulos sobre avaliação e monitoring
 
 ### Documentação Oficial
 
-- [OpenAI Python SDK](https://platform.openai.com/docs/libraries/python)
-- [OpenAI Pricing](https://openai.com/api/pricing/)
-- [Tokenization Guide](https://platform.openai.com/docs/guides/tokenization)
+- [OpenAI Python SDK](https://platform.openai.com/docs/libraries/python) — Biblioteca oficial
+- [OpenAI Pricing](https://openai.com/api/pricing/) — Tabela de preços por modelo
+- [Tokenization Guide](https://platform.openai.com/docs/guides/tokenization) — Como texto vira tokens
 
 ### Tutoriais
 
-- [OpenAI Cookbook Examples](https://github.com/openai/openai-cookbook) — GitHub
-- [Python OpenAI SDK Tutorial](https://platform.openai.com/docs/quickstart) — OpenAI Docs
+- [OpenAI Cookbook Examples](https://github.com/openai/openai-cookbook) — Exemplos práticos da OpenAI
+- [Python OpenAI SDK Tutorial](https://platform.openai.com/docs/quickstart) — Guia de início rápido
+- [Prompt Engineering Guide](https://www.promptingguide.tech/) — Técnicas avançadas de prompt
+
+## 🔗 Próximos Passos

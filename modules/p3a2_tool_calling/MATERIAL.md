@@ -137,6 +137,37 @@ Resposta do modelo (JSON):
 
 O modelo tenta ser útil. Se você pediu algo que nenhuma tool cobre, ele pode "alucinar" parâmetros imaginários tentando forçar uma chamada. Por isso a validação rigorosa é obrigatória.
 
+### 🏗️ Arquitetura do Loop Tool-Calling
+
+> Referência completa: [architecture.md](architecture.md)
+
+O sistema tool-calling é um loop fechado com 5 componentes:
+
+```
+[Usuário] → [LLM] → [JSON Parser] → [Whitelist Checker] → [Executor]
+    ↑                                                        ↓
+    ←─────── [Resultado formatado] ←─────── [Tool real Python]
+```
+
+| Componente | Responsabilidade | O que valida |
+| ------------ | ------------------ | -------------- |
+| **LLM** | Decide qual tool usar + parâmetros | Nenhum (confia no schema) |
+| **JSON Parser** | Converte resposta LLM → dict Python | JSON válido? Chaves corretas? |
+| **Whitelist Checker** | Verifica se tool está permitida | Nome da tool na lista? |
+| **Risk Level** | Classifica perigo da operação | LOW/MEDIUM/HIGH/CRITICAL |
+| **Executor** | Roda função Python real | HITL aprovado? |
+
+**Fluxo completo:**
+
+1. Usuário envia pergunta → LLM recebe prompt + schemas das tools
+2. LLM responde com JSON: `{"tool": "read_file", "params": {"path": "/etc/hosts"}}`
+3. Parser valida JSON → Whitelist verifica nome da tool
+4. Risk Level classifica → Se HIGH, HITL pede aprovação humana
+5. Executor roda `read_file("/etc/hosts")` → resultado volta ao LLM
+6. LLM formata resposta final para usuário
+
+Cada seta neste diagrama = uma decisão + possível ponto de falha.
+
 ### Segurança: Princípio do Menor Privilégio
 
 Agentes com acesso a ferramentas são perigosos se não forem restritos:
@@ -168,7 +199,28 @@ flowchart LR
 
 Isso garante que humanos mantenham controle sobre decisões importantes.
 
----
+## 🎬 O que você vai ver
+
+Antes de rodar o código, aqui está uma prévia do que o programa vai fazer:
+
+```
+$ python modules/p3a2_tool_calling/run.py
+
+🤖 Usuário pergunta: "Qual o tamanho da pasta /tmp?"
+
+🔧 Agente decide: usar tool 'list_directory'
+   Input: {path: "/tmp"}
+
+📋 Tool retorna: "512MB"
+
+💬 Resposta: "A pasta /tmp tem 512MB."
+
+⚠️ Usuário pergunta: "Apague todos os arquivos temporários"
+   Risco detectado: HIGH → HITL acionado
+   Agente aguarda aprovação humana...
+
+💰 Custo por ferramenta: list_directory=$0.002
+```
 
 ## Exercício Prático
 
@@ -185,10 +237,6 @@ Execute `python modules/p3a2_tool_calling/run.py` e observe:
 2. Se uma tool falhasse com erro, o agente deveria tentar outra tool ou pedir ajuda humana?
 3. Como você implementaria rate limiting para evitar abuso de ferramentas?
 
----
-
----
-
 ## 📌 Resumo do Módulo
 
 Tool calling é o que transforma um chatbot em agente:
@@ -204,6 +252,18 @@ Tool calling é o que transforma um chatbot em agente:
 5. **Ferramentas são extensões seguras** — cada tool define os limites do que o agente pode fazer. Ferramentas mal definidas = comportamento imprevisível. Defina permissões com cuidado.
 
 > ✅ **Você está pronto para:** Agora que seu agente pode agir, vamos aprender a lidar quando as coisas dão errado — resilience patterns.
+
+## ✅ Checklist: Como Saber Se Você Atingiu o Objetivo
+
+Marque cada item **só se conseguir fazer sem olhar o material**:
+
+- [ ] Explico a diferença entre chatbot passivo e agente com ferramentas
+- [ ] Descrevo o pattern tool calling (decide → executa → retorna resultado)
+- [ ] Explico por que HITL é necessário para ações de alto risco
+- [ ] Rodo `run.py` e explico como o agente escolhe qual ferramenta usar
+- [ ] Digo 3 riscos de permitir que LLM execute comandos shell
+
+> ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
 
 ---
 
@@ -226,4 +286,8 @@ Com tool calling, seu agente pode executar ações. Mas o mundo real é caótico
 - [OpenAI Function Calling](https://platform.openai.com/docs/guides/function-calling)
 - [Python subprocess Security](https://docs.python.org/3/library/subprocess.html#security-considerations)
 
-###
+### Tutoriais
+
+- [OpenAI Cookbook: Tool Calling](https://github.com/openai/openai-cookbook/tree/main/examples/function_calling) — Exemplos práticos
+- [Pydantic for JSON Schema](https://docs.pydantic.dev/latest/concepts/json_schema/) — Gerando schemas automaticamente
+- [Security Best Practices for LLM Agents](https://owasp.org/www-project-top-10-for-large-language-model-applications/) — OWASP LLM Top 10

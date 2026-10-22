@@ -6,13 +6,26 @@ Este módulo implementa o padrão mais usado em produção para dar conhecimento
 
 ## ⚠️ Pré-requisito
 
-Você precisa ter concluído o módulo [P1-Análise de Viabilidade](../p1_feasibility/MATERIAL.md). Especificamente, precisa saber:
+Você precisa ter concluído o módulo [P0-First-LLM](../p0_first_llm/MATERIAL.md). Especificamente, precisa saber:
 
-- Quando IA vale a pena vs quando regras bastam
-- Como medir latência, custo e qualidade
-- Como construir benchmarks comparativos
+- Como construir um agente simples com OpenAI API
+- O que é tokenização e por que tokens custam dinheiro
 
-Além disso, recomenda-se familiaridade com Python e conceitos básicos de vetores/embeddings. Se não domina embeddings, foque na intuição (vetores capturam significado) e não na matemática.
+### Conhecimento técnico necessário antes de P2
+
+Este módulo usa Python de forma mais avançada. Você **precisa saber**:
+
+| Conceito | Por que aparece em P2 | Nível necessário |
+| ---------- | ---------------------- | ------------------ |
+| **Funções** (`def`) | Todo pipeline RAG é organizado em funções | Saber definir e chamar |
+| **Dicionários** (`{}`) | Prompts, respostas da API, metadados são dicts | Ler/escrever chaves e valores |
+| **Listas** (`[]`) | Documentos, chunks, embeddings são listas | Iterar, fatiar, append |
+| **Import/Module** | `import chromadb`, `from openai import OpenAI` | Entender como importar bibliotecas |
+| **Classes básicas** | `ChromaClient`, `BaseModel` aparecem no código | Entender instância e método |
+
+Se não domina algum desses conceitos, revise-os antes de continuar. Não é matemática avançada — é Python básico.
+
+> 💡 **Sobre embeddings:** Se nunca ouviu falar, foque na intuição: *vetores capturam significado*. "Como resetar senha" e "Esqueci a senha" têm vetores próximos mesmo sem palavras em comum. A matemática vem depois.
 
 ---
 
@@ -76,6 +89,33 @@ ChromaDB é um banco de dados vetorial open-source que:
 - Suporta filtros por metadados (ex: só buscar em "Políticas")
 - Persiste dados em disco automaticamente
 
+### 🏗️ Arquitetura do Pipeline RAG
+
+> Referência completa: [architecture.md](architecture.md)
+
+O pipeline RAG é composto por 4 componentes principais:
+
+```
+[Documentos] → [Embedder] → [Vector DB] → [Retriever] → [LLM]
+      ↑              ↑              ↑            ↑
+   Ingestão     Embedding     Busca semântica  Contexto + Prompt
+```
+
+| Componente | Responsabilidade | Onde falha | Fallback |
+| ------------ | ------------------ | ------------ | ---------- |
+| **Embedder** | Converte texto → vetor | API indisponível | Embedder local (BGE) |
+| **Vector DB** | Armazena e busca vetores | Corrompido/descoberto | ChromaDB local |
+| **Retriever** | Seleciona docs relevantes | Threshold muito alto | Aumentar top_k |
+| **LLM** | Gera resposta final | Rate limit/timeout | Retry com backoff |
+
+**Fluxo completo:**
+
+1. **Ingestão**: documentos → chunking → embedding → salvar no vector DB
+2. **Busca**: pergunta → embedding → busca similaridade → top_k docs
+3. **Geração**: pergunta + docs → prompt → LLM → resposta
+
+Cada etapa tem trade-offs: chunk menor = mais preciso mas mais embeddings; top_k maior = mais contexto mas mais custo.
+
 ### Chunking — Divisão Inteligente de Documentos
 
 Documentos longos devem ser divididos em chunks menores (tipicamente 200-500 tokens):
@@ -111,7 +151,7 @@ flowchart TD
     V2 --> Cosine
 ```
 
-**Cosine Similarity**: mede o ângulo entre dois vetores, não a distância.
+**Cosine Similarity** (similaridade cosseno): mede o ângulo entre dois vetores, não a distância. Quanto mais próximo de 1, mais similares são semanticamente.
 
 ```
 Cosine(A, B) = (A · B) / (||A|| × ||B||)
@@ -141,7 +181,7 @@ Usuário: "Qual o status do chamado INC-4892?"
 [RRF] Combina os rankings → resultado correto
 ```
 
-**RRF (Reciprocal Rank Fusion)**: combina rankings de duas buscas sem precisar normalizar scores:
+**RRF (Reciprocal Rank Fusion / fusão de classificação recíproca)**: combina rankings de duas buscas sem precisar normalizar scores:
 
 ```
 RRF(score) = Σ 1 / (k + rank_da_busca_i)
@@ -268,7 +308,26 @@ Perda: $0.0001 por passo conversacional
 ROI: positivo a partir de 1 iteração economizada
 ```
 
----
+## 🎬 O que você vai ver
+
+Antes de rodar o código, aqui está uma prévia do que o programa vai fazer:
+
+```
+$ python modules/p2_rag/run.py
+
+📥 Ingestão de documentos...
+   3 documentos indexados no ChromaDB
+
+🔍 Buscando contexto para pergunta...
+   Documento mais relevante: guia_segurança.pdf (score: 0.15)
+
+🤖 Gerando resposta com contexto RAG...
+   "Baseado no guia de segurança, você deve..."
+
+💰 Custo total: $0.003 | Tempo: 1.8s
+```
+
+> 💡 **Nota:** ChromaDB é apenas uma opção. No mercado existem alternativas como Pinecone, Qdrant e Weaviate. O conceito é o mesmo — mudar o banco de vetores.
 
 ## Exercício Prático
 
@@ -302,6 +361,18 @@ RAG é o padrão mais usado em produção para dar conhecimento interno ao LLM:
 5. **Técnicas avançadas** — busca híbrida (vetorial + BM25) resolve códigos/IDs exatos. Re-ranking (cross-encoder) reavalia top-K com precisão. ROI real: $0.0001 de rewrite vs resposta mais precisa.
 
 > ✅ **Você está pronto para:** Agora que seu agente pode buscar conhecimento, vamos aprender a fazer ele **agir** — tool calling.
+
+## ✅ Checklist: Como Saber Se Você Atingiu o Objetivo
+
+Marque cada item **só se conseguir fazer sem olhar o material**:
+
+- [ ] Explico o problema que RAG resolve em 3 frases
+- [ ] Descrevo os 4 passos do pipeline RAG (ingestão → busca → geração)
+- [ ] Explico embeddings com uma analogia (vetores capturam significado)
+- [ ] Rodo `run.py` e explico como contexto dos docs é combinado na resposta
+- [ ] Cito 2 alternativas ao ChromaDB (Pinecone, Qdrant, Weaviate)
+
+> ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
 
 ---
 

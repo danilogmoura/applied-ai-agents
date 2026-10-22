@@ -130,6 +130,39 @@ event: done
 data: {"total_tokens": 15, "cost": 0.001}
 ```
 
+### 🏗️ Arquitetura do Pipeline Streaming
+
+> Referência completa: [architecture.md](architecture.md)
+
+O pipeline streaming é composto por 5 componentes:
+
+```
+[Cliente] ←── [SSE Server] ←── [LLM API]
+    ↑              ↓              ↓
+[Abort Signal] [Buffer Manager] [Token Counter]
+```
+
+| Componente | Responsabilidade | Parâmetro crítico |
+| ------------ | ------------------ | ------------------- |
+| **SSE Server** | Mantém conexão HTTP aberta + formata eventos | keep-alive timeout |
+| **Buffer Manager** | Agrupa tokens em chunks (2-4 tokens) | buffer_size, flush_interval |
+| **Token Counter** | Conta tokens acumulados + custo | max_tokens |
+| **Abort Handler** | Verifica sinal de cancelamento | abort_event.is_set() |
+| **LLM Generator** | Gera tokens um-a-um (async generator) | yield token |
+
+**Fluxo completo:**
+
+1. Cliente envia request → SSE Server abre conexão HTTP
+2. LLM gera token 1 → Token Counter incrementa → Buffer Manager acumula
+3. Buffer cheio (2-4 tokens) → SSE Server envia chunk formatado
+4. Repete passos 2-3 até LLM terminar
+5. SSE Server envia evento `done` com métricas finais
+6. Se cliente envia abort → Abort Handler para geração
+
+**Trade-off chave:** buffer maior = menos chunks mas mais delay inicial; buffer menor = mais responsivo mas mais overhead de rede.
+
+## 🎬 O que você vai ver
+
 **Regra crítica**: cada evento deve terminar com **duas quebras de linha** (`\n\n`). O cliente lê até encontrar `\n\n` e então processa o evento.
 
 **Por que streaming é mais rápido que wait-for-complete?**
@@ -150,7 +183,26 @@ flowchart LR
 
 O servidor usa `yield` (generator) para enviar cada chunk sem esperar o resto. No Python com FastAPI, isso é `StreamingResponse` + async generator.
 
----
+## 🎬 O que você vai ver
+
+Antes de rodar o código, aqui está uma prévia do que o programa vai fazer:
+
+```
+$ python modules/p8_streaming/run.py
+
+📡 Iniciando streaming...
+
+⏱️ 0.2s → "Olá! Aqui é seu assistente..."
+⏱️ 0.4s → " Vou ajudar você com sua pergunta sobre IA."
+⏱️ 0.6s → " Primeiramente, é importante entender que..."
+⏱️ 0.8s → "...agentes de IA usam ferramentas externas..."
+   ⚠️ Abort após 3 chunks — cancelado pelo usuário
+
+📊 Formato SSE enviado:
+   data: {"text": "Olá!", "done": false}
+   data: {"text": " Vou ajudar", "done": false}
+   data: {"text": "", "done": true}
+```
 
 ## Exercício Prático
 
@@ -184,6 +236,18 @@ Streaming é sobre percepção do usuário, não velocidade real:
 5. **Custo estimado antes de gerar** — contar tokens do input, estimativa do output, custo por token. Alertar usuário ANTES de gastar $0.50 em resposta.
 
 > ✅ **Você está pronto para:** Agora que respostas são responsivas, vamos otimizar custos com cache.
+
+## ✅ Checklist: Como Saber Se Você Atingiu o Objetivo
+
+Marque cada item **só se conseguir fazer sem olhar o material**:
+
+- [ ] Explico por que streaming melhora a experiência do usuário (tempo percebido)
+- [ ] Descrevo como SSE funciona (data: ... \n\n)
+- [ ] Explico a diferença entre streaming e wait-for-complete
+- [ ] Rodo `run.py` e observo os chunks aparecendo progressivamente
+- [ ] Digo 2 casos onde streaming NÃO é necessário
+
+> ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
 
 ---
 

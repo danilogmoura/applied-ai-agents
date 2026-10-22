@@ -130,7 +130,38 @@ flowchart LR
 
 Cada step recebe o output do anterior.
 
-#### Pattern de Pipeline
+### 🏗️ Arquitetura do Sistema de Skills
+
+> Referência completa: [architecture.md](architecture.md)
+
+O sistema de skills é composto por 4 componentes principais:
+
+```
+[Input] → [Skill Registry] → [Pipeline Engine] → [Output]
+              ↑                    ↓                  ↓
+         [Version Manager]   [Filter Chain]    [Error Handler]
+```
+
+| Componente | Responsabilidade | O que gerencia |
+| ------------ | ------------------ | ---------------- |
+| **Skill Registry** | Armazena todas as skills disponíveis | name → version → implementation |
+| **Version Manager** | Controla versões SemVer | v1.x vs v2.x (breaking) |
+| **Pipeline Engine** | Encadeia skills na ordem correta | input/output schemas |
+| **Filter Chain** | Aplica filtros entre skills | confiança, rate limit, conteúdo |
+| **Error Handler** | Gerencia falhas em pipelines | fail-fast, fallback, partial success |
+
+**Fluxo completo:**
+
+1. Request chega → Skill Registry lookup por nome da skill
+2. Version Manager seleciona versão ativa (ou específica @v1)
+3. Pipeline Engine encadeia: skill A output → skill B input
+4. Filter Chain valida entre cada skill (confiança > threshold?)
+5. Se skill falha → Error Handler decide: fail-fast / fallback / partial
+6. Output final validado contra schema esperado
+
+**Trade-off chave:** pipeline com muitas skills = mais modular mas mais latência; pipeline curto = rápido mas menos flexível.
+
+#### Por que versionar skills?
 
 ```python
 class SkillPipeline:
@@ -237,7 +268,30 @@ result = await skill.execute({"text": "Excelente produto!"})
 - Observabilidade: logue todas as chamadas via registry
 - Feature flags: canary deploy nova versão sem quebrar pipeline
 
----
+## 🎬 O que você vai ver
+
+Antes de rodar o código, aqui está uma prévia do que o programa vai fazer:
+
+```
+$ python modules/p10_skills/run.py
+
+📝 Registrando skills...
+   ✓ skill_analise
+   ✓ skill_formatacao
+   ✓ skill_validacao
+
+▶️ Executando skill_analise...
+   Input: "classificar ticket urgente"
+   Output: {"tipo": "classificacao", "prioridade": "urgente"}
+
+🔗 Pipeline encadeado: analise → formatacao → validacao
+   Resultado final: JSON estruturado válido
+
+📊 Estatísticas por skill:
+   skill_analise:    15 execuções | avg 0.3s
+   skill_formatacao: 15 execuções | avg 0.1s
+   skill_validacao:  15 execuções | avg 0.05s
+```
 
 ## Exercício Prático
 
@@ -271,6 +325,18 @@ Skills são blocos de construção reutilizáveis de agentes:
 5. **Registry centralizado** — todas as skills registradas em um lugar. Novas skills descobertas automaticamente. Desacoplamento entre definição e uso.
 
 > ✅ **Você está pronto para:** Agora que skills estão organizadas, vamos colocar tudo em produção com CI/CD.
+
+## ✅ Checklist: Como Saber Se Você Atingiu o Objetivo
+
+Marque cada item **só se conseguir fazer sem olhar o material**:
+
+- [ ] Explico o que é skill registry e por que centralizar
+- [ ] Descrevo como pipeline encadeia múltiplas skills
+- [ ] Explico como testar uma skill com mock
+- [ ] Rodo `run.py` e explico as estatísticas por skill
+- [ ] Digo 2 vantagens de skills serem plugáveis
+
+> ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
 
 ---
 

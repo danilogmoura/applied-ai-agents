@@ -37,6 +37,223 @@ class MultiAgentSystem:
         ...
 ```
 
+## 📖 Guia Passo a Passo
+
+### Passo 1 — Crie a classe base com especialistas pré-definidos
+
+Defina uma lista de agentes especialistas, cada um com domínio específico:
+
+```python
+import random
+from datetime import datetime
+
+class MultiAgentSystem:
+    def __init__(self):
+        # Especialistas disponíveis
+        self.specialists = {
+            "researcher": {
+                "name": "researcher",
+                "domain": ["pesquisar", "buscar", "informação", "dados"],
+                "response_template": "[Pesquisador] Encontrei as seguintes informações sobre '{query}':...",
+                "cost_per_call": 0.005,
+            },
+            "analyst": {
+                "name": "analyst",
+                "domain": ["analisar", "sentimento", "classificar", "tendência"],
+                "response_template": "[Analista] Após análise: {result}. Confiança: {confidence}%",
+                "cost_per_call": 0.008,
+            },
+            "writer": {
+                "name": "writer",
+                "domain": ["escrever", "resumo", "gerar texto", "formatar"],
+                "response_template": "[Escritor] Aqui está o texto formatado:\n\n{content}",
+                "cost_per_call": 0.003,
+            },
+            "coder": {
+                "name": "coder",
+                "domain": ["código", "programa", "script", "implementar"],
+                "response_template": "[Coder] ```python\n{code}\n```\nExplicação: {explanation}",
+                "cost_per_call": 0.010,
+            },
+        }
+        
+        self.context_shared = {}  # Contexto compartilhado entre agentes
+        self.cost_log = []
+```
+
+### Passo 2 — Roteie requests para especialistas
+
+O supervisor analisa o request e escolhe o especialista mais adequado:
+
+```python
+def route_to_specialist(self, request: str, specialists: list = None) -> dict:
+    """Supervisor roteia request para melhor especialista."""
+    if specialists is None:
+        specialists = list(self.specialists.keys())
+    
+    request_lower = request.lower()
+    
+    scores = {}
+    for spec_name in specialists:
+        spec = self.specialists[spec_name]
+        # Conta quantas keywords do domínio aparecem no request
+        matches = sum(1 for word in spec["domain"] if word in request_lower)
+        scores[spec_name] = matches
+    
+    # Escolhe especialista com maior score
+    if not scores or max(scores.values()) == 0:
+        return {"specialist": "researcher", "confidence": 0.0, "reason": "Nenhuma keyword correspondente, fallback para pesquisador"}
+    
+    best_spec = max(scores, key=scores.get)
+    confidence = scores[best_spec] / max(sum(scores.values()), 1)
+    
+    return {
+        "specialist": best_spec,
+        "confidence": round(confidence, 2),
+        "scores": scores,
+        "reason": f"Keyword matching: {scores[best_spec]} correspondências",
+    }
+```
+
+### Passo 3 — Implemente fallback quando especialista falha
+
+```python
+def handle_specialist_failure(self, specialist_name: str, 
+                              request: str) -> dict:
+    """Fallback: tenta outro especialista ou responde genericamente."""
+    available = [s for s in self.specialists if s != specialist_name]
+    
+    if not available:
+        return {
+            "status": "failed",
+            "response": "Todos os especialistas indisponíveis. Respondendo genericamente.",
+            "source": "generic_fallback",
+        }
+    
+    # Tenta o próximo especialista disponível
+    next_spec = available[0]
+    print(f"  ⚠️ {specialist_name} falhou, tentando {next_spec}...")
+    
+    # Simula resposta do fallback
+    response = f"[Fallback-{next_spec}] Não pude processar com {specialist_name}, mas aqui vai uma resposta genérica para: '{request}'"
+    
+    return {
+        "status": "fallback",
+        "original_specialist": specialist_name,
+        "fallback_specialist": next_spec,
+        "response": response,
+    }
+```
+
+### Passo 4 — Compartilhe contexto entre agentes
+
+```python
+def share_context(self, agent_outputs: list) -> dict:
+    """Compartilha contexto entre agentes (sincronização)."""
+    shared = {}
+    
+    for output in agent_outputs:
+        agent = output.get("agent", "unknown")
+        content = output.get("response", "")
+        
+        # Extrai insights-chave do output
+        if "Confiança:" in content:
+            try:
+                conf = float(content.split("Confiança:")[1].split("%")[0])
+                shared[f"{agent}_confidence"] = conf
+            except (IndexError, ValueError):
+                pass
+        
+        if "Encontrei" in content:
+            shared[f"{agent}_found_info"] = True
+    
+    self.context_shared.update(shared)
+    return shared
+```
+
+### Passo 5 — Calcule custo total
+
+```python
+def calculate_multi_agent_cost(self, agent_costs: list) -> dict:
+    """Calcula custo total + overhead de coordenação."""
+    total = sum(agent_costs)
+    overhead = total * 0.1  # 10% overhead por coordenação
+    grand_total = total + overhead
+    
+    return {
+        "agent_costs_sum": round(total, 4),
+        "coordination_overhead": round(overhead, 4),
+        "grand_total": round(grand_total, 4),
+        "num_agents": len(agent_costs),
+        "avg_cost_per_agent": round(grand_total / len(agent_costs), 4) if agent_costs else 0,
+    }
+```
+
+### Passo 6 — Execute pipeline hierárquico
+
+```python
+def execute_hierarchical(self, task: str, hierarchy: dict) -> dict:
+    """Executa tarefa em estrutura hierárquica (manager → workers)."""
+    manager = hierarchy.get("manager", "researcher")
+    workers = hierarchy.get("workers", [])
+    
+    results = []
+    total_cost = 0
+    
+    # Manager faz roteamento inicial
+    routing = self.route_to_specialist(task, workers)
+    chosen = routing["specialist"]
+    
+    # Executa com especialista escolhido
+    spec = self.specialists[chosen]
+    response = spec["response_template"].format(query=task, result="análise completa", confidence=85, content="texto formatado", code="# código simulado", explanation="explicação básica")
+    
+    results.append({"agent": chosen, "response": response})
+    total_cost += spec["cost_per_call"]
+    
+    # Calcula custo
+    cost_info = self.calculate_multi_agent_cost([total_cost])
+    
+    return {
+        "task": task,
+        "manager": manager,
+        "chosen_specialist": chosen,
+        "routing_confidence": routing["confidence"],
+        "results": results,
+        "cost": cost_info,
+    }
+```
+
+### Passo 7 — Adicione CLI
+
+```python
+if __name__ == "__main__":
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Sistema multi-agentes")
+    parser.add_argument("--task", default="analisar sentimento dos reviews")
+    parser.add_argument("--hierarchy", action="store_true")
+    args = parser.parse_args()
+    
+    system = MultiAgentSystem()
+    
+    if args.hierarchy:
+        hierarchy = {
+            "manager": "researcher",
+            "workers": ["analyst", "writer", "coder"],
+        }
+        result = system.execute_hierarchical(args.task, hierarchy)
+    else:
+        routing = system.route_to_specialist(args.task)
+        print(f"Especialista escolhido: {routing['specialist']}")
+        print(f"Confiança: {routing['confidence']}")
+        print(f"Motivo: {routing['reason']}")
+        result = {"routing": routing}
+    
+    print("\n=== Resultado ===")
+    print(result)
+```
+
 ## Teste seu código
 
 ```bash
@@ -50,3 +267,16 @@ python multi_agent_system.py --hierarchy org_chart.json --batch tasks.json
 - [ ] Communication protocol entre agents
 - [ ] Load balancing entre workers
 - [ ] Simulation dashboard com visualização de interações
+
+## ✅ Critérios de Sucesso
+
+Marque cada item **só se conseguir fazer sem olhar o material**:
+
+- [ ] `MultiAgentSystem` tem registry de pelo menos 4 especialistas
+- [ ] `route_to_specialist()` escolhe especialista baseado em keyword matching
+- [ ] `handle_specialist_failure()` faz fallback para outro especialista
+- [ ] `share_context()` extrai e compartilha insights entre agentes
+- [ ] `calculate_multi_agent_cost()` soma custos + overhead de coordenação
+- [ ] `execute_hierarchical()` orquestra manager → workers
+
+> ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
