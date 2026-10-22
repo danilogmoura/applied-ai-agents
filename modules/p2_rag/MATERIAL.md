@@ -99,6 +99,162 @@ O modelo aprendeu durante o treino que textos com significado similar produzem v
 
 ---
 
+## Técnicas Avançadas de Produção
+
+### 1. Busca Híbrida (Vetorial + BM25)
+
+Em sistemas reais, usuários buscam códigos de produto, números de chamado, IDs de erro, siglas internas. Vetores puros falham nesses casos:
+
+```
+Usuário: "Qual o status do chamado INC-4892?"
+         ↓
+[Busca vetorial] → docs sobre "status" e "chamado" mas não encontra INC-4892
+[Busca BM25]     → encontra EXATAMENTE "INC-4892" ✅
+         ↓
+[RRF] Combina os rankings → resultado correto
+```
+
+**RRF (Reciprocal Rank Fusion)**: combina rankings de duas buscas sem precisar normalizar scores:
+
+```
+RRF(score) = Σ 1 / (k + rank_da_busca_i)
+
+k = constante (geralmente 60)
+Quanto melhor o rank, maior o score final.
+```
+
+Nenhum banco vetorial faz busca híbrida nativamente — é código na aplicação. Elasticsearch, OpenSearch e Qdrant já oferecem isso embutido.
+
+#### Por que BM25 ainda existe?
+
+BM25 é um algoritmo de busca lexical de 1994 que conta palavras com ponderação IDF (termos raros valem mais). Ele é:
+- **Determinístico**: "INC-4892" sempre encontra "INC-4892"
+- **Rápido**: sem cálculo de vetores
+- **Barato**: roda em qualquer servidor
+
+Vetorial entende significado; BM25 entende exatidão. Juntos, cobrem tudo.
+
+### 2. Re-ranking (Cross-Encoder)
+
+Após buscar N documentos, um reranker reavalia só os top-K com muito mais precisão:
+
+```
+Passo 1 — Embedding (fast, impreciso):
+  Pergunta → [Embedder] → vetor
+  Docs → [Embedder] → vetores
+  Top-50 por cosine similarity
+         ↓
+Passo 2 — Reranker (slow, preciso):
+  Para cada um dos 50:
+    [Cross-Encoder] pergunta + doc → score 0-1
+  Top-5 para o LLM
+```
+
+**Diferença fundamental:**
+
+| Embedding (Bi-Encoder) | Reranker (Cross-Encoder) |
+|------------------------|--------------------------|
+| Processa pergunta e doc separadamente | Processa pergunta E doc juntos |
+| ~10ms por par | ~100ms por par |
+| Escala para milhões de docs | Só escala para centenas |
+| Similaridade grosseira | Entende nuances contextuais |
+
+Empresas usam APIs cloud (Cohere Rerank, Azure AI Search Semantic Ranker) ou modelos locais (`bge-reranker` em GPU, otimizado via ONNX/TensorRT).
+
+#### Por Baixo dos Panos: Bi-Encoder vs Cross-Encoder
+
+```
+Bi-Encoder (embedding tradicional):
+┌──────────┐                    ┌──────────┐
+│ Pergunta │→ [Modelo] → vetor A│          │
+└──────────┘                    │ Vetor DB │
+┌──────────┐                    │          │
+│ Doc 1    │→ [Modelo] → vetor B│          │
+└──────────┘                    └──────────┘
+Cosine(A, B) = 0.78
+
+Cross-Encoder (reranker):
+┌─────────────────────┐
+│ Pergunta + Doc 1    │→ [Modelo único] → 0.82
+│ "juntos como texto" │
+└─────────────────────┘
+
+O cross-encoder vê interações entre palavras da pergunta E do documento.
+"Senha" na pergunta + "resetar senha" no doc → atenção cruzada forte.
+No bi-encoder, essa interação é perdida.
+```
+
+### 3. Parent-Child / Chunking Estruturado
+
+Chunking por tamanho arbitrário (500 tokens) quebra tabelas, assinaturas e cláusulas. A solução:
+
+```
+Documento original (pai):
+┌─────────────────────────────────────────┐
+│ Contrato de Serviço - Seção 4           │
+│ 4.1 Confidencialidade                   │
+│ As partes comprometem-se a...           │
+│ 4.2 Vigência                            │
+│ O contrato vale por 24 meses...         │
+└─────────────────────────────────────────┘
+         ↓ dividido para busca
+Chunks filhos (buscados individualmente):
+  chunk_4.1_confidencialidade (120 tokens)
+  chunk_4.2_vigencia (80 tokens)
+         ↓
+Se usuário busca "prazos do contrato":
+  chunk_4.2 vence (cosine alta)
+         ↓
+Mas devolvemos ao LLM o PAI inteiro:
+  → Modelo vê contexto completo da seção 4
+```
+
+**Por que funciona:** chunks pequenos = embedding preciso. Devolver o pai = contexto rico.
+
+### 4. Query Rewriting / Contextualização Conversacional
+
+Em chatbots, perguntas sequenciais perdem referência:
+
+```
+Usuário: "Como faço login no sistema?"
+  → Busca: "login sistema" → docs corretos ✅
+         ↓
+Usuário: "E se eu esquecer a senha?"
+  → Busca literal: "esquecer senha" → docs genéricos ❌
+  → Query rewriting: "como resetar senha no sistema de login"
+  → Busca: "resetar senha sistema login" → docs corretos ✅
+```
+
+Um modelo rápido e barato (gpt-4o-mini, não gpt-4o) reescreve a pergunta mantendo contexto:
+
+```python
+prompt_rewrite = f"""
+Reescreva esta pergunta mantendo o contexto da conversa:
+
+Conversa anterior:
+{conversation_history[-3:]}
+
+Pergunta atual: {user_question}
+
+Responda APENAS com a pergunta reescrita, sem explicação."""
+```
+
+#### Por Baixo dos Panos: Custo do Rewriting
+
+```
+Sem rewriting:        Com rewriting:
+Custo busca: $0       Custo busca: $0
+Custo LLM judge: $0   Custo rewrite: $0.0001
+Custo geração: $0.05  Custo geração: $0.04 (menos tokens)
+Custo total: $0.05    Custo total: $0.0501
+
+Ganho: resposta mais precisa = menos iterações do usuário
+Perda: $0.0001 por passo conversacional
+ROI: positivo a partir de 1 iteração economizada
+```
+
+---
+
 ## Exercício Prático
 
 Execute `python modules/p2_rag/run.py` e observe:
