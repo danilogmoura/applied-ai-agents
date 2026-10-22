@@ -386,17 +386,4 @@ Com RAG, seu agente pode responder perguntas com base em documentos. Mas no mund
 
 ## Referências
 
-### Livros
-
-- **"Building LLMs for Production"** by Christopher Keith & Anthony Langstone (O'Reilly) — Capítulos sobre RAG pipelines
-
-### Documentação Oficial
-
-- [ChromaDB Documentation](https://docs.trychroma.com/)
-- [OpenAI Embeddings API](https://platform.openai.com/docs/guides/embeddings)
-- [Vector Search Concepts](https://www.pinecone.io/learn/vector-search/) — Pinecone Docs
-
-### Tutoriais
-
-- [LangChain RAG Tutorial](https://python.langchain.com/docs/tutorials/rag-chatbot/) — LangChain Docs
-- [ChromaDB Quickstart](https://docs.trychroma.com/getting-started) — ChromaDB Docs
+(empty)
