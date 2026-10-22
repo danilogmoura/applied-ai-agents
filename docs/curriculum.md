@@ -131,7 +131,7 @@ ai-agents-course/
 ### Fase 5: Maturidade de Produção (P5–P11)
 
 | Módulo | Conceito | Ferramentas | Entregável |
-|--------|----------|-------------|------------|
+| -------- | ---------- | ------------- | ------------ |
 | **P5** | Avaliação e testes | Pydantic, golden dataset | Relatório AB testing |
 | **P6** | Segurança e guardrails | Regex patterns, output validator | Sistema de filtros |
 | **P7** | Memória e contexto | Short/long-term memory | Agente com memória |

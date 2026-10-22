@@ -34,7 +34,7 @@ Em produção: Redis com TTL (Time To Live).
 Nem toda tarefa precisa do modelo mais caro:
 
 | Tarefa | Modelo Recomendado | Custo Relativo |
-|--------|-------------------|----------------|
+| -------- | ------------------- | ---------------- |
 | Classificar spam | gpt-4o-mini | 1x |
 | Chat básico | gpt-4o-mini | 1x |
 | Analisar sentimento | gpt-4o | 15x |

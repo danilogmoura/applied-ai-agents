@@ -21,7 +21,7 @@ Memória de curto prazo é o histórico da conversa atual:
 Estratégias de gestão quando o contexto enche:
 
 | Estratégia | Como funciona | Vantagem | Desvantagem |
-|------------|--------------|----------|-------------|
+| ------------ | -------------- | ---------- | ------------- |
 | **Sliding Window** | Remove mensagens mais antigas | Simples | Perde contexto importante |
 | **Token Budget** | Para de adicionar ao atingir limite | Previsível | Ignora novas mensagens |
 | **Summarization** | Resume segmentos antigos | Preserva informação | Custo de sumarização |
@@ -36,6 +36,7 @@ Sessão 2: "Qual meu nome?" → recupera do LT memory → responde corretamente
 ```
 
 Funciona como um vector store simplificado:
+
 1. Embedding do conteúdo
 2. Busca por similaridade com a query
 3. Retorna memórias mais relevantes

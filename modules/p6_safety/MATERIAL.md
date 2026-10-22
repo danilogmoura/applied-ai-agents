@@ -36,7 +36,7 @@ Técnicas para burlar filtros de segurança:
 Filtragem em duas direções:
 
 | Direção | O que filtra | Como |
-|---------|-------------|------|
+| --------- | ------------- | ------ |
 | Input | Prompt injection, jailbreak, conteúdo inadequado | Regex + LLM judge |
 | Output | Dados sensíveis, alucinações, conteúdo problemático | Regex + output validator |
 

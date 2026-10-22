@@ -27,6 +27,7 @@ data: {"type": "done", "tokens": 15, "cost": 0.001}
 ```
 
 Vantagens sobre WebSocket:
+
 - **Unidirecional**: só servidor → cliente (suficiente para LLM responses)
 - **HTTP nativo**: funciona com qualquer proxy/load balancer
 - **Reconexão automática**: browser reconecta se cair
@@ -49,7 +50,7 @@ if agent._abort_event.is_set():
 ### Latência Percebida vs Real
 
 | Métrica | Sem Streaming | Com Streaming |
-|---------|--------------|---------------|
+| --------- | -------------- | --------------- |
 | Tempo até primeira palavra | 3s | 0.2s |
 | Tempo total | 5s | 5s |
 | UX | "Está travado?" | "Já está respondendo!" |

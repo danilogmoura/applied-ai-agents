@@ -5,6 +5,7 @@
 ### Por que Monitorar Agentes?
 
 Em produção, você precisa saber:
+
 - Quantas chamadas estão sendo feitas?
 - Quanto está custando?
 - Qual a latência média?
@@ -13,7 +14,7 @@ Em produção, você precisa saber:
 ### Métricas Essenciais
 
 | Métrica | O que mede | Threshold típico |
-|---------|-----------|-----------------|
+| --------- | ----------- | ----------------- |
 | **Latência P50** | Tempo médio | < 1s |
 | **Latência P95** | Top 5% mais lento | < 3s |
 | **Taxa de erro** | % de falhas | < 5% |

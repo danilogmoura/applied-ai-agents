@@ -25,7 +25,7 @@ Funciona como um "banco de questões" para testar o agente. Cada execução gera
 ### Métricas de Avaliação
 
 | Métrica | O que mede | Quando usar |
-|---------|------------|-------------|
+| --------- | ------------ | ------------- |
 | **Exact Match** | Correspondência exata | Classificações discretas |
 | **Fuzzy Match** | Sobreposição de palavras | Textos livres parciais |
 | **LLM-as-a-Judge** | Julgamento por outro LLM | Respostas complexas/abertas |
