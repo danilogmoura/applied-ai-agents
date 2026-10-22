@@ -24,6 +24,23 @@ FastAPI é um framework web para Python que oferece:
 4. **Async/await**: Suporte nativo a operações assíncronas
 5. **Performance**: Uma das frameworks Python mais rápidas (comparável a Go/Node.js)
 
+### Fluxo de uma Requisição na API
+
+```
+┌──────────┐     ┌─────────────┐     ┌──────────────┐     ┌──────────────┐
+│ Cliente   │────→│ Middleware  │────→│ Router       │────→│ AgentService │
+│ curl/curl │     │ (timing,    │     │ (validação   │     │ (LLM call)   │
+│ HTTP req) │     │  request-id)│     │  Pydantic)   │     │              │
+└──────────┘     └─────────────┘     └──────────────┘     └──────────────┘
+                                                                        ↓
+                                                                ┌──────────────┐
+                                                                │ OpenAI API   │
+                                                                │ gpt-4o-mini  │
+                                                                └──────────────┘
+```
+
+Cada requisição passa por 4 camadas antes de chegar ao LLM.
+
 ```python
 @app.post("/chat", response_model=AgentResponse)
 async def chat(request: AgentRequest) -> AgentResponse:

@@ -27,6 +27,23 @@ Ao avaliar uma solução de IA, você deve medir:
    - Regras precisam de ajuste contínuo de keywords
    - IA precisa de monitoramento de qualidade + ajuste de prompts
 
+### Exemplo de Benchmark: IA vs Regras
+
+```
+┌──────────────────┬───────────────┬───────────────┐
+│ Métrica          │ IA (gpt-4o)   │ Regras        │
+├──────────────────┼───────────────┼───────────────┤
+│ Latência média   │ 1.2s          │ 0.001s        │
+│ P95 latência     │ 3.5s          │ 0.002s        │
+│ Custo/10k cham.  │ $15.00        │ $0.00         │
+│ Acurácia         │ 92%           │ 78%           │
+│ Manutenção/mês   │ 2 horas       │ 8 horas       │
+└──────────────────┴───────────────┴───────────────┘
+```
+
+Para 100 tickets/mês → regras podem bastar.
+Para 100.000 tickets/mês → IA se paga pela escalabilidade.
+
 ### Memorando Técnico
 
 Um memorando técnico é um documento de decisão baseado em dados. Ele deve conter:

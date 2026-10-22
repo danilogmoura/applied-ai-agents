@@ -11,6 +11,19 @@ Sistemas tradicionais têm firewalls, autenticação e validação de input. Age
 - **Data leakage**: Agente vaza dados sensíveis em respostas
 - **Tool abuse**: Agente executa ferramentas de forma perigosa
 
+### Fluxo de Defesa em Camadas
+
+```
+┌──────────────┐     ┌───────────────┐     ┌───────────────┐     ┌──────────┐
+│ Input        │────→│ Prompt Inject.│────→│ Content       │────→│ Output   │
+│ do Usuário   │     │ Detector      │     │ Filter        │     │ Seguro   │
+└──────────────┘     └───────────────┘     └───────────────┘     └──────────┘
+                         ↓ Bloqueado            ↓ Mascara           ✓ Liberado
+                        [ALERTA]              [DADOS OCULTOS]
+```
+
+Cada camada filtra ameaças diferentes — se uma falha, a próxima pode salvar.
+
 ### Prompt Injection
 
 O ataque mais comum. O usuário tenta sobrescrever as instruções do sistema:

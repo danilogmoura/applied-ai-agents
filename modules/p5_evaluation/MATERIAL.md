@@ -8,6 +8,18 @@ Sem avaliação, você está cego. Mudou o prompt? Trocou de modelo? Adicionou u
 
 **Avaliação é o que separa desenvolvimento amador de produção profissional.**
 
+### Pipeline de Avaliação
+
+```
+┌──────────┐     ┌─────────────┐     ┌──────────────┐     ┌──────────┐
+│ Golden   │────→│ Modelo      │────→│ Avaliador    │────→│ Score    │
+│ Dataset  │     │ sendo testado│     │ (exact/fuzzy/│     │ Estatístico│
+│          │     │             │     │ LLM-judge)   │     │           │
+└──────────┘     └─────────────┘     └──────────────┘     └──────────┘
+```
+
+Cada exemplo do dataset passa por este pipeline, gerando scores comparáveis entre versões.
+
 ### Golden Dataset — Respostas Esperadas
 
 Um golden dataset é um conjunto de exemplos com input + resposta esperada (ground truth):

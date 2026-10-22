@@ -12,6 +12,22 @@ Um agente de IA é um sistema que usa modelos de linguagem (LLMs) para tomar dec
 
 Neste primeiro módulo, vamos construir o esqueleto mínimo de um agente: receber um "ticket" de suporte e classificar sua prioridade usando o GPT-4o-mini.
 
+### Fluxo Básico de um Agente
+
+```
+┌──────────┐     ┌─────────────┐     ┌──────────────┐
+│ Entrada   │────→│ [LLM API]   │────→│ Saída        │
+│ Ticket    │     │ gpt-4o-mini │     │ Classificação│
+│ "Sem senha"│     │ + prompt    │     │ "URGENTE"    │
+└──────────┘     └─────────────┘     └──────────────┘
+```
+
+Cada chamada passa por 3 etapas:
+
+1. **Montagem do prompt**: sistema + contexto + entrada do usuário
+2. **Envio à API**: JSON com model, messages, tokens
+3. **Parse da resposta**: extrair conteúdo do JSON retornado
+
 ### Por que começar com classificação?
 
 Classificação é uma das tarefas mais comuns em automação com IA:
@@ -42,12 +58,35 @@ print(response.choices[0].message.content)
 
 Cada chamada à API tem um custo baseado no número de tokens. Tokens são pedaços de texto (palavras, partes de palavras, pontuação). A OpenAI cobra por milhão de tokens:
 
-| Modelo | Custo por 1M tokens (input) |
-|--------|---------------------------|
-| gpt-4o-mini | $0.15 |
-| gpt-4o | $2.50 |
+| Modelo | Custo por 1M tokens (input) | Custo por 1M tokens (output) |
+| -------- | --------------------------- | ---------------------------- |
+| gpt-4o-mini | $0.15 | $0.60 |
+| gpt-4o | $2.50 | $10.00 |
 
 Para um ticket de 200 tokens, o custo é ~$0.00003 — quase nada, mas importante rastrear em escala.
+
+### Exemplo Completo: Classificação de Ticket
+
+```python
+# Entrada do usuário
+ticket = {
+    "id": "TKT-001",
+    "assunto": "Não consigo acessar minha conta",
+    "descricao": "Erro 403 ao tentar logar, já limpei cache"
+}
+
+# Prompt enviado ao LLM
+prompt = f"""Você é um classificador de tickets de suporte.
+Classifique a prioridade deste ticket:
+
+Assunto: {ticket['assunto']}
+Descrição: {ticket['descricao']}
+
+Retorne apenas: BAIXA, MEDIA ou ALTA"""
+
+# Resposta do LLM
+# → "ALTA"
+```
 
 ### Regras de Segurança
 

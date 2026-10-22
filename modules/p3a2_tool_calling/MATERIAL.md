@@ -110,4 +110,4 @@ Execute `python modules/p3a2_tool_calling/run.py` e observe:
 - [OpenAI Function Calling](https://platform.openai.com/docs/guides/function-calling)
 - [Python subprocess Security](https://docs.python.org/3/library/subprocess.html#security-considerations)
 
-### 
+###
