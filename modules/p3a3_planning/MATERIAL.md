@@ -5,12 +5,14 @@
 ### Por que Planejadores Precisam Ser Resilientes?
 
 Em produção, coisas falham:
+
 - APIs externas caem (503 Service Unavailable)
 - Rate limits são atingidos (429 Too Many Requests)
 - Timeouts ocorrem em chamadas lentas
 - Serviços são reiniciados para deploy
 
 Um planejador ingênuo falha completamente quando um passo falha. Um planejador resiliente:
+
 1. **Detecta** a falha rapidamente
 2. **Protege** contra retries inúteis (circuit breaker)
 3. **Salva** progresso periodicamente (checkpoint)
@@ -60,7 +62,7 @@ Se o sistema crashar ou precisar ser reiniciado, carregamos o checkpoint e conti
 ### Trade-offs de Resiliência
 
 | Técnica | Vantagem | Custo |
-|---------|----------|-------|
+| --------- | ---------- | ------- |
 | Circuit Breaker | Evita cascata de falhas | Latência adicional (fallback) |
 | Checkpoints | Recuperação após crash | I/O de escrita em disco |
 | Retry com backoff | Tenta novamente suavemente | Atraso na resposta |

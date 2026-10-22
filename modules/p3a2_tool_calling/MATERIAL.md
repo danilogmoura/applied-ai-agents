@@ -5,6 +5,7 @@
 ### Do Texto à Ação
 
 Até agora, nossos agentes só **geravam texto**. Mas no mundo real, agentes precisam:
+
 - Ler arquivos do sistema de arquivos
 - Consultar APIs externas
 - Executar comandos
@@ -55,7 +56,7 @@ Este schema é enviado ao LLM junto com o prompt. O modelo responde com JSON est
 Agentes com acesso a ferramentas são perigosos se não forem restritos:
 
 | Camada de Segurança | O que faz |
-|---------------------|-----------|
+| --------------------- | ----------- |
 | **Whitelist** | Só permite comandos/funções pré-aprovados |
 | **Risk Levels** | Classifica cada tool (LOW/MEDIUM/HIGH/CRITICAL) |
 | **Human-in-the-Loop** | Pede aprovação humana para ações críticas |

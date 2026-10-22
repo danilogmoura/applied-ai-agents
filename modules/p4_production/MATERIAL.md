@@ -7,7 +7,7 @@
 Até agora, executamos scripts Python isolados. Em produção, precisamos de:
 
 | Script Local | API de Produção |
-|-------------|-----------------|
+| ------------- | ----------------- |
 | Executa e para | Fica rodando 24/7 |
 | Um usuário por vez | Múltiplos usuários simultâneos |
 | Sem autenticação | Com validação e segurança |
@@ -52,6 +52,7 @@ class AgentResponse(BaseModel):
 ```
 
 Isso garante que:
+
 - Requests inválidos são rejeitados antes de chegar à lógica
 - Clients sabem exatamente o formato esperado
 - Docs Swagger são gerados automaticamente
@@ -77,6 +78,7 @@ class MonitoringMiddleware:
 ```
 
 Headers customizados permitem:
+
 - Rastrear cada request individualmente nos logs
 - Medir latência por endpoint
 - Debugar problemas em produção
@@ -95,6 +97,7 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
 Vantagens:
+
 - Mesma imagem local e produção
 - Dependências congeladas
 - Isolamento de ambientes
@@ -122,11 +125,12 @@ Orquestra múltiplos serviços com dependências e volumes persistentes.
 Execute `python modules/p4_production/run.py --serve` e observe:
 
 1. A API iniciando no port 8000
-2. Docs Swagger em http://localhost:8000/docs
+2. Docs Swagger em <http://localhost:8000/docs>
 3. Teste endpoints via curl ou interface interativa do Swagger
 4. Métricas acumuladas em `/metrics`
 
 Ou use Docker:
+
 ```bash
 docker-compose up --build
 ```

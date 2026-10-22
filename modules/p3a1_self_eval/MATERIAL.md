@@ -5,6 +5,7 @@
 ### O Problema da Confiança
 
 LLMs são poderosos mas não são perfeitos. Eles podem:
+
 - Inventar fatos (alucinação)
 - Ser incompletos ou vagos
 - Perder nuances importantes
@@ -44,7 +45,7 @@ Este loop é inspirado em como humanos revisam textos: escrevemos, lemos, identi
 Sem limite, o agente poderia entrar em loop infinito refinando infinitamente. O `max_iterations` define um teto seguro:
 
 | Iterações | Vantagem | Desvantagem |
-|-----------|----------|-------------|
+| ----------- | ---------- | ------------- |
 | 1 | Rápido, barato | Qualidade incerta |
 | 3 | Equilíbrio | Custo moderado |
 | 5+ | Alta qualidade | Custo elevado, diminishing returns |
@@ -52,6 +53,7 @@ Sem limite, o agente poderia entrar em loop infinito refinando infinitamente. O 
 ### beta.chat.completions.parse()
 
 A API da OpenAI com `beta.chat.completions.parse()` faz mágica:
+
 1. Envia prompt ao LLM
 2. Parseia a resposta JSON automaticamente
 3. Valida contra o schema Pydantic

@@ -7,7 +7,7 @@
 Um único agente tentando fazer tudo é como um generalista tentando ser expert em todas as áreas. Sistemas multiagente oferecem:
 
 | Agente Único | Múltiplos Agentes |
-|--------------|-------------------|
+| -------------- | ------------------- |
 | Prompt genérico | Prompts especializados por domínio |
 | Falha única = sistema todo falha | Especialista falha = fallback para outro |
 | Custo alto (contexto grande) | Custo otimizado (cada agente tem contexto mínimo) |
@@ -30,6 +30,7 @@ Um único agente tentando fazer tudo é como um generalista tentando ser expert 
 ```
 
 O supervisor:
+
 1. **Entende** a intenção da tarefa
 2. **Roteia** para o especialista mais adequado
 3. **Coordena** retries e fallbacks
@@ -40,6 +41,7 @@ O supervisor:
 Dois approaches para decidir qual especialista chamar:
 
 **LLM-based routing** (produção):
+
 ```python
 response = client.chat.completions.create(
     model="gpt-4o-mini",
@@ -50,6 +52,7 @@ response = client.chat.completions.create(
 ```
 
 **Heuristic routing** (demonstração):
+
 ```python
 if "dados" in task.lower():
     return data_analyst_agent
