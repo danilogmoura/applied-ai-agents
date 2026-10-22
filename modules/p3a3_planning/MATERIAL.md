@@ -22,21 +22,29 @@ Um planejador ingênuo falha completamente quando um passo falha. Um planejador 
 
 Inspirado em disjuntores elétricos: se muitos erros acontecem, o circuito "abre" e para de tentar por um tempo.
 
-```
-Estado CLOSED (Fechado)
-  → Chamadas fluem normalmente
-  → Conta falhas consecutivas
-  → Se falhas >= threshold → muda para OPEN
-
-Estado OPEN (Aberto)  
-  → Todas as chamadas são bloqueadas
-  → Usa resposta fallback/cacheada
-  → Após recovery_timeout → muda para HALF_OPEN
-
-Estado HALF_OPEN (Meio Aberto)
-  → Permite 1 chamada de teste
-  → Se sucesso → volta para CLOSED
-  → Se falha → volta para OPEN
+```mermaid
+stateDiagram-v2
+    [*] --> CLOSED
+    CLOSED --> OPEN: Falhas >= threshold
+    OPEN --> HALF_OPEN: recovery_timeout
+    HALF_OPEN --> CLOSED: Sucesso
+    HALF_OPEN --> OPEN: Falha
+    
+    note right of CLOSED
+      Chamadas fluem normalmente
+      Conta falhas consecutivas
+    end note
+    
+    note right of OPEN
+      Todas chamadas bloqueadas
+      Usa resposta fallback/cacheada
+    end note
+    
+    note right of HALF_OPEN
+      1 chamada de teste
+      Se sucesso → CLOSED
+      Se falha → OPEN
+    end note
 ```
 
 Este pattern evita o **cascata de falhas**: quando um serviço lento faz todos os outros serviços esperarem até esgotar memória.

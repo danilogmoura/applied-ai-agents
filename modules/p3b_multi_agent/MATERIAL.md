@@ -15,18 +15,12 @@ Um único agente tentando fazer tudo é como um generalista tentando ser expert 
 
 ### Arquitetura Supervisor-Especialista
 
-```
-                    ┌──────────────┐
-  Tarefa do Usuário │  SUPERVISOR  │
-─────────────────→  │   (Router)   │
-                    └──────┬───────┘
-                           │ Decide qual especialista
-              ┌────────────┼────────────┐
-              ↓            ↓            ↓
-        ┌──────────┐ ┌──────────┐ ┌──────────┐
-        │ Análise  │ │ Pesquisa │ │ Tradução │
-        │  de Dados│ │    Web   │          │
-        └──────────┘ └──────────┘ └──────────┘
+```mermaid
+flowchart TD
+    User["👤 Tarefa do Usuário"] --> Supervisor["🧠 SUPERVISOR\n(Router)"]
+    Supervisor -->|Decide qual especialista| Data["📊 Análise de Dados"]
+    Supervisor -->|Decide qual especialista| Web["🌐 Pesquisa Web"]
+    Supervisor -->|Decide qual especialista| Trans["🌍 Tradução"]
 ```
 
 O supervisor:

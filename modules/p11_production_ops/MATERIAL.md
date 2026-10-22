@@ -60,25 +60,18 @@ Logs em JSON para facilitar análise:
 
 Quando uma API falha, nunca repita imediatamente. Use backoff exponencial — mas com aleatoriedade:
 
-```
-Falha na API → espera antes de tentar de novo:
-
-Sem jitter (pior caso):
-  Tentativa 1: falha → espera 1s
-  Tentativa 2: falha → espera 2s
-  Tentativa 3: falha → espera 4s
-  Tentativa 4: falha → espera 8s
-  ... todos os clientes esperam EXATAMENTE o mesmo tempo
-  → quando reiniciam, TODOS tentam juntos de novo
-  → thundering herd = mais carga no servidor
-
-Com jitter (recomendado):
-  Tentativa 1: falha → espera 1s ± 0.5s (random)
-  Tentativa 2: falha → espera 2s ± 1s (random)
-  Tentativa 3: falha → espera 4s ± 2s (random)
-  Tentativa 4: falha → espera 8s ± 4s (random)
-  → cada cliente tenta em momento diferente
-  → carga distribuída = servidor se recupera
+```mermaid
+flowchart LR
+    subgSem["❌ Sem jitter (pior caso)"]
+    subgCom["✅ Com jitter (recomendado)"]
+    
+    S1["Tentativa 1: falha → espera 1s"] --> S2["Tentativa 2: falha → espera 2s"]
+    S2 --> S3["Tentativa 3: falha → espera 4s"]
+    S3 --> S4["Todos tentam juntos → thundering herd ❌"]
+    
+    C1["Tentativa 1: falha → espera 1s ± 0.5s"] --> C2["Tentativa 2: falha → espera 2s ± 1s"]
+    C2 --> C3["Tentativa 3: falha → espera 4s ± 2s"]
+    C3 --> C4["Carga distribuída ✅ Servidor se recupera"]
 ```
 
 #### A fórmula que todo engenheiro precisa saber

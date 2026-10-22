@@ -33,27 +33,21 @@ Em produção: Redis com TTL (Time To Live).
 
 Quando o cache enche, precisa decidir o que remover. Duas estratégias principais:
 
-```
-LRU (Least Recently Used): remove o menos usado RECENTEMENTE
-┌─────────────────────────────────────┐
-│ Cache: [A, B, C, D, E] (cheio!)    │
-│ Acesso: A(10h), B(10:05), C(10:10) │
-│         D(10:15), E(10:20)         │
-│                                     │
-│ Novo item F entra → remove A       │
-│ (foi o último acessado há mais     │
-│  tempo — 10h, faz 2 horas!)        │
-└─────────────────────────────────────┘
-
-LFU (Least Frequently Used): remove o menos usado em GERAL
-┌─────────────────────────────────────┐
-│ Cache: [A, B, C, D, E] (cheio!)    │
-│ Frequência: A(1x), B(3x), C(10x)   │
-│           D(50x), E(2x)            │
-│                                     │
-│ Novo item F entra → remove A       │
-│ (foi acessado poucas vezes total)  │
-└─────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgLRU["LRU (Least Recently Used)"]
+    A1["A acessado 10h"] -->|Removido| F1["F entra"]
+    B1["B acessado 10:05"] -->|Mantido|
+    C1["C acessado 10:10"] -->|Mantido|
+    D1["D acessado 10:15"] -->|Mantido|
+    E1["E acessado 10:20"] -->|Mantido|
+    
+    subgLFU["LFU (Least Frequently Used)"]
+    A2["A: 1x acesso"] -->|Removido| F2["F entra"]
+    B2["B: 3x acessos"] -->|Mantido|
+    C2["C: 10x acessos"] -->|Mantido|
+    D2["D: 50x acessos"] -->|Mantido|
+    E2["E: 2x acessos"] -->|Mantido|
 ```
 
 **Qual escolher?**

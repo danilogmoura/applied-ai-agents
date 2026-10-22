@@ -10,12 +10,11 @@ Sem avaliação, você está cego. Mudou o prompt? Trocou de modelo? Adicionou u
 
 ### Pipeline de Avaliação
 
-```
-┌──────────┐     ┌─────────────┐     ┌──────────────┐     ┌──────────┐
-│ Golden   │────→│ Modelo      │────→│ Avaliador    │────→│ Score    │
-│ Dataset  │     │ sendo testado│     │ (exact/fuzzy/│     │ Estatístico│
-│          │     │             │     │ LLM-judge)   │     │           │
-└──────────┘     └─────────────┘     └──────────────┘     └──────────┘
+```mermaid
+flowchart LR
+    Golden["📚 Golden Dataset"] --> Modelo["🧪 Modelo sendo testado"]
+    Modelo --> Avaliador["⚖️ Avaliador\nexact/fuzzy/LLM-judge"]
+    Avaliador --> Score["📊 Score Estatístico"]
 ```
 
 Cada exemplo do dataset passa por este pipeline, gerando scores comparáveis entre versões.
@@ -47,9 +46,10 @@ Funciona como um "banco de questões" para testar o agente. Cada execução gera
 
 Usa um LLM mais poderoso (ex: gpt-4o) para julgar a qualidade de respostas de um modelo menor (ex: gpt-4o-mini):
 
-```
-Modelo sendo avaliado → gpt-4o-mini
-Juiz avaliador       → gpt-4o
+```mermaid
+flowchart LR
+    Modelo["🧪 Modelo sendo avaliado\ngpt-4o-mini"] --> Judge["⚖️ Juiz avaliador\ngpt-4o"]
+    Judge -->|pergunta + resposta esperada + resposta real| Score["Score 0-1"]
 ```
 
 O juiz recebe: pergunta + resposta esperada + resposta real → retorna score 0-1.
@@ -58,22 +58,15 @@ O juiz recebe: pergunta + resposta esperada + resposta real → retorna score 0-
 
 Fuzzy match usa **Distância de Levenshtein**: número mínimo de edições para transformar uma string na outra.
 
-```
-"URGENTE" vs "Urgente"
-         ↓
-Edições necessárias:
-  1. Maiúscula → minúscula no primeiro char
-         ↓
-Distância = 1
-Similaridade = 1 - (1 / max_len) = 1 - (1/7) = 0.86
-
-"ALTA" vs "MÉDIA"
-         ↓
-Edições necessárias:
-  4 substituições (A→M, L→É, T→D, A→I)
-         ↓
-Distância = 4
-Similaridade = 1 - (4/5) = 0.20
+```mermaid
+graph LR
+    subg1["'URGENTE' vs 'Urgente'"] --> Edit1["Edições: 1 (maiúsc. → minúsc.)"]
+    Edit1 --> Dist1["Distância = 1"]
+    Dist1 --> Sim1["Similaridade = 0.86 ✅"]
+    
+    subg2["'ALTA' vs 'MÉDIA'"] --> Edit2["Edições: 4 substituições"]
+    Edit2 --> Dist2["Distância = 4"]
+    Dist2 --> Sim2["Similaridade = 0.20 ❌"]
 ```
 
 **Por que score 0.85 ≠ 0.90 é significativo?**

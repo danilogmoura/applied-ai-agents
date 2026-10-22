@@ -85,13 +85,22 @@ data: {"total_tokens": 15, "cost": 0.001}
 
 **Por que streaming é mais rápido que wait-for-complete?**
 
+```mermaid
+flowchart LR
+    subgNoStream["Wait-for-complete"]
+    subgStream["Streaming"]
+    
+    NoStream["⏳ Espera 5s completos"] --> UX1["📄 Tudo de uma vez"]
+    Stream0["⚡ 0.2s"] --> Word1["📝 Primeira palavra!"]
+    Stream1["⚡ 0.4s"] --> Word2["📝 Mais palavras..."]
+    Stream2["⚡ 0.6s"] --> Word3["📝 Continua..."]
+    Word3 --> UX2["UX percebida instantânea"]
+    
+    style UX1 fill:#f99,stroke:#333
+    style UX2 fill:#9f9,stroke:#333
 ```
-Wait-for-complete:          Streaming:
-Cliente → [espera 5s] ←──   Cliente → [0.2s] Primeira palavra!
-                              Cliente → [0.4s] Mais palavras...
-                              Cliente → [0.6s] Continua...
-                              Tempo até UX: 0.2s vs 5.0s
-```
+
+**Tempo até UX:** 0.2s (streaming) vs 5.0s (wait-for-complete)
 
 O servidor usa `yield` (generator) para enviar cada chunk sem esperar o resto. No Python com FastAPI, isso é `StreamingResponse` + async generator.
 

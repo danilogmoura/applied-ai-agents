@@ -42,35 +42,40 @@ class BaseSkill:
 
 Cada skill pode ter múltiplas versões:
 
-```
-v1.0.0 → v1.1.0 (feature adicionada) → v2.0.0 (breaking change)
+```mermaid
+graph LR
+    v1["v1.0.0"] --> v1_1["v1.1.0\nfeature adicionada"]
+    v1_1 --> v2["v2.0.0\nbreaking change"]
 ```
 
 O registry gerencia qual versão está ativa.
 
 #### Por que versionar skills?
 
-```
-Sem versionamento:
-  Pipeline usa SentimentSkill v1
-  Dev atualiza para v2 (muda output de "positive" → "pos")
-  Pipeline quebra silenciosamente ❌
-
-Com versionamento:
-  Pipeline usa SentimentSkill@v1
-  Dev cria SentimentSkill@v2
-  Pipeline continua funcionando ✅
-  Migração gradual quando pronto
+```mermaid
+flowchart LR
+    subgSem["❌ Sem versionamento"]
+    subgCom["✅ Com versionamento"]
+    
+    S1["Pipeline usa SentimentSkill v1"] --> S2["Dev atualiza para v2"]
+    S2 --> S3["Output muda: positive → pos"]
+    S3 --> S4["Pipeline quebra silenciosamente"]
+    
+    C1["Pipeline usa SentimentSkill@v1"] --> C2["Dev cria SentimentSkill@v2"]
+    C2 --> C3["Pipeline continua funcionando"]
+    C3 --> C4["Migração gradual quando pronto"]
 ```
 
 ### Pipeline Composition
 
 Encadeia skills como corrente de montagem:
 
-```
-Input → [Classificar] → [Sentimento] → [Resumir] → Output
-         ↓                ↓              ↓
-      "spam"          "positive"     "3 frases"
+```mermaid
+flowchart LR
+    Input["📥 Input"] --> Classificar["🏷️ Classificar\n'spam'"]
+    Classificar --> Sentimento["❤️ Sentimento\n'positive'"]
+    Sentimento --> Resumir["📝 Resumir\n'3 frases'"]
+    Resumir --> Output["📤 Output"]
 ```
 
 Cada step recebe o output do anterior.
@@ -128,7 +133,7 @@ Se confiança < 0.7, pipeline aborta.
 #### Patterns Comuns de Filtro
 
 | Filtro | Quando usar | Exemplo |
-|--------|-------------|---------|
+| -------- | ------------- | --------- |
 | **Confiança mínima** | Antes de processar resultado incerto | `confidence > 0.7` |
 | **Tipo de entrada** | Só processar certos tipos | `category == "spam"` |
 | **Rate limiting** | Evitar sobrecarga | `calls_per_min < 60` |

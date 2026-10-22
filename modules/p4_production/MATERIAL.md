@@ -26,17 +26,22 @@ FastAPI é um framework web para Python que oferece:
 
 ### Fluxo de uma Requisição na API
 
-```
-┌──────────┐     ┌─────────────┐     ┌──────────────┐     ┌──────────────┐
-│ Cliente   │────→│ Middleware  │────→│ Router       │────→│ AgentService │
-│ curl/curl │     │ (timing,    │     │ (validação   │     │ (LLM call)   │
-│ HTTP req) │     │  request-id)│     │  Pydantic)   │     │              │
-└──────────┘     └─────────────┘     └──────────────┘     └──────────────┘
-                                                                        ↓
-                                                                ┌──────────────┐
-                                                                │ OpenAI API   │
-                                                                │ gpt-4o-mini  │
-                                                                └──────────────┘
+```mermaid
+sequenceDiagram
+    participant Client as 👤 Cliente<br/>(curl / HTTP req)
+    participant Middleware as 🔧 Middleware<br/>(timing, request-id)
+    participant Router as 📋 Router<br/>(validação Pydantic)
+    participant AgentService as ⚡ AgentService<br/>(LLM call)
+    participant OpenAI as 🤖 OpenAI API<br/>gpt-4o-mini
+    
+    Client->>Middleware: HTTP Request
+    Middleware->>Router: timing + request-id
+    Router->>AgentService: validated data
+    AgentService->>OpenAI: LLM call
+    OpenAI-->>AgentService: Response
+    AgentService-->>Router: Result
+    Router-->>Middleware: Serialized
+    Middleware-->>Client: Final Response
 ```
 
 Cada requisição passa por 4 camadas antes de chegar ao LLM.
@@ -123,18 +128,20 @@ Vantagens:
 
 Docker **não é uma VM**. Ele não virtualiza hardware — usa recursos do kernel Linux:
 
-```
-┌─────────────────────────────────────┐
-│  Host OS (Linux)                    │
-│  ┌──────────┐  ┌────────────────┐  │
-│  │ Container│  │ Kernel         │  │
-│  │ App      │←→│ Namespaces     │  │ ← Isola: PID, network, filesystem
-│  │ Python   │←→│ Cgroups        │  │ ← Limita: CPU, memory, I/O
-│  │ pip install│←→│ UnionFS       │  │ ← Layers sobrepostas (read-only)
-│  └──────────┘  └────────────────┘  │
-│                                     │
-│  Outro Container (isolado!)         │
-└─────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgHost["Host OS (Linux)"]
+    subgC1["Container 1"]
+    subgC2["Container 2 (isolado!)"]
+    
+    C1App["App Python\npip install"] -->|Isolado por| NS["Namespaces\nPID, network, filesystem"]
+    C1App -->|Limitado por| CG["Cgroups\nCPU, memory, I/O"]
+    NS --> Kernel["Kernel Linux\nUnionFS layers"]
+    CG --> Kernel
+    
+    style C1App fill:#9f9,stroke:#333
+    style NS fill:#ff9,stroke:#333
+    style CG fill:#ff9,stroke:#333
 ```
 
 **Namespaces**: cada container acha que tem seu próprio sistema de arquivos, rede e processos. É ilusão — o kernel separa tudo.

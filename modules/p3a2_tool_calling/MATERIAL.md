@@ -15,14 +15,17 @@ Tool calling transforma um LLM passivo em um agente ativo.
 
 ### O Pattern de Tool Calling
 
-```
-Usuário → [Agente] → "Preciso da ferramenta X com params Y"
-                ↓
-        [Executor] → Chama função Python real
-                ↓
-        [Resultado] → Retorna ao agente
-                ↓
-        [Agente] → Formata resposta final
+```mermaid
+sequenceDiagram
+    participant User as 👤 Usuário
+    participant Agent as 🤖 Agente
+    participant Executor as ⚙️ Executor
+    
+    User->>Agent: "Preciso da ferramenta X com params Y"
+    Agent->>Agent: Decide qual tool usar
+    Agent->>Executor: Chama função Python real
+    Executor-->>Agent: [Resultado]
+    Agent->>User: Formata resposta final
 ```
 
 O LLM não executa a ferramenta diretamente — ele **decide** qual ferramenta usar e **descreve** os parâmetros. Um executor seguro roda a função real.
@@ -108,16 +111,18 @@ Agentes com acesso a ferramentas são perigosos se não forem restritos:
 
 Para ações de risco HIGH ou CRITICAL, o agente pausa e pergunta ao humano:
 
+```mermaid
+flowchart LR
+    Agent["🤖 Agente detecta Risco HIGH"] --> Human["👤 Humano aprova?"]
+    Human -->|Y| Approve["✅ Executa comando"]
+    Human -->|N| Reject["❌ Recusa ação"]
 ```
-⚠️ AÇÃO REQUER APROVAÇÃO HUMANA
-┌─────────────────────────────────┐
-│ Tool: execute_command           │
-│ Comando: rm -rf /tmp/cache      │
-│ Risco: HIGH                     │
-│                                 │
-│ [Y] Aprovar  [N] Recusar       │
-└─────────────────────────────────┘
-```
+
+⚠️ **AÇÃO REQUER APROVAÇÃO HUMANA**
+
+- Tool: `execute_command`
+- Comando: `rm -rf /tmp/cache`
+- Risco: HIGH
 
 Isso garante que humanos mantenham controle sobre decisões importantes.
 

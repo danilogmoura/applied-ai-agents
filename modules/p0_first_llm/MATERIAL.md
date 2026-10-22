@@ -14,12 +14,10 @@ Neste primeiro módulo, vamos construir o esqueleto mínimo de um agente: recebe
 
 ### Fluxo Básico de um Agente
 
-```
-┌──────────┐     ┌─────────────┐     ┌──────────────┐
-│ Entrada   │────→│ [LLM API]   │────→│ Saída        │
-│ Ticket    │     │ gpt-4o-mini │     │ Classificação│
-│ "Sem senha"│     │ + prompt    │     │ "URGENTE"    │
-└──────────┘     └─────────────┘     └──────────────┘
+```mermaid
+flowchart LR
+    Entrada["📝 Ticket\n'Sem senha'"] --> LLM["🤖 LLM API\ngpt-4o-mini + prompt"]
+    LLM --> Saída["🏷️ Classificação\n'URGENTE'"]
 ```
 
 Cada chamada passa por 3 etapas:
@@ -69,21 +67,21 @@ Para um ticket de 200 tokens, o custo é ~$0.00003 — quase nada, mas important
 
 O LLM **não pensa**. Ele faz uma coisa muito específica: prevê o próximo token.
 
-```
-Prompt: "Classifique este ticket: sem senha"
-         ↓
-[Tokenização] → ["Classifique", "este", "ticket", ":", "sem", "senha"]
-         ↓
-[Modelo processa cada token com Attention]
-         ↓
-[Probabilidades para próximo token]:
-  "URGENTE"    → 78%
-  "ALTA"       → 12%
-  "MÉDIA"      → 5%
-  "BAIXA"      → 3%
-  "NORMAL"     → 2%
-         ↓
-Amostra (sampling) → "URGENTE"
+```mermaid
+flowchart TD
+    Prompt["Prompt: 'Classifique este ticket: sem senha'"] --> Tokenize["Tokenização\n['Classifique', 'este', 'ticket', ':', 'sem', 'senha']"]
+    Tokenize --> Attention["Modelo processa cada token\ncom Attention"]
+    Attention --> Probs["Probabilidades para próximo token"]
+    Probs --> URG["URGENTE → 78%"]
+    Probs --> ALTA["ALTA → 12%"]
+    Probs --> MEDIA["MÉDIA → 5%"]
+    Probs --> BAIXA["BAIXA → 3%"]
+    Probs --> NORMAL["NORMAL → 2%"]
+    URG --> Sampling["Amostra sampling → 'URGENTE'"]
+    ALTA -.-> Sampling
+    MEDIA -.-> Sampling
+    BAIXA -.-> Sampling
+    NORMAL -.-> Sampling
 ```
 
 **Attention**: cada palavra no prompt influencia todas as outras. Em "sem senha", a palavra "sem" aumenta a probabilidade de "URGENTE" porque o modelo aprendeu que essa combinação indica prioridade alta.
@@ -108,7 +106,7 @@ Ele prevê o próximo token baseado em padrões, não em verdade.
 **Por que alucinam?**
 
 | Causa | Explicação | Exemplo |
-|-------|------------|---------|
+| ------- | ------------ | --------- |
 | **Predição, não consulta** | Gera texto provável, não busca fato | Inventa citações de leis |
 | **Confiança excessiva** | Tomo assertivo mesmo quando errado | "A resposta é X" (quando não é) |
 | **Treino desatualizado** | Dados cortam em data específica | Inventar eventos pós-corte |

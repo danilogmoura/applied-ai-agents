@@ -30,12 +30,15 @@ Isso garante que a avaliação seja **consistente** e **programática** — pode
 
 ### O Loop de Refinamento
 
-```
-Gera Resposta → Avalia → Score >= MIN_SCORE? → Sim → Entrega
-                                    ↓ Não
-                              Refina com Feedback → Avalia Novamente
-                                    ↓
-                              Limite Atingido? → Sim → Entrega Melhor Versão
+```mermaid
+stateDiagram-v2
+    [*] --> GeraResposta
+    GeraResposta --> Avalia
+    Avalia --> ScoreOK: Score >= MIN_SCORE?
+    ScoreOK --> Entrega
+    Avalia --> Refina: Não
+    Refina --> Avalia
+    Entrega --> [*]
 ```
 
 Este loop é inspirado em como humanos revisam textos: escrevemos, lemos, identificamos problemas, reescrevemos.

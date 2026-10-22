@@ -29,16 +29,22 @@ Ao avaliar uma solução de IA, você deve medir:
 
 ### Exemplo de Benchmark: IA vs Regras
 
-```
-┌──────────────────┬───────────────┬───────────────┐
-│ Métrica          │ IA (gpt-4o)   │ Regras        │
-├──────────────────┼───────────────┼───────────────┤
-│ Latência média   │ 1.2s          │ 0.001s        │
-│ P95 latência     │ 3.5s          │ 0.002s        │
-│ Custo/10k cham.  │ $15.00        │ $0.00         │
-│ Acurácia         │ 92%           │ 78%           │
-│ Manutenção/mês   │ 2 horas       │ 8 horas       │
-└──────────────────┴───────────────┴───────────────┘
+```mermaid
+graph LR
+    subgraph IA["IA (gpt-4o)"]
+        A1["Latência média: 1.2s"]
+        A2["P95 latência: 3.5s"]
+        A3["Custo/10k cham.: $15.00"]
+        A4["Acurácia: 92%"]
+        A5["Manutenção/mês: 2h"]
+    end
+    subgraph REGRAS["Regras (if/else)"]
+        R1["Latência média: 0.001s"]
+        R2["P95 latência: 0.002s"]
+        R3["Custo/10k cham.: $0.00"]
+        R4["Acurácia: 78%"]
+        R5["Manutenção/mês: 8h"]
+    end
 ```
 
 Para 100 tickets/mês → regras podem bastar.
@@ -57,12 +63,12 @@ Um memorando técnico é um documento de decisão baseado em dados. Ele deve con
 
 Nenhum sistema é perfeito. Sempre há trade-offs:
 
-```
-Performance ────┐
-                ├──→ Escolha depende do contexto
-Custo ──────────┤
-                └──→ Escala muda tudo
-Qualidade ──────┘
+```mermaid
+graph TD
+    PERF["Performance"] --> ESCOLHA["Escolha depende\ndo contexto"]
+    CUSTO["Custo"] --> ESCOLHA
+    QUAL["Qualidade"] --> ESCOLHA
+    ESCOLHA --> ESCALA["Escala muda tudo"]
 ```
 
 Para 100 tickets/mês → regras podem bastar.

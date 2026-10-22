@@ -30,9 +30,15 @@ Estratégias de gestão quando o contexto enche:
 
 Memória de longo prazo persiste entre sessões:
 
-```
-Sessão 1: "Meu nome é João" → salva no LT memory
-Sessão 2: "Qual meu nome?" → recupera do LT memory → responde corretamente
+```mermaid
+sequenceDiagram
+    participant S1 as "📅 Sessão 1"
+    participant LT as "💾 LT Memory\n(vector store)"
+    participant S2 as "📅 Sessão 2"
+    
+    S1->>LT: "Meu nome é João" → salva
+    S2->>LT: "Qual meu nome?" → recupera
+    LT-->>S2: "João" → responde corretamente
 ```
 
 Funciona como um vector store simplificado:
@@ -55,29 +61,17 @@ Economia: 99% de espaço liberado
 
 A sumarização não é mágica — é outra chamada ao LLM, mas com um objetivo específico:
 
-```
-Conversa atual (contexto cheio):
-┌─────────────────────────────────────┐
-│ [system] Você é assistente...       │
-│ [user] Olá!                         │ ← Mensagem 1 (há 2h)
-│ [assistant] Olá!                    │
-│ [user] Preciso de ajuda com X       │ ← Mensagem 2
-│ [assistant] Claro, como?            │
-│ ... (48 mensagens mais recentes)    │
-│ [user] Agora preciso de Y           │ ← Mensagem 50
-└─────────────────────────────────────┘
-         ↓
-[LLM resume as primeiras 10 mensagens]
-"Usuário saudou e pediu ajuda com X.
- Assistente ofereceu ajuda."
-         ↓
-Novo contexto:
-┌─────────────────────────────────────┐
-│ [system] Você é assistente...       │
-│ [summary] Usuário saudou e pediu     │
-│           ajuda com X.              │ ← 100 tokens
-│ [user] Agora preciso de Y           │ ← Mensagens 11-50
-└─────────────────────────────────────┘
+```mermaid
+flowchart TD
+    subgOriginal["Conversa atual (contexto cheio)"]
+    subgResume["LLM resume primeiras 10 mensagens"]
+    subgNew["Novo contexto (100 tokens)"]
+    
+    Original["50 mensagens × 200 tokens = 10.000 tokens"] --> Resume["Resumo: 'Usuário saudou e pediu ajuda com X.'"]
+    Resume --> New["1 summary × 100 tokens = 100 tokens\nEconomia: 99% de espaço liberado"]
+    
+    style Original fill:#f9f,stroke:#333
+    style New fill:#9f9,stroke:#333
 ```
 
 **O que se resume vs o que se mantém:**
