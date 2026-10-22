@@ -90,6 +90,52 @@ Amostra (sampling) → "URGENTE"
 
 **Next-token prediction**: o modelo gera uma palavra por vez. Cada palavra gerada vira input para gerar a próxima. É por isso que prompts mal escritos produzem respostas piores — o modelo só vê tokens, não significado.
 
+### O Problema da Alucinação
+
+LLMs **inventam fatos** com confiança. Não é um bug — é consequência direta de como funcionam:
+
+```
+Prompt: "Quem foi o primeiro presidente do Brasil?"
+Resposta correta: "Deodoro da Fonseca (1889)" ✅
+
+Prompt: "Quem foi o primeiro presidente dos Estados Unidos em 2050?"
+Resposta: "John Smith assumiu em janeiro de 2048..." ❌ ALUCINAÇÃO
+
+O modelo NÃO sabe que 2050 ainda não aconteceu.
+Ele prevê o próximo token baseado em padrões, não em verdade.
+```
+
+**Por que alucinam?**
+
+| Causa | Explicação | Exemplo |
+|-------|------------|---------|
+| **Predição, não consulta** | Gera texto provável, não busca fato | Inventa citações de leis |
+| **Confiança excessiva** | Tomo assertivo mesmo quando errado | "A resposta é X" (quando não é) |
+| **Treino desatualizado** | Dados cortam em data específica | Inventar eventos pós-corte |
+| **Prompt ambíguo** | Interpreta mal a intenção | Responde pergunta diferente |
+
+**Como mitigar na prática:**
+
+```
+1. RAG (Retrieval Augmented Generation):
+   → Modelo responde APENAS com documentos fornecidos
+   → Se não tem resposta nos docs → "Não sei"
+
+2. Prompt engineering:
+   → "Se você não tem certeza, diga 'não sei'"
+   → "Baseie sua resposta SOMENTE nos dados abaixo"
+
+3. Validação posterior:
+   → LLM judge verifica se resposta faz sentido
+   → Fatos críticos validados contra base de conhecimento
+
+4. Temperature baixa:
+   → temperature=0.0 reduz criatividade = menos alucinação
+   → Para classificação/extração: SEMPRE usar temp=0
+```
+
+**Regra de ouro:** Nunca confie em um LLM para fatos sem verificar. Para tarefas criativas (gerar código, escrever emails), alucinação importa menos. Para tarefas factuais (classificação, extração de dados), alucinação é o problema número 1.
+
 ### Algoritmo: Byte Pair Encoding (BPE)
 
 Tokens não são palavras — são pedaços de bytes combinados por frequência. O BPE é um algoritmo de compressão adaptativo:
@@ -244,10 +290,6 @@ Execute `python modules/p0_first_llm/run.py` e observe:
 - [OpenAI Python SDK](https://platform.openai.com/docs/libraries/python)
 - [OpenAI Pricing](https://openai.com/api/pricing/)
 - [Tokenization Guide](https://platform.openai.com/docs/guides/tokenization)
-
-### Vídeos
-
-- [OpenAI Quickstart Tutorial](https://www.youtube.com/watch?v=LeRCbbKAuEQ) — YouTube
 
 ### Tutoriais
 

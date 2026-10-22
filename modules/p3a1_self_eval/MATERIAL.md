@@ -93,11 +93,6 @@ Execute `python modules/p3a1_self_eval/run.py` e observe:
 - [Pydantic v2 Documentation](https://docs.pydantic.dev/latest/)
 - [Function Calling Guide](https://platform.openai.com/docs/guides/function-calling)
 
-### Vídeos
-
-- [Making LLMs More Reliable](https://www.youtube.com/watch?v=fQ0cHXPf1GA) — Yannic Kilcher, YouTube
-- [Structured Outputs Deep Dive](https://www.youtube.com/watch?v=WvVRVyKJO6E) — OpenAI Dev, YouTube
-
 ### Tutoriais
 
 - [Pydantic AI Examples](https://github.com/pydantic/pydantic-ai) — Pydantic GitHub

@@ -107,7 +107,7 @@ Dataset grande (1000 exemplos):
 #### Regra prática: Tamanho mínimo do dataset
 
 | Tamanho do Dataset | Confiabilidade | Uso recomendado |
-|-------------------|----------------|------------------|
+| ------------------- | ---------------- | ------------------ |
 | < 20 exemplos | Muito baixa | Só prototipagem, nunca deploy |
 | 20-100 exemplos | Média | Decisões preliminares |
 | 100-500 exemplos | Boa | Deploy com confiança |

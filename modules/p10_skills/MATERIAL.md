@@ -15,6 +15,29 @@ class SentimentSkill(BaseSkill):
 
 Skills são como APIs internas — cada uma faz UMA coisa bem.
 
+### Interface Padrão de uma Skill
+
+Toda skill segue o mesmo contrato:
+
+```python
+class BaseSkill:
+    name: str                    # Identificador único
+    version: str                 # SemVer (1.0.0)
+    description: str             # O que esta skill faz
+    input_schema: dict           # JSON Schema do input esperado
+    output_schema: dict          # JSON Schema do output garantido
+    
+    def execute(self, input_data: dict) -> dict:
+        """Executa a skill. Lança Exception em caso de erro."""
+        ...
+    
+    def validate_input(self, data: dict) -> bool:
+        """Valida input antes da execução."""
+        ...
+```
+
+**Por que schemas?** Porque skills trocam dados entre si. Se a skill A produz `{"sentiment": "positive"}` e a skill B espera `{"label": "pos"}`, o pipeline quebra. Schemas garantem compatibilidade.
+
 ### Versionamento Semântico
 
 Cada skill pode ter múltiplas versões:
@@ -24,6 +47,21 @@ v1.0.0 → v1.1.0 (feature adicionada) → v2.0.0 (breaking change)
 ```
 
 O registry gerencia qual versão está ativa.
+
+#### Por que versionar skills?
+
+```
+Sem versionamento:
+  Pipeline usa SentimentSkill v1
+  Dev atualiza para v2 (muda output de "positive" → "pos")
+  Pipeline quebra silenciosamente ❌
+
+Com versionamento:
+  Pipeline usa SentimentSkill@v1
+  Dev cria SentimentSkill@v2
+  Pipeline continua funcionando ✅
+  Migração gradual quando pronto
+```
 
 ### Pipeline Composition
 
@@ -37,6 +75,46 @@ Input → [Classificar] → [Sentimento] → [Resumir] → Output
 
 Cada step recebe o output do anterior.
 
+#### Pattern de Pipeline
+
+```python
+class SkillPipeline:
+    def __init__(self):
+        self.steps = []
+        self.filters = []
+    
+    def add_step(self, skill: BaseSkill):
+        """Adiciona skill ao pipeline."""
+        self.steps.append(skill)
+    
+    def add_filter(self, name: str, condition: callable):
+        """Adiciona filtro que pode abortar o pipeline."""
+        self.filters.append((name, condition))
+    
+    async def run(self, input_data: dict) -> dict:
+        current = input_data
+        
+        # Aplica filtros antes de cada step
+        for step in self.steps:
+            for filter_name, condition in self.filters:
+                if not condition(current):
+                    return {
+                        "error": f"Filtro '{filter_name}' falhou",
+                        "input": current
+                    }
+            
+            # Executa skill
+            try:
+                current = await step.execute(current)
+            except Exception as e:
+                return {
+                    "error": f"Skill {step.name} falhou: {e}",
+                    "input": current
+                }
+        
+        return current
+```
+
 ### Filtros no Pipeline
 
 Filtros podem abortar o pipeline se condições não forem satisfeitas:
@@ -46,6 +124,63 @@ pipeline.add_filter("qualidade", lambda data: data["confidence"] > 0.7)
 ```
 
 Se confiança < 0.7, pipeline aborta.
+
+#### Patterns Comuns de Filtro
+
+| Filtro | Quando usar | Exemplo |
+|--------|-------------|---------|
+| **Confiança mínima** | Antes de processar resultado incerto | `confidence > 0.7` |
+| **Tipo de entrada** | Só processar certos tipos | `category == "spam"` |
+| **Rate limiting** | Evitar sobrecarga | `calls_per_min < 60` |
+| **Conteúdo proibido** | Bloquear inputs inadequados | `has_toxicity(input) == False` |
+| **Timeout** | Abortar se demorar demais | `elapsed < 5s` |
+
+### Error Handling em Pipelines
+
+Quando uma skill falha, você tem 3 opções:
+
+```
+Opção 1: Fail-fast (padrão)
+  [A] → [B] → [C]
+  [A] OK → [B] FAIL → Retorna erro imediatamente
+  → Melhor para: dados críticos onde erro não pode ser ignorado
+
+Opção 2: Fallback (resiliência)
+  [A] → [B] → [C]
+  [A] OK → [B] FAIL → Usa resultado alternativo de B
+  [Fallback] OK → [C] OK
+  → Melhor para: serviços externos instáveis
+
+Opção 3: Partial success (tolerância)
+  [A] → [B] → [C]
+  [A] OK → [B] FAIL → Continua com dados parciais
+  [C] processa com o que tem
+  → Melhor para: resultados aproximados são aceitáveis
+```
+
+### Registry de Skills
+
+O registry é um dicionário que mapeia nomes para implementações:
+
+```python
+registry = SkillRegistry()
+
+# Registro
+registry.register(SentimentSkill())
+registry.register(ClassificationSkill())
+registry.register(SummarizationSkill())
+
+# Lookup por nome (útil para config dinâmica)
+skill = registry.get("sentiment", version="1.0.0")
+result = await skill.execute({"text": "Excelente produto!"})
+```
+
+**Vantagens do registry:**
+
+- Skills são plugáveis: adicione novas sem mudar código existente
+- Testabilidade: substitua skill real por mock no teste
+- Observabilidade: logue todas as chamadas via registry
+- Feature flags: canary deploy nova versão sem quebrar pipeline
 
 ---
 

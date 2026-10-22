@@ -98,11 +98,6 @@ Execute `python modules/p1_feasibility/run.py` e observe:
 - [OpenAI Latency Benchmarks](https://platform.openai.com/docs/guides/rate-limits)
 - [ML System Design Principles](https://developers.google.com/machine-learning/guidelines/rules-of-ml)
 
-### Vídeos
-
-- [What You Need to Know About Production ML](https://www.youtube.com/watch?v=JbiEJCwMgTE) — Chip Huyen, YouTube
-- [Build Realistic ML Systems](https://www.youtube.com/watch?v=GyLfabb9uVc) — Google Cloud, YouTube
-
 ### Tutoriais
 
 - [ML Observability Guide](https://mlflow.org/docs/latest/index.html) — MLflow Docs

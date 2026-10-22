@@ -50,6 +50,7 @@ Original: 50 mensagens × 200 tokens = 10.000 tokens
 Resumido: 1 summary × 100 tokens = 100 tokens
 Economia: 99% de espaço liberado
 ```
+
 #### Como Sumarização Funciona na Prática
 
 A sumarização não é mágica — é outra chamada ao LLM, mas com um objetivo específico:
@@ -82,7 +83,7 @@ Novo contexto:
 **O que se resume vs o que se mantém:**
 
 | O que RESUMIR | O que MANTER |
-|---------------|-------------|
+| --------------- | ------------- |
 | Saudações e pequenas conversas | Dados do usuário (nome, preferências) |
 | Perguntas já respondidas | Tarefas em andamento |
 | Mensagens > 30 min atrás | Últimas 5-10 mensagens diretas |
@@ -116,6 +117,7 @@ Exemplo após 100 mensagens:
 ```
 
 Custo da sumarização: cada resumo custa tokens. Se sumarizar a cada 30 mensagens e cada resumo tem 100 tokens input + 50 output, o custo extra é ~$0.00002 por sumarização — insignificante comparado à economia de 9.900 tokens.
+
 ### Importância e Forgetting
 
 Nem tudo na memória é igualmente importante:
