@@ -61,13 +61,6 @@ Sem monitoramento, você descobre problemas quando o cliente reclama — não an
 | Teste A/B manual | Viés humano na escolha do melhor prompt | Golden dataset + testes automatizados |
 | Deploy sem rollback | Bug em produção = horas para corrigir | Rollback automático se métricas degradarem |
 
----
-
-## Exercício Prático
-
-- Qual a latência média?
-- Algum prompt quebrou após deploy?
-
 ### Métricas Essenciais
 
 | Métrica | O que mede | Threshold típico |

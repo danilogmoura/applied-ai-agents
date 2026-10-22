@@ -153,6 +153,12 @@ Execute `python modules/p3b_multi_agent/run.py` e observe:
 3. Como o fallback redistribui para outro especialista
 4. O log completo de roteamento gerado
 
+## Perguntas para Reflexão
+
+1. Se você tivesse 20 especialistas, o roteamento ficaria caro demais? Que alternativa existiria?
+2. Como coordenar dois especialistas que precisam trabalhar juntos na mesma tarefa?
+3. Quando faria sentido ter agentes hierárquicos (supervisor → sub-supervisores → especialistas)?
+
 ---
 
 ## 📌 Resumo do Módulo

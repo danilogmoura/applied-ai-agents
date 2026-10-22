@@ -1,5 +1,21 @@
 # Material Didático — P1: Análise de Viabilidade
 
+Este módulo ensina a tomar decisões entre IA e regras heurísticas usando dados reais de benchmark.
+
+---
+
+## ⚠️ Pré-requisito
+
+Você precisa ter concluído o módulo [P0-Fundamentals](../p0_fundamentals/MATERIAL.md). Especificamente, precisa entender:
+
+- O que é um LLM e como ele prediz tokens
+- Por que tokens custam dinheiro
+- O que é alucinação e como mitigar
+
+Sem esses fundamentos, não faz sentido comparar IA com regras — você não terá base técnica para interpretar os resultados do benchmark.
+
+---
+
 ## 🎯 Objetivos de Aprendizagem
 
 Ao final deste módulo, você será capaz de:

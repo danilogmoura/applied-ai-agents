@@ -4,6 +4,14 @@ Este módulo é o **ponto de partida obrigatório** para quem nunca estudou IA o
 
 ---
 
+## ⚠️ Pré-requisito
+
+Nenhum conhecimento técnico prévio é necessário. Este módulo foi projetado para ser acessível a qualquer pessoa — basta saber usar um computador e ter curiosidade sobre como a IA funciona por dentro.
+
+Se você já tem experiência com programação, vai entender os exemplos mais rápido. Se não tem, foque nos conceitos e use o glossário sempre que encontrar siglas.
+
+---
+
 ## 🎯 Objetivos de Aprendizagem
 
 Ao final deste módulo, você será capaz de:
@@ -239,6 +247,28 @@ Este módulo plantou as bases que você usará em TODO o curso:
 Agora que você entende o que é um LLM e como ele funciona por dentro, está pronto para construir seu primeiro agente de IA.
 
 → Leia o módulo [P0-First-LLM](../p0_first_llm/MATERIAL.md) para implementar um classificador de tickets com esqueleto mínimo.
+
+---
+
+## Perguntas para Reflexão
+
+1. Por que um LLM pode responder com tanta confiança algo que é completamente falso? O que isso revela sobre como ele foi treinado?
+2. Se tokens = dinheiro, como você reescreveria um prompt longo para usar menos tokens mantendo a mesma qualidade?
+3. Alucinação é um bug do modelo ou uma característica inevitável? Como isso muda sua abordagem ao usar IA?
+
+---
+
+## Exercício Prático
+
+Leia este material duas vezes. Na segunda leitura, tente explicar cada um dos 6 tópicos em voz alta como se estivesse ensinando para alguém:
+
+1. Explique o que é um LLM usando uma analogia do dia a dia (cozinha, biblioteca, etc.)
+2. Pegue uma frase qualquer e conte quantos tokens ela teria em inglês vs português
+3. Escreva um prompt mal formulado e depois reescreva-o usando pelo menos 3 técnicas vistas (few-shot, chain of thought, formato estruturado)
+4. Liste 3 situações onde um LLM provavelmente alucinará e 3 mitigações para cada
+5. Consulte o glossário e explique 5 termos para alguém
+
+> 💡 Não precisa escrever código aqui. O exercício é conceitual — dominar a teoria antes de programar.
 
 ---
 

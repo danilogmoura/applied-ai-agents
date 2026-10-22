@@ -1,5 +1,21 @@
 # Material Didático — P2: Pipeline RAG (Recuperação de Contexto)
 
+Este módulo implementa o padrão mais usado em produção para dar conhecimento interno ao LLM.
+
+---
+
+## ⚠️ Pré-requisito
+
+Você precisa ter concluído o módulo [P1-Análise de Viabilidade](../p1_feasibility/MATERIAL.md). Especificamente, precisa saber:
+
+- Quando IA vale a pena vs quando regras bastam
+- Como medir latência, custo e qualidade
+- Como construir benchmarks comparativos
+
+Além disso, recomenda-se familiaridade com Python e conceitos básicos de vetores/embeddings. Se não domina embeddings, foque na intuição (vetores capturam significado) e não na matemática.
+
+---
+
 ## 🎯 Objetivos de Aprendizagem
 
 Ao final deste módulo, você será capaz de:

@@ -153,6 +153,12 @@ Execute `python modules/p3a3_planning/run.py` e observe:
 3. O checkpoint sendo salvo após cada passo
 4. Como o planner recupera estado ao restaurar checkpoint
 
+## Perguntas para Reflexão
+
+1. Qual threshold de falhas seria ideal para um circuit breaker em produção? Mais ou menos que 3?
+2. Se você tivesse múltiplas APIs dependentes, como gerenciaria os circuit breakers?
+3. Que informações seriam críticas salvar no checkpoint para recuperação completa?
+
 ---
 
 ## 📌 Resumo do Módulo
