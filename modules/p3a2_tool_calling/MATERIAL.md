@@ -277,17 +277,4 @@ Com tool calling, seu agente pode executar ações. Mas o mundo real é caótico
 
 ## Referências
 
-### Livros
-
-- **"Security Engineering"** by Ross Anderson — Princípios de segurança em sistemas automatizados
-
-### Documentação Oficial
-
-- [OpenAI Function Calling](https://platform.openai.com/docs/guides/function-calling)
-- [Python subprocess Security](https://docs.python.org/3/library/subprocess.html#security-considerations)
-
-### Tutoriais
-
-- [OpenAI Cookbook: Tool Calling](https://github.com/openai/openai-cookbook/tree/main/examples/function_calling) — Exemplos práticos
-- [Pydantic for JSON Schema](https://docs.pydantic.dev/latest/concepts/json_schema/) — Gerando schemas automaticamente
-- [Security Best Practices for LLM Agents](https://owasp.org/www-project-top-10-for-large-language-model-applications/) — OWASP LLM Top 10
+(empty)

@@ -261,16 +261,4 @@ Com streaming, seus agentes respondem rapidamente. Mas respostas repetidas gasta
 
 ## Referências
 
-### Livros
-
-- **"High Performance Python"** by Guido van Rossum & Jeff Bezanson — Capítulos sobre async programming
-
-### Documentação Oficial
-
-- [OpenAI Streaming API](https://platform.openai.com/docs/api-reference/streaming) — OpenAI Docs
-- [Server-Sent Events Spec](https://html.spec.whatwg.org/multipage/server-sent-events.html) — W3C
-
-### Tutoriais
-
-- [Real-time Responses with FastAPI](https://fastapi.tiangolo.com/) — FastAPI Docs
-- [Async Generators in Python](https://docs.python.org/3/library/asyncio-task.html) — Python Docs
+(empty)

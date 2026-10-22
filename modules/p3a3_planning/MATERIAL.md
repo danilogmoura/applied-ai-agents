@@ -255,20 +255,6 @@ Com resilience patterns, seu agente individual sobrevive a falhas. Mas tarefas c
 
 ## Referências
 
-### Livros
-
-- **"Patterns of Enterprise Application Architecture"** by Martin Fowler — Capítulo sobre Circuit Breaker
-- **"Designing Data-Intensive Applications"** by Martin Kleppmann — Capítulos sobre fault tolerance
-
-### Documentação Oficial
-
-- [Circuit Breaker Pattern](https://docs.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker) — Microsoft Docs
-- [Resilience Patterns in Microservices](https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/retrying-connections.html) — AWS Well-Architected
-
-### Tutoriais
-
-- [Pydantic for State Management](https://docs.pydantic.dev/latest/concepts/models/) — Pydantic Docs
-- [JSON Serialization Best Practices](https://realpython.com/python-json/) — Real Python
-- [Checkpoint Patterns in ML Pipelines](https://mlflow.org/docs/latest/tracking.html) — MLflow Tracking
+(empty)
 
 → Leia o módulo [P3b: Multi-Agent Supervisor](../p3b_multi_agent/MATERIAL.md) para aprender arquitetura multiagente.

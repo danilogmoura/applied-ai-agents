@@ -318,18 +318,4 @@ Com sua API em produção, seus agentes estão respondendo perguntas. Mas como s
 
 ## Referências
 
-### Livros
-
-- **"FastAPI in Action"** by Juan J. Borreguero — Guia completo do framework
-- **"Docker Deep Dive"** by Nigel Poulton — Fundamentos de containers
-
-### Documentação Oficial
-
-- [FastAPI Documentation](https://fastapi.tiangolo.com/) — Docs oficiais
-- [Pydantic v2 Models](https://docs.pydantic.dev/latest/concepts/models/) — Validação de dados
-- [Uvicorn ASGI Server](https://www.uvicorn.org/) — Servidor assíncrono
-
-### Tutoriais
-
-- [Building Production APIs with FastAPI](https://testdriven.io/blog/fastapi-docker/) — TestDriven.io
-- [Docker Compose Networking](https://docs.docker.com/compose/networking/) — Docker Docs
+(empty)

@@ -334,17 +334,4 @@ Com multi-agentes, você tem um sistema inteligente mas ainda local. Para usar e
 
 ## Referências
 
-### Livros
-
-- **"Multiagent Systems"** by Kai Yu et al. — Fundamentos teóricos de sistemas multiagente
-- **"Team of Agents"** by Dong et al. (DeepMind) — Paper sobre coordenação de agentes
-
-### Documentação Oficial
-
-- [OpenAI Function Calling for Routing](https://platform.openai.com/docs/guides/function-calling)
-- [LangGraph Multi-Agent Patterns](https://langchain-ai.github.io/langgraph/) — LangChain Docs
-
-### Tutoriais
-
-- [CrewAI Framework](https://docs.crewai.com/) — Multi-agent orchestration
-- [AutoGen by Microsoft](https://microsoft.github.io/autogen/) — Conversational agents framework
+(empty)

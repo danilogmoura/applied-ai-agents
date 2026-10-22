@@ -305,17 +305,5 @@ Com caching, seus agentes são econômicos. Mas como organizar código em compon
 
 ## Referências
 
-### Livros
-
-- **"Designing Machine Learning Systems"** by Chip Huyen — Capítulos sobre cost optimization e caching strategies
-- **"Fundamentals of Information Storage and Retrieval"** by Jean-Yves Marie — Capítulos sobre cache architectures
-
-### Documentação Oficial
-
-- [OpenAI Pricing](https://openai.com/api/pricing/) — OpenAI Docs
-- [Redis Caching Best Practices](https://redis.io/docs/manual/caching/) — Redis Docs
-
-### Tutoriais
-
-- [LangChain Cache](https://python.langchain.com/docs/modules/model_io/output_parsers/) — LangChain Docs
+(empty)
 - [Prompt Engineering Guide](https://www.promptingguide.ai/) — Prompting Guide

@@ -310,18 +310,6 @@ Com memória implementada, seus agentes mantêm contexto entre conversas. Mas re
 
 ## Referências
 
-### Livros
-
-- **"Language Models are Few-Shot Learners"** by Brown et al. (OpenAI) — Paper foundational sobre context management
-
-### Documentação Oficial
-
-- [LangChain ConversationBufferWindowMemory](https://python.langchain.com/docs/modules/memory/) — LangChain Docs
-- [Context Window Management](https://platform.openai.com/docs/guides/context-window) — OpenAI Docs
-
-### Tutoriais
-
-- [LangChain Memory Types](https://python.langchain.com/docs/concepts/memory/) — LangChain Docs
-- [Vector Databases for LLMs](https://www.pinecone.io/learn/vector-databases/) — Pinecone Docs
+(empty)
 - [Conversation Memory Patterns](https://langchain-ai.github.io/langgraph/concepts/memory/) — LangGraph Docs
 - [Vector Store for Memory](https://docs.trychroma.com/) — ChromaDB Docs

@@ -350,17 +350,5 @@ Com skills versionadas e pipelines compostos, seu sistema está organizado. Mas 
 
 ## Referências
 
-### Livros
-
-- **"Designing Machine Learning Systems"** by Chip Huyen — Capítulos sobre modular agent architecture
-- **"Domain-Driven Design"** by Eric Evans — Bounded contexts como skills
-
-### Documentação Oficial
-
-- [LangChain Tools](https://python.langchain.com/docs/modules/agents/tools/) — LangChain Docs
-- [Semantic Versioning](https://semver.org/) — SemVer Spec
-
-### Tutoriais
-
-- [LangGraph Pipelines](https://langchain-ai.github.io/langgraph/) — LangGraph Docs
+(empty)
 - [Skill Design Patterns](https://github.com/langchain-ai/langchain/tree/master/templates) — LangChain Templates

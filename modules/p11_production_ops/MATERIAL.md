@@ -303,17 +303,5 @@ Você chegou ao final do curso! Aqui estão sugestões de como continuar:
 
 ## Referências
 
-### Livros
-
-- **"Designing Machine Learning Systems"** by Chip Huyen — Capítulos sobre production monitoring and observability
-- **"Site Reliability Engineering"** by Betsy Beyer et al. — SLOs e error budgets
-
-### Documentação Oficial
-
-- [OpenAI Observability](https://platform.openai.com/docs/guides/observability) — OpenAI Docs
-- [Prometheus Metrics](https://prometheus.io/docs/concepts/metric_types/) — Prometheus Docs
-
-### Tutoriais
-
-- [LangSmith Observability](https://www.langchain.com/langsmith) — LangSmith Docs
+(empty)
 - [Grafana Dashboards](https://grafana.com/docs/) — Grafana Docs
