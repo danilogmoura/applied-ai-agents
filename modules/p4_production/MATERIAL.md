@@ -156,10 +156,6 @@ docker-compose up --build
 - [Pydantic v2 Models](https://docs.pydantic.dev/latest/concepts/models/) — Validação de dados
 - [Uvicorn ASGI Server](https://www.uvicorn.org/) — Servidor assíncrono
 
-### Vídeos
-
-- [FastAPI Complete Course](https://www.youtube.com/watch?v=KjSnabt8-Zs) — FreeCodeCamp, YouTube
-- [Docker Tutorial for Beginners](https://www.youtube.com/watch?v=VMjQYHTJjCA) — TechWorld with Nana, YouTube
 
 ### Tutoriais
 

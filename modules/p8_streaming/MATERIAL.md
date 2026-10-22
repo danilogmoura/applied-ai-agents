@@ -80,17 +80,12 @@ Execute `python modules/p8_streaming/run.py` e observe:
 
 ### Livros
 
-- **"Building LLM Apps"** by Albert Vander Smith — Capítulos sobre real-time interfaces
+- **"High Performance Python"** by Guido van Rossum & Jeff Bezanson — Capítulos sobre async programming
 
 ### Documentação Oficial
 
 - [OpenAI Streaming API](https://platform.openai.com/docs/api-reference/streaming) — OpenAI Docs
 - [Server-Sent Events Spec](https://html.spec.whatwg.org/multipage/server-sent-events.html) — W3C
-
-### Vídeos
-
-- [Streaming LLM Responses](https://www.youtube.com/watch?v=ZCGdyYJVIoQ) — AI Engineer, YouTube
-- [FastAPI SSE Tutorial](https://www.youtube.com/watch?v=fJBhIuxLfPA) — FastAPI Docs, YouTube
 
 ### Tutoriais
 

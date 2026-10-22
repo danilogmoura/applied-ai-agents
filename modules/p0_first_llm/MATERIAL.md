@@ -78,7 +78,6 @@ Execute `python modules/p0_first_llm/run.py` e observe:
 
 ### Livros
 
-- **"Build Intelligent Apps with OpenAI"** — OpenAI Cookbook (gratuito, online)
 - **"Natural Language Processing with Transformers"** by Lewis et al. (O'Reilly)
 
 ### Documentação Oficial

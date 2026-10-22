@@ -94,11 +94,6 @@ Execute `python modules/p5_evaluation/run.py` e observe:
 - [OpenAI Evals](https://platform.openai.com/docs/guides/evals) — OpenAI Docs
 - [LangSmith Evaluation](https://smith.langchain.com/docs/concepts/evaluation/) — LangSmith Docs
 
-### Vídeos
-
-- [How to Evaluate LLM Applications](https://www.youtube.com/watch?v=vJCKZUoaZtc) — Yannic Kilcher, YouTube
-- [LLM Evaluation at Scale](https://www.youtube.com/watch?v=7Lk0v3cOnBy) — Weights & Biases, YouTube
-
 ### Tutoriais
 
 - [Creating Golden Datasets](https://medium.com/@langchain/create-golden-datasets-for-llm-evaluation) — LangChain Blog

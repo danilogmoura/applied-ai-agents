@@ -87,19 +87,13 @@ Execute `python modules/p2_rag/run.py` e observe:
 
 ### Livros
 
-- **"Building RAG Applications"** by Matt Kane (O'Reilly) — Guia prático completo
-- **"Foundations of Large Language Models"** by Alec Radford — Capítulos sobre context window
+- **"Building LLMs for Production"** by Christopher Keith & Anthony Langstone (O'Reilly) — Capítulos sobre RAG pipelines
 
 ### Documentação Oficial
 
 - [ChromaDB Documentation](https://docs.trychroma.com/)
 - [OpenAI Embeddings API](https://platform.openai.com/docs/guides/embeddings)
 - [Vector Search Concepts](https://www.pinecone.io/learn/vector-search/) — Pinecone Docs
-
-### Vídeos
-
-- [RAG vs Fine-tuning — When to Use What](https://www.youtube.com/watch?v=b3iIZUUKWFQ) — Chris Mann, YouTube
-- [How Vector Databases Work](https://www.youtube.com/watch?v=dXUBbSXLWzg) — TechWorld with Nana, YouTube
 
 ### Tutoriais
 

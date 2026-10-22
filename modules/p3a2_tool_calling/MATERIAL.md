@@ -103,7 +103,6 @@ Execute `python modules/p3a2_tool_calling/run.py` e observe:
 
 ### Livros
 
-- **"Building Agents"** by Marty Cagan — Capítulos sobre autonomia e controle
 - **"Security Engineering"** by Ross Anderson — Princípios de segurança em sistemas automatizados
 
 ### Documentação Oficial
@@ -111,12 +110,4 @@ Execute `python modules/p3a2_tool_calling/run.py` e observe:
 - [OpenAI Function Calling](https://platform.openai.com/docs/guides/function-calling)
 - [Python subprocess Security](https://docs.python.org/3/library/subprocess.html#security-considerations)
 
-### Vídeos
-
-- [Building AI Agents That Actually Work](https://www.youtube.com/watch?v=fW9oGZNId+M) — Anyscale, YouTube
-- [The Future of AI Agents](https://www.youtube.com/watch?v=MNRMYpGlLRg) — Two Minute Papers, YouTube
-
-### Tutoriais
-
-- [LangChain Tools Guide](https://python.langchain.com/docs/modules/agents/tools/) — LangChain Docs
-- [Anthropic Tool Use](https://docs.anthropic.com/en/docs/build-with-claude/tool-use) — Anthropic Docs
+### 

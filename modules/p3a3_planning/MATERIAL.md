@@ -120,11 +120,6 @@ Execute `python modules/p3a3_planning/run.py` e observe:
 - [Circuit Breaker Pattern](https://docs.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker) — Microsoft Docs
 - [Resilience Patterns in Microservices](https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/retrying-connections.html) — AWS Well-Architected
 
-### Vídeos
-
-- [Circuit Breaker Pattern Explained](https://www.youtube.com/watch?v=2ivBnScGpxU) — TechWorld with Nana, YouTube
-- [Building Resilient Systems](https://www.youtube.com/watch?v=Rq6XlRBWDIw) — Netflix Tech Blog, YouTube
-
 ### Tutoriais
 
 - [Pydantic for State Management](https://docs.pydantic.dev/latest/concepts/models/) — Pydantic Docs

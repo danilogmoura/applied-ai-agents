@@ -81,18 +81,12 @@ Execute `python modules/p6_safety/run.py` e observe:
 
 ### Livros
 
-- **"Adversarial ML"** by Kurt Brister — Segurança de modelos de ML
 - **"Security Engineering"** by Ross Anderson — Princípios gerais de segurança
 
 ### Documentação Oficial
 
 - [OWASP Top 10 for LLM](https://owasp.org/www-project-top-10-for-large-language-model-applications/) — OWASP
 - [OpenAI Safety Filters](https://platform.openai.com/docs/guides/safety-policies) — OpenAI Docs
-
-### Vídeos
-
-- [Prompt Injection Explained](https://www.youtube.com/watch?v=6JL5TLxofnF) — AI Security, YouTube
-- [LLM Security Best Practices](https://www.youtube.com/watch?v=vJCKZUoaZtc) — LangChain, YouTube
 
 ### Tutoriais
 

@@ -113,11 +113,6 @@ Execute `python modules/p3b_multi_agent/run.py` e observe:
 - [OpenAI Function Calling for Routing](https://platform.openai.com/docs/guides/function-calling)
 - [LangGraph Multi-Agent Patterns](https://langchain-ai.github.io/langgraph/) — LangChain Docs
 
-### Vídeos
-
-- [Building Multi-Agent Systems](https://www.youtube.com/watch?v=fJBhIuxLfPA) — AI Engineer, YouTube
-- [The Future is Multi-Agent](https://www.youtube.com/watch?v=vT67ytB64JM) — Julian Deuckers, YouTube
-
 ### Tutoriais
 
 - [CrewAI Framework](https://docs.crewai.com/) — Multi-agent orchestration

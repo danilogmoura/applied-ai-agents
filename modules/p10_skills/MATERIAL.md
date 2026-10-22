@@ -70,18 +70,13 @@ Execute `python modules/p10_skills/run.py` e observe:
 
 ### Livros
 
-- **"Building LLM Apps"** by Albert Vander Smith — Capítulos sobre skill composition
+- **"Designing Machine Learning Systems"** by Chip Huyen — Capítulos sobre modular agent architecture
 - **"Domain-Driven Design"** by Eric Evans — Bounded contexts como skills
 
 ### Documentação Oficial
 
 - [LangChain Tools](https://python.langchain.com/docs/modules/agents/tools/) — LangChain Docs
 - [Semantic Versioning](https://semver.org/) — SemVer Spec
-
-### Vídeos
-
-- [Composable AI Agents](https://www.youtube.com/watch?v=ZCGdyYJVIoQ) — AI Engineer, YouTube
-- [Pipeline Architecture](https://www.youtube.com/watch?v=fJBhIuxLfPA) — ML Ops, YouTube
 
 ### Tutoriais
 

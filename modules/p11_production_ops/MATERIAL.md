@@ -80,18 +80,13 @@ Execute `python modules/p11_production_ops/run.py` e observe:
 
 ### Livros
 
-- **"Building LLM Apps"** by Albert Vander Smith — Capítulos sobre production monitoring
+- **"Designing Machine Learning Systems"** by Chip Huyen — Capítulos sobre production monitoring and observability
 - **"Site Reliability Engineering"** by Betsy Beyer et al. — SLOs e error budgets
 
 ### Documentação Oficial
 
 - [OpenAI Observability](https://platform.openai.com/docs/guides/observability) — OpenAI Docs
 - [Prometheus Metrics](https://prometheus.io/docs/concepts/metric_types/) — Prometheus Docs
-
-### Vídeos
-
-- [LLM Production Monitoring](https://www.youtube.com/watch?v=ZCGdyYJVIoQ) — ML Ops, YouTube
-- [Prompt Versioning](https://www.youtube.com/watch?v=fJBhIuxLfPA) — AI Engineer, YouTube
 
 ### Tutoriais
 

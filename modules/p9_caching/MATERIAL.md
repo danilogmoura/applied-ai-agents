@@ -73,17 +73,14 @@ Execute `python modules/p9_caching/run.py` e observe:
 
 ### Livros
 
-- **"Building LLM Apps"** by Albert Vander Smith — Capítulos sobre cost optimization
+- **"Designing Machine Learning Systems"** by Chip Huyen — Capítulos sobre cost optimization e caching strategies
+- **"Fundamentals of Information Storage and Retrieval"** by Jean-Yves Marie — Capítulos sobre cache architectures
 
 ### Documentação Oficial
 
 - [OpenAI Pricing](https://openai.com/api/pricing/) — OpenAI Docs
 - [Redis Caching Best Practices](https://redis.io/docs/manual/caching/) — Redis Docs
 
-### Vídeos
-
-- [Reduce LLM Costs by 90%](https://www.youtube.com/watch?v=ZCGdyYJVIoQ) — AI Engineer, YouTube
-- [Production LLM Architecture](https://www.youtube.com/watch?v=fJBhIuxLfPA) — ML Ops, YouTube
 
 ### Tutoriais
 

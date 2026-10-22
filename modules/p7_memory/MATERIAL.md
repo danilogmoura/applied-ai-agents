@@ -83,20 +83,16 @@ Execute `python modules/p7_memory/run.py` e observe:
 
 ### Livros
 
-- **"Memory and Computation"** — Capítulos sobre sistemas de memória em IA
-- **"Building LLM Apps"** by Albert Vander Smith — Capítulos sobre context management
+- **"Language Models are Few-Shot Learners"** by Brown et al. (OpenAI) — Paper foundational sobre context management
 
 ### Documentação Oficial
 
 - [LangChain ConversationBufferWindowMemory](https://python.langchain.com/docs/modules/memory/) — LangChain Docs
 - [Context Window Management](https://platform.openai.com/docs/guides/context-window) — OpenAI Docs
 
-### Vídeos
-
-- [LLM Memory Systems Explained](https://www.youtube.com/watch?v=ZCGdyYJVIoQ) — AI Planner, YouTube
-- [Building Agents with Memory](https://www.youtube.com/watch?v=fJBhIuxLfPA) — AI Engineer, YouTube
-
 ### Tutoriais
 
+- [LangChain Memory Types](https://python.langchain.com/docs/concepts/memory/) — LangChain Docs
+- [Vector Databases for LLMs](https://www.pinecone.io/learn/vector-databases/) — Pinecone Docs
 - [Conversation Memory Patterns](https://langchain-ai.github.io/langgraph/concepts/memory/) — LangGraph Docs
 - [Vector Store for Memory](https://docs.trychroma.com/) — ChromaDB Docs
