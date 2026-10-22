@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import sys
 from pathlib import Path
 
@@ -29,6 +30,9 @@ from shared.security import get_required_secret, validate_secrets
 
 console = Console()
 logger = setup_logging("p0_first_llm")
+
+# Modelo configurável via variável de ambiente (fallback para gpt-4o-mini)
+MODEL = os.getenv("MODEL", "gpt-4o-mini")
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -99,7 +103,7 @@ Responda APENAS com uma destas palavras: URGENTE, NORMAL ou BAIXA."""
                 model=model,
                 messages=messages,
                 max_tokens=20,
-                temperature=0,
+                temperature=0,  # ← Sempre 0 para classificação consistente
             )
         
         output_text = response.choices[0].message.content.strip().upper()
@@ -123,12 +127,29 @@ Responda APENAS com uma destas palavras: URGENTE, NORMAL ou BAIXA."""
         return result
     
     except Exception as e:
+        error_type = type(e).__name__
         logger.error(f"Erro ao classificar ticket {ticket['id']}: {e}")
-        raise
+        
+        # Mensagem de erro orientativa para o iniciante
+        if "AuthenticationError" in error_type or "API key" in str(e):
+            raise RuntimeError(
+                f"❌ Erro de autenticação no ticket {ticket['id']}. "
+                f"Verifique se OPENAI_API_KEY está definida no .env. "
+                f"Leia SETUP.md para configurar."
+            ) from e
+        elif "RateLimitError" in error_type:
+            raise RuntimeError(
+                f"⏳ Rate limit atingido no ticket {ticket['id']}. "
+                f"A OpenAI limita requisições por minuto. Espere alguns segundos e tente novamente."
+            ) from e
+        else:
+            raise
 
 
-def classify_batch(tickets: list[dict], model: str = "gpt-4o-mini") -> list[dict]:
+def classify_batch(tickets: list[dict], model: str = None) -> list[dict]:
     """Classifica lote de tickets e retorna resumo de custos."""
+    model = model or MODEL  # Usa variável configurável ou fallback
+    
     results = []
     total_cost = 0.0
     total_input = 0
@@ -153,6 +174,7 @@ def classify_batch(tickets: list[dict], model: str = "gpt-4o-mini") -> list[dict
     console.print(f"Tickets processados: {len(results)}")
     console.print(f"Custo total estimado: [bold]{format_cost(total_cost)}[/]")
     console.print(f"Custo por ticket: [bold]{format_cost(total_cost / len(results)) if results else '$0'}[/]")
+    console.print(f"⚠️  Custo estimado para 1000 tickets: ~{format_cost(total_cost * 1000 / len(results) if results else 0)}")
     console.print("=" * 60)
     
     return results
@@ -208,11 +230,11 @@ def main():
         console.print("[yellow]Crie um arquivo .env com OPENAI_API_KEY=[/]")
         sys.exit(1)
     
-    model = get_required_secret("DEFAULT_MODEL")
+    console.print(f"[cyan]Modelo: {MODEL} (configure via MODEL env var)[/]\n")
     
     # ━━ Versão com IA ━━
-    console.print("\n[bold blue]▸ Executando classificação com LLM...[/]")
-    ai_results = classify_batch(SAMPLE_TICKETS, model)
+    console.print("[bold blue]▸ Executando classificação com LLM...[/]")
+    ai_results = classify_batch(SAMPLE_TICKETS, MODEL)
     
     # ━━ Versão com regras ━━
     console.print("\n[bold magenta]▸ Executando classificação com regras...[/]")

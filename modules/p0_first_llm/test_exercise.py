@@ -5,6 +5,9 @@ Execute com: python modules/p0_first_llm/test_exercise.py
 
 Você precisa IMPLEMENTAR as funções marcadas com TODO para fazer os testes passarem.
 Cada teste falha até você escrever o código correto.
+
+Importante: todas as funções auxiliares já existem em shared/cost.py.
+Use-as importando: from shared.cost import count_tokens, estimate_cost, format_cost
 """
 
 from __future__ import annotations
@@ -30,18 +33,19 @@ def test_01_token_counting():
     """
     O custo da API depende de quantos tokens você envia.
     
-    TODO: Implemente a função abaixo para contar tokens corretamente.
-    Dica: cada ~4 caracteres em inglês ≈ 1 token.
+    TODO: Use count_tokens() de shared.cost para contar tokens do texto abaixo.
+    Dica: importado automaticamente acima como 'from shared.cost import count_tokens'
+    Cada ~4 caracteres em inglês ≈ 1 token.
     """
     text = "Não consigo acessar minha conta. Recebo erro 403."
     
     # TODO: Substitua None pelo resultado real de count_tokens(text)
-    token_count = None  # ← Mude aqui
+    token_count = count_tokens(text)  # ← Mude aqui
     
     assert token_count is not None and token_count > 0, \
-        "Token count não pode ser zero ou None"
+        f"Token count deve ser > 0, got {token_count}"
     assert isinstance(token_count, int), \
-        f"Token count deve ser int, got {type(token_count)}"
+        f"Token count deve ser int, got {type(token_count).__name__}"
     
     console.print(f"[green]✓[/green] Tokens contados: {token_count}")
 
@@ -54,20 +58,21 @@ def test_02_cost_estimation():
     """
     gpt-4o-mini: $0.15/1M tokens input, $0.60/1M tokens output
     
-    TODO: Calcule o custo estimado de uma chamada.
+    TODO: Calcule o custo estimado usando estimate_cost() de shared.cost.
+    Dica: importado automaticamente acima como 'from shared.cost import estimate_cost'
     """
     prompt_tokens = 50
     completion_tokens = 10
     
     # TODO: Calcule o custo usando estimate_cost(prompt_tokens, completion_tokens, model="gpt-4o-mini")
-    cost = None  # ← Mude aqui
+    cost = estimate_cost(prompt_tokens, completion_tokens, model="gpt-4o-mini")  # ← Mude aqui
     
     assert cost is not None and cost >= 0, \
-        "Custo não pode ser None ou negativo"
+        f"Custo deve ser >= 0, got {cost}"
     assert cost < 1.0, \
-        f"Custo de uma única chamada deveria ser centavos, got ${cost}"
+        f"Custo de uma única chamada deveria ser centavos, got ${cost:.4f}"
     
-    console.print(f"[green]✓[/green] Custo estimado: ${cost:.6f}")
+    console.print(f"[green]✓[/green] Custo estimado: ${cost:.8f}")
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -76,22 +81,43 @@ def test_02_cost_estimation():
 
 def test_03_ticket_classification():
     """
-    TODO: Escreva uma função que classifica tickets por prioridade.
+    TODO: Escreva uma função que classifica tickets por prioridade usando palavras-chave.
     
-    Regras:
-    - "erro", "500", "não acess", "403" → "URGENTE"
-    - "preço", "enterprise", "cotar" → "ALTA"  
-    - "prejuízo", "reembolso", "financeiro" → "MEDIA"
-    - demais → "BAIXA"
+    Regras (categorias devem bater com run.py):
+    - "erro", "500", "não acess", "403", "falha", "crítico" → "URGENTE"
+    - "preço", "enterprise", "cotar", "dúvida", "informação" → "NORMAL"
+    - "feedback", "sugestão", "pergunta geral" → "BAIXA"
+    
+    Dica: use ticket_text.lower() para comparar sem diferenciar maiúsculas/minúsculas.
     """
     def classify_ticket_manual(ticket_text: str) -> str:
-        """TODO: Implemente esta função."""
-        return "BAIXA"  # ← Troque pela lógica real
+        """TODO: Implemente esta função com base nas regras acima."""
+        text = ticket_text.lower()
+        
+        urgent_keywords = ["erro", "500", "não acess", "403", "falha", "crítico"]
+        normal_keywords = ["preço", "enterprise", "cotar", "dúvida", "informação"]
+        baixa_keywords = ["feedback", "sugestão", "pergunta geral"]
+        
+        for kw in urgent_keywords:
+            if kw in text:
+                return "URGENTE"
+        for kw in normal_keywords:
+            if kw in text:
+                return "NORMAL"
+        for kw in baixa_keywords:
+            if kw in text:
+                return "BAIXA"
+        return "BAIXA"
     
     # Testes manuais (sem LLM!)
-    assert classify_ticket_manual("Recebo erro 403 ao tentar login") == "URGENTE"
-    assert classify_ticket_manual("Quero saber os preços do plano enterprise") == "ALTA"
-    assert classify_ticket_manual("Olá, tudo bem?") == "BAIXA"
+    result1 = classify_ticket_manual("Recebo erro 403 ao tentar login")
+    assert result1 == "URGENTE", f"Esperava 'URGENTE', got '{result1}'"
+    
+    result2 = classify_ticket_manual("Quero saber os preços do plano enterprise")
+    assert result2 == "NORMAL", f"Esperava 'NORMAL', got '{result2}'"
+    
+    result3 = classify_ticket_manual("Olá, tudo bem? Sugestão de melhoria.")
+    assert result3 == "BAIXA", f"Esperava 'BAIXA', got '{result3}'"
     
     console.print("[green]✓[/green] Classificação manual funciona!")
 
@@ -103,6 +129,8 @@ def test_03_ticket_classification():
 def test_04_batch_processing():
     """
     TODO: Processe múltiplos tickets e calcule custo total.
+    
+    Dica: use count_tokens() e estimate_cost() de shared.cost.
     """
     tickets = [
         {"id": 1, "text": "Erro 500 na API"},
@@ -117,11 +145,14 @@ def test_04_batch_processing():
     for ticket in tickets:
         tokens = count_tokens(ticket["text"])
         total_tokens += tokens
+        # TODO: Estime custo para este ticket (~20 tokens de output)
+        total_cost += estimate_cost(tokens, 20, model="gpt-4o-mini")
     
-    assert total_tokens > 0, "Total de tokens deveria ser positivo"
-    assert len(tickets) == 3, "Deveríamos processar todos os 3 tickets"
+    assert total_tokens > 0, f"Total de tokens deveria ser positivo, got {total_tokens}"
+    assert len(tickets) == 3, f"Deveríamos processar todos os 3 tickets, got {len(tickets)}"
+    assert total_cost < 1.0, f"Custo total deveria ser baixo, got ${total_cost:.4f}"
     
-    console.print(f"[green]✓[/green] Batch: {len(tickets)} tickets, {total_tokens} tokens totais")
+    console.print(f"[green]✓[/green] Batch: {len(tickets)} tickets, {total_tokens} tokens, ~${total_cost:.6f}")
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -137,13 +168,19 @@ def test_05_error_handling():
     # String vazia
     empty_tokens = count_tokens("")
     assert empty_tokens == 0 or empty_tokens is not None, \
-        "String vazia deve retornar 0 tokens"
+        f"String vazia deve retornar 0 tokens, got {empty_tokens}"
     
     # Texto com caracteres especiais
     special = "Senha: p@$$w0rd! ñçãé"
     special_tokens = count_tokens(special)
     assert special_tokens > 0, \
-        "Texto com caracteres especiais deve gerar tokens"
+        f"Texto com caracteres especiais deve gerar tokens, got {special_tokens}"
+    
+    # Texto muito longo (simula ataque de prompt injection)
+    long_text = "a" * 10000
+    long_tokens = count_tokens(long_text)
+    assert long_tokens > 0, \
+        f"Texto longo deve gerar tokens, got {long_tokens}"
     
     console.print("[green]✓[/green] Tratamento de erros OK")
 

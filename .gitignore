@@ -53,3 +53,12 @@ htmlcov/
 # OS
 .DS_Store
 Thumbs.db
+
+# Evaluations (local, não comitado)
+evaluations/
+
+# Copilot instructions (local, não comitado)
+.github/copilot-instructions.md
+
+# Agentes locais (não comitados)
+agents/valida_ia.md

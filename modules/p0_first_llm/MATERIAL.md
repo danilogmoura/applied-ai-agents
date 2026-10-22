@@ -1,5 +1,11 @@
 # Material Didático — P0: Primeiro Fluxo com LLM
 
+## ⚙️ Setup Obrigatório
+
+**Antes de começar, leia [SETUP.md](SETUP.md)** para instalar dependências, obter API key e configurar seu ambiente.
+
+---
+
 ## ⚠️ Pré-requisito: Leia os Fundamentos Primeiro
 
 Se você **não sabe nada sobre IA ou LLM**, leia primeiro o módulo [p0_fundamentals/MATERIAL.md](../p0_fundamentals/MATERIAL.md). Ele cobre:
@@ -25,6 +31,12 @@ Ao final deste módulo, você será capaz de:
 - [ ] **Identificar** quando um LLM vai alucinar e saber mitigar
 
 > 💡 **Dica:** Se você consegue explicar pra um colega por que `temperature=0` é obrigatório para classificação sem olhar o material, está pronto pro próximo módulo.
+
+> 🛑 **Checkpoint:** Pause aqui. Tente responder:
+>
+> - O que é temperature?
+> - Por que classificação precisa de `temperature=0`?
+> - Se um ticket tem 200 tokens e gpt-4o-mini custa $0.15/1M tokens, quanto custaria processar 100 tickets?
 
 ---
 
@@ -65,6 +77,30 @@ Classificação é uma das tarefas mais comuns em automação com IA:
 
 É simples o suficiente para entender o fluxo completo, mas realista o bastante para ser útil no mundo real.
 
+### System vs. User Messages
+
+O LLM recebe mensagens organizadas por "papel":
+
+| Papel | Quem fala | Analogia |
+|-------|-----------|----------|
+| `system` | O programador (instruções gerais) | Manual do assistente |
+| `user` | O usuário (pergunta/tarefa) | A solicitação real |
+
+Exemplo:
+
+```python
+messages = [
+    {"role": "system", "content": "Você é um classificador de tickets."},
+    {"role": "user", "content": "Ticket: Sem senha"},
+]
+```
+
+O **system message** define o comportamento do modelo — como ele deve agir. O **user message** dá a tarefa específica. Separá-los evita que instruções se percam na entrada do usuário.
+
+> 💡 **Analogia:** Pense no system message como as regras de um jogo e o user message como a jogada em si. As regras valem sempre; a jogada muda a cada vez.
+
+---
+
 ### A API da OpenAI
 
 A OpenAI oferece uma API RESTful para acessar seus modelos. O fluxo básico é:
@@ -79,6 +115,19 @@ response = client.chat.completions.create(
 )
 print(response.choices[0].message.content)
 ```
+
+### Alternativas à OpenAI
+
+Este curso usa OpenAI porque é a mais documentada, mas os conceitos aplicam-se a qualquer LLM:
+
+| Serviço | Modelo exemplo | Custo relativo |
+| --------- | --------------- | ---------------- |
+| **OpenAI** | gpt-4o-mini | $$ |
+| **Anthropic** | claude-haiku | $$ |
+| **Google** | gemini-flash | $ |
+| **Local (grátis)** | Ollama + Llama 3 | Gratuito, mas mais lento |
+
+Para rodar localmente sem custo, explore [Ollama](https://ollama.ai).
 
 ### Estimativa de Custos
 
@@ -162,9 +211,27 @@ Ele prevê o próximo token baseado em padrões, não em verdade.
 
 **Regra de ouro:** Nunca confie em um LLM para fatos sem verificar. Para tarefas criativas (gerar código, escrever emails), alucinação importa menos. Para tarefas factuais (classificação, extração de dados), alucinação é o problema número 1.
 
-### Algoritmo: Byte Pair Encoding (BPE)
+### Algoritmo: Byte Pair Encoding (BPE) — Visão geral
 
-Tokens não são palavras — são pedaços de bytes combinados por frequência. O BPE é um algoritmo de compressão adaptativo:
+Tokens não são palavras — são pedaços de bytes combinados por frequência. O BPE aprende padrões frequentes e os compacta em tokens únicos.
+
+**Por que isso importa na prática?**
+
+| Texto | Tokens sem BPE | Tokens com BPE | Custo |
+| ------- | --------------- | ---------------- | ------- |
+| "I don't know" | 6 tokens | 4 tokens | 33% menos |
+| Chinês: "你好世界" | 4 chars | 4 chars | Igual |
+| Inglês longo | ~1.3× chars | ~0.4× chars | Muito mais barato |
+
+O BPE economiza dinheiro porque palavras comuns viram 1 token. Palavras raras viram múltiplos tokens.
+
+> 📚 **Quer entender como o BPE funciona por dentro?** Veja a seção avançada abaixo.
+
+---
+
+#### 🔬 Avançado: Como o BPE funciona (opcional)
+
+Tokens são pedaços de bytes combinados por frequência. O BPE é um algoritmo de compressão adaptativo:
 
 ```
 Treino do BPE (pré-processamento):
@@ -187,16 +254,6 @@ Tokenização de entrada:
 "don't" → ["do", "n',t"]  (2 tokens, não 5!)
 "cannot" → ["ca", "n", "not"] (3 tokens)
 ```
-
-**Por que isso importa na prática?**
-
-| Texto | Tokens sem BPE | Tokens com BPE | Custo |
-| ------- | --------------- | ---------------- | ------- |
-| "I don't know" | 6 (I,d,o,n,',t,k,n,o,w) | 4 (I,do,n't,know) | 33% menos |
-| Chinês: "你好世界" | 4 chars | 4 chars | Igual (sem subword) |
-| Inglês longo | ~1.3× chars | ~0.4× chars | Muito mais barato |
-
-O BPE economiza dinheiro porque aprende padrões frequentes e os compacta em tokens únicos. Palavras comuns = 1 token. Palavras raras = múltiplos tokens.
 
 ### Temperature e Sampling: Controle de Criatividade
 
@@ -221,13 +278,40 @@ temperature = 0.7 (criativo):
   → 5% chance de "MÉDIA"
   → Pode gerar respostas variadas
   → Útil para brainstorming, geração de texto
-temperature = 1.5 (muito criativo):
-  → Distribuição mais plana
-  → Mais surpresas, menos preciso
-  → Útil para ideias inovadoras, mas arriscado
-```
 
-#### Como funciona internamente: Softmax + Temperature
+> ⚠️ **Importante:** Sempre use `temperature=0` para classificação. Isso garante consistência.
+
+---
+
+## ❓ Erros Comuns e Como Resolver
+
+| Erro | Causa | Solução |
+|------|-------|---------|
+| `ModuleNotFoundError: No module named 'openai'` | SDK não instalado | Execute `pip install openai` |
+| `ValueError: OPENAI_API_KEY não definida` | `.env` ausente | Crie `.env` na raiz com `OPENAI_API_KEY=sua_chave` |
+| `AuthenticationError: Incorrect API key` | Chave inválida | Regenerue em platform.openai.com/api-keys |
+| `RateLimitError` | Muitas requisições rápido | Espere 5s e tente novamente |
+| `ModuleNotFoundError: No module named 'shared'` | Path incorreto | Execute da raiz do projeto |
+
+---
+
+## 📖 Glossário Rápido
+
+| Termo | Definição | Analogia |
+|-------|-----------|----------|
+| **Token** | Pedaço de texto (palavra, parte de palavra) | Sílabas na leitura |
+| **Temperature** | Controle de criatividade (0=determinístico, 1=variado) | Modificador de dado |
+| **Prompt** | Texto enviado ao LLM como instrução | Instruções para um assistente muito literal |
+| **API Key** | Senha para acessar serviços de IA | Senha para um serviço online |
+| **Latency** | Tempo entre envio e resposta | Ping em jogos online |
+| **Fallback** | Plano B quando falha | Rota alternativa |
+| **JSON** | Formato de dados tipo dicionário Python | Nota estruturada |
+
+---
+
+### 🔬 Avançado: Softmax + Temperature (opcional)
+
+> ⚠️ Esta seção explica o que acontece por dentro. Não é necessária para usar a API.
 
 ```python
 # Sem temperature (raw logits):
@@ -286,6 +370,32 @@ Retorne apenas: BAIXA, MEDIA ou ALTA"""
 - Use variáveis de ambiente (`.env`)
 - Valide que todas as chaves necessárias estão presentes antes de chamar a API
 - Nunca exponha chaves nos logs
+
+---
+
+## ❓ Erros Comuns e Como Resolver
+
+| Erro | Causa | Solução |
+| ------ | ------- | --------- |
+| `ModuleNotFoundError: No module named 'openai'` | SDK não instalado | Execute `pip install openai` |
+| `ValueError: OPENAI_API_KEY não definida` | `.env` ausente | Crie `.env` na raiz com `OPENAI_API_KEY=sua_chave` |
+| `AuthenticationError: Incorrect API key` | Chave inválida | Regenerue em platform.openai.com/api-keys |
+| `RateLimitError` | Muitas requisições rápido | Espere 5s e tente novamente |
+| `ModuleNotFoundError: No module named 'shared'` | Path incorreto | Execute da raiz do projeto |
+
+---
+
+## 📖 Glossário Rápido
+
+| Termo | Definição | Analogia |
+| ------- | ----------- | ---------- |
+| **Token** | Pedaço de texto (palavra, parte de palavra) | Sílabas na leitura |
+| **Temperature** | Controle de criatividade (0=determinístico, 1=variado) | Modificador de dado |
+| **Prompt** | Texto enviado ao LLM como instrução | Instruções para um assistente muito literal |
+| **API Key** | Senha para acessar serviços de IA | Senha para um serviço online |
+| **Latency** | Tempo entre envio e resposta | Ping em jogos online |
+| **Fallback** | Plano B quando falha | Rota alternativa |
+| **JSON** | Formato de dados tipo dicionário Python | Nota estruturada |
 
 ---
 
