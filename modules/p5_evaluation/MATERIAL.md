@@ -80,6 +80,58 @@ Similaridade = 1 - (4/5) = 0.20
 
 Em avaliação de agentes, cada ponto de percentual representa dezenas de exemplos no dataset. Um salto de 0.85 para 0.90 pode ser a diferença entre "pronto para produção" e "precisa melhorar mais".
 
+### Significância Estatística: Quando um Score é Real?
+
+Um score de 0.85 vs 0.90 só importa se o dataset é grande o suficiente para descartar ruído:
+
+```
+Dataset pequeno (10 exemplos):
+  Prompt A → 7/10 corretos = 0.70
+  Prompt B → 8/10 corretos = 0.80
+  Diferença: 1 exemplo → provavelmente ruído
+  Conclusão: não podemos dizer que B é melhor
+
+Dataset médio (100 exemplos):
+  Prompt A → 70/100 corretos = 0.70
+  Prompt B → 80/100 corretos = 0.80
+  Diferença: 10 exemplos → possivelmente real
+  Conclusão: B parece melhor, mas precisamos teste estatístico
+
+Dataset grande (1000 exemplos):
+  Prompt A → 700/1000 corretos = 0.70
+  Prompt B → 800/1000 corretos = 0.80
+  Diferença: 100 exemplos → quase certamente real
+  Conclusão: B é significativamente melhor (p < 0.001)
+```
+
+#### Regra prática: Tamanho mínimo do dataset
+
+| Tamanho do Dataset | Confiabilidade | Uso recomendado |
+|-------------------|----------------|------------------|
+| < 20 exemplos | Muito baixa | Só prototipagem, nunca deploy |
+| 20-100 exemplos | Média | Decisões preliminares |
+| 100-500 exemplos | Boa | Deploy com confiança |
+| 500+ exemplos | Alta | Qualquer decisão de produção |
+
+#### Teste Z para proporções (simplificado)
+
+Para comparar dois scores p (proporção de acertos):
+
+```
+p1 = 0.70, n1 = 100
+p2 = 0.80, n2 = 100
+
+Z = (p2 - p1) / sqrt(p*(1-p) * (1/n1 + 1/n2))
+onde p = (x1 + x2) / (n1 + n2) = (70+80)/(100+100) = 0.75
+
+Z = 0.10 / sqrt(0.75*0.25 * 0.02) = 0.10 / 0.061 = 1.64
+
+Se Z > 1.96 → diferença significativa (95% confiança)
+Se Z < 1.96 → diferença pode ser ruído
+```
+
+Na prática: **nunha faça deploy baseado em menos de 50 exemplos**. Se seu golden dataset tem 10 exemplos, o resultado é uma dica, não uma decisão.
+
 **Limitações do fuzzy match:**
 
 - Não entende sinônimos: "urgente" vs "crítico" → similaridade baixa

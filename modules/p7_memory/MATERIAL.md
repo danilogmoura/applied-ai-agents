@@ -50,7 +50,72 @@ Original: 50 mensagens × 200 tokens = 10.000 tokens
 Resumido: 1 summary × 100 tokens = 100 tokens
 Economia: 99% de espaço liberado
 ```
+#### Como Sumarização Funciona na Prática
 
+A sumarização não é mágica — é outra chamada ao LLM, mas com um objetivo específico:
+
+```
+Conversa atual (contexto cheio):
+┌─────────────────────────────────────┐
+│ [system] Você é assistente...       │
+│ [user] Olá!                         │ ← Mensagem 1 (há 2h)
+│ [assistant] Olá!                    │
+│ [user] Preciso de ajuda com X       │ ← Mensagem 2
+│ [assistant] Claro, como?            │
+│ ... (48 mensagens mais recentes)    │
+│ [user] Agora preciso de Y           │ ← Mensagem 50
+└─────────────────────────────────────┘
+         ↓
+[LLM resume as primeiras 10 mensagens]
+"Usuário saudou e pediu ajuda com X.
+ Assistente ofereceu ajuda."
+         ↓
+Novo contexto:
+┌─────────────────────────────────────┐
+│ [system] Você é assistente...       │
+│ [summary] Usuário saudou e pediu     │
+│           ajuda com X.              │ ← 100 tokens
+│ [user] Agora preciso de Y           │ ← Mensagens 11-50
+└─────────────────────────────────────┘
+```
+
+**O que se resume vs o que se mantém:**
+
+| O que RESUMIR | O que MANTER |
+|---------------|-------------|
+| Saudações e pequenas conversas | Dados do usuário (nome, preferências) |
+| Perguntas já respondidas | Tarefas em andamento |
+| Mensagens > 30 min atrás | Últimas 5-10 mensagens diretas |
+| Informações genéricas | Detalhes específicos do problema |
+
+**Trade-off inevitável: informação perdida**
+
+```
+Sumarização perde ~15-30% da informação original.
+
+Exemplo real:
+Original: "Meu nome é João, tenho 30 anos,
+          trabalho em São Paulo, gosto de café."
+Resumido: "Usuário se apresentou." → PERDEU TUDO
+Resumido: "Nome: João, 30 anos, SP" → PRESERVOU DADOS
+Resumido: "João, 30, SP, gosta de café" → IDEAL
+
+A qualidade do resumo depende do prompt de sumarização.
+```
+
+**Estratégia recomendada: sumarização hierárquica**
+
+```
+Nível 1 (frequente): resumir últimas 10 mensagens → 1 summary
+Nível 2 (menos frequente): resumir summaries antigos → 1 summary global
+Nível 3 (raro): salvar estado persistente no banco
+
+Exemplo após 100 mensagens:
+[system] + [summary_global] + [últimas 10 msgs]
+≈ 200 tokens total (vs 20.000 originais)
+```
+
+Custo da sumarização: cada resumo custa tokens. Se sumarizar a cada 30 mensagens e cada resumo tem 100 tokens input + 50 output, o custo extra é ~$0.00002 por sumarização — insignificante comparado à economia de 9.900 tokens.
 ### Importância e Forgetting
 
 Nem tudo na memória é igualmente importante:

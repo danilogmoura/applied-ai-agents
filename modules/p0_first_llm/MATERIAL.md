@@ -126,6 +126,65 @@ Tokenização de entrada:
 
 O BPE economiza dinheiro porque aprende padrões frequentes e os compacta em tokens únicos. Palavras comuns = 1 token. Palavras raras = múltiplos tokens.
 
+### Temperature e Sampling: Controle de Criatividade
+
+O LLM não retorna sempre a mesma resposta para o mesmo prompt. Ele **amostra** do distribution de probabilidades — e você controla isso com `temperature`:
+
+```
+Prompt: "Classifique este ticket"
+         ↓
+LLM calcula probabilidade:
+  "URGENTE"    → 78%
+  "ALTA"       → 12%
+  "MÉDIA"      → 5%
+  "BAIXA"      → 3%
+  "NORMAL"     → 2%
+         ↓
+temperature = 0.0 (determinístico):
+  → Sempre escolhe "URGENTE" (top-pick)
+  → Útil para classificação, extração de dados
+temperature = 0.7 (criativo):
+  → 78% chance de "URGENTE"
+  → 12% chance de "ALTA"
+  → 5% chance de "MÉDIA"
+  → Pode gerar respostas variadas
+  → Útil para brainstorming, geração de texto
+temperature = 1.5 (muito criativo):
+  → Distribuição mais plana
+  → Mais surpresas, menos preciso
+  → Útil para ideias inovadoras, mas arriscado
+```
+
+#### Como funciona internamente: Softmax + Temperature
+
+```python
+# Sem temperature (raw logits):
+logits = [4.5, 3.2, 1.8, 1.0, 0.5]
+probabilities = softmax(logits)  # [0.78, 0.12, 0.05, 0.03, 0.02]
+
+# Com temperature T:
+logits_divided = [l / T for l in logits]
+if T == 0:  # caso especial
+    return argmax(logits)  # só o top
+probabilities = softmax(logits_divided)
+
+# T > 1 → distribuição mais plana (mais aleatório)
+# T < 1 → distribuição mais afiada (mais certo)
+# T = 1 → sem efeito (padrão)
+```
+
+**Top-p (nucleus sampling)**: alternativa ao temperature. Em vez de controlar "quão aleatório", controla "quanto do vocabulário considerar":
+
+```
+top_p = 0.9 → considera apenas tokens que somam 90% da probabilidade
+  ["URGENTE"(78%), "ALTA"(12%)] = 90% → amostra entre esses 2
+top_p = 0.5 → só 50% mais prováveis
+  ["URGENTE"(78%)] = 78% → precisa de mais tokens → ["URGENTE", "ALTA"]
+top_p = 1.0 → todos os tokens possíveis (máxima diversidade)
+```
+
+Na prática, use **temperature=0 para classificação** (sempre o mesmo resultado) e **temperature=0.7-1.0 para geração criativa**. Nunca use temperature alta quando precisar de consistência.
+
 ### Exemplo Completo: Classificação de Ticket
 
 ```python
