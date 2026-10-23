@@ -1,11 +1,39 @@
 # Material Didático — P3a-2: Tool Calling (Uso Autônomo de Ferramentas)
 
+> 📌 **Nota:** Este material foi revisado para focar nos conceitos essenciais. Seções marcadas como **🔬 Avançado — OPCIONAL** podem ser puladas na primeira leitura.
+
 ## ⚠️ Pré-requisito
 
 Você precisa ter concluído o módulo [P3a-1: Autoavaliação](../p3a1_self_eval/MATERIAL.md). Especificamente, precisa saber:
 
 - Por que avaliar a resposta antes de entregá-la ao usuário
 - Como configurar limites seguros de iteração (max_iterations)
+- O que é Pydantic e structured outputs
+
+---
+
+## 📋 Sumário
+
+### Core (obrigatório)
+
+1. [Infraestrutura do Curso](#infraestrutura-do-curso)
+2. [Do Texto à Ação](#do-texto-à-ação)
+3. [O Pattern de Tool Calling](#o-pattern-de-tool-calling)
+4. [JSON Schema como Contrato](#json-schema-como-contrato)
+5. [Segurança: Princípio do Menor Privilégio](#segurança-princípio-do-menor-privilégio)
+6. [Human-in-the-Loop (HITL)](#human-in-the-loop-hitl)
+
+### 🔬 Avançado (opcional na primeira leitura)
+
+7. [Como o Modelo Decide Chamar uma Tool](#como-o-modelo-decide-chamar-uma-tool)
+2. [Arquitetura do Loop Tool-Calling](#arquitetura-do-loop-tool-calling)
+
+### Prático
+
+9. [O que você vai ver](#o-que-você-vai-ver)
+2. [Exercício Prático](#exercício-prático)
+3. [Troubleshooting](#troubleshooting)
+4. [Glossário](#glossário)
 
 ---
 
@@ -20,6 +48,58 @@ Ao final deste módulo, você será capaz de:
 - [ ] **Entender** como o modelo decide qual ferramenta usar (attention entre prompt + schemas)
 
 > 💡 **Dica:** Tool calling é o que transforma um LLM de "dicionário" em "assistente que age". Este é o conceito mais próximo de "agência real" no curso.
+
+---
+
+## Infraestrutura do Curso
+
+Este módulo usa os mesmos arquivos `shared/` dos outros módulos:
+
+```
+applied-ai-agents/
+├── modules/p3a2_tool_calling/
+│   ├── MATERIAL.md    ← Este arquivo
+│   ├── run.py         ← Código executável
+│   ├── architecture.md ← Diagramas arquiteturais
+│   └── ...
+├── shared/
+│   ├── cost.py          ← count_tokens, estimate_cost, format_cost
+│   ├── security.py      ← get_required_secret (API keys)
+│   ├── governance.py    ← ActionRequest, RiskLevel, require_approval, safe_execute
+│   └── logging_config.py ← setup_logging, measure_latency
+```
+
+### Dependências Necessárias
+
+```bash
+pip install pydantic openai rich python-dotenv
+```
+
+| Pacote | Função |
+| -------- | -------- |
+| `pydantic` | Validação estruturada (garante JSON consistente) |
+| `openai` | SDK OpenAI para chamar LLMs |
+| `rich` | Output bonito no terminal |
+| `python-dotenv` | Lê variáveis de ambiente do `.env` |
+
+### Por que `sys.path.insert(0, ...)` no código?
+
+Quando roda `python modules/p3a2_tool_calling/run.py`, o Python procura imports **só na pasta atual**. Mas o `shared/` fica na raiz do projeto.
+
+A linha `sys.path.insert(0, str(Path(__file__).parent.parent))` diz ao Python para também procurar **dois níveis acima** — onde o `shared/` está.
+
+> 💡 **Analogia:** É como dizer ao Python para procurar livros não só na estante atual, mas também na prateleira de cima.
+
+### O que cada módulo `shared/` faz?
+
+| Módulo | Função | Quando usar |
+| -------- | -------- | ------------- |
+| `shared/cost.py` | Contar tokens, estimar custo, formatar preço | Sempre que chamar LLM |
+| `shared/security.py` | Ler API keys do `.env` com validação | Sempre que precisar autenticação |
+| `shared/governance.py` | Classificar risco, pedir aprovação humana, executar seguro | SEMPRE que agente usa ferramentas |
+| `shared/logging_config.py` | Configurar logs + medir latência | Para debug e monitoramento |
+
+> ⚠️ **Importante:** Você **não precisa entender** a implementação interna do `shared/`. Só precisa saber que essas funções existem e usá-las.
 
 ---
 
@@ -55,7 +135,9 @@ Com tool calling, o LLM deixa de ser um dicionário e vira um **assistente que a
 | Não validar JSON da resposta | Crash se modelo retorna JSON inválido | SEMPRE usar Pydantic validation |
 | Tool muito genérica | Modelo confunde quando usar qual tool | Uma tool = uma função específica bem definida |
 
-### O Pattern de Tool Calling
+---
+
+## O Pattern de Tool Calling
 
 ```mermaid
 sequenceDiagram
@@ -72,7 +154,18 @@ sequenceDiagram
 
 O LLM não executa a ferramenta diretamente — ele **decide** qual ferramenta usar e **descreve** os parâmetros. Um executor seguro roda a função real.
 
-### JSON Schema como Contrato
+### Fluxo simplificado
+
+1. Usuário envia pergunta → LLM recebe prompt + schemas das tools
+2. LLM responde com JSON: `{"tool": "read_file", "params": {"path": "/etc/hosts"}}`
+3. Sistema valida JSON → Verifica whitelist → Classifica risco
+4. Se risco HIGH → HITL pede aprovação humana
+5. Executor roda `read_file("/etc/hosts")` → resultado volta ao LLM
+6. LLM formata resposta final para usuário
+
+---
+
+## JSON Schema como Contrato
 
 Cada ferramenta tem um schema que define seus parâmetros:
 
@@ -96,7 +189,57 @@ Cada ferramenta tem um schema que define seus parâmetros:
 
 Este schema é enviado ao LLM junto com o prompt. O modelo responde com JSON estruturado que pode ser validado e executado programaticamente.
 
-### Como o Modelo Decide Chamar uma Tool
+> 💡 **Regra de ouro:** Quanto melhor a `description` da tool, melhor o modelo decide quando usá-la. Nunca deixe descriptions vazias ou vagas.
+
+---
+
+## Segurança: Princípio do Menor Privilégio
+
+Agentes com acesso a ferramentas são perigosos se não forem restritos:
+
+| Camada de Segurança | O que faz |
+| --------------------- | ----------- |
+| **Whitelist** | Só permite comandos/funções pré-aprovados |
+| **Risk Levels** | Classifica cada tool (LOW/MEDIUM/HIGH/CRITICAL) |
+| **Human-in-the-Loop** | Pede aprovação humana para ações críticas |
+| **Timeouts** | Limita tempo de execução |
+| **Output Limits** | Trunca respostas muito longas |
+
+### Níveis de Risco
+
+| Nível | Exemplo | Precisa HITL? |
+| ------- | --------- | --------------- |
+| LOW | `read_file`, `search_files` | Não |
+| MEDIUM | `write_file`, `calculate` | Não |
+| HIGH | `execute_command`, `delete_file` | Sim |
+| CRITICAL | `format_disk`, `delete_user_data` | Sim + log de auditoria |
+
+---
+
+## Human-in-the-Loop (HITL)
+
+Para ações de risco HIGH ou CRITICAL, o agente pausa e pergunta ao humano:
+
+```mermaid
+flowchart LR
+    Agent["🤖 Agente detecta Risco HIGH"] --> Human["👤 Humano aprova?"]
+    Human -->|Y| Approve["✅ Executa comando"]
+    Human -->|N| Reject["❌ Recusa ação"]
+```
+
+⚠️ **AÇÃO REQUER APROVAÇÃO HUMANA**
+
+- Tool: `execute_command`
+- Comando: `rm -rf /tmp/cache`
+- Risco: HIGH
+
+Isso garante que humanos mantenham controle sobre decisões importantes.
+
+---
+
+## 🔬 Como o Modelo Decide Chamar uma Tool
+
+> ⚠️ **AVANÇADO — OPCIONAL** na primeira leitura. Pode pular esta seção e voltar depois.
 
 O modelo **não tem um switch ligado/desligado** para ferramentas. Ele foi **fine-tuned** durante o treinamento para reconhecer padrões nos prompts que indicam necessidade de ação.
 
@@ -127,17 +270,19 @@ Resposta do modelo (JSON):
 }
 ```
 
-**Por que às vezes o modelo ignora ferramentas?**
+### Por que às vezes o modelo ignora ferramentas?
 
 1. **Schema mal descrito**: Se `description` é vago, o modelo não associa a ferramenta à intenção do usuário
 2. **Prompt ambíguo**: "Me dá uma info sobre isso" — qual tool? Nenhuma descrição combina bem
 3. **Overfitting**: Modelos treinados em dados específicos tendem a usar tools só quando o padrão é familiar
 
-**Por que às vezes inventa argumentos?**
+### Por que às vezes inventa argumentos?
 
 O modelo tenta ser útil. Se você pediu algo que nenhuma tool cobre, ele pode "alucinar" parâmetros imaginários tentando forçar uma chamada. Por isso a validação rigorosa é obrigatória.
 
-### 🏗️ Arquitetura do Loop Tool-Calling
+---
+
+## 🔬 Arquitetura do Loop Tool-Calling
 
 > Referência completa: [architecture.md](architecture.md)
 
@@ -157,49 +302,9 @@ O sistema tool-calling é um loop fechado com 5 componentes:
 | **Risk Level** | Classifica perigo da operação | LOW/MEDIUM/HIGH/CRITICAL |
 | **Executor** | Roda função Python real | HITL aprovado? |
 
-**Fluxo completo:**
+---
 
-1. Usuário envia pergunta → LLM recebe prompt + schemas das tools
-2. LLM responde com JSON: `{"tool": "read_file", "params": {"path": "/etc/hosts"}}`
-3. Parser valida JSON → Whitelist verifica nome da tool
-4. Risk Level classifica → Se HIGH, HITL pede aprovação humana
-5. Executor roda `read_file("/etc/hosts")` → resultado volta ao LLM
-6. LLM formata resposta final para usuário
-
-Cada seta neste diagrama = uma decisão + possível ponto de falha.
-
-### Segurança: Princípio do Menor Privilégio
-
-Agentes com acesso a ferramentas são perigosos se não forem restritos:
-
-| Camada de Segurança | O que faz |
-| --------------------- | ----------- |
-| **Whitelist** | Só permite comandos/funções pré-aprovados |
-| **Risk Levels** | Classifica cada tool (LOW/MEDIUM/HIGH/CRITICAL) |
-| **Human-in-the-Loop** | Pede aprovação humana para ações críticas |
-| **Timeouts** | Limita tempo de execução |
-| **Output Limits** | Trunca respostas muito longas |
-
-### Human-in-the-Loop (HITL)
-
-Para ações de risco HIGH ou CRITICAL, o agente pausa e pergunta ao humano:
-
-```mermaid
-flowchart LR
-    Agent["🤖 Agente detecta Risco HIGH"] --> Human["👤 Humano aprova?"]
-    Human -->|Y| Approve["✅ Executa comando"]
-    Human -->|N| Reject["❌ Recusa ação"]
-```
-
-⚠️ **AÇÃO REQUER APROVAÇÃO HUMANA**
-
-- Tool: `execute_command`
-- Comando: `rm -rf /tmp/cache`
-- Risco: HIGH
-
-Isso garante que humanos mantenham controle sobre decisões importantes.
-
-## 🎬 O que você vai ver
+## O que você vai ver
 
 Antes de rodar o código, aqui está uma prévia do que o programa vai fazer:
 
@@ -222,6 +327,8 @@ $ python modules/p3a2_tool_calling/run.py
 💰 Custo por ferramenta: list_directory=$0.002
 ```
 
+---
+
 ## Exercício Prático
 
 Execute `python modules/p3a2_tool_calling/run.py` e observe:
@@ -231,11 +338,42 @@ Execute `python modules/p3a2_tool_calling/run.py` e observe:
 3. Quando o HITL é acionado para ações de alto risco
 4. O relatório de custos por ferramenta usada
 
+---
+
 ## Perguntas para Reflexão
 
 1. Que riscos existem em permitir que um LLM execute comandos shell? Como você mitigaria?
 2. Se uma tool falhasse com erro, o agente deveria tentar outra tool ou pedir ajuda humana?
 3. Como você implementaria rate limiting para evitar abuso de ferramentas?
+
+---
+
+## Troubleshooting
+
+| Erro | Causa provável | Solução |
+| ------ | ---------------- | --------- |
+| `ModuleNotFoundError: No module named 'pydantic'` | Dependência não instalada | `pip install pydantic` |
+| `OPENAI_API_KEY not set` | Variável de ambiente ausente | Adicione ao `.env` ou export: `export OPENAI_API_KEY=sk-...` |
+| Tool chamada mas não executada | Schema sem `description` clara | Adicionar descrição detalhada à tool |
+| JSON inválido retornado pelo LLM | Falta validação | Usar Pydantic para validar antes de executar |
+| Agente ignora ferramentas disponíveis | Prompt não menciona tools explicitamente | Incluir schemas no system prompt |
+| Comando shell executado sem aprovação | Risk level mal configurado | Verificar `RiskLevel.HIGH` no governance |
+
+---
+
+## Glossário
+
+| Termo | Definição | Analogia |
+| ------- | ----------- | ---------- |
+| **Tool Calling** | Padrão onde LLM decide qual função externa chamar | Motorista escolhendo rota no GPS |
+| **JSON Schema** | Formato estruturado que descreve parâmetros da tool | Receita de bolo com ingredientes exatos |
+| **HITL** | Human-in-the-Loop — aprovação humana antes de ação crítica | Freio de mão em encruzilhada perigosa |
+| **Whitelist** | Lista de ferramentas/comandos permitidos | Porteiro que só deixa entrar convidados |
+| **Risk Level** | Classificação de perigo (LOW→CRITICAL) | Semáforo: verde/amarelo/vermelho |
+| **Fine-tuned** | Treinamento específico para reconhecer padrões | Piloto experiente reconhecendo situações |
+| **Attention** | Mecanismo que conecta palavras do prompt às tools | Concentração ao ler instruções |
+
+---
 
 ## 📌 Resumo do Módulo
 
@@ -272,9 +410,3 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 Com tool calling, seu agente pode executar ações. Mas o mundo real é caótico — APIs falham, timeouts acontecem, serviços ficam indisponíveis.
 
 → Leia o módulo [P3a-3: Resilience Patterns](../p3a3_planning/MATERIAL.md) para aprender circuit breakers, checkpoints e retry strategies.
-
----
-
-## Material Complementar
-
-(empty)

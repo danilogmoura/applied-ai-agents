@@ -1,6 +1,8 @@
 # Material Didático — P1: Análise de Viabilidade
 
-> ⚠️ **MÓDULO OPCIONAL / BÔNUS** — Este módulo pode ser estudado DEPOIS de construir seu primeiro agente funcional (p0_first_llm) ou até após o módulo multiagente (p3b). Ele não bloqueia os próximos módulos, mas é recomendado para quem quer tomar decisões técnicas baseadas em dados.
+> ⚠️ **MÓDULO OPCIONAL / BÔNUS** — Este módulo pode ser estudado DEPOIS de construir seu primeiro agente funcional (p0_first_llm) ou até após o módulo multiagente (p3b). Ele não bloqueia os próximos módulos.
+
+> 📌 **Nota:** Este material foi revisado para focar nos conceitos essenciais. Seções marcadas como **🔬 Avançado — OPCIONAL** podem ser puladas na primeira leitura.
 
 Este módulo ensina a tomar decisões entre IA e regras heurísticas usando dados reais de benchmark.
 
@@ -15,6 +17,56 @@ Este módulo ensina a tomar decisões entre IA e regras heurísticas usando dado
 - O que é alucinação e como mitigar
 
 Sem esses fundamentos, não faz sentido comparar IA com regras — você não terá base técnica para interpretar os resultados do benchmark.
+
+---
+
+## 📋 Sumário
+
+1. [Por que Benchmark Antes de Decidir?](#por-que-benchmark-antes-de-decidir)
+2. [Métricas que Importam](#métricas-que-importam)
+3. [Exemplo de Benchmark: IA vs Regras](#exemplo-de-benchmark-ia-vs-regras)
+4. [Memorando Técnico](#memorando-técnico)
+5. [Trade-offs na Prática](#trade-offs-na-prática)
+6. [O que você vai ver](#o-que-você-vai-ver)
+7. [Perguntas para Reflexão](#perguntas-para-reflexão)
+8. [Troubleshooting](#troubleshooting)
+9. [Glossário](#glossário)
+
+---
+
+## 📦 Infraestrutura do Curso
+
+Como este módulo usa os mesmos arquivos `shared/` dos outros módulos, aqui está um resumo rápido:
+
+```
+applied-ai-agents/
+├── modules/p1_feasibility/
+│   ├── MATERIAL.md    ← Este arquivo
+│   ├── run.py         ← Código executável
+│   └── ...
+├── shared/
+│   ├── cost.py          ← count_tokens, estimate_cost, format_cost
+│   ├── security.py      ← get_required_secret (API keys)
+│   └── logging_config.py ← setup_logging, measure_latency
+```
+
+### Por que `sys.path.insert(0, ...)` no código?
+
+Quando roda `python modules/p1_feasibility/run.py`, o Python procura imports **só na pasta atual**. Mas o `shared/` fica na raiz do projeto.
+
+A linha `sys.path.insert(0, str(Path(__file__).parent.parent))` diz ao Python para também procurar **dois níveis acima** — onde o `shared/` está.
+
+> 💡 **Analogia:** É como dizer ao Python para procurar livros não só na estante atual, mas também na prateleira de cima.
+
+### O que cada módulo `shared/` faz?
+
+| Módulo | Função | Quando usar |
+| -------- | -------- | ------------- |
+| `shared/cost.py` | Contar tokens, estimar custo, formatar preço | Sempre que chamar LLM |
+| `shared/security.py` | Ler API keys do `.env` com validação | Sempre que precisar autenticação |
+| `shared/logging_config.py` | Configurar logs + medir latência | Para debug e monitoramento |
+
+> ⚠️ **Importante:** Você **não precisa entender** a implementação interna do `shared/`. Só precisa saber que essas funções existem e usá-las.
 
 ---
 
@@ -36,7 +88,11 @@ Ao final deste módulo, você será capaz de:
 
 ### Por que Benchmark Antes de Decidir?
 
-Antes de investir em IA, toda empresa precisa responder: **vale a pena?** A resposta não vem de slides ou vendas — vem de dados reais. Este módulo ensina a comparar duas abordagens lado a lado:
+Antes de investir em IA, toda empresa precisa responder: **vale a pena?** A resposta não vem de slides ou vendas — vem de dados reais.
+
+> 💡 **Referência:** Os conceitos de LLM, tokens e custo já foram explicados em [p0_fundamentals](../p0_fundamentals/MATERIAL.md). Aqui vamos direto à comparação prática.
+
+Este módulo ensina a comparar duas abordagens lado a lado:
 
 | Abordagem | Vantagem | Desvantagem |
 |-----------|----------|-------------|
@@ -171,6 +227,31 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 - [ ] Digo 3 situações onde regras são melhores que IA
 
 > ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
+
+---
+
+## ❓ Troubleshooting
+
+| Erro | Causa | Solução |
+| ------ | ------- | --------- |
+| `ModuleNotFoundError: No module named 'openai'` | SDK não instalado | Execute `pip install openai` |
+| `ValueError: OPENAI_API_KEY não definida` | `.env` ausente | Crie `.env` na raiz com `OPENAI_API_KEY=sua_chave` |
+| `AuthenticationError: Incorrect API key` | Chave inválida | Regenerue em platform.openai.com/api-keys |
+| `RateLimitError` | Muitas requisições rápido | Espere 5s e tente novamente |
+| `ModuleNotFoundError: No module named 'shared'` | Path incorreto | Execute da raiz do projeto |
+
+---
+
+## 📖 Glossário
+
+| Termo | Definição | Analogia |
+| ------- | ----------- | ---------- |
+| **Benchmark** | Teste comparativo entre soluções | Corrida para ver quem é mais rápido |
+| **Latência P95** | Tempo que 95% das chamadas respeitam | "Quase sempre é mais rápido que isso" |
+| **Threshold** | Limite mínimo aceitável | "A partir daqui é problema" |
+| **Memorando** | Documento de decisão baseado em dados | "Relatório executivo" |
+| **Break-even** | Ponto onde custos se igualam | "A partir daqui compensa investir" |
+| **Heurística** | Regra prática simples | "Regra de dedo" |
 
 ---
 

@@ -68,11 +68,14 @@ def test_02_input_validation():
             self.text = text
             self.model = model
         
-        def validate(self) -> list:
-            """TODO: Retorne lista de erros (vazia se válido)."""
-            errors = []
-            # TODO: Adicione validações
-            return errors
+    def validate(self) -> list:
+        """Retorne lista de erros (vazia se válido)."""
+        errors = []
+        if not self.text or len(self.text.strip()) == 0:
+            errors.append("text field is required")
+        elif len(self.text) > 4000:
+            errors.append(f"text too long ({len(self.text)} chars, max 4000)")
+        return errors
     
     # Texto válido
     valid = RequestValidator(text="Olá, como funciona?")
@@ -109,11 +112,16 @@ def test_03_middleware_timing():
         return {"result": "ok"}
     
     def measure_middleware(func, *args) -> dict:
-        """TODO: Meça timing e retorne {'success': bool, 'latency_ms': float, 'request_id': str}."""
+        """Meça timing e retorne {'success': bool, 'latency_ms': float, 'request_id': str}."""
+        import uuid
         start = time.time()
-        result = func(*args)
-        latency = (time.time() - start) * 1000
-        return {"success": True, "latency_ms": latency}  # ← Adicione request_id
+        try:
+            result = func(*args)
+            latency = (time.time() - start) * 1000
+            return {"success": True, "latency_ms": latency, "request_id": str(uuid.uuid4())[:8]}
+        except Exception:
+            latency = (time.time() - start) * 1000
+            return {"success": False, "latency_ms": latency, "request_id": str(uuid.uuid4())[:8]}
     
     metrics = measure_middleware(simulate_request, 50)
     
@@ -169,8 +177,15 @@ def test_05_response_format():
     Padrão: {"status": "success"|"error", "data": ..., "meta": {...}}
     """
     def format_response(success: bool, data=None, error=None) -> dict:
-        """TODO: Formate resposta no padrão consistente."""
-        return {}  # ← Implemente
+        """Formate resposta no padrão consistente."""
+        response = {
+            "status": "success" if success else "error",
+            "data": data if success else None,
+            "meta": {"timestamp": "now", "version": "1.0"}
+        }
+        if not success and error:
+            response["error"] = error
+        return response
     
     success_resp = format_response(True, data={"classification": "ALTA"})
     error_resp = format_response(False, error="Model unavailable")

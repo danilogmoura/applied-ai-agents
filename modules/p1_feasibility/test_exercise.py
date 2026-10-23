@@ -112,6 +112,12 @@ def test_03_accuracy_threshold():
 def test_04_memorando_generation():
     """
     TODO: Gere um memorando de viabilidade baseado nos dados medidos.
+    
+    O memorando deve conter:
+    - 'recommendation': string com decisão ('aprovar', 'viável', 'recomendado') ou ('reprovar', 'inviável', 'não recomendar')
+    - 'reasoning': string explicando o porquê
+    - 'risks': lista de riscos identificados
+    - 'thresholds': dict com {'cost_viable': bool, 'latency_acceptable': bool}
     """
     data = {
         "latency_ms": 1500,
@@ -120,19 +126,36 @@ def test_04_memorando_generation():
         "volume_monthly": 10000,
     }
     
-    # TODO: Crie um dicionário com a recomendação
-    memo = {}  # ← Preencha com chaves: 'recommendation', 'reasoning', 'risks'
+    # TODO: Crie um dicionário completo com a recomendação
+    memo = {}  # ← Preencha com chaves: 'recommendation', 'reasoning', 'risks', 'thresholds'
     
     assert "recommendation" in memo, \
         "Memorando deve ter campo 'recommendation'"
     assert "reasoning" in memo, \
         "Memorando deve ter campo 'reasoning'"
+    assert "risks" in memo, \
+        "Memorando deve ter campo 'risks' (lista de riscos)"
+    assert "thresholds" in memo, \
+        "Memorando deve ter campo 'thresholds' (dict com cost_viable e latency_acceptable)"
+    assert isinstance(memo["risks"], list), \
+        f"'risks' deve ser uma lista, got {type(memo['risks'])}"
+    assert len(memo["risks"]) >= 2, \
+        f"Memorando deve listar pelo menos 2 riscos, got {len(memo['risks'])}"
+    assert "cost_viable" in memo["thresholds"], \
+        "'thresholds' deve ter 'cost_viable'"
+    assert "latency_acceptable" in memo["thresholds"], \
+        "'thresholds' deve ter 'latency_acceptable'"
+    assert isinstance(memo["thresholds"]["cost_viable"], bool), \
+        "'cost_viable' deve ser boolean"
+    assert isinstance(memo["thresholds"]["latency_acceptable"], bool), \
+        "'latency_acceptable' deve ser boolean"
     
     rec = memo["recommendation"].lower()
     assert any(word in rec for word in ["aprovar", "viável", "recomend", "sim"]), \
         f"Recomendação deveria conter 'aprovar' ou 'viável', got: {rec}"
     
     console.print(f"[green]✓[/green] Memorando: {memo['recommendation']}")
+    console.print(f"[dim]Riscos identificados: {', '.join(memo['risks'])}[/]")
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -141,9 +164,11 @@ def test_04_memorando_generation():
 
 def test_05_scalability_analysis():
     """
-    TODO: Projete custos para diferentes volumes.
+    TODO: Projete custos para diferentes volumes e calcule break-even point.
     
-    Se 1,000 tickets custam $0.03, quanto custam 100,000?
+    Se 1,000 tickets custam $0.03 (IA) vs $100.00 (humano):
+    - Quanto custam 100,000?
+    - Qual é o volume onde IA se paga (break-even)?
     """
     costs_at_1k = {
         "ia": 0.03,
@@ -161,7 +186,22 @@ def test_05_scalability_analysis():
     assert cost_100k_ia < 10.0, \
         f"Custo IA para 100k deveria ser < $10, got ${cost_100k_ia}"
     
+    # TODO: Calcule break-even point (onde IA se torna mais barato)
+    # Fórmula: break_even = custo_fixo_regras / (custo_humano_unitario - custo_IA_unitario)
+    ia_per_ticket = costs_at_1k["ia"] / 1000  # custo por ticket IA
+    humano_per_ticket = costs_at_1k["humano"] / 1000  # custo por ticket humano
+    
+    if humano_per_ticket > ia_per_ticket:
+        break_even = int(costs_at_1k["humano"] / (humano_per_ticket - ia_per_ticket))
+    else:
+        break_even = float('inf')
+    
+    assert break_even > 0, "Break-even deve ser positivo"
+    assert break_even <= 10000, \
+        f"Break-even deveria ser <= 10k tickets, got {break_even}"
+    
     console.print(f"[green]✓[/green] 100k tickets: IA=${cost_100k_ia:.2f} vs Humano=${cost_100k_humano:.2f}")
+    console.print(f"[dim]Break-even: {break_even:,} tickets (IA compensa acima deste volume)[/]")
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

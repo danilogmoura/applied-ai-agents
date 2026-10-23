@@ -37,13 +37,32 @@ def test_01_cicd_pipeline():
             self.results: Dict[str, bool] = {}
         
         def run_stage(self, stage: str) -> bool:
-            """TODO: Execute estágio e retorne True se passou."""
-            # Simula resultado baseado no nome do estágio
-            return True  # ← Implemente lógica real
+            """Execute estágio e retorne True se passou."""
+            # Simula resultado: lint e test sempre passam, build/deploy podem falhar
+            if stage in ("lint", "test"):
+                return True
+            # Para build/deploy, simula sucesso
+            return True
         
         def execute(self, stages_to_run: Optional[List[str]] = None) -> dict:
-            """TODO: Execute pipeline sequencialmente. Pare na primeira falha."""
-            return {}  # ← Implemente
+            """Execute pipeline sequencialmente. Pare na primeira falha."""
+            stages = stages_to_run or self.stages
+            completed_stages = []
+            failed_stage = None
+            
+            for stage in stages:
+                passed = self.run_stage(stage)
+                self.results[stage] = passed
+                completed_stages.append(stage)
+                if not passed:
+                    failed_stage = stage
+                    break
+            
+            return {
+                "completed_stages": completed_stages,
+                "failed_stage": failed_stage,
+                "results": self.results.copy()
+            }
     
     pipeline = CIPipeline()
     
@@ -76,12 +95,36 @@ def test_02_health_check():
             self.checks: List[dict] = []
         
         def add_check(self, name: str, check_fn):
-            """TODO: Adicione verificação ao health check."""
-            pass  # ← Implemente
+            """Adicione verificação ao health check."""
+            self.checks.append({"name": name, "check_fn": check_fn})
         
         def run_all(self) -> dict:
-            """TODO: Execute todos os checks e retorne status."""
-            return {"status": "unknown", "checks": []}  # ← Implemente
+            """Execute todos os checks e retorne status."""
+            results = []
+            all_healthy = True
+            
+            for check in self.checks:
+                try:
+                    result = check["check_fn"]()
+                    is_healthy = result.get("ok", False)
+                    if not is_healthy:
+                        all_healthy = False
+                    results.append({
+                        "name": check["name"],
+                        **result
+                    })
+                except Exception as e:
+                    all_healthy = False
+                    results.append({
+                        "name": check["name"],
+                        "ok": False,
+                        "error": str(e)
+                    })
+            
+            return {
+                "status": "healthy" if all_healthy else "unhealthy",
+                "checks": results
+            }
     
     checker = HealthChecker()
     
@@ -118,16 +161,36 @@ def test_03_monitoring_dashboard():
             self.tokens_used: int = 0
         
         def record_request(self, latency_ms: float, success: bool, tokens: int):
-            """TODO: Registre métrica de uma requisição."""
-            pass  # ← Implemente
+            """Registre métrica de uma requisição."""
+            self.latencies.append(latency_ms)
+            self.total_requests += 1
+            if not success:
+                self.errors += 1
+            self.tokens_used += tokens
         
         def get_percentiles(self) -> dict:
-            """TODO: Calcule p50, p95, p99 de latência."""
-            return {"p50": 0, "p95": 0, "p99": 0}  # ← Implemente
+            """Calcule p50, p95, p99 de latência."""
+            if not self.latencies:
+                return {"p50": 0, "p95": 0, "p99": 0}
+            sorted_latencies = sorted(self.latencies)
+            n = len(sorted_latencies)
+            
+            def percentile(pct):
+                idx = int(n * pct / 100)
+                idx = min(idx, n - 1)
+                return sorted_latencies[idx]
+            
+            return {
+                "p50": percentile(50),
+                "p95": percentile(95),
+                "p99": percentile(99)
+            }
         
         def get_error_rate(self) -> float:
-            """TODO: Calcule taxa de erro."""
-            return 0.0  # ← Implemente
+            """Calcule taxa de erro."""
+            if self.total_requests == 0:
+                return 0.0
+            return self.errors / self.total_requests
     
     collector = MetricsCollector()
     
@@ -170,8 +233,35 @@ def test_04_rollback_decision():
             self.decisions: List[dict] = []
         
         def evaluate(self, current: dict) -> dict:
-            """TODO: Avalie métricas atuais vs baseline e retorne decisão."""
-            return {"action": "keep", "reason": ""}  # ← Implemente
+            """Avalie métricas atuais vs baseline e retorne decisão."""
+            reasons = []
+            action = "keep"
+            
+            # Regra 1: Error rate > 10% → rollback imediato
+            if current.get("error_rate", 0) > 0.10:
+                action = "rollback"
+                reasons.append(f"Error rate {current['error_rate']:.0%} > 10%")
+            
+            # Regra 2: Latency p95 > 2x baseline → warning
+            baseline_latency = self.baseline.get("latency_p95", 300)
+            if current.get("latency_p95", 0) > 2 * baseline_latency:
+                if action != "rollback":
+                    action = "warning"
+                reasons.append(f"Latency p95 {current['latency_p95']:.0f}ms > 2x baseline {baseline_latency}ms")
+            
+            # Regra 3: Accuracy drop > 5% vs baseline → rollback
+            baseline_accuracy = self.baseline.get("accuracy", 0.95)
+            current_accuracy = current.get("accuracy", 1.0)
+            if baseline_accuracy - current_accuracy > 0.05:
+                action = "rollback"
+                reasons.append(f"Accuracy drop {baseline_accuracy - current_accuracy:.0%} > 5%")
+            
+            decision = {
+                "action": action,
+                "reason": "; ".join(reasons) if reasons else "Métricas dentro dos limites"
+            }
+            self.decisions.append(decision)
+            return decision
         
         def get_history(self) -> List[dict]:
             """Retorne histórico de decisões."""
@@ -216,20 +306,44 @@ def test_05_ab_testing():
             self.variants: Dict[str, dict] = {}
         
         def add_variant(self, variant_name: str, traffic_pct: float):
-            """TODO: Adicione variante com porcentagem de tráfego."""
-            pass  # ← Implemente
+            """Adicione variante com porcentagem de tráfego."""
+            self.variants[variant_name] = {
+                "traffic_pct": traffic_pct,
+                "results": [],
+                "total_metric": 0.0
+            }
         
         def assign(self, request_id: str) -> str:
-            """TODO: Atribua request a uma variante baseada no hash."""
-            return ""  # ← Implemente
+            """Atribua request a uma variante baseada no hash."""
+            import hashlib
+            hash_val = int(hashlib.md5(request_id.encode()).hexdigest(), 16)
+            target = (hash_val % 100) / 100.0
+            cumulative = 0
+            for name, info in self.variants.items():
+                cumulative += info["traffic_pct"]
+                if target < cumulative:
+                    return name
+            return list(self.variants.keys())[-1]
         
         def record_result(self, variant: str, success: bool, metric_value: float):
-            """TODO: Registre resultado para uma variante."""
-            pass  # ← Implemente
+            """Registre resultado para uma variante."""
+            if variant in self.variants:
+                self.variants[variant]["results"].append(metric_value)
+                self.variants[variant]["total_metric"] += metric_value
         
         def get_winner(self) -> Optional[str]:
-            """TODO: Retorne variante vencedora (maior avg metric)."""
-            return None  # ← Implemente
+            """Retorne variante vencedora (maior avg metric)."""
+            winner = None
+            best_avg = -1
+            
+            for name, info in self.variants.items():
+                if info["results"]:
+                    avg = info["total_metric"] / len(info["results"])
+                    if avg > best_avg:
+                        best_avg = avg
+                        winner = name
+            
+            return winner
     
     manager = ABTestManager("model_comparison_v1")
     

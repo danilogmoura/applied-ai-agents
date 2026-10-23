@@ -1,4 +1,42 @@
-# Material Didático — P6: Segurança e Guardrails
+# Módulo P6 — Segurança e Guardrails
+
+> ⚠️ **Revisão:** Este material está em revisão ativa. Alguns conceitos avançados estão marcados como OPCIONAIS para não sobrecarregar iniciantes.
+
+## ⚠️ Pré-requisito
+
+Você precisa ter concluído o módulo [P5: Avaliação](../p5_evaluation/MATERIAL.md). Especificamente, precisa saber:
+
+- Como construir golden datasets e métricas de avaliação
+- Como realizar testes A/B e calcular significância estatística
+
+---
+
+## 📋 Sumário
+
+### 🔵 Core Obrigatório
+
+1. Objetivos de Aprendizagem
+2. Por que Segurança de IA é Diferente?
+3. Erros Comuns de Iniciantes
+4. Fluxo de Defesa em Camadas
+5. Content Filtering
+6. Data Leakage Protection
+7. Principle of Least Privilege
+8. O que você vai ver
+9. Exercício Prático
+10. Perguntas para Reflexão
+11. Resumo do Módulo
+
+### 🔬 Avançado — OPCIONAL
+ 1. Como Prompt Injection Funciona (detalhes técnicos)
+ 2. Token-level manipulation
+ 3. Jailbreak Detection
+
+### 🛠️ Prático
+ 1. 📦 Infraestrutura do Curso
+ 2. ❓ Troubleshooting
+
+---
 
 ## ⚠️ Pré-requisito
 
@@ -86,6 +124,8 @@ O LLM pode seguir a instrução maliciosa ao invés da original.
 
 ### Jailbreak Detection
 
+> 🔬 **AVANÇADO — OPCIONAL**: Jailbreak são técnicas para burlar filtros de segurança (DAN mode, role-playing, codificação).
+
 Técnicas para burlar filtros de segurança:
 
 - **DAN mode** ("Do Anything Now")
@@ -122,7 +162,9 @@ Cada agente deve ter apenas os mínimos necessários:
 
 ### Como Prompt Injection Funciona
 
-O system prompt **não é um firewall** — é só texto no início da conversa. O modelo processa tudo junto:
+> 🔬 **AVANÇADO — OPCIONAL**: Esta seção detalha tecnicamente como o prompt injection funciona. Foque na ideia principal: "system prompt NÃO é um firewall — é só texto".
+
+**O system prompt não é um firewall** — é só texto no início da conversa. O modelo processa tudo junto:
 
 ```mermaid
 sequenceDiagram
@@ -217,6 +259,57 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 - [ ] Digo 2 técnicas avançadas para burlar guardrails
 
 > ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
+
+---
+
+## 📦 Infraestrutura do Curso
+
+Este módulo usa as mesmas estruturas compartilhadas:
+
+**Árvore de diretórios relevante:**
+
+```
+applied-ai-agents/
+├── modules/
+│   └── p6_safety/
+│       ├── MATERIAL.md          ← Você está aqui
+│       ├── run.py               ← Detector de ameaças + content filter
+│       └── test_exercise.py     ← Exercícios (TODOs)
+├── shared/
+│   ├── governance.py            ← ActionRequest, RiskLevel, require_approval()
+│   └── security.py              ← get_required_secret(), validate_secrets()
+```
+
+**Dependências Necessárias:**
+
+```bash
+# Nenhuma dependência extra além das já instaladas nos módulos anteriores
+```
+
+**Módulos `shared/` usados neste módulo:**
+
+| Módulo | Função | Analogia |
+|--------|--------|----------|
+| `shared/governance.py` | Controla acesso por risco (RiskLevel) e aprovações humanas | "Porteiro com lista de permissão" — decide quem pode entrar |
+| `shared/security.py` | Valida variáveis de ambiente (.env) e gerencia segredos | "Cofre digital" que guarda chaves API fora do código |
+
+**sys.path explicado:**
+O comando `sys.path.insert(0, str(Path(__file__).parent.parent))` diz ao Python para procurar módulos dois níveis acima. Imagine que `run.py` é um livro na estante `modules/p6_safety/` e `shared/` é outro livro na mesma estante principal — o `sys.path` é como abrir a porta entre as estantes.
+
+---
+
+## ❓ Troubleshooting
+
+Erros comuns que iniciantes encontram neste módulo:
+
+| Erro | Causa | Solução |
+| ------ | ------- | --------- |
+| `ModuleNotFoundError: No module named 'shared'` | Esqueceu `sys.path.insert(0, ...)` ou roda do diretório errado | Certifique-se de rodar `python modules/p6_safety/run.py` a partir da raiz do projeto |
+| Regex bloqueando inputs legítimos (falso positivo) | Padrões muito genéricos (ex: detectar qualquer número como CPF) | Refinar regex patterns, usar contexto adicional |
+| Regex não detectando injection sofisticada | Regex não entende intenção/contexto | Combinar regex + LLM judge para detecção mais robusta |
+| `ImportError: cannot import name 'RiskLevel'` | governance.py não importado corretamente | Verificar se `shared/governance.py` existe e tem `RiskLevel` definido |
+| Filtro de output muito agressivo | Mascara dados que deveriam ser visíveis | Usar whitelist de padrões permitidos, não apenas blacklist |
+| Rate limit muito restritivo | Bloqueia usuários legítimos em picos de uso | Ajustar `max_requests` por usuário, usar sliding window |
 
 ---
 

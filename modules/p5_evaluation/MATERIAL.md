@@ -1,4 +1,6 @@
-# Material Didático — P5: Avaliação e Testes
+# Módulo P5 — Avaliação e Testes
+
+> ⚠️ **Revisão:** Este material está em revisão ativa. Alguns conceitos avançados estão marcados como OPCIONAIS para não sobrecarregar iniciantes.
 
 ## ⚠️ Pré-requisito
 
@@ -6,6 +8,36 @@ Você precisa ter concluído o módulo [P4: Produção](../p4_production/MATERIA
 
 - Como construir uma API REST com FastAPI para expor seu agente
 - Como Dockerizar aplicações para deploy consistente
+
+---
+
+## 📋 Sumário
+
+### 🔵 Core Obrigatório
+
+1. Objetivos de Aprendizagem
+2. O Problema da Qualidade Invisível
+3. Erros Comuns de Iniciantes
+4. Pipeline de Avaliação
+5. Golden Dataset — Respostas Esperadas
+6. Métricas de Avaliação
+7. LLM-as-a-Judge
+8. O que você vai ver
+9. Exercício Prático
+10. Perguntas para Reflexão
+11. Resumo do Módulo
+
+### 🔬 Avançado — OPCIONAL
+ 1. Como Fuzzy Match Calcula Similaridade (Levenshtein)
+ 2. Significância Estatística: Quando um Score é Real?
+ 3. Regra prática: Tamanho mínimo do dataset
+ 4. Teste Z para proporções (simplificado)
+ 5. Testes A/B
+ 6. Benchmarking Regressivo
+
+### 🛠️ Prático
+ 1. 📦 Infraestrutura do Curso
+ 2. ❓ Troubleshooting
 
 ---
 
@@ -102,6 +134,8 @@ O juiz recebe: pergunta + resposta esperada + resposta real → retorna score 0-
 
 ### Como Fuzzy Match Calcula Similaridade
 
+> 🔬 **AVANÇADO — OPCIONAL**: Fuzzy match usa Distância de Levenshtein (número mínimo de edições). Entenda como "quantos caracteres preciso mudar para igualar duas strings".
+
 Fuzzy match usa **Distância de Levenshtein**: número mínimo de edições para transformar uma string na outra.
 
 ```mermaid
@@ -120,6 +154,8 @@ graph LR
 Em avaliação de agentes, cada ponto de percentual representa dezenas de exemplos no dataset. Um salto de 0.85 para 0.90 pode ser a diferença entre "pronto para produção" e "precisa melhorar mais".
 
 ### Significância Estatística: Quando um Score é Real?
+
+> 🔬 **AVANÇADO — OPCIONAL**: Esta seção explica quando uma diferença de score é real ou apenas ruído estatístico. **Não precisa entender a fórmula agora** — foque na ideia de "dataset maior = resultado mais confiável".
 
 Um score de 0.85 vs 0.90 só importa se o dataset é grande o suficiente para descartar ruído:
 
@@ -145,6 +181,8 @@ Dataset grande (1000 exemplos):
 
 #### Regra prática: Tamanho mínimo do dataset
 
+> 🔬 **AVANÇADO — OPCIONAL**: Esta tabela mostra como o tamanho do dataset afeta a confiabilidade dos resultados.
+
 | Tamanho do Dataset | Confiabilidade | Uso recomendado |
 | ------------------- | ---------------- | ------------------ |
 | < 20 exemplos | Muito baixa | Só prototipagem, nunca deploy |
@@ -153,6 +191,8 @@ Dataset grande (1000 exemplos):
 | 500+ exemplos | Alta | Qualquer decisão de produção |
 
 #### Teste Z para proporções (simplificado)
+
+> 🔬 **PARA ESTATÍSTICA AVANÇADA**: O teste Z calcula se a diferença entre dois scores é real ou ruído. **NÃO é necessário implementar isso agora** — bibliotecas como `scipy` fazem o cálculo automaticamente.
 
 Para comparar dois scores p (proporção de acertos):
 
@@ -179,6 +219,8 @@ Na prática: **nunha faça deploy baseado em menos de 50 exemplos**. Se seu gold
 
 ### Testes A/B
 
+> 🔬 **AVANÇADO — OPCIONAL**: Testes A/B comparam duas versões lado a lado. Útil para decidir qual abordagem usar antes de deploy.
+
 Compara duas variantes lado a lado no mesmo dataset:
 
 ```
@@ -190,6 +232,8 @@ Vencedor: B (+43.5%)
 Essencial para decidir entre abordagens antes de deploy.
 
 ### Benchmarking Regressivo
+
+> 🔬 **AVANÇADO — OPCIONAL**: Benchmarking regressivo salva resultados baseline e compara novas versões. Se score cai → rollback automático.
 
 Salva resultados de cada execução. Antes de qualquer mudança:
 
@@ -253,6 +297,71 @@ Avaliação sistemática é o que separa produção de experimentação:
 5. **LLM-as-Judge vs Humanos** — LLM judge escala mas tem viés. Humanos são precisos mas caros. Use AMBAS: LLM para triagem, humanos para amostragem.
 
 > ✅ **Você está pronto para:** Agora que sabe avaliar qualidade, precisa garantir segurança das respostas.
+
+## ✅ Checklist: Como Saber Se Você Atingiu o Objetivo
+
+Marque cada item **só se conseguir fazer sem olhar o material**:
+
+- [ ] Explico o que é golden dataset e por que é necessário
+- [ ] Descrevo a diferença entre score exact e fuzzy
+- [ ] Explico como funciona teste A/B entre heurística vs agente
+- [ ] Rodo `run.py` e interpreto o relatório estatístico
+- [ ] Digo 2 limitações do LLM-as-Judge
+
+> ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
+
+---
+
+## 📦 Infraestrutura do Curso
+
+Este módulo usa as mesmas estruturas compartilhadas:
+
+**Árvore de diretórios relevante:**
+
+```
+applied-ai-agents/
+├── modules/
+│   └── p5_evaluation/
+│       ├── MATERIAL.md          ← Você está aqui
+│       ├── run.py               ← Evaluator completo com múltiplas métricas
+│       └── test_exercise.py     ← Exercícios (TODOs)
+├── shared/
+│   ├── cost.py                  ← count_tokens(), estimate_cost()
+│   └── logging_config.py        ← setup_logging()
+```
+
+**Dependências Necessárias:**
+
+```bash
+pip install openai rapidfuzz scipy  # rapidfuzz para fuzzy match, scipy para testes estatísticos
+```
+
+**Módulos `shared/` usados neste módulo:**
+
+| Módulo | Função | Analogia |
+|--------|--------|----------|
+| `shared/cost.py` | Conta tokens e estima custo em USD | "Medidor de consumo" que diz quanto cada avaliação custa |
+| `shared/logging_config.py` | Configura logs estruturados em JSON | "Câmera de segurança" que grava tudo que acontece |
+
+**sys.path explicado:**
+O comando `sys.path.insert(0, str(Path(__file__).parent.parent))` diz ao Python para procurar módulos dois níveis acima. Imagine que `run.py` é um livro na estante `modules/p5_evaluation/` e `shared/` é outro livro na mesma estante principal — o `sys.path` é como abrir a porta entre as estantes.
+
+---
+
+## ❓ Troubleshooting
+
+Erros comuns que iniciantes encontram neste módulo:
+
+| Erro | Causa | Solução |
+| ------ | ------- | --------- |
+| `ModuleNotFoundError: No module named 'shared'` | Esqueceu `sys.path.insert(0, ...)` ou roda do diretório errado | Certifique-se de rodar `python modules/p5_evaluation/run.py` a partir da raiz do projeto |
+| `ImportError: cannot import name 'rapidfuzz'` | rapidfuzz não instalado | Execute `pip install rapidfuzz` |
+| `ImportError: cannot import name 'scipy'` | scipy não instalado (para testes estatísticos) | Execute `pip install scipy` |
+| LLM-as-judge muito lento | Cada exemplo faz chamada extra ao LLM | Usar batch requests ou reduzir tamanho do golden dataset |
+| Score sempre 0.0 com exact match | Respostas têm diferenças de maiúsculas/espaços | Usar fuzzy match ou normalizar texto (lowercase, strip) |
+| Resultados inconsistentes entre runs | LLM gera respostas diferentes a cada chamada | Fixar seed (`temperature=0`) ou usar modelo determinístico |
+
+---
 
 ## ✅ Checklist: Como Saber Se Você Atingiu o Objetivo
 

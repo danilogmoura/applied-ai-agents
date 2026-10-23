@@ -1,4 +1,42 @@
-# Material Didático — P8: Streaming e Tempo Real
+# Módulo P8 — Streaming e Tempo Real
+
+> ⚠️ **Revisão:** Este material está em revisão ativa. Alguns conceitos avançados estão marcados como OPCIONAIS para não sobrecarregar iniciantes.
+
+## ⚠️ Pré-requisito
+
+Você precisa ter concluído o módulo [P7: Memória e Contexto](../p7_memory/MATERIAL.md). Especificamente, precisa saber:
+
+- Como gerenciar contexto em agentes de longo prazo
+- Patterns de memória de curto e longo prazo
+
+---
+
+## 📋 Sumário
+
+### 🔵 Core Obrigatório
+
+1. Objetivos de Aprendizagem
+2. Por que Streaming?
+3. Erros Comuns de Iniciantes
+4. Latência Percebida vs Real
+5. O que você vai ver
+6. Exercício Prático
+7. Perguntas para Reflexão
+8. Resumo do Módulo
+
+### 🔬 Avançado — OPCIONAL
+
+9. Server-Sent Events (SSE)
+2. Como SSE Funciona no Wire
+3. Abort/Cancel
+4. Buffering Inteligente
+5. Arquitetura do Pipeline Streaming
+
+### 🛠️ Prático
+ 1. 📦 Infraestrutura do Curso
+ 2. ❓ Troubleshooting
+
+---
 
 ## ⚠️ Pré-requisito
 
@@ -65,6 +103,8 @@ Além da UX, streaming permite:
 
 ### Server-Sent Events (SSE)
 
+> 🔬 **AVANÇADO — OPCIONAL**: SSE é um protocolo simples para enviar dados do servidor ao cliente em tempo real. Entenda como "canal de notícias unidirecional" — servidor envia, cliente recebe.
+
 Protocolo simples para enviar dados do servidor ao cliente em tempo real:
 
 ```
@@ -83,6 +123,8 @@ Vantagens sobre WebSocket:
 - **Mais simples**: menos código no servidor
 
 ### Abort/Cancel
+
+> 🔬 **AVANÇADO — OPCIONAL**: Usuários podem querer cancelar geração. Implementar sinal de abort + verificar no loop.
 
 Usuários podem querer cancelar geração:
 
@@ -108,6 +150,8 @@ O tempo total é o mesmo, mas a percepção é completamente diferente.
 
 ### Como SSE Funciona no Wire
 
+> 🔬 **AVANÇADO — OPCIONAL**: SSE é HTTP com conexão mantida aberta e formato de texto simples. Não é mágica — é protocolo padrão da web.
+
 SSE não é mágica — é **HTTP com conexão mantida aberta** e um formato de texto simples:
 
 ```
@@ -132,7 +176,9 @@ data: {"total_tokens": 15, "cost": 0.001}
 
 ### 🏗️ Arquitetura do Pipeline Streaming
 
-> Referência completa: [architecture.md](architecture.md)
+> 🔬 **AVANÇADO — OPCIONAL**: Esta seção detalha a arquitetura interna do pipeline streaming (SSE Server, Buffer Manager, Token Counter, Abort Handler).
+
+Referência completa: [architecture.md](architecture.md)
 
 O pipeline streaming é composto por 5 componentes:
 
@@ -203,6 +249,52 @@ $ python modules/p8_streaming/run.py
    data: {"text": " Vou ajudar", "done": false}
    data: {"text": "", "done": true}
 ```
+
+## 📦 Infraestrutura do Curso
+
+Este módulo usa os mesmos módulos compartilhados dos anteriores:
+
+```
+applied-ai-agents/
+├── modules/
+│   ├── p8_streaming/
+│   │   ├── run.py          ← Executa streaming agent + SSE event generator
+│   │   └── test_exercise.py ← Testes (IMPLEMENTE os TODOs!)
+├── shared/                  ← Módulos reutilizáveis em TODOS os módulos
+│   ├── cost.py              ← count_tokens(), estimate_cost()
+│   └── logging_config.py    ← setup_logging(), measure_latency()
+└── ...
+```
+
+**Dependências necessárias:** `pip install aiohttp rich`
+
+### Analogia: sys.path.insert(0, ...)
+
+Quando você vê `sys.path.insert(0, str(Path(__file__).parent.parent))` no início de cada arquivo Python, pense assim:
+
+> 📚 **Analogia dos Livros na Estante:** Imagine que o Python é uma pessoa procurando livros numa biblioteca. Normalmente ela só procura nas estantes próximas (diretório atual). O `sys.path.insert(0, ...)` é como dizer: "Antes de procurar aqui, também olhe naquela estante específica!" — neste caso, a estante `shared/` que está dois níveis acima. É como dar um atalho para o Python encontrar os módulos compartilhados sem precisar copiá-los para cada pasta.
+
+### Módulos `shared/` Usados Neste Módulo
+
+| Módulo | Função | Como é usado |
+|--------|--------|--------------|
+| `shared/cost.py` | Contagem de tokens e estimativa de custo | `count_tokens(text, model)` para calcular tokens gerados |
+| `shared/logging_config.py` | Configuração de logs e medição de latência | `setup_logging()` + `measure_latency()` para medir tempo entre chunks |
+
+---
+
+## ❓ Troubleshooting
+
+| Problema | Causa Provável | Solução |
+| ---------- | ---------------- | --------- |
+| `ModuleNotFoundError: No module named 'shared'` | sys.path não configurado corretamente | Verifique `sys.path.insert(0, str(Path(__file__).parent.parent))` no início do arquivo |
+| `asyncio.run() missing 1 required positional argument` | Função async mal chamada | Use `asyncio.run(async_function())` — note os dois parênteses |
+| Rich Live não atualiza no terminal | Terminal muito pequeno ou sem suporte a ANSI | Aumente o terminal ou use `console = Console(force_terminal=True)` |
+| SSE connection drops immediately | Servidor fecha conexão prematuramente | Verifique se `Content-Type: text/event-stream` está sendo enviado |
+| Chunks aparecem muito rápido/lento | Buffer size inadequado | Ajuste buffer_size: menor = mais chunks, maior = menos chunks |
+| `ImportError: No module named aiohttp` | Dependência não instalada | Execute `pip install aiohttp rich` |
+
+---
 
 ## Exercício Prático
 

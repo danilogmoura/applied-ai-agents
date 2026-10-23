@@ -36,12 +36,14 @@ def test_01_short_term_memory():
             self.messages: List[Dict[str, str]] = []
         
         def add(self, role: str, content: str):
-            """TODO: Adicione mensagem e remova as mais antigas se exceder."""
-            pass  # ← Implemente
+            """Adicione mensagem e remova as mais antigas se exceder."""
+            self.messages.append({"role": role, "content": content})
+            if len(self.messages) > self.max_messages:
+                self.messages = self.messages[-self.max_messages:]
         
         def get_context(self) -> List[Dict[str, str]]:
-            """TODO: Retorne as últimas N mensagens."""
-            return []  # ← Implemente
+            """Retorne as últimas N mensagens."""
+            return self.messages[-self.max_messages:]
     
     memory = ShortTermMemory(max_messages=5)
     
@@ -71,16 +73,28 @@ def test_02_long_term_memory():
             self.storage: Dict[str, Any] = {}
         
         def save(self, key: str, value: Any, session_id: str = "default"):
-            """TODO: Salve dado com metadados (session, timestamp)."""
-            pass  # ← Implemente
+            """Salve dado com metadados (session, timestamp)."""
+            from datetime import datetime
+            if session_id not in self.storage:
+                self.storage[session_id] = {}
+            self.storage[session_id][key] = {
+                "value": value,
+                "timestamp": datetime.now().isoformat(),
+                "session": session_id
+            }
         
         def retrieve(self, key: str, session_id: str = "default") -> Any:
-            """TODO: Recupere dado pela chave e sessão."""
-            return None  # ← Implemente
+            """Recupere dado pela chave e sessão."""
+            if session_id in self.storage and key in self.storage[session_id]:
+                return self.storage[session_id][key]["value"]
+            return None
         
         def delete(self, key: str, session_id: str = "default") -> bool:
-            """TODO: Remova dado e retorne True se encontrado."""
-            return False  # ← Implemente
+            """Remova dado e retorne True se encontrado."""
+            if session_id in self.storage and key in self.storage[session_id]:
+                del self.storage[session_id][key]
+                return True
+            return False
     
     memory = LongTermMemory()
     
@@ -125,8 +139,27 @@ def test_03_context_window_management():
     
     total_tokens = sum(estimate_tokens(m["content"]) for m in messages)
     
-    # TODO: Trunque ou resuma se exceder max_tokens
-    trimmed_messages = messages[:]  # ← Implemente lógica de trim
+    # Truncar se exceder max_tokens - manter system prompt + últimas mensagens
+    trimmed_messages = []
+    current_tokens = 0
+    
+    # Manter primeiras mensagens (system prompt)
+    if messages and messages[0].get("role") == "system":
+        system_tokens = estimate_tokens(messages[0]["content"])
+        if system_tokens <= max_tokens:
+            trimmed_messages.append(messages[0])
+            current_tokens += system_tokens
+    
+    # Adicionar mensagens do final até atingir limite
+    for msg in reversed(messages):
+        if msg.get("role") == "system":
+            continue  # Já adicionado
+        msg_tokens = estimate_tokens(msg["content"])
+        if current_tokens + msg_tokens <= max_tokens:
+            trimmed_messages.insert(0, msg)
+            current_tokens += msg_tokens
+        else:
+            break
     
     trimmed_tokens = sum(estimate_tokens(m["content"]) for m in trimmed_messages)
     
@@ -154,12 +187,21 @@ def test_04_memory_consolidation():
             self.consolidated: Dict[str, int] = {}
         
         def add(self, memory: str):
-            """TODO: Adicione memória e consolide se similar."""
-            pass  # ← Implemente
+            """Adicione memória e consolide se similar."""
+            self.raw_memories.append(memory)
+            # Verificar se já existe categoria similar
+            found = False
+            for category in self.consolidated:
+                if any(word in memory.lower() for word in category.lower().split()[:3]):
+                    self.consolidated[category] += 1
+                    found = True
+                    break
+            if not found:
+                self.consolidated[memory] = 1
         
         def get_summary(self) -> Dict[str, int]:
-            """TODO: Retorne memórias consolidadas com contagem."""
-            return {}  # ← Implemente
+            """Retorne memórias consolidadas com contagem."""
+            return self.consolidated.copy()
     
     consolidator = MemoryConsolidator()
     
@@ -206,16 +248,24 @@ def test_05_memory_decay():
             self.memories: Dict[str, datetime] = {}
         
         def add(self, key: str):
-            """TODO: Adicione memória com timestamp atual."""
-            pass  # ← Implemente
+            """Adicione memória com timestamp atual."""
+            from datetime import datetime
+            self.memories[key] = datetime.now()
         
         def is_expired(self, key: str) -> bool:
-            """TODO: Verifique se memória expirou."""
-            return False  # ← Implemente
+            """Verifique se memória expirou."""
+            from datetime import timedelta
+            if key not in self.memories:
+                return True
+            age = datetime.now() - self.memories[key]
+            return age.days > self.ttl_days
         
         def cleanup(self) -> int:
-            """TODO: Remova memórias expiradas e retorne count."""
-            return 0  # ← Implemente
+            """Remova memórias expiradas e retorne count."""
+            expired_keys = [k for k in self.memories if self.is_expired(k)]
+            for key in expired_keys:
+                del self.memories[key]
+            return len(expired_keys)
     
     memory = DecayingMemory(ttl_days=7)
     

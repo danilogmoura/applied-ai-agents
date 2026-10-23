@@ -1,5 +1,7 @@
 # Material Didático — P3a-3: Planejamento e Retomada
 
+> 📌 **Nota:** Este material foi revisado para focar nos conceitos essenciais. Seções marcadas como **🔬 Avançado — OPCIONAL** podem ser puladas na primeira leitura.
+
 ## ⚠️ Pré-requisito
 
 Você precisa ter concluído o módulo [P3a-2: Tool Calling](../p3a2_tool_calling/MATERIAL.md). Especificamente, precisa saber:
@@ -7,6 +9,78 @@ Você precisa ter concluído o módulo [P3a-2: Tool Calling](../p3a2_tool_callin
 - Como definir schemas JSON para ferramentas com descrições claras
 - O pattern de tool calling (decide → executa → retorna resultado)
 - Camadas de segurança (whitelist, risk levels, HITL)
+
+---
+
+## 📋 Sumário
+
+### Core (obrigatório)
+
+1. [Por que Planejadores Precisam Ser Resilientes?](#por-que-planejadores-precisam-ser-resilientes)
+2. [Circuit Breaker Pattern](#circuit-breaker-pattern)
+3. [Checkpoints — Salvar o Progresso](#checkpoints--salvar-o-progresso)
+4. [Trade-offs de Resiliência](#trade-offs-de-resiliência)
+
+### 🔬 Avançado (opcional na primeira leitura)
+
+5. [Simulação de Serviço](#simulação-de-serviço)
+2. [Arquitetura do Planner Resiliente](#️-arquitetura-do-planner-resiliente)
+
+### Prático
+
+7. [O que você vai ver](#-o-que-você-vai-ver)
+2. [Exercício Prático](#exercício-prático)
+3. [Perguntas para Reflexão](#perguntas-para-reflexão)
+4. [Resumo do Módulo](#resumo-do-módulo)
+5. [Troubleshooting](#troubleshooting)
+6. [📦 Infraestrutura do Curso](#infraestrutura-do-curso-importante)
+
+---
+
+## 📦 Infraestrutura do Curso (IMPORTANTE!)
+
+Antes de começar, entenda como o código está organizado:
+
+```
+applied-ai-agents/
+├── modules/          ← Cada módulo do curso (você está aqui)
+│   └── p3a3_planning/
+│       ├── MATERIAL.md    ← Este arquivo
+│       ├── run.py         ← Código executável (circuit breaker + checkpoint)
+│       ├── architecture.md ← Diagrama detalhado da arquitetura
+│       └── test_exercise.py ← Exercícios com TODOs
+├── shared/             ← MÓDULOS COMPARTILHADOS (usados em TODOS os módulos)
+│   ├── cost.py          ← Funções de custo (count_tokens, estimate_cost)
+│   ├── security.py      ← Gerenciamento de API keys
+│   ├── governance.py    ← ActionRequest, RiskLevel, require_approval()
+│   └── logging_config.py ← Configuração de logging + measure_latency()
+└── data/               ← Dados de exemplo
+```
+
+### Por que `sys.path.insert(0, ...)` no código?
+
+Quando você roda `python modules/p3a3_planning/run.py`, o Python procura imports **só na pasta atual** (`modules/p3a3_planning/`). Mas o `shared/` fica na raiz (`applied-ai-agents/shared/`).
+
+A linha:
+
+```python
+sys.path.insert(0, str(Path(__file__).parent.parent))
+```
+
+Diz ao Python: "Além da pasta atual, também procure na pasta **dois níveis acima**" — que é onde o `shared/` está.
+
+> 💡 **Analogia:** É como dizer ao Python para procurar livros não só na estante atual, mas também na prateleira de cima. Sem isso, `from shared.cost import count_tokens` falha com `ModuleNotFoundError`.
+
+### O que cada módulo `shared/` faz?
+
+| Módulo | Função | Quando usar |
+| -------- | -------- | ------------- |
+| `shared/cost.py` | Contar tokens, estimar custo, formatar preço | Sempre que chamar LLM ou medir consumo |
+| `shared/security.py` | Ler API keys do `.env` com validação | Sempre que precisar de autenticação |
+| `shared/governance.py` | ActionRequest, RiskLevel, require_approval(), safe_execute() | Ferramentas que modificam dados |
+| `shared/logging_config.py` | Configurar logs estruturados + medir latência | Para debug e monitoramento |
+
+> ⚠️ **Importante:** Você **não precisa entender** a implementação interna do `shared/`. Só precisa saber que essas funções existem e usá-las. A implementação será explicada nos módulos seguintes.
 
 ---
 
@@ -210,6 +284,21 @@ Execute `python modules/p3a3_planning/run.py` e observe:
 1. Qual threshold de falhas seria ideal para um circuit breaker em produção? Mais ou menos que 3?
 2. Se você tivesse múltiplas APIs dependentes, como gerenciaria os circuit breakers?
 3. Que informações seriam críticas salvar no checkpoint para recuperação completa?
+
+---
+
+## ❓ Troubleshooting
+
+Erros comuns que iniciantes encontram neste módulo:
+
+| Erro | Causa | Solução |
+| ------ | ------- | --------- |
+| `ModuleNotFoundError: No module named 'shared'` | Esqueceu `sys.path.insert(0, ...)` ou roda do diretório errado | Certifique-se de rodar `python modules/p3a3_planning/run.py` a partir da raiz do projeto |
+| Circuit breaker nunca abre | failure_threshold muito alto ou falhas não são consecutivas | Verificar se `record_failure()` está sendo chamado corretamente após cada exceção |
+| Checkpoint não salva | Permissão de escrita negada ou caminho inválido | Verificar se o diretório existe e tem permissão de escrita (`os.access(path, os.W_OK)`) |
+| Retry infinitos gastando tokens | Sem circuit breaker ou max_retries ilimitado | Sempre combinar retry com circuit breaker + limite máximo |
+| Fallback retorna dados inconsistentes | Fallback genérico sem validação | Implementar fallback específico por tipo de erro (cache vs dado alternativo) |
+| Estado do circuito não persiste entre reinícios | Circuit breaker é memória volátil | Salvar estado no checkpoint e restaurar ao reiniciar |
 
 ---
 

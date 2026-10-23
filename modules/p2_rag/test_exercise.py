@@ -90,6 +90,9 @@ def test_03_retrieval_quality():
     TODO: Verifique se a recuperação traz docs relevantes.
     
     MRR (Mean Reciprocal Rank): quanto menor o rank, melhor.
+    Hit@K: o documento relevante está nos top K resultados?
+    
+    Regra: MRR >= 0.5 e Hit@3 >= 0.7 são aceitáveis para produção.
     """
     documents = [
         {"id": 1, "content": "Reembolsos em até 30 dias"},
@@ -114,11 +117,19 @@ def test_03_retrieval_quality():
     
     mrr = None if first_relevant_rank is None else 1.0 / first_relevant_rank
     
+    # TODO: Calcule Hit@3 (documento relevante está nos top 3?)
+    hit_at_3 = any(doc_id in relevant_ids for doc_id in retrieved_ranks[:3])
+    
     assert mrr is not None and mrr > 0, \
         f"MRR deve ser positivo, got {mrr}"
     assert mrr <= 1.0, f"MRR não pode ser > 1, got {mrr}"
+    assert isinstance(hit_at_3, bool), \
+        f"Hit@3 deve ser boolean, got {type(hit_at_3)}"
+    assert hit_at_3, \
+        f"Hit@3 deveria ser True — docs relevantes estão no top 3"
     
     console.print(f"[green]✓[/green] MRR: {mrr:.2f} (rank {first_relevant_rank})")
+    console.print(f"[green]✓[/green] Hit@3: {hit_at_3}")
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -130,22 +141,31 @@ def test_04_context_window():
     TODO: Verifique se o prompt + contexto cabem no window do LLM.
     
     gpt-4o: 128k tokens context window.
+    Mas lembre-se: system_prompt + user_query + chunks + resposta_esperada
+    tudo conta!
+    
+    Regra: usar no máximo 50% do contexto é recomendado para留出 espaço
+    para a resposta gerada.
     """
     system_prompt_tokens = 150
     user_query_tokens = 50
     retrieved_chunks = [200, 180, 220]  # 3 chunks recuperados
+    expected_response_tokens = 300  # estimativa da resposta
     
-    # TODO: Some todos os tokens e verifique se cabe
+    # TODO: Some todos os tokens (system + query + chunks + resposta esperada)
     total_tokens = None  # ← Calcule
-    
+    recommended_max = 64000  # 50% do gpt-4o (recomendação de segurança)
     max_context = 128000  # gpt-4o
     
     assert total_tokens > 0, "Total de tokens deve ser positivo"
-    assert total_tokens < max_context, \
-        f"{total_tokens} tokens excedem window de {max_context}"
+    assert total_tokens < recommended_max, \
+        f"{total_tokens} tokens excedem limite recomendado ({recommended_max}). " \
+        f"Reduza chunks ou aumente threshold de relevância."
     
-    margin = max_context - total_tokens
-    console.print(f"[green]✓[/green] Total: {total_tokens}/{max_context} tokens (margem: {margin})")
+    margin = recommended_max - total_tokens
+    utilization_pct = (total_tokens / max_context) * 100
+    console.print(f"[green]✓[/green] Total: {total_tokens}/{max_context} tokens ({utilization_pct:.1f}%)")
+    console.print(f"[dim]Margem segura: {margin:,} tokens | Limite recomendado: {recommended_max:,}[/]")
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -154,17 +174,36 @@ def test_04_context_window():
 
 def test_05_rag_pipeline():
     """
-    TODO: Simule o pipeline RAG completo.
+    TODO: Simule o pipeline RAG completo e calcule métricas.
     
     Ingestão → Embedding → Busca → Contexto → Resposta
+    
+    Métricas obrigatórias:
+    - ingestion_rate: docs/segundo (simulado, > 0)
+    - retrieval_accuracy: % queries com doc relevante ([0,1], >= 0.7)
+    - avg_chunk_size: tamanho médio dos chunks em tokens (> 0)
+    - cost_per_query: custo estimado por query em USD (> 0)
     """
     docs_ingested = 4
     queries_processed = 3
     avg_relevance_score = 0.85
     
-    # TODO: Calcule métricas do pipeline
-    ingestion_rate = None  # docs por segundo (simulado)
-    retrieval_accuracy = None  # % de queries com doc relevante
+    # Dados simulados
+    ingestion_time_s = 2.5  # segundos para ingerir 4 docs
+    avg_chunk_tokens = 200  # tamanho médio dos chunks
+    input_tokens_per_query = 250  # query + chunks
+    output_tokens_per_query = 150  # resposta gerada
+    price_per_1k_input = 0.00001  # gpt-4o-mini
+    price_per_1k_output = 0.00003  # gpt-4o-mini
+    
+    # TODO: Calcule ingestion rate (docs/segundo)
+    ingestion_rate = None  # ← Calcule
+    
+    # TODO: Calcule retrieval accuracy (% entre 0 e 1)
+    retrieval_accuracy = None  # ← Defina um valor >= 0.7
+    
+    # TODO: Calcule custo por query
+    cost_per_query = None  # ← Calcule: (input_tok + output_tok) * preço/1k
     
     assert ingestion_rate is not None and ingestion_rate > 0, \
         "Ingestion rate deve ser positivo"
@@ -172,9 +211,15 @@ def test_05_rag_pipeline():
         f"Retrieval accuracy deve ser [0,1], got {retrieval_accuracy}"
     assert retrieval_accuracy >= 0.7, \
         f"Accuracy mínima aceitável: 0.7, got {retrieval_accuracy}"
+    assert cost_per_query is not None and cost_per_query > 0, \
+        "Cost per query deve ser positivo"
+    assert cost_per_query < 0.01, \
+        f"Custo por query deveria ser < $0.01, got ${cost_per_query:.4f}"
     
     console.print(f"[green]✓[/green] Pipeline: {docs_ingested} docs, "
                   f"{retrieval_accuracy*100:.0f}% accuracy")
+    console.print(f"[dim]Ingestion: {ingestion_rate:.1f} docs/s | "
+                  f"Custo/query: ${cost_per_query:.4f}[/]")
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

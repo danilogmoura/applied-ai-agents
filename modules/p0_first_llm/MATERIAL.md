@@ -1,5 +1,7 @@
 # Material Didático — P0: Primeiro Fluxo com LLM
 
+> 📌 **Nota:** Este material foi revisado para focar nos conceitos essenciais. Seções marcadas como **🔬 Avançado — OPCIONAL** podem ser puladas na primeira leitura.
+
 ## ⚙️ Setup Obrigatório
 
 **Antes de começar, leia [SETUP.md](SETUP.md)** para instalar dependências, obter API key e configurar seu ambiente.
@@ -16,7 +18,66 @@ Se você **não sabe nada sobre IA ou LLM**, leia primeiro o módulo [p0_fundame
 - Por que LLMs alucinam
 - Glossário de termos essenciais
 
-Este módulo pressupõe que você já entende esses conceitos fundamentais.
+Este módulo pressupõe que você já entende esses conceitos. **Não vamos repetir o que já está em p0_fundamentals** — vamos focar em construir seu primeiro agente funcional.
+
+---
+
+## 📋 Sumário
+
+1. [O que é um Agente de IA](#o-que-é-um-agente-de-ia)
+2. [Fluxo Básico de um Agente](#fluxo-básico-de-um-agente)
+3. [System vs. User Messages](#system-vs-user-messages)
+4. [A API da OpenAI](#a-api-da-openai)
+5. [Estimativa de Custos](#estimativa-de-custos)
+6. [Como o LLM Gera Texto](#como-o-llm-gera-texto)
+7. [Depuração: Erros Comuns de API](#-depuração-erros-comuns-de-api)
+8. [O Problema da Alucinação](#o-problema-da-alucinação)
+9. [Algoritmo: BPE](#algoritmo-byte-pair-encoding-bpe)
+10. [Reflexão Final](#reflexão-final)
+
+---
+
+## 📦 Infraestrutura do Curso (IMPORTANTE!)
+
+Antes de começar, entenda como o código está organizado:
+
+```
+applied-ai-agents/
+├── modules/          ← Cada módulo do curso (você está aqui)
+│   └── p0_first_llm/
+│       ├── MATERIAL.md    ← Este arquivo
+│       ├── run.py         ← Código executável
+│       └── ...
+├── shared/             ← MÓDULOS COMPARTILHADOS (usados em TODOS os módulos)
+│   ├── cost.py          ← Funções de custo (count_tokens, estimate_cost)
+│   ├── security.py      ← Gerenciamento de API keys
+│   └── logging_config.py ← Configuração de logging
+└── data/               ← Dados de exemplo
+```
+
+### Por que `sys.path.insert(0, ...)` no código?
+
+Quando você roda `python modules/p0_first_llm/run.py`, o Python procura imports **só na pasta atual** (`modules/p0_first_llm/`). Mas o `shared/` fica na raiz (`applied-ai-agents/shared/`).
+
+A linha:
+
+```python
+sys.path.insert(0, str(Path(__file__).parent.parent))
+```
+
+Diz ao Python: "Além da pasta atual, também procure na pasta **dois níveis acima**" — que é onde o `shared/` está.
+
+> 💡 **Analogia:** É como dizer ao Python para procurar livros não só na estante atual, mas também na prateleira de cima. Sem isso, `from shared.cost import count_tokens` falha com `ModuleNotFoundError`.
+
+### O que cada módulo `shared/` faz?
+
+| Módulo | Função | Quando usar |
+| -------- | -------- | ------------- |
+| `shared/cost.py` | Contar tokens, estimar custo, formatar preço | Sempre que chamar LLM |
+| `shared/security.py` | Ler API keys do `.env` com validação | Sempre que precisar de autenticação |
+| `shared/logging_config.py` | Configurar logs estruturados + medir latência | Para debug e monitoramento |
+
+> ⚠️ **Importante:** Você **não precisa entender** a implementação interna do `shared/`. Só precisa saber que essas funções existem e usá-las. A implementação será explicada nos módulos seguintes.
 
 ---
 
@@ -165,6 +226,8 @@ flowchart TD
 **Attention**: cada palavra no prompt influencia todas as outras. Em "sem senha", a palavra "sem" aumenta a probabilidade de "URGENTE" porque o modelo aprendeu que essa combinação indica prioridade alta.
 
 **Next-token prediction**: o modelo gera uma palavra por vez. Cada palavra gerada vira input para gerar a próxima. É por isso que prompts mal escritos produzem respostas piores — o modelo só vê tokens, não significado.
+
+> 💡 **Analogia:** Imagine um autógrafo preditivo no celular. Você digita "Bom dia" e o celular sugere "como vai você?". O LLM faz algo similar, mas para milhões de palavras diferentes.
 
 ---
 

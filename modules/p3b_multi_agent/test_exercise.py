@@ -41,12 +41,18 @@ def test_01_supervisor_routing():
     ]
     
     def route_to_specialist(task: str) -> str:
-        """TODO: Retorne o nome do especialista mais adequado."""
+        """Retorne o nome do especialista mais adequado baseado em keywords."""
         task_lower = task.lower()
+        best_match = None
+        best_score = 0
+        
         for spec in specialists:
-            if any(kw in task_lower for kw in spec["keywords"]):
-                return spec["name"]
-        return "generalist"  # ← Substitua pela lógica real
+            score = sum(1 for kw in spec["keywords"] if kw in task_lower)
+            if score > best_score:
+                best_score = score
+                best_match = spec["name"]
+        
+        return best_match if best_score > 0 else "generalist"
     
     assert route_to_specialist("Sistema caiu com erro 500") == "engineer"
     assert route_to_specialist("Quero saber o preço do plano") == "billing"
@@ -72,20 +78,28 @@ def test_02_specialist_failure():
             raise RuntimeError("Engineer indisponível")
         return f"{specialist} resolved: {task}"
     
-    # TODO: Implemente fallback para outro especialista
+    # Implemente fallback para outro especialista
     task = "Sistema caiu"
     result = None
     used_fallback = False
+    tried = set()
     
     assigned = "engineer"
     try:
         result = execute_task(assigned, task)
     except Exception:
         used_fallback = True
-        # Tenta próximo especialista disponível
+        tried.add(assigned)
+        # Tenta próximo especialista disponível até encontrar um que funcione
         idx = specialists.index(assigned)
-        fallback = specialists[(idx + 1) % len(specialists)]
-        result = execute_task(fallback, task)
+        for i in range(1, len(specialists)):
+            fallback = specialists[(idx + i) % len(specialists)]
+            if fallback not in tried:
+                try:
+                    result = execute_task(fallback, task)
+                    break
+                except Exception:
+                    tried.add(fallback)
     
     assert used_fallback == True, "Fallback deveria ter sido acionado"
     assert result is not None and "resolved" in result, \
@@ -110,12 +124,14 @@ def test_03_agent_coordination():
             self.context: Dict[str, Any] = {}
         
         def share_context(self, other: 'Agent'):
-            """TODO: Compartilhe contexto com outro agente."""
-            pass  # ← Implemente
+            """Compartilhe contexto com outro agente."""
+            for key, value in self.context.items():
+                other.receive_context(self.name, {key: value})
         
         def receive_context(self, other_name: str, context: dict):
-            """TODO: Receba contexto de outro agente."""
-            pass  # ← Implemente
+            """Receba contexto de outro agente."""
+            for key, value in context.items():
+                self.context[f"{other_name}_{key}"] = value
     
     agent_a = Agent("researcher")
     agent_b = Agent("writer")
@@ -148,10 +164,10 @@ def test_04_multi_agent_cost():
         "support": 0.003,
     }
     
-    # TODO: Calcule métricas de custo
-    total_cost = None  # ← Some todos os custos
-    most_expensive = None  # ← Encontre o agente mais caro
-    cost_per_agent = None  # ← Custo médio por agente
+    # Calcule métricas de custo
+    total_cost = sum(agent_costs.values())
+    most_expensive = max(agent_costs, key=agent_costs.get)
+    cost_per_agent = total_cost / len(agent_costs)
     
     assert total_cost > 0, "Custo total deve ser positivo"
     assert most_expensive in agent_costs, \

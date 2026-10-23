@@ -227,11 +227,9 @@ class ToolCallingAgent:
         response = client.chat.completions.create(**kwargs)
         
         choice = response.choices[0]
-        input_tok = count_tokens(messages, self.model)
-        output_tok = count_tokens(
-            [{"role": "assistant", "content": choice.message.content or ""}],
-            self.model,
-        )
+        messages_str = json.dumps(messages, ensure_ascii=False)
+        input_tok = count_tokens(messages_str, self.model)
+        output_tok = count_tokens(choice.message.content or "", self.model)
         
         self.total_input_tokens += input_tok
         self.total_output_tokens += output_tok

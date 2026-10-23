@@ -184,8 +184,8 @@ def run_benchmarks_real(n_samples: int = 5, model: str = "gpt-4o-mini") -> dict[
                 temperature=0,
             )
             latency_ms = (time.perf_counter() - start) * 1000
-            input_tok = count_tokens([{"role": "user", "content": prompt}], model)
-            output_tok = len(response.choices[0].message.content.encode())
+            input_tok = count_tokens(prompt, model)
+            output_tok = count_tokens(response.choices[0].message.content, model)
             cost = estimate_cost(input_tok, output_tok, model)
             
             ia_latencies.append(latency_ms)
@@ -223,6 +223,7 @@ def run_benchmarks_real(n_samples: int = 5, model: str = "gpt-4o-mini") -> dict[
     if rule_latencies:
         results["Regras"].avg_latency_ms = sum(rule_latencies) / len(rule_latencies) * 1000  # µs → ms
         results["Regras"].p95_latency_ms = max(rule_latencies) / 1000 if rule_latencies else 0
+        results["Regras"].total_cost_10k_calls = 0.0  # Regras não têm custo por API
     
     # Estimativas conservadoras
     results["IA"].maintenance_hours = 5.0

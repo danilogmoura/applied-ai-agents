@@ -1,4 +1,43 @@
-# Material Didático — P7: Memória e Contexto
+# Módulo P7 — Memória e Contexto
+
+> ⚠️ **Revisão:** Este material está em revisão ativa. Alguns conceitos avançados estão marcados como OPCIONAIS para não sobrecarregar iniciantes.
+
+## ⚠️ Pré-requisito
+
+Você precisa ter concluído o módulo [P6: Segurança e Guardrails](../p6_safety/MATERIAL.md). Especificamente, precisa saber:
+
+- Como implementar validação de inputs e outputs
+- Patterns de guardrails para prevenir comportamentos indesejados
+
+---
+
+## 📋 Sumário
+
+### 🔵 Core Obrigatório
+
+1. Objetivos de Aprendizagem
+2. O Problema do Contexto Limitado
+3. Por que isso existe?
+4. Erros Comuns de Iniciantes
+5. Short-Term Memory = Conversation History
+6. Estratégias de gestão (Sliding Window, Token Budget, Summarization)
+7. O que você vai ver
+8. Exercício Prático
+9. Perguntas para Reflexão
+10. Resumo do Módulo
+
+### 🔬 Avançado — OPCIONAL
+ 1. Long-Term Memory = Persistent Knowledge
+ 2. Summarization Automática
+ 3. Como Sumarização Funciona na Prática
+ 4. Arquitetura do Sistema de Memória
+ 5. Importância e Forgetting
+
+### 🛠️ Prático
+ 1. 📦 Infraestrutura do Curso
+ 2. ❓ Troubleshooting
+
+---
 
 ## ⚠️ Pré-requisito
 
@@ -81,6 +120,8 @@ Estratégias de gestão quando o contexto enche:
 
 ### Long-Term Memory = Persistent Knowledge
 
+> 🔬 **AVANÇADO — OPCIONAL**: Memória de longo prazo persiste entre sessões. Funciona como um "vector store simplificado" — salva dados importantes e recupera quando necessário.
+
 Memória de longo prazo persiste entre sessões:
 
 ```mermaid
@@ -102,6 +143,8 @@ Funciona como um vector store simplificado:
 
 ### Summarization Automática
 
+> 🔬 **AVANÇADO — OPCIONAL**: Quando o contexto está cheio, resume segmentos anteriores. Economia de ~99% de espaço.
+
 Quando o contexto está cheio, resume segmentos anteriores:
 
 ```
@@ -111,6 +154,8 @@ Economia: 99% de espaço liberado
 ```
 
 #### Como Sumarização Funciona na Prática
+
+> 🔬 **AVANÇADO — OPCIONAL**: A sumarização é outra chamada ao LLM com objetivo específico: resumir conversas antigas para economizar tokens.
 
 A sumarização não é mágica — é outra chamada ao LLM, mas com um objetivo específico:
 
@@ -148,7 +193,7 @@ Resumido: "João, 30, SP, gosta de café" → IDEAL
 A qualidade do resumo depende do prompt de sumarização.
 
 ### 🏗️ Arquitetura do Sistema de Memória
-
+> 🔬 **AVANÇADO — OPCIONAL**: Esta seção detalha a arquitetura interna do sistema de memória (ShortTermMemory + LongTermMemory).
 > Referência completa: [architecture.md](architecture.md)
 
 O sistema de memória é composto por 3 camadas independentes:
@@ -294,9 +339,61 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 - [ ] Descrevo quando sumarização deve ser acionada
 - [ ] Explico por que preservar dados críticos vs resumir contexto
 - [ ] Rodo `run.py` e explico o status de ambos os tipos de memória
-- [ ] Digo 2 estratégias de gestão de memória (summarização hierárquica, etc.)
+- [ ] Digo 2 estratégias de gestão de memória (sumarização hierárquica, etc.)
 
 > ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
+
+---
+
+## 📦 Infraestrutura do Curso
+
+Este módulo usa as mesmas estruturas compartilhadas:
+
+**Árvore de diretórios relevante:**
+
+```
+applied-ai-agents/
+├── modules/
+│   └── p7_memory/
+│       ├── MATERIAL.md          ← Você está aqui
+│       ├── run.py               ← ShortTermMemory + LongTermMemory funcionais
+│       ├── test_exercise.py     ← Exercícios (TODOs)
+│       └── architecture.md      ← Diagramas arquiteturais do sistema de memória
+├── shared/
+│   ├── cost.py                  ← count_tokens(), estimate_cost()
+│   └── logging_config.py        ← setup_logging()
+```
+
+**Dependências Necessárias:**
+
+```bash
+# Nenhuma dependência extra além das já instaladas nos módulos anteriores
+```
+
+**Módulos `shared/` usados neste módulo:**
+
+| Módulo | Função | Analogia |
+|--------|--------|----------|
+| `shared/cost.py` | Conta tokens e estima custo em USD | "Medidor de consumo" — cada mensagem na memória custa tokens |
+| `shared/logging_config.py` | Configura logs estruturados em JSON | "Câmera de segurança" que grava tudo que acontece na memória |
+
+**sys.path explicado:**
+O comando `sys.path.insert(0, str(Path(__file__).parent.parent))` diz ao Python para procurar módulos dois níveis acima. Imagine que `run.py` é um livro na estante `modules/p7_memory/` e `shared/` é outro livro na mesma estante principal — o `sys.path` é como abrir a porta entre as estantes.
+
+---
+
+## ❓ Troubleshooting
+
+Erros comuns que iniciantes encontram neste módulo:
+
+| Erro | Causa | Solução |
+| ------ | ------- | --------- |
+| `ModuleNotFoundError: No module named 'shared'` | Esqueceu `sys.path.insert(0, ...)` ou roda do diretório errado | Certifique-se de rodar `python modules/p7_memory/run.py` a partir da raiz do projeto |
+| Contexto enche muito rápido | max_messages muito alto ou mensagens muito longas | Reduzir max_messages para 5-10, usar summarization automática |
+| Sumarização perde dados importantes | Prompt de sumarização muito genérico | Separar dados persistentes (nome) de histórico (conversa) |
+| LongTermMemory não persiste entre runs | Storage só em memória (dict), não salva em arquivo | Implementar pickle/JSON save para persistência real |
+| `_count_tokens()` impreciso | Usa bytes // 4 (aproximação grosseira) | Usar `count_tokens()` de shared/cost.py para contagem real |
+| Memória consome muitos tokens | Guardar toda conversa sem estratégia | Implementar sliding window ou token budget |
 
 ---
 

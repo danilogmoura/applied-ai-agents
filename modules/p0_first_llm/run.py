@@ -96,7 +96,7 @@ Descrição: {ticket['description']}
 Responda APENAS com uma destas palavras: URGENTE, NORMAL ou BAIXA."""
 
     messages = [{"role": "user", "content": prompt}]
-    input_tokens = count_tokens(messages, model)
+    input_tokens = count_tokens(prompt, model)
     
     try:
         with measure_latency(logger, "classify_ticket") as metrics:
@@ -165,7 +165,7 @@ def classify_batch(tickets: list[dict], model: str = None) -> list[dict]:
         # Acumula tokens para relatório final
         prompt = f"{ticket['subject']} {ticket['description']}"
         total_input += count_tokens(prompt, model)
-        total_output += len(result["priority"].encode())
+        total_output += count_tokens(result["priority"], model)
     
     # Relatório de custos
     console.print("\n" + "=" * 60)

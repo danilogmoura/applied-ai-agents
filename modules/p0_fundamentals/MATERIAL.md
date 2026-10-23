@@ -1,5 +1,7 @@
 # Material Didático — Fundamentos: O que é IA e LLM?
 
+> 📌 **Nota:** Este material foi revisado para focar nos conceitos essenciais. Seções marcadas como **🔬 Avançado — OPCIONAL** podem ser puladas na primeira leitura.
+
 Este módulo é o **ponto de partida obrigatório** para quem nunca estudou IA ou LLM. Ele responde às perguntas fundamentais que todo agente de IA pressupõe.
 
 ---
@@ -9,6 +11,31 @@ Este módulo é o **ponto de partida obrigatório** para quem nunca estudou IA o
 Nenhum conhecimento técnico prévio é necessário. Este módulo foi projetado para ser acessível a qualquer pessoa — basta saber usar um computador e ter curiosidade sobre como a IA funciona por dentro.
 
 Se você já tem experiência com programação, vai entender os exemplos mais rápido. Se não tem, foque nos conceitos e use o glossário sempre que encontrar siglas.
+
+---
+
+## 📋 Sumário
+
+### Core (obrigatório)
+
+1. [O que é Inteligência Artificial (IA)?](#o-que-é-inteligência-artificial-ia)
+2. [O que é um LLM?](#o-que-é-um-llm)
+3. [Tokenização: Como texto vira números](#tokenização-como-texto-vire-números)
+4. [Prompt Engineering: A arte de falar com LLMs](#prompt-engineering-a-arte-de-falar-com-llms)
+5. [Por que LLMs Alucinam?](#por-que-llms-alucinam)
+6. [Glossário de Termos Essenciais](#glossário-de-termos-essenciais)
+
+### 🔬 Avançado (opcional na primeira leitura)
+
+7. [Algoritmo: BPE](#algoritmo-byte-pair-encoding-bpe)
+
+### Prático
+
+8. [📦 Infraestrutura do Curso](#infraestrutura-do-curso-importante)
+2. [Resumo do Módulo](#resumo-do-módulo)
+3. [Checklist Final](#checklist-como-saber-se-você-atingiu-o-objetivo)
+4. [Troubleshooting](#troubleshooting)
+5. [Exercício Prático](#exercício-prático)
 
 ---
 
@@ -65,6 +92,55 @@ Você vai usar 3 comandos no terminal:
 **Por que importa?** Todos os exercícios rodam no terminal. Se não sabe navegar pastas, vai travar nos exercícios.
 
 > 💡 **Teste rápido:** Abra o terminal e digite `python --version`. Se mostrar a versão do Python, você está pronto. Se não, siga o SETUP.md antes de continuar.
+
+---
+
+## 📦 Infraestrutura do Curso (IMPORTANTE!)
+
+Antes de começar, entenda como o código está organizado:
+
+```
+applied-ai-agents/
+├── modules/          ← Cada módulo do curso (você está aqui)
+│   └── p0_fundamentals/
+│       ├── MATERIAL.md    ← Este arquivo
+│       ├── run.py         ← Código executável (4 demos)
+│       └── test_exercise.py ← Exercícios com TODOs
+├── shared/             ← MÓDULOS COMPARTILHADOS (usados em TODOS os módulos)
+│   ├── cost.py          ← Funções de custo (count_tokens, estimate_cost)
+│   ├── security.py      ← Gerenciamento de API keys
+│   └── logging_config.py ← Configuração de logging
+└── data/               ← Dados de exemplo
+```
+
+### Por que `sys.path.insert(0, ...)` no código?
+
+Quando você roda `python modules/p0_fundamentals/run.py`, o Python procura imports **só na pasta atual** (`modules/p0_fundamentals/`). Mas o `shared/` fica na raiz (`applied-ai-agents/shared/`).
+
+A linha:
+
+```python
+sys.path.insert(0, str(Path(__file__).parent.parent))
+```
+
+Diz ao Python: "Além da pasta atual, também procure na pasta **dois níveis acima**" — que é onde o `shared/` está.
+
+> 💡 **Analogia:** É como dizer ao Python para procurar livros não só na estante atual, mas também na prateleira de cima. Sem isso, `from shared.cost import count_tokens` falha com `ModuleNotFoundError`.
+
+### Dependências Necessárias
+
+Este módulo usa duas bibliotecas externas:
+
+```bash
+pip install openai rich
+```
+
+| Biblioteca | Para que serve |
+|------------|----------------|
+| `openai` | Chamar a API da OpenAI (gpt-4o-mini) |
+| `rich` | Output bonito no terminal (painéis, cores) |
+
+Se não instalar, o `run.py` avisa e pula os demos que precisam da API — mas os exercícios ainda funcionam.
 
 ---
 
@@ -277,6 +353,21 @@ Termos que aparecerão repetidamente ao longo do curso:
 | **Tool calling** | Modelo decide chamar funções externas | Agente usando ferramentas |
 | **RAG** | Retrieval Augmented Generation — busca contexto antes de responder | Consultar enciclopédia antes de responder |
 | **SSE** | Server-Sent Events — protocolo para streaming unidirecional | Canal aberto para enviar dados progressivos |
+
+---
+
+## ❓ Troubleshooting
+
+Erros comuns que iniciantes encontram neste módulo:
+
+| Erro | Causa | Solução |
+| ------ | ------- | --------- |
+| `ModuleNotFoundError: No module named 'shared'` | Esqueceu `sys.path.insert(0, ...)` ou roda do diretório errado | Certifique-se de rodar `python modules/p0_fundamentals/run.py` a partir da raiz do projeto |
+| `ModuleNotFoundError: No module named 'openai'` | Não instalou dependências | Execute `pip install openai rich` |
+| `OpenAIError: No API key found` | `.env` não configurado ou variável com nome errado | Verifique `.env`: deve ter `OPENAI_API_KEY=sk-...` (sem espaços) |
+| Output do `run.py` aparece cortado | Terminal muito pequeno | Aumente o terminal ou redirecione para arquivo: `python run.py > output.txt` |
+| Respostas diferentes com `temperature=0` | Bug temporário da API ou modelo mudou | Isso é raro; se acontecer, é comportamento do servidor, não do seu código |
+| Tokenização estimada está errada | Simulação grosseira (split + pontuação) | Isso é intencional — tokenização real usa BPE/tiktoken. O importante é entender o conceito |
 
 ---
 

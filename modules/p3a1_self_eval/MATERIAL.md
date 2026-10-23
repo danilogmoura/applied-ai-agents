@@ -1,10 +1,36 @@
 # Material Didático — P3a-1: Autoavaliação e Reflexão
 
+> 📌 **Nota:** Este material foi revisado para focar nos conceitos essenciais. Seções marcadas como **🔬 Avançado — OPCIONAL** podem ser puladas na primeira leitura.
+
 ## ⚠️ Pré-requisito
 
 Você precisa ter concluído o módulo [P2-RAG](../p2_rag/MATERIAL.md). Especificamente, precisa saber:
 
 - Como um agente gera respostas usando LLMs e por que a autoavaliação é necessária antes de entregar
+
+---
+
+## 📋 Sumário
+
+### Core (obrigatório)
+
+1. [Infraestrutura do Curso](#infraestrutura-do-curso)
+2. [O Problema da Confiança](#o-problema-da-confiança)
+3. [Pydantic — O Validador de Formulários](#pydantic--o-validador-de-formulários)
+4. [Structured Outputs](#structured-outputs)
+5. [O Loop de Refinamento](#o-loop-de-refinamento)
+6. [Por que Limitar Iterações?](#por-que-limitar-iterações)
+
+### 🔬 Avançado (opcional na primeira leitura)
+
+7. [beta.chat.completions.parse()](#betachatcompletionsparse)
+2. [O que você vai ver](#o-que-você-vai-ver)
+
+### Prático
+
+9. [Exercício Prático](#exercício-prático)
+2. [Troubleshooting](#troubleshooting)
+3. [Glossário](#glossário)
 
 ---
 
@@ -19,6 +45,55 @@ Ao final deste módulo, você será capaz de:
 - [ ] **Entender** quando a autoavaliação pode ser "o lobo guardando o próprio aprisco"
 
 > 💡 **Dica:** Este módulo introduz o conceito mais importante de qualidade em agentes: nunca confie na primeira resposta sem verificar. Todo agente de produção precisa desse loop.
+
+---
+
+## Infraestrutura do Curso
+
+Como este módulo usa os mesmos arquivos `shared/` dos outros módulos, aqui está um resumo rápido:
+
+```
+applied-ai-agents/
+├── modules/p3a1_self_eval/
+│   ├── MATERIAL.md    ← Este arquivo
+│   ├── run.py         ← Código executável
+│   └── ...
+├── shared/
+│   ├── cost.py          ← count_tokens, estimate_cost, format_cost
+│   ├── security.py      ← get_required_secret (API keys)
+│   └── logging_config.py ← setup_logging, measure_latency
+```
+
+### Dependências Necessárias
+
+```bash
+pip install pydantic openai rich python-dotenv
+```
+
+| Pacote | Função |
+| -------- | -------- |
+| `pydantic` | Validação estruturada (garante JSON consistente) |
+| `openai` | SDK OpenAI para chamar LLMs |
+| `rich` | Output bonito no terminal |
+| `python-dotenv` | Lê variáveis de ambiente do `.env` |
+
+### Por que `sys.path.insert(0, ...)` no código?
+
+Quando roda `python modules/p3a1_self_eval/run.py`, o Python procura imports **só na pasta atual**. Mas o `shared/` fica na raiz do projeto.
+
+A linha `sys.path.insert(0, str(Path(__file__).parent.parent))` diz ao Python para também procurar **dois níveis acima** — onde o `shared/` está.
+
+> 💡 **Analogia:** É como dizer ao Python para procurar livros não só na estante atual, mas também na prateleira de cima.
+
+### O que cada módulo `shared/` faz?
+
+| Módulo | Função | Quando usar |
+| -------- | -------- | ------------- |
+| `shared/cost.py` | Contar tokens, estimar custo, formatar preço | Sempre que chamar LLM |
+| `shared/security.py` | Ler API keys do `.env` com validação | Sempre que precisar autenticação |
+| `shared/logging_config.py` | Configurar logs + medir latência | Para debug e monitoramento |
+
+> ⚠️ **Importante:** Você **não precisa entender** a implementação interna do `shared/`. Só precisa saber que essas funções existem e usá-las.
 
 ---
 
@@ -54,7 +129,55 @@ A autoavaliação resolve isso criando um **loop de qualidade** antes da entrega
 | Avaliar com texto livre | JSON inválido, parsing falha | SEMPRE usar Pydantic structured output |
 | Feedback genérico no refinamento | Modelo não sabe o que corrigir | Feedback específico: "Falta X", "Y está errado" |
 
-### Autoavaliação com Structured Outputs
+---
+
+## 🔑 Pydantic — O Validador de Formulários
+
+> 💡 **Novo conceito:** Pydantic é a ferramenta que garante que o JSON retornado pelo LLM tenha exatamente o formato esperado.
+
+### Analogia: Formulário de Cadastro
+
+Imagine um formulário de cadastro online:
+
+```
+Nome: [___________]  ← Obrigatório, texto
+Idade: [__]          ← Obrigatório, número entre 0-150
+Email: [___________] ← Obrigatório, formato válido
+Newsletter: [✓]      ← Obrigatório, booleano
+```
+
+Se você tenta enviar com idade "vinte" (texto) ou email "invalido" (sem @), o formulário **rejeita** a submissão.
+
+**Pydantic faz exatamente isso, mas para dados Python:**
+
+```python
+from pydantic import BaseModel, Field
+
+class SelfEvaluation(BaseModel):
+    accuracy: int = Field(ge=1, le=10)  # Número entre 1 e 10
+    completeness: int = Field(ge=1, le=10)
+    clarity: int = Field(ge=1, le=10)
+    issues: list[str]  # Lista de strings obrigatória
+    needs_improvement: bool  # True ou False
+```
+
+Se o LLM retorna `{"accuracy": "alta", "completeness": 15}` → **Pydantic rejeita**:
+
+- `"alta"` não é `int` → ValidationError
+- `15` > `le=10` → ValidationError
+
+### Por que usar Pydantic em vez de texto livre?
+
+| Sem Pydantic (texto livre) | Com Pydantic (structured output) |
+| --------------------------- | ---------------------------------- |
+| `{"accuracy": "quase perfeito"}` ❌ | `{"accuracy": 9}` ✅ |
+| Parsing manual propenso a erros | Validação automática |
+| Formato inconsistente entre chamadas | Schema fixo e previsível |
+| Impossível tomar decisões programáticas | Scores numéricos → decisões automáticas |
+
+---
+
+## Structured Outputs
 
 Pydantic permite definir um **schema estruturado** que o LLM deve seguir. Ao invés de texto livre, o modelo retorna JSON validado:
 
@@ -69,7 +192,9 @@ class SelfEvaluation(BaseModel):
 
 Isso garante que a avaliação seja **consistente** e **programática** — podemos tomar decisões baseadas nos scores.
 
-### O Loop de Refinamento
+---
+
+## O Loop de Refinamento
 
 ```mermaid
 stateDiagram-v2
@@ -94,7 +219,11 @@ Sem limite, o agente poderia entrar em loop infinito refinando infinitamente. O 
 | 3 | Equilíbrio | Custo moderado |
 | 5+ | Alta qualidade | Custo elevado, diminishing returns |
 
-### beta.chat.completions.parse()
+---
+
+## 🔬 beta.chat.completions.parse()
+
+> ⚠️ **AVANÇADO — OPCIONAL** na primeira leitura. Pode pular esta seção e voltar depois.
 
 A API da OpenAI com `beta.chat.completions.parse()` faz mágica:
 
@@ -105,7 +234,34 @@ A API da OpenAI com `beta.chat.completions.parse()` faz mágica:
 
 Isso elimina parsing manual e garante tipagem forte.
 
-## 🎬 O que você vai ver
+### O prefixo `beta.` na API
+
+Quando vê `client.beta.chat.completions.parse()`:
+
+- `beta.` = funcionalidade **experimental** da OpenAI
+- Funciona, mas pode mudar sem aviso prévio
+- Em produção real, espere pela versão estável (`client.chat.completions.parse()`)
+- Para este curso, `beta.` é perfeitamente seguro de usar
+
+### Fallback se beta.parse falhar
+
+Se a API não suportar `beta.parse()` ainda:
+
+```python
+try:
+    response = client.beta.chat.completions.parse(...)
+    evaluation = response.choices[0].message.parsed
+except Exception:
+    # Fallback: parse manual do JSON
+    import json
+    raw_json = response.choices[0].message.content
+    data = json.loads(raw_json)
+    evaluation = SelfEvaluation(**data)
+```
+
+---
+
+## O que você vai ver
 
 Antes de rodar o código, aqui está uma prévia do que o programa vai fazer:
 
@@ -124,6 +280,8 @@ $ python modules/p3a1_self_eval/run.py
 ✅ Aprovado! (custo total: $0.008)
 ```
 
+---
+
 ## Exercício Prático
 
 Execute `python modules/p3a1_self_eval/run.py` e observe:
@@ -133,11 +291,40 @@ Execute `python modules/p3a1_self_eval/run.py` e observe:
 3. O que acontece quando `max_iterations` é atingido
 4. Como os custos acumulam com múltiplas iterações
 
+---
+
 ## Perguntas para Reflexão
 
 1. Se a autoavaliação também fosse feita por um LLM, ela não seria "o lobo guardando o próprio aprisco"? Como mitigar?
 2. Que critérios adicionais você adicionaria além de accuracy/completeness/clarity?
 3. Como você saberia quantas iterações são suficientes para um caso de uso real?
+
+---
+
+## Troubleshooting
+
+| Erro | Causa provável | Solução |
+| ------ | ---------------- | --------- |
+| `ModuleNotFoundError: No module named 'pydantic'` | Dependência não instalada | `pip install pydantic` |
+| `ValidationError: validation failed` | LLM retornou JSON fora do schema | Verifique se o prompt pede formato JSON estrito |
+| `beta.chat.completions.parse()` não encontrado | SDK antigo | `pip install --upgrade openai` |
+| `OPENAI_API_KEY not set` | Variável de ambiente ausente | Adicione ao `.env` ou export: `export OPENAI_API_KEY=sk-...` |
+| Loop infinito (raro) | `max_iterations` não configurado | Sempre defina `max_iterations=3` como padrão |
+| Score sempre baixo | Prompt de avaliação muito rigoroso | Ajuste `MIN_SCORE` para 5-6 em vez de 7 |
+
+---
+
+## Glossário
+
+| Termo | Definição | Analogia |
+| ------- | ----------- | ---------- |
+| **Pydantic** | Biblioteca para validação estruturada de dados | Formulário com campos obrigatórios |
+| **Structured Output** | JSON com formato previsível e validado | Receita de bolo passo a passo |
+| **Loop de Refinamento** | Gera → Avalia → Refina → Reavalia | Revisar um texto várias vezes |
+| **max_iterations** | Limite máximo de tentativas | Tempo limite de prova |
+| **ValidationError** | Exceção lançada quando JSON não valida | Formulário rejeitado pelo sistema |
+| **beta.** | Prefixo experimental da API OpenAI | Versão teste de app novo |
+| **temperature=0** | Modo determinístico (mesmo input = mesmo output) | Robô seguindo receita vs artista improvisando |
 
 ---
 
@@ -176,9 +363,3 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 Com autoavaliação, seu agente verifica a qualidade antes de entregar. Mas ainda só gera texto — não executa ações no mundo real.
 
 → Leia o módulo [P3a-2: Tool Calling](../p3a2_tool_calling/MATERIAL.md) para aprender como agentes usam ferramentas externas.
-
----
-
-## Material Complementar
-
-(empty)

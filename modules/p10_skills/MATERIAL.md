@@ -1,4 +1,42 @@
-# Material Didático — P10: Design e Composição de Skills
+# Módulo P10 — Design e Composição de Skills
+
+> ⚠️ **Revisão:** Este material está em revisão ativa. Alguns conceitos avançados estão marcados como OPCIONAIS para não sobrecarregar iniciantes.
+
+## ⚠️ Pré-requisito
+
+Você precisa ter concluído o módulo [P9: Cache e Otimização](../p9_caching/MATERIAL.md). Especificamente, precisa saber:
+
+- Como implementar cache para reduzir custo e latência
+- Estratégias de invalidation e TTL para caches de LLM
+
+---
+
+## 📋 Sumário
+
+### 🔵 Core Obrigatório
+
+1. Objetivos de Aprendizagem
+2. Por que Skills?
+3. Erros Comuns de Iniciantes
+4. Interface Padrão de uma Skill
+5. O que você vai ver
+6. Exercício Prático
+7. Perguntas para Reflexão
+8. Resumo do Módulo
+
+### 🔬 Avançado — OPCIONAL
+
+9. Versionamento Semântico
+2. Pipeline Composition
+3. Arquitetura do Sistema de Skills
+4. Filtros no Pipeline
+5. Error Handling em Pipelines
+
+### 🛠️ Prático
+ 1. 📦 Infraestrutura do Curso
+ 2. ❓ Troubleshooting
+
+---
 
 ## ⚠️ Pré-requisito
 
@@ -90,6 +128,8 @@ class BaseSkill:
 
 ### Versionamento Semântico
 
+> 🔬 **AVANÇADO — OPCIONAL**: Versionamento SemVer (Major.Minor.Patch) permite evoluir skills sem quebrar consumidores. Pense como atualizações de app mobile: patch = correção bug, minor = nova feature, major = mudança que quebra compatibilidade.
+
 Cada skill pode ter múltiplas versões:
 
 ```mermaid
@@ -118,6 +158,8 @@ flowchart LR
 
 ### Pipeline Composition
 
+> 🔬 **AVANÇADO — OPCIONAL**: Encadear skills como corrente de montagem — cada step recebe o output do anterior.
+
 Encadeia skills como corrente de montagem:
 
 ```mermaid
@@ -132,7 +174,9 @@ Cada step recebe o output do anterior.
 
 ### 🏗️ Arquitetura do Sistema de Skills
 
-> Referência completa: [architecture.md](architecture.md)
+> 🔬 **AVANÇADO — OPCIONAL**: Esta seção detalha a arquitetura interna (Skill Registry, Version Manager, Pipeline Engine, Filter Chain).
+
+Referência completa: [architecture.md](architecture.md)
 
 O sistema de skills é composto por 4 componentes principais:
 
@@ -203,6 +247,8 @@ class SkillPipeline:
 
 ### Filtros no Pipeline
 
+> 🔬 **AVANÇADO — OPCIONAL**: Filtros aplicam regras entre steps (confiança mínima, rate limiting, conteúdo proibido). Se condição falha, pipeline aborta.
+
 Filtros podem abortar o pipeline se condições não forem satisfeitas:
 
 ```python
@@ -267,6 +313,52 @@ result = await skill.execute({"text": "Excelente produto!"})
 - Testabilidade: substitua skill real por mock no teste
 - Observabilidade: logue todas as chamadas via registry
 - Feature flags: canary deploy nova versão sem quebrar pipeline
+
+## 📦 Infraestrutura do Curso
+
+Este módulo usa os mesmos módulos compartilhados dos anteriores:
+
+```
+applied-ai-agents/
+├── modules/
+│   ├── p10_skills/
+│   │   ├── run.py          ← Executa skill registry + pipeline engine
+│   │   └── test_exercise.py ← Testes (IMPLEMENTE os TODOs!)
+├── shared/                  ← Módulos reutilizáveis em TODOS os módulos
+│   ├── cost.py              ← count_tokens(), estimate_cost()
+│   └── logging_config.py    ← setup_logging(), measure_latency()
+└── ...
+```
+
+**Dependências necessárias:** nenhuma extra além dos módulos anteriores.
+
+### Analogia: sys.path.insert(0, ...)
+
+Quando você vê `sys.path.insert(0, str(Path(__file__).parent.parent))` no início de cada arquivo Python, pense assim:
+
+> 📚 **Analogia dos Livros na Estante:** Imagine que o Python é uma pessoa procurando livros numa biblioteca. Normalmente ela só procura nas estantes próximas (diretório atual). O `sys.path.insert(0, ...)` é como dizer: "Antes de procurar aqui, também olhe naquela estante específica!" — neste caso, a estante `shared/` que está dois níveis acima. É como dar um atalho para o Python encontrar os módulos compartilhados sem precisar copiá-los para cada pasta.
+
+### Módulos `shared/` Usados Neste Módulo
+
+| Módulo | Função | Como é usado |
+|--------|--------|--------------|
+| `shared/cost.py` | Contagem de tokens e estimativa de custo | `count_tokens(text, model)` para calcular tokens processados por cada skill |
+| `shared/logging_config.py` | Configuração de logs e medição de latência | `setup_logging()` + `measure_latency()` para medir tempo de execução de cada step |
+
+---
+
+## ❓ Troubleshooting
+
+| Problema | Causa Provável | Solução |
+| ---------- | ---------------- | --------- |
+| `ModuleNotFoundError: No module named 'shared'` | sys.path não configurado corretamente | Verifique `sys.path.insert(0, str(Path(__file__).parent.parent))` no início do arquivo |
+| `TypeError: execute() missing 1 required positional argument: 'input_data'` | Skill mal registrada no registry | Verifique se handler recebe dict e retorna dict |
+| Pipeline executa mas output está vazio | Schema de output não compatível entre skills | Verifique input_schema/output_schema de cada skill |
+| `KeyError: 'skill_name'` | Skill não registrada antes de usar | Chame `registry.register()` antes de `pipeline.execute()` |
+| Filtro aborta pipeline inesperadamente | Threshold muito alto ou condição errada | Ajuste threshold (ex: confiança > 0.5 ao invés de > 0.9) |
+| `ImportError: No module named jsonschema` | Dependência não instalada | Execute `pip install jsonschema` se quiser validação rigorosa de schemas |
+
+---
 
 ## 🎬 O que você vai ver
 

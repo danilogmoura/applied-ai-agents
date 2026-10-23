@@ -33,18 +33,19 @@ def test_01_golden_dataset():
         {"input": "Erro 403 ao login", "expected": "URGENTE"},
         {"input": "Preço plano enterprise", "expected": "ALTA"},
         {"input": "Como funciona?", "expected": "BAIXA"},
-        # TODO: Adicione mais exemplos cobrindo edge cases
+        {"input": "Quero cancelar minha assinatura", "expected": "MEDIA"},
+        {"input": "Não recebi meu reembolso", "expected": "URGENTE"},
     ]
     
     assert len(golden_dataset) >= 5, \
         f"Golden dataset deve ter mínimo 5 exemplos, got {len(golden_dataset)}"
     
-    # TODO: Verifique que cada exemplo tem input e expected
+    # Verificar que cada exemplo tem input e expected
     valid_examples = all(
-        "input" in ex and "expected" in ex
+        "input" in ex and "expected" in ex and len(ex["input"]) > 0 and len(ex["expected"]) > 0
         for ex in golden_dataset
     )
-    assert valid_examples, "Cada exemplo deve ter 'input' e 'expected'"
+    assert valid_examples, "Cada exemplo deve ter 'input' e 'expected' não vazios"
     
     console.print(f"[green]✓[/green] Golden dataset: {len(golden_dataset)} exemplos válidos")
 
@@ -60,10 +61,10 @@ def test_02_exact_match():
     predictions = ["URGENTE", "ALTA", "MEDIA", "BAIXA", "NORMAL"]
     ground_truth = ["URGENTE", "ALTA", "ERRADO", "BAIXA", "NORMAL"]
     
-    # TODO: Calcule exact match accuracy
+    # Calcular exact match accuracy
     correct = sum(1 for p, g in zip(predictions, ground_truth) if p == g)
     total = len(predictions)
-    accuracy = None  # ← Calcule
+    accuracy = correct / total if total > 0 else 0.0
     
     assert 0 <= accuracy <= 1, f"Accuracy deve ser [0,1], got {accuracy}"
     assert accuracy < 1.0, "Este teste故意 tem 1 erro — accuracy não pode ser 100%"
@@ -81,8 +82,24 @@ def test_03_fuzzy_match():
     TODO: Implemente fuzzy match (tolera pequenas diferenças).
     """
     def levenshtein_distance(s1: str, s2: str) -> int:
-        """TODO: Calcule distância de Levenshtein entre duas strings."""
-        return 0  # ← Implemente
+        """Calcule distância de Levenshtein entre duas strings."""
+        if len(s1) < len(s2):
+            return levenshtein_distance(s2, s1)
+        
+        if len(s2) == 0:
+            return len(s1)
+        
+        previous_row = list(range(len(s2) + 1))
+        for i, c1 in enumerate(s1):
+            current_row = [i + 1]
+            for j, c2 in enumerate(s2):
+                insertions = previous_row[j + 1] + 1
+                deletions = current_row[j] + 1
+                substitutions = previous_row[j] + (c1 != c2)
+                current_row.append(min(insertions, deletions, substitutions))
+            previous_row = current_row
+        
+        return previous_row[-1]
     
     dist1 = levenshtein_distance("URGENTE", "URGENTE")
     dist2 = levenshtein_distance("URGENTE", "URGENTEE")
@@ -92,10 +109,10 @@ def test_03_fuzzy_match():
     assert dist2 == 1, f"1 char diferença = distância 1, got {dist2}"
     assert dist3 > dist2, f"Diferentes devem ter maior distância"
     
-    # TODO: Implemente fuzzy match com threshold
+    # Implementar fuzzy match com threshold
     def fuzzy_match(pred: str, expected: str, threshold: int = 2) -> bool:
         """Retorna True se distância <= threshold."""
-        return False  # ← Implemente
+        return levenshtein_distance(pred, expected) <= threshold
     
     assert fuzzy_match("URGENTE", "URGENTE") == True
     assert fuzzy_match("URGENTEE", "URGENTE") == True  # 1 char diff
@@ -120,18 +137,18 @@ def test_04_ab_testing():
     p_a = version_a["success"] / version_a["total"]
     p_b = version_b["success"] / version_b["total"]
     
-    # TODO: Calcule diferença e significância
-    difference = None  # ← Calcule p_b - p_a
+    # Calcular diferença e significância
+    difference = p_b - p_a
     
     # Proporção combinada
     p_combined = (version_a["success"] + version_b["success"]) / \
                  (version_a["total"] + version_b["total"])
     
     # Erro padrão
-    se = None  # ← Calcule standard error
+    se = (p_combined * (1 - p_combined) * (1/version_a["total"] + 1/version_b["total"])) ** 0.5
     
     # Z-score
-    z_score = None  # ← Calcule
+    z_score = difference / se if se > 0 else 0.0
     
     assert abs(difference) > 0, "Diferença não pode ser zero neste teste"
     assert z_score is not None, "Z-score deve ser calculado"
@@ -157,9 +174,9 @@ def test_05_regression_benchmarking():
     current_accuracy = 0.88
     regression_threshold = 0.02
     
-    # TODO: Calcule delta e verifique se há regressão
-    delta = None  # ← Calcule baseline - current
-    has_regression = None  # ← Verifique
+    # Calcular delta e verificar se há regressão
+    delta = baseline_accuracy - current_accuracy
+    has_regression = delta > regression_threshold
     
     assert delta > 0, "Baseline deve ser melhor que current neste teste"
     assert has_regression == True, \

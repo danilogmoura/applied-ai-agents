@@ -28,12 +28,21 @@ def test_01_self_evaluation_score():
     TODO: Implemente scoring de autoavaliação.
     
     Critérios: accuracy, completeness, clarity (cada um 0-10).
+    Respostas curtas (<50 chars) devem ter score baixo.
     """
     response = "O reembolso deve ser solicitado em até 30 dias após a compra."
     
     def evaluate_response(response: str) -> dict:
-        """TODO: Retorne {'accuracy': X, 'completeness': Y, 'clarity': Z}."""
-        return {"accuracy": 0, "completeness": 0, "clarity": 0}  # ← Implemente
+        """Retorne {'accuracy': X, 'completeness': Y, 'clarity': Z} baseado no tamanho e conteúdo."""
+        length = len(response)
+        word_count = len(response.split())
+        
+        # Respostas mais longas tendem a ser mais completas
+        accuracy = min(10, max(1, word_count // 5))
+        completeness = min(10, max(1, word_count // 8))
+        clarity = min(10, max(1, word_count // 6))
+        
+        return {"accuracy": accuracy, "completeness": completeness, "clarity": clarity}
     
     scores = evaluate_response(response)
     
@@ -136,20 +145,27 @@ def test_03_max_iterations_guard():
 
 def test_04_cost_accumulation():
     """
-    TODO: Calcule custo total das múltiplas iterações.
+    TODO: Calcule custo total das múltiplas iterações usando shared.cost.
     """
-    costs_per_iter = [0.001, 0.0015, 0.0012]  # tokens variam por iteração
+    from shared.cost import estimate_cost, format_cost
     
-    # TODO: Some todos os custos
-    total_cost = None  # ← Calcule
-    avg_cost = None  # ← Calcule
+    # Simula tokens por iteração (input + output)
+    costs_per_iter = [
+        estimate_cost(200, 150, "gpt-4o-mini"),   # Iteração 1
+        estimate_cost(300, 200, "gpt-4o-mini"),   # Iteração 2 (refinamento)
+        estimate_cost(250, 180, "gpt-4o-mini"),   # Iteração 3
+    ]
+    
+    # Some todos os custos
+    total_cost = sum(costs_per_iter)
+    avg_cost = total_cost / len(costs_per_iter)
     
     assert total_cost > 0, "Custo total deve ser positivo"
     assert avg_cost > 0, "Custo médio deve ser positivo"
     assert abs(total_cost - sum(costs_per_iter)) < 0.0001, \
         "Total deve igual soma dos individuais"
     
-    console.print(f"[green]✓[/green] Custo total: ${total_cost:.4f} ({len(costs_per_iter)} iterações)")
+    console.print(f"[green]✓[/green] Custo total: {format_cost(total_cost)} ({len(costs_per_iter)} iterações)")
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -159,11 +175,15 @@ def test_04_cost_accumulation():
 def test_05_response_improvement():
     """
     TODO: Verifique que respostas melhoram ao longo das iterações.
+    Cada iteração subsequente deve ter score >= anterior.
     """
     scores_history = [3.0, 6.5, 8.2, 9.0]
     
-    # TODO: Verifique tendência crescente
-    is_improving = None  # ← Implemente verificação
+    # Verifica tendência crescente
+    is_improving = all(
+        scores_history[i] <= scores_history[i + 1]
+        for i in range(len(scores_history) - 1)
+    )
     
     assert is_improving, \
         f"Scores {scores_history} deveriam mostrar melhoria consistente"

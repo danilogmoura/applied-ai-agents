@@ -38,16 +38,21 @@ def test_01_cache_hit_miss():
             self.misses = 0
         
         def get(self, key: str) -> Optional[Any]:
-            """TODO: Retorne valor se no cache, None se miss."""
-            return None  # ← Implemente
+            """Retorne valor se no cache, None se miss."""
+            if key in self.store:
+                self.hits += 1
+                return self.store[key]
+            self.misses += 1
+            return None
         
         def put(self, key: str, value: Any):
-            """TODO: Armazene valor no cache."""
-            pass  # ← Implemente
+            """Armazene valor no cache."""
+            self.store[key] = value
         
         def hit_rate(self) -> float:
-            """TODO: Calcule taxa de acerto."""
-            return 0.0  # ← Implemente
+            """Calcule taxa de acerto."""
+            total = self.hits + self.misses
+            return self.hits / total if total > 0 else 0.0
     
     cache = SimpleCache()
     
@@ -95,16 +100,30 @@ def test_02_ttl_expiry():
             self.store: Dict[str, tuple[Any, float]] = {}
         
         def get(self, key: str) -> Optional[Any]:
-            """TODO: Retorne valor se não expirou, None se expired."""
-            return None  # ← Implemente
+            """Retorne valor se não expirou, None se expired."""
+            from datetime import datetime
+            if key in self.store:
+                value, expiry_time = self.store[key]
+                if datetime.now().timestamp() < expiry_time:
+                    return value
+                else:
+                    del self.store[key]  # Remove expired
+            return None
         
         def put(self, key: str, value: Any, ttl: Optional[int] = None):
-            """TODO: Armazene com timestamp de expiração."""
-            pass  # ← Implemente
+            """Armazene com timestamp de expiração."""
+            from datetime import datetime
+            effective_ttl = ttl if ttl is not None else self.default_ttl
+            expiry_time = datetime.now().timestamp() + effective_ttl
+            self.store[key] = (value, expiry_time)
         
         def is_expired(self, key: str) -> bool:
-            """TODO: Verifique se entry expirou."""
-            return False  # ← Implemente
+            """Verifique se entry expirou."""
+            from datetime import datetime
+            if key not in self.store:
+                return True
+            _, expiry_time = self.store[key]
+            return datetime.now().timestamp() >= expiry_time
     
     cache = TTLCache(default_ttl_seconds=1)
     
@@ -144,16 +163,31 @@ def test_03_cache_invalidation():
             self.order: list = []
         
         def get(self, key: str) -> Optional[Any]:
-            """TODO: Retorne valor e atualize ordem de uso."""
-            return None  # ← Implemente
+            """Retorne valor e atualize ordem de uso."""
+            if key in self.store:
+                self.order.remove(key)
+                self.order.append(key)
+                return self.store[key]
+            return None
         
         def put(self, key: str, value: Any):
-            """TODO: Adicione/atualize. Remova LRU se exceder capacity."""
-            pass  # ← Implemente
+            """Adicione/atualize. Remova LRU se exceder capacity."""
+            if key in self.store:
+                self.order.remove(key)
+            elif len(self.store) >= self.capacity:
+                lru_key = self.order.pop(0)
+                del self.store[lru_key]
+            self.store[key] = value
+            self.order.append(key)
         
         def invalidate_pattern(self, pattern: str) -> int:
-            """TODO: Remova keys que contêm pattern. Retorne count removido."""
-            return 0  # ← Implemente
+            """Remova keys que contêm pattern. Retorne count removido."""
+            keys_to_remove = [k for k in self.store if pattern in k]
+            for key in keys_to_remove:
+                del self.store[key]
+                if key in self.order:
+                    self.order.remove(key)
+            return len(keys_to_remove)
     
     cache = LRUCache(capacity=3)
     
@@ -199,12 +233,15 @@ def test_04_cost_savings():
             self.total_tokens_saved = 0
         
         def record_hit(self, tokens: int):
-            """TODO: Registre hit e acumule economia."""
-            pass  # ← Implemente
+            """Registre hit e acumule economia."""
+            self.cache_hits += 1
+            self.total_tokens_saved += tokens
         
         def savings_percentage(self) -> float:
-            """TODO: Calcule % economizada com cache."""
-            return 0.0  # ← Implemente
+            """Calcule % economizada com cache."""
+            if self.total_requests == 0:
+                return 0.0
+            return self.cache_hits / self.total_requests
     
     tracker = CostTracker(cost_per_1k_tokens=0.002)
     
@@ -222,9 +259,15 @@ def test_04_cost_savings():
     
     total_tokens_without_cache = sum(t for _, t in all_requests)
     
+    seen_queries = set()
     for query, tokens in all_requests:
-        # TODO: Simula cache hit/miss
-        pass
+        # Simula cache hit/miss
+        tracker.total_requests += 1
+        # Primeiras ocorrências são misses, subsequentes são hits
+        if query in seen_queries:
+            tracker.record_hit(tokens)
+        else:
+            seen_queries.add(query)
     
     savings_pct = tracker.savings_percentage()
     assert savings_pct > 0, \
@@ -249,8 +292,9 @@ def test_05_cache_key_generation():
     import hashlib
     
     def generate_cache_key(query: str, model: str, temperature: float) -> str:
-        """TODO: Gere hash determinístico da combinação query+model+temperature."""
-        return ""  # ← Implemente
+        """Gere hash determinístico da combinação query+model+temperature."""
+        input_str = f"{query}:{model}:{temperature}"
+        return hashlib.sha256(input_str.encode()).hexdigest()[:32]
     
     key1 = generate_cache_key("qual clima?", "gpt-4", 0.7)
     key2 = generate_cache_key("qual clima?", "gpt-4", 0.7)

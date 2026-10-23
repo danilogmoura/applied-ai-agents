@@ -1,4 +1,6 @@
-# Material Didático — P9: Cache e Otimização de Custo
+# Módulo P9 — Cache e Otimização de Custo
+
+> ⚠️ **Revisão:** Este material está em revisão ativa. Alguns conceitos avançados estão marcados como OPCIONAIS para não sobrecarregar iniciantes.
 
 ## ⚠️ Pré-requisito
 
@@ -6,6 +8,32 @@ Você precisa ter concluído o módulo [P8: Streaming e Tempo Real](../p8_stream
 
 - Como implementar streaming de respostas em tempo real
 - Padrões de SSE (Server-Sent Events) e WebSockets
+
+---
+
+## 📋 Sumário
+
+### 🔵 Core Obrigatório
+
+1. Objetivos de Aprendizagem
+2. Por que Cache?
+3. Erros Comuns de Iniciantes
+4. Cache de Respostas
+5. O que você vai ver
+6. Exercício Prático
+7. Perguntas para Reflexão
+8. Resumo do Módulo
+
+### 🔬 Avançado — OPCIONAL
+
+9. Arquitetura da Cache Layer
+2. Algoritmo: LRU vs LFU (Eviction Policy)
+3. Model Routing
+4. Como Funciona Internamente
+
+### 🛠️ Prático
+ 1. 📦 Infraestrutura do Curso
+ 2. ❓ Troubleshooting
 
 ---
 
@@ -104,7 +132,9 @@ Em produção: Redis com TTL (Time To Live).
 
 ### 🏗️ Arquitetura da Cache Layer
 
-> Referência completa: [architecture.md](architecture.md)
+> 🔬 **AVANÇADO — OPCIONAL**: Esta seção detalha a arquitetura interna da cache layer (Cache Proxy, Key Generator, Lookup, Fill, Store, Eviction).
+
+Referência completa: [architecture.md](architecture.md)
 
 A cache layer é um proxy que intercepta todas as chamadas ao LLM:
 
@@ -137,6 +167,8 @@ A cache layer é um proxy que intercepta todas as chamadas ao LLM:
 **Trade-off chave:** cache em memória (RAM) = mais rápido mas perde ao reiniciar; Redis = persistente mas adiciona latência de rede.
 
 ### Algoritmo: LRU vs LFU (Eviction Policy)
+
+> 🔬 **AVANÇADO — OPCIONAL**: Quando o cache enche, precisa decidir o que remover. LRU = "último a usar, primeiro a sair"; LFU = "menos usado, primeiro a sair".
 
 Quando o cache enche, precisa decidir o que remover. Duas estratégias principais:
 
@@ -223,6 +255,52 @@ Original: 500 tokens
 Comprimido: 350 tokens
 Economia: 30%
 ```
+
+## 📦 Infraestrutura do Curso
+
+Este módulo usa os mesmos módulos compartilhados dos anteriores:
+
+```
+applied-ai-agents/
+├── modules/
+│   ├── p9_caching/
+│   │   ├── run.py          ← Executa response cache + model router
+│   │   └── test_exercise.py ← Testes (IMPLEMENTE os TODOs!)
+├── shared/                  ← Módulos reutilizáveis em TODOS os módulos
+│   ├── cost.py              ← count_tokens(), estimate_cost()
+│   └── logging_config.py    ← setup_logging(), measure_latency()
+└── ...
+```
+
+**Dependências necessárias:** nenhuma extra além dos módulos anteriores.
+
+### Analogia: sys.path.insert(0, ...)
+
+Quando você vê `sys.path.insert(0, str(Path(__file__).parent.parent))` no início de cada arquivo Python, pense assim:
+
+> 📚 **Analogia dos Livros na Estante:** Imagine que o Python é uma pessoa procurando livros numa biblioteca. Normalmente ela só procura nas estantes próximas (diretório atual). O `sys.path.insert(0, ...)` é como dizer: "Antes de procurar aqui, também olhe naquela estante específica!" — neste caso, a estante `shared/` que está dois níveis acima. É como dar um atalho para o Python encontrar os módulos compartilhados sem precisar copiá-los para cada pasta.
+
+### Módulos `shared/` Usados Neste Módulo
+
+| Módulo | Função | Como é usado |
+|--------|--------|--------------|
+| `shared/cost.py` | Contagem de tokens e estimativa de custo | `count_tokens(text, model)` para calcular tokens gerados e custos evitados |
+| `shared/logging_config.py` | Configuração de logs e medição de latência | `setup_logging()` + `measure_latency()` para medir tempo de lookup vs chamada LLM |
+
+---
+
+## ❓ Troubleshooting
+
+| Problema | Causa Provável | Solução |
+| ---------- | ---------------- | --------- |
+| `ModuleNotFoundError: No module named 'shared'` | sys.path não configurado corretamente | Verifique `sys.path.insert(0, str(Path(__file__).parent.parent))` no início do arquivo |
+| Cache não funciona após reiniciar script | Cache em memória (RAM) perde dados ao reiniciar | Use SQLite ou Redis para persistência entre sessões |
+| Chaves de cache colidem (hash collision) | Hash muito curto ou algoritmo fraco | Use `hashlib.sha256()` com input normalizado |
+| Cache serve resposta antiga demais | TTL muito longo ou falta de invalidation | Ajuste TTL conforme domínio (curto para dados dinâmicos, longo para FAQ) |
+| `ImportError: No module named redis` | Dependência não instalada | Execute `pip install redis` se quiser usar Redis real |
+| Hit rate muito baixo (< 10%) | Queries nunca se repetem ou key generation inconsistente | Normalize inputs (lowercase, strip) e aumente TTL |
+
+---
 
 ## 🎬 O que você vai ver
 

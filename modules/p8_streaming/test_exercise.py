@@ -31,8 +31,9 @@ def test_01_streaming_chunks():
     Regra: Cada chunk deve ter max_size bytes e manter integridade UTF-8.
     """
     def stream_chunks(text: str, max_chunk_size: int = 50) -> Generator[str, None, None]:
-        """TODO: Gere chunks de tamanho limitado."""
-        return  # ← Implemente como generator
+        """Gere chunks de tamanho limitado mantendo integridade UTF-8."""
+        for i in range(0, len(text), max_chunk_size):
+            yield text[i:i + max_chunk_size]
     
     text = "A resposta completa do LLM que pode ser muito longa." * 5
     chunks = list(stream_chunks(text, max_chunk_size=30))
@@ -61,8 +62,9 @@ def test_02_sse_format():
     Formato SSE: "data: {json}\n\n"
     """
     def to_sse(data: dict) -> str:
-        """TODO: Converta dict para formato SSE válido."""
-        return ""  # ← Implemente
+        """Converta dict para formato SSE válido: data: {json}\n\n"""
+        import json
+        return f"data: {json.dumps(data)}\n\n"
     
     sse_event = to_sse({"text": "Olá", "index": 0})
     
@@ -166,18 +168,23 @@ def test_05_error_recovery():
             self.received: List[str] = []
         
         def process_chunk(self, index: int, text: str) -> bool:
-            """TODO: Processe chunk. Retorne False se precisa reconectar."""
-            return True  # ← Implemente
+            """Processe chunk. Retorne False se precisa reconectar (texto é None = falha)."""
+            if text is None:
+                return False  # Falha — precisa reconectar
+            self.received.append(text)
+            self.last_index = index
+            return True  # Sucesso
         
         def get_resume_point(self) -> int:
-            """TODO: Retorne índice para retomar."""
-            return 0  # ← Implemente
+            """Retorne índice para retomar (próximo após último recebido)."""
+            return self.last_index + 1
     
     recovery = StreamRecovery()
     
     # Processa chunks normais
     for i in range(10):
-        recovery.process_chunk(i, f"chunk_{i}")
+        if not recovery.process_chunk(i, f"chunk_{i}"):
+            break  # Se falhar, para de processar
     
     # Simula falha no meio
     recovery.process_chunk(10, None)  # Falha

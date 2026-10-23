@@ -91,10 +91,6 @@ class SelfEvaluatingAgent:
         
         return response.choices[0].message.content
     
-    def _count(self, text: str) -> int:
-        """Conta tokens aproximados."""
-        return len(text.encode()) // 4  # Aproximação rápida
-    
     def generate(self, question: str, context: Optional[str] = None) -> AgentResponse:
         """
         Gera resposta com loop de autoavaliação.
@@ -145,8 +141,8 @@ Melhore a resposta aplicando todas as sugestões acima. Mantenha o mesmo formato
             
             # Gera/refine resposta
             current_answer = self._generate(prompt)
-            input_tok = self._count(prompt)
-            output_tok = self._count(current_answer)
+            input_tok = count_tokens(prompt, self.model)
+            output_tok = count_tokens(current_answer, self.model)
             self.total_input_tokens += input_tok
             self.total_output_tokens += output_tok
             

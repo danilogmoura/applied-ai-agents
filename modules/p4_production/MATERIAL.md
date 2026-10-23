@@ -1,11 +1,41 @@
 # Material Didático — P4: Produção (API REST com FastAPI)
 
+> ⚠️ **Revisão:** Este material está em revisão ativa. Alguns conceitos avançados estão marcados como OPCIONAIS para não sobrecarregar iniciantes.
+
 ## ⚠️ Pré-requisito
 
 Você precisa ter concluído o módulo [P3b: Multiagente](../p3b_multi_agent/MATERIAL.md). Especificamente, precisa saber:
 
 - Como construir sistemas multiagente coordenados
 - Quando usar arquitetura single-agent vs. multi-agent
+
+---
+
+## 📋 Sumário
+
+### 🔵 Core Obrigatório
+
+1. Objetivos de Aprendizagem
+2. De Script a Produto
+3. Erros Comuns de Iniciantes
+4. FastAPI — Framework Moderno
+5. Fluxo de uma Requisição na API
+6. O que você vai ver
+7. Exercício Prático
+8. Perguntas para Reflexão
+9. Resumo do Módulo
+
+### 🔬 Avançado — OPCIONAL
+ 1. Arquitetura de Produção (ver `architecture.md`)
+ 2. Modelos Pydantic como Contrato
+ 3. Middleware de Monitoramento
+ 4. Docker — Empacotamento Consistente
+ 5. Como o Docker Realmente Funciona (internals)
+ 6. docker-compose — Infraestrutura Completa
+
+### 🛠️ Prático
+ 1. 📦 Infraestrutura do Curso
+ 2. ❓ Troubleshooting
 
 ---
 
@@ -96,7 +126,9 @@ Cada requisição passa por 4 camadas antes de chegar ao LLM.
 
 ### 🏗️ Arquitetura de Produção
 
-> Referência completa: [architecture.md](architecture.md)
+> 🔬 **AVANÇADO — OPCIONAL**: Esta seção detalha a arquitetura interna. Para o módulo, foque nos conceitos de Gateway → Middleware → Router → AgentService.
+
+Referência completa: [architecture.md](architecture.md)
 
 A aplicação de produção é composta por 5 camadas independentes:
 
@@ -126,6 +158,8 @@ A aplicação de produção é composta por 5 camadas independentes:
 
 ### Modelos Pydantic como Contrato
 
+> 🔬 **AVANÇADO — OPCIONAL**: Pydantic é usado para validação automática de inputs. Entenda como "formulário de cadastro" que o servidor usa para verificar se os dados estão corretos antes de processar.
+
 Os modelos definem o contrato entre cliente e servidor:
 
 ```python
@@ -150,6 +184,8 @@ Isso garante que:
 - Docs Swagger são gerados automaticamente
 
 ### Middleware de Monitoramento
+
+> 🔬 **AVANÇADO — OPCIONAL**: Middleware intercepta todas as requisições para adicionar observabilidade (timing, request-id, logging).
 
 Middleware intercepta todas as requisições para adicionar observabilidade:
 
@@ -177,6 +213,8 @@ Headers customizados permitem:
 
 ### Docker — Empacotamento Consistente
 
+> 🔬 **AVANÇADO — OPCIONAL**: Docker garante que o código roda igual em qualquer ambiente. Não precisa entender internals agora — foque no conceito de "container = caixa preta isolada".
+
 Docker garante que o código roda igual em qualquer ambiente:
 
 ```dockerfile
@@ -195,6 +233,8 @@ Vantagens:
 - Isolamento de ambientes
 
 ### Como o Docker Realmente Funciona (OPCIONAL — avançado)
+
+> 🔬 **PARA PRODUÇÃO AVANÇADA**: Esta seção explica como o Docker funciona internamente (namespaces, cgroups, layers). **NÃO é necessário entender isso agora** — foque apenas no conceito de containerização.
 
 Docker **não é uma VM**. Ele não virtualiza hardware — usa recursos do kernel Linux:
 
@@ -219,6 +259,8 @@ flowchart TB
 Por isso `docker build` é lento na primeira vez (baixa todas as layers) mas rápido depois (cache de layers).
 
 ### docker-compose — Infraestrutura Completa
+
+> 🔬 **AVANÇADO — OPCIONAL**: docker-compose orquestra múltiplos containers (API + banco de dados + cache).
 
 ```yaml
 services:
@@ -275,6 +317,78 @@ docker-compose up --build
 1. Por que usar async/await na API? Quando isso faz diferença vs quando não faz?
 2. Se você tivesse 1000 requisições por segundo, que mudanças seriam necessárias?
 3. Como você implementaria autenticação (API keys, JWT) nesta API?
+
+---
+
+## 📌 Resumo do Módulo
+
+Deploy em produção é onde protótipos viram produtos:
+
+1. **FastAPI = padrão para APIs de IA** — validação automática com Pydantic, async nativo, documentação Swagger/OpenAPI gerada automaticamente.
+
+2. **Pydantic models = contrato** — cada endpoint tem input/output definido. Se o cliente enviar formato errado, FastAPI rejeita antes de chamar seu código.
+
+3. **Middleware = observabilidade** — logging estruturado (JSON) permite monitorar latência, tokens usados e erros em tempo real. Sem logging, você está cego.
+
+4. **Docker = portabilidade** — containeriza sua API para rodar em qualquer lugar (local, cloud, edge). Docker Compose orquestra múltiplos containers.
+
+5. **Internals do Docker** — imagens são imutáveis, containers são efêmeros. Volume mount para dados, network para comunicação entre containers.
+
+> ✅ **Você está pronto para:** Agora que sua API está em produção, precisa saber como avaliar a qualidade das respostas.
+
+---
+
+## 📦 Infraestrutura do Curso
+
+Este módulo usa as mesmas estruturas compartilhadas:
+
+**Árvore de diretórios relevante:**
+
+```
+applied-ai-agents/
+├── modules/
+│   └── p4_production/
+│       ├── MATERIAL.md          ← Você está aqui
+│       ├── run.py               ← API FastAPI funcional
+│       ├── test_exercise.py     ← Exercícios (TODOs)
+│       ├── architecture.md      ← Diagramas arquiteturais
+│       └── app/                 ← Aplicação FastAPI completa
+├── shared/
+│   ├── logging_config.py        ← setup_logging()
+│   └── security.py              ← get_required_secret()
+```
+
+**Dependências Necessárias:**
+
+```bash
+pip install fastapi uvicorn pydantic openai
+# Para Docker: instale Docker Desktop ou Docker Engine
+```
+
+**Módulos `shared/` usados neste módulo:**
+
+| Módulo | Função | Analogia |
+|--------|--------|----------|
+| `shared/logging_config.py` | Configura logs estruturados em JSON | "Câmera de segurança" que grava tudo que acontece |
+| `shared/security.py` | Valida variáveis de ambiente (.env) | "Porteiro" que verifica identidade antes de deixar entrar |
+
+**sys.path explicado:**
+O comando `sys.path.insert(0, str(Path(__file__).parent.parent))` diz ao Python para procurar módulos dois níveis acima. Imagine que `run.py` é um livro na estante `modules/p4_production/` e `shared/` é outro livro na mesma estante principal — o `sys.path` é como abrir a porta entre as estantes.
+
+---
+
+## ❓ Troubleshooting
+
+Erros comuns que iniciantes encontram neste módulo:
+
+| Erro | Causa | Solução |
+| ------ | ------- | --------- |
+| `ModuleNotFoundError: No module named 'shared'` | Esqueceu `sys.path.insert(0, ...)` ou roda do diretório errado | Certifique-se de rodar `python modules/p4_production/run.py` a partir da raiz do projeto |
+| `ImportError: cannot import name 'FastAPI'` | FastAPI não instalado | Execute `pip install fastapi uvicorn pydantic` |
+| Port 8000 já em uso | Outra API rodando na mesma porta | Matar processo ou mudar porta no `uvicorn` command |
+| `docker: command not found` | Docker não instalado | Instalar Docker Desktop (macOS/Windows) ou Docker Engine (Linux) |
+| Container não sobe (`docker-compose up`) | Dockerfile incorreto ou dependências faltando | Verificar `docker-compose up --build 2>&1 | tail -50` para erros |
+| Swagger UI mostra 404 | API não iniciou corretamente | Verificar logs do terminal — erro geralmente é chave API ausente |
 
 ---
 

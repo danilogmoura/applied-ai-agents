@@ -1,4 +1,41 @@
-# Material Didático — P11: Operations de Produção (CI/CD + Monitoramento)
+# Módulo P11 — Operations de Produção (CI/CD + Monitoramento)
+
+> ⚠️ **Revisão:** Este material está em revisão ativa. Alguns conceitos avançados estão marcados como OPCIONAIS para não sobrecarregar iniciantes.
+
+## ⚠️ Pré-requisito
+
+Você precisa ter concluído o módulo [P10: Design e Composição de Skills](../p10_skills/MATERIAL.md). Especificamente, precisa saber:
+
+- Como projetar skills reutilizáveis e composáveis
+- Patterns de composição de skills para agentes complexos
+
+---
+
+## 📋 Sumário
+
+### 🔵 Core Obrigatório
+
+1. Objetivos de Aprendizagem
+2. Por que Monitorar Agentes?
+3. Erros Comuns de Iniciantes
+4. Métricas Essenciais
+5. O que você vai ver
+6. Exercício Prático
+7. Perguntas para Reflexão
+8. Resumo do Módulo
+
+### 🔬 Avançado — OPCIONAL
+
+9. Logging Estruturado
+2. Prompt Testing (A/B)
+3. Rollback Automático
+4. Algoritmo: Exponential Backoff com Jitter
+
+### 🛠️ Prático
+ 1. 📦 Infraestrutura do Curso
+ 2. ❓ Troubleshooting
+
+---
 
 ## ⚠️ Pré-requisito
 
@@ -72,6 +109,8 @@ Sem monitoramento, você descobre problemas quando o cliente reclama — não an
 
 ### Prompt Testing (A/B)
 
+> 🔬 **AVANÇADO — OPCIONAL**: Antes de deploy, teste novas versões contra dataset golden. Pense como "prova piloto" antes de lançar matéria nova.
+
 Antes de deploy, teste novas versões contra dataset:
 
 ```python
@@ -84,6 +123,8 @@ results = await tester.run_test("prompt_v2")
 
 ### Rollback Automático
 
+> 🔬 **AVANÇADO — OPCIONAL**: Se métricas degradarem após deploy, rollback automático volta para versão anterior. Pense como "botão de voltar" inteligente.
+
 Se métricas degradarem após deploy, rollback automático:
 
 ```python
@@ -92,6 +133,8 @@ if dashboard["error_rate"] > 10:
 ```
 
 ### Logging Estruturado
+
+> 🔬 **AVANÇADO — OPCIONAL**: Logs em JSON permitem análise programática automática. Pense como "planilha automática" que cada ação do agente gera uma linha com campos padronizados.
 
 Logs em JSON para facilitar análise:
 
@@ -106,6 +149,8 @@ Logs em JSON para facilitar análise:
 ```
 
 ### Algoritmo: Exponential Backoff com Jitter (retrocesso exponencial com variação aleatória)
+
+> 🔬 **AVANÇADO — OPCIONAL**: Quando API falha, nunca repita imediatamente. Use backoff exponencial + aleatoriedade para evitar "thundering herd" (todos tentam juntos e sobrecarregam servidor).
 
 Quando uma API falha, nunca repita imediatamente. Use exponential backoff (backoff exponencial) — mas com aleatoriedade:
 
@@ -198,6 +243,52 @@ O sistema de operations é composto por 4 pilares independentes:
 5. Alert Manager notifica equipe se anomaly persiste após rollback
 
 **Trade-off chave:** monitorar tudo = visibilidade total mas mais custo de storage; monitorar só o essencial = barato mas pode perder problemas sutis.
+
+## 📦 Infraestrutura do Curso
+
+Este módulo usa os mesmos módulos compartilhados dos anteriores:
+
+```
+applied-ai-agents/
+├── modules/
+│   ├── p11_production_ops/
+│   │   ├── run.py          ← Executa metrics collector + prompt tester + rollback manager
+│   │   └── test_exercise.py ← Testes (IMPLEMENTE os TODOs!)
+├── shared/                  ← Módulos reutilizáveis em TODOS os módulos
+│   ├── cost.py              ← count_tokens(), estimate_cost()
+│   └── logging_config.py    ← setup_logging(), measure_latency()
+└── ...
+```
+
+**Dependências necessárias:** nenhuma extra além dos módulos anteriores.
+
+### Analogia: sys.path.insert(0, ...)
+
+Quando você vê `sys.path.insert(0, str(Path(__file__).parent.parent))` no início de cada arquivo Python, pense assim:
+
+> 📚 **Analogia dos Livros na Estante:** Imagine que o Python é uma pessoa procurando livros numa biblioteca. Normalmente ela só procura nas estantes próximas (diretório atual). O `sys.path.insert(0, ...)` é como dizer: "Antes de procurar aqui, também olhe naquela estante específica!" — neste caso, a estante `shared/` que está dois níveis acima. É como dar um atalho para o Python encontrar os módulos compartilhados sem precisar copiá-los para cada pasta.
+
+### Módulos `shared/` Usados Neste Módulo
+
+| Módulo | Função | Como é usado |
+|--------|--------|--------------|
+| `shared/cost.py` | Contagem de tokens e estimativa de custo | `count_tokens(text, model)` + `estimate_cost()` para calcular custos por request e alertar quando excede threshold |
+| `shared/logging_config.py` | Configuração de logs e medição de latência | `setup_logging()` + `measure_latency()` para logging estruturado e medição de percentis (P50/P95/P99) |
+
+---
+
+## ❓ Troubleshooting
+
+| Problema | Causa Provável | Solução |
+| ---------- | ---------------- | --------- |
+| `ModuleNotFoundError: No module named 'shared'` | sys.path não configurado corretamente | Verifique `sys.path.insert(0, str(Path(__file__).parent.parent))` no início do arquivo |
+| Logs JSON com sintaxe inválida | Aspas ou caracteres especiais não escapados | Use `json.dumps()` sempre para gerar logs, nunca f-strings manuais |
+| Percentil P95 muito alto (> 10x P50) | Alguns requests outliers distorcem estatística | Investigar causas específicas (rede lenta, API throttling) |
+| Alerta de custo dispara falsamente | Threshold muito baixo para volume real | Ajuste threshold baseado em baseline histórica (ex: 2x média ao invés de valor fixo) |
+| Rollback triggers desnecessários | Métricas flutuam naturalmente | Use janela deslizante (ex: média dos últimos 10 minutos) ao invés de ponto único |
+| `ImportError: No module named jsonschema` | Dependência não instalada | Execute `pip install jsonschema` se quiser validação rigorosa de schemas |
+
+---
 
 ## 🎬 O que você vai ver
 

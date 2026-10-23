@@ -36,16 +36,20 @@ def test_01_skill_registry():
         
         def register(self, name: str, description: str, 
                      handler: Callable[[dict], dict]):
-            """TODO: Registre uma nova skill."""
-            pass  # ← Implemente
+            """Registre uma nova skill."""
+            self.skills[name] = {
+                "name": name,
+                "description": description,
+                "handler": handler
+            }
         
         def get(self, name: str) -> Optional[dict]:
-            """TODO: Retorne skill pelo nome."""
-            return None  # ← Implemente
+            """Retorne skill pelo nome."""
+            return self.skills.get(name)
         
         def list_all(self) -> List[str]:
-            """TODO: Retorne lista de nomes registrados."""
-            return []  # ← Implemente
+            """Retorne lista de nomes registrados."""
+            return list(self.skills.keys())
     
     registry = SkillRegistry()
     
@@ -85,12 +89,18 @@ def test_02_skill_composition():
             self.pipeline: List[str] = []
         
         def add_step(self, skill_name: str):
-            """TODO: Adicione skill ao pipeline."""
-            pass  # ← Implemente
+            """Adicione skill ao pipeline."""
+            if self.registry.get(skill_name):
+                self.pipeline.append(skill_name)
         
         def execute(self, initial_input: dict) -> dict:
-            """TODO: Execute pipeline sequencialmente."""
-            return {}  # ← Implemente
+            """Execute pipeline sequencialmente."""
+            current_data = initial_input.copy()
+            for skill_name in self.pipeline:
+                skill = self.registry.get(skill_name)
+                if skill:
+                    current_data = skill["handler"](current_data)
+            return current_data
     
     registry = SkillRegistry()
     composer = SkillComposer(registry)
@@ -132,16 +142,33 @@ def test_03_pipeline_execution():
             self.error_policy: str = "abort"  # "abort" | "skip" | "fallback"
         
         def set_steps(self, step_names: List[str]):
-            """TODO: Configure steps do pipeline."""
-            pass  # ← Implemente
+            """Configure steps do pipeline."""
+            self.steps = step_names
         
         def set_error_policy(self, policy: str):
             """Configure política de erro."""
-            self.error_policy = policy
+            if policy in ("abort", "skip", "fallback"):
+                self.error_policy = policy
         
         def execute(self, input_data: dict) -> dict:
-            """TODO: Execute pipeline com error handling."""
-            return {}  # ← Implemente
+            """Execute pipeline com error handling."""
+            current_data = input_data.copy()
+            for step_name in self.steps:
+                skill = self.registry.get(step_name)
+                if not skill:
+                    if self.error_policy == "abort":
+                        return {"error": f"Skill {step_name} não encontrada"}
+                    continue
+                try:
+                    current_data = skill["handler"](current_data)
+                except Exception as e:
+                    if self.error_policy == "abort":
+                        return {"error": f"Skill {step_name} falhou: {e}"}
+                    elif self.error_policy == "skip":
+                        continue
+                    elif self.error_policy == "fallback":
+                        current_data.setdefault("fallback", True)
+            return current_data
     
     registry = SkillRegistry()
     executor = PipelineExecutor(registry)
@@ -177,8 +204,19 @@ def test_04_skill_discovery():
             self.registry = registry
         
         def find_relevant(self, task_description: str, top_k: int = 3) -> List[dict]:
-            """TODO: Encontre skills relevantes pela descrição da tarefa."""
-            return []  # ← Implemente
+            """Encontre skills relevantes pela descrição da tarefa."""
+            task_lower = task_description.lower()
+            scored_skills = []
+            for name, skill_info in self.registry.skills.items():
+                desc_lower = skill_info["description"].lower()
+                # Score por palavras-chave que aparecem na descrição da tarefa
+                score = sum(1 for word in task_lower.split() 
+                           if len(word) > 3 and word in desc_lower)
+                if score > 0:
+                    scored_skills.append((score, name, skill_info))
+            # Ordena por score (maior primeiro) e retorna top_k
+            scored_skills.sort(key=lambda x: x[0], reverse=True)
+            return [{"name": s[1], **s[2]} for s in scored_skills[:top_k]]
     
     registry = SkillRegistry()
     discoverer = SkillDiscoverer(registry)
@@ -226,16 +264,31 @@ def test_05_skill_versioning():
         def register(self, name: str, version: str, 
                      handler: Callable[[dict], dict],
                      description: str = ""):
-            """TODO: Registre skill com versão específica."""
-            pass  # ← Implemente
+            """Registre skill com versão específica."""
+            if name not in self.versions:
+                self.versions[name] = {}
+            self.versions[name][version] = {
+                "name": name,
+                "version": version,
+                "handler": handler,
+                "description": description
+            }
         
         def get(self, name: str, version: Optional[str] = None) -> Optional[dict]:
-            """TODO: Retorne skill. Se version=None, retorne latest."""
-            return None  # ← Implemente
+            """Retorne skill. Se version=None, retorne latest."""
+            if name not in self.versions:
+                return None
+            if version is None:
+                # Retorna mais recente (última alfabeticamente)
+                versions = sorted(self.versions[name].keys())
+                version = versions[-1]
+            return self.versions[name].get(version)
         
         def list_versions(self, name: str) -> List[str]:
-            """TODO: Retorne lista de versões disponíveis."""
-            return []  # ← Implemente
+            """Retorne lista de versões disponíveis."""
+            if name in self.versions:
+                return sorted(self.versions[name].keys())
+            return []
     
     registry = VersionedRegistry()
     

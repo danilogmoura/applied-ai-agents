@@ -348,7 +348,7 @@ PERGUNTA: {query}
 RESPOSTA:"""
         
         messages = [{"role": "user", "content": prompt}]
-        input_tokens = count_tokens(messages, self.model)
+        input_tokens = count_tokens(prompt, self.model)
         
         with measure_latency(logger, "rag_generate") as metrics:
             response = client.chat.completions.create(
@@ -359,7 +359,7 @@ RESPOSTA:"""
             )
         
         answer = response.choices[0].message.content
-        output_tokens = count_tokens([{"role": "assistant", "content": answer}], self.model)
+        output_tokens = count_tokens(answer, self.model)
         cost = estimate_cost(input_tokens, output_tokens, self.model)
         
         metrics["answer_length"] = len(answer)

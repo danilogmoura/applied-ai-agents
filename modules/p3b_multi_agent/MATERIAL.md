@@ -1,11 +1,86 @@
 # Material Didático — P3b: Sistema Multiagente
 
+> 📌 **Nota:** Este material foi revisado para focar nos conceitos essenciais. Seções marcadas como **🔬 Avançado — OPCIONAL** podem ser puladas na primeira leitura.
+
 ## ⚠️ Pré-requisito
 
 Você precisa ter concluído o módulo [P3a-3: Planejamento](../p3a3_planning/MATERIAL.md). Especificamente, precisa saber:
 
 - Como planejar sequências de ações para agentes autônomos
 - Quando um agente deve agir sozinho vs. coordenar com outros
+
+---
+
+## 📋 Sumário
+
+### Core (obrigatório)
+
+1. [Por que Múltiplos Agentes?](#por-que-múltiplos-agentes)
+2. [Arquitetura Supervisor-Especialista](#arquitetura-supervisor-especialista)
+3. [Roteamento: LLM vs Heurísticas](#roteamento-llm-vs-heurísticas)
+4. [Degradation Elegante](#degradation-elegante)
+5. [Custos em Multiagente](#custos-em-multiagente)
+
+### 🔬 Avançado (opcional na primeira leitura)
+
+6. [Arquitetura Multiagente](#️-arquitetura-multiagente)
+2. [Pipeline na Prática — Passo a Passo](#pipeline-na-prática--passo-a-passo)
+
+### Prático
+
+8. [O que você vai ver](#-o-que-você-vai-ver)
+2. [Exercício Prático](#exercício-prático)
+3. [Perguntas para Reflexão](#perguntas-para-reflexão)
+4. [Resumo do Módulo](#resumo-do-módulo)
+5. [Troubleshooting](#troubleshooting)
+6. [📦 Infraestrutura do Curso](#infraestrutura-do-curso-importante)
+
+---
+
+## 📦 Infraestrutura do Curso (IMPORTANTE!)
+
+Antes de começar, entenda como o código está organizado:
+
+```
+applied-ai-agents/
+├── modules/          ← Cada módulo do curso (você está aqui)
+│   └── p3b_multi_agent/
+│       ├── MATERIAL.md    ← Este arquivo
+│       ├── run.py         ← Código executável (supervisor + especialistas)
+│       ├── architecture.md ← Diagramas detalhados da arquitetura
+│       └── test_exercise.py ← Exercícios com TODOs
+├── shared/             ← MÓDULOS COMPARTILHADOS (usados em TODOS os módulos)
+│   ├── cost.py          ← Funções de custo (count_tokens, estimate_cost)
+│   ├── security.py      ← Gerenciamento de API keys
+│   ├── governance.py    ← ActionRequest, RiskLevel, require_approval()
+│   └── logging_config.py ← Configuração de logging + measure_latency()
+└── data/               ← Dados de exemplo
+```
+
+### Por que `sys.path.insert(0, ...)` no código?
+
+Quando você roda `python modules/p3b_multi_agent/run.py`, o Python procura imports **só na pasta atual** (`modules/p3b_multi_agent/`). Mas o `shared/` fica na raiz (`applied-ai-agents/shared/`).
+
+A linha:
+
+```python
+sys.path.insert(0, str(Path(__file__).parent.parent))
+```
+
+Diz ao Python: "Além da pasta atual, também procure na pasta **dois níveis acima**" — que é onde o `shared/` está.
+
+> 💡 **Analogia:** É como dizer ao Python para procurar livros não só na estante atual, mas também na prateleira de cima. Sem isso, `from shared.cost import count_tokens` falha com `ModuleNotFoundError`.
+
+### O que cada módulo `shared/` faz?
+
+| Módulo | Função | Quando usar |
+| -------- | -------- | ------------- |
+| `shared/cost.py` | Contar tokens, estimar custo, formatar preço | Sempre que chamar LLM ou medir consumo |
+| `shared/security.py` | Ler API keys do `.env` com validação | Sempre que precisar de autenticação |
+| `shared/governance.py` | ActionRequest, RiskLevel, require_approval(), safe_execute() | Ferramentas que modificam dados |
+| `shared/logging_config.py` | Configurar logs estruturados + medir latência | Para debug e monitoramento |
+
+> ⚠️ **Importante:** Você **não precisa entender** a implementação interna do `shared/`. Só precisa saber que essas funções existem e usá-las. A implementação será explicada nos módulos seguintes.
 
 ---
 
@@ -289,6 +364,21 @@ Execute `python modules/p3b_multi_agent/run.py` e observe:
 1. Se você tivesse 20 especialistas, o roteamento ficaria caro demais? Que alternativa existiria?
 2. Como coordenar dois especialistas que precisam trabalhar juntos na mesma tarefa?
 3. Quando faria sentido ter agentes hierárquicos (supervisor → sub-supervisores → especialistas)?
+
+---
+
+## ❓ Troubleshooting
+
+Erros comuns que iniciantes encontram neste módulo:
+
+| Erro | Causa | Solução |
+| ------ | ------- | --------- |
+| `ModuleNotFoundError: No module named 'shared'` | Esqueceu `sys.path.insert(0, ...)` ou roda do diretório errado | Certifique-se de rodar `python modules/p3b_multi_agent/run.py` a partir da raiz do projeto |
+| Supervisor roteia tudo para o mesmo especialista | Keywords muito genéricas ou sobrepostas | Refinar keywords por especialista, usar palavras mais específicas |
+| Custo explode com muitos especialistas | Cada especialista faz chamadas LLM extras | Usar gpt-4o-mini no supervisor, limitar especialistas chamados |
+| Fallback em loop infinito | Lista de especialistas sem verificação | Contador máximo de tentativas + lista de já-tentados |
+| Contexto compartilhado cresce demais | Agentes copiam contexto completo | Compartilhar apenas chaves necessárias (subset do dict) |
+| Hierarquia profunda = latência alta | Cada nível adiciona ~20% overhead | Limitar a 2 níveis máximos; usar cache para respostas frequentes |
 
 ---
 

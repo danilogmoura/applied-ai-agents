@@ -1,5 +1,7 @@
 # Material Didático — P2: Pipeline RAG (Recuperação de Contexto)
 
+> 📌 **Nota:** Este material foi revisado para focar nos conceitos essenciais. Seções marcadas como **🔬 Avançado — OPCIONAL** podem ser puladas na primeira leitura.
+
 Este módulo implementa o padrão mais usado em produção para dar conhecimento interno ao LLM.
 
 ---
@@ -26,6 +28,75 @@ Este módulo usa Python de forma mais avançada. Você **precisa saber**:
 Se não domina algum desses conceitos, revise-os antes de continuar. Não é matemática avançada — é Python básico.
 
 > 💡 **Sobre embeddings:** Se nunca ouviu falar, foque na intuição: *vetores capturam significado*. "Como resetar senha" e "Esqueci a senha" têm vetores próximos mesmo sem palavras em comum. A matemática vem depois.
+
+---
+
+## 📋 Sumário
+
+### Core (obrigatório)
+
+1. [O Problema do Contexto Limitado](#o-problema-do-contexto-limitado)
+2. [RAG — Retrieval Augmented Generation](#rag--retrieval-augmented-generation)
+3. [Embeddings — A Chave da Busca Semântica](#embeddings--a-chave-da-busca-semântica)
+4. [Chunking — Divisão Inteligente](#chunking--divisão-inteligente-de-documentos)
+5. [Tokens no Pipeline RAG](#tokens-no-pipeline-rag)
+
+### 🔬 Avançado (opcional — pule na primeira leitura)
+
+1. [🔬 Técnicas Avançadas de Produção](#técnicas-avançadas-de-produção)
+2. [🔬 Arquitetura Completa](#-arquitetura-do-pipeline-rag)
+
+### Prático
+
+1. [O que você vai ver](#o-que-você-vai-ver)
+2. [Troubleshooting](#troubleshooting)
+3. [Glossário](#glossário)
+
+---
+
+## 📦 Infraestrutura do Curso
+
+Como este módulo usa os mesmos arquivos `shared/` dos outros módulos, aqui está um resumo rápido:
+
+```
+applied-ai-agents/
+├── modules/p2_rag/
+│   ├── MATERIAL.md    ← Este arquivo
+│   ├── run.py         ← Código executável
+│   └── ...
+├── shared/
+│   ├── cost.py          ← count_tokens, estimate_cost, format_cost
+│   ├── security.py      ← get_required_secret (API keys)
+│   └── logging_config.py ← setup_logging, measure_latency
+```
+
+### Por que `sys.path.insert(0, ...)` no código?
+
+Quando roda `python modules/p2_rag/run.py`, o Python procura imports **só na pasta atual**. Mas o `shared/` fica na raiz do projeto.
+
+A linha `sys.path.insert(0, str(Path(__file__).parent.parent))` diz ao Python para também procurar **dois níveis acima** — onde o `shared/` está.
+
+> 💡 **Analogia:** É como dizer ao Python para procurar livros não só na estante atual, mas também na prateleira de cima.
+
+### Dependências Necessárias
+
+```bash
+pip install chromadb rich python-dotenv
+```
+
+- `chromadb`: Banco de dados vetorial (armazena embeddings)
+- `rich`: Output bonito no terminal
+- `python-dotenv`: Lê variáveis de ambiente do `.env`
+
+### O que cada módulo `shared/` faz?
+
+| Módulo | Função | Quando usar |
+| -------- | -------- | ------------- |
+| `shared/cost.py` | Contar tokens, estimar custo, formatar preço | Sempre que chamar LLM |
+| `shared/security.py` | Ler API keys do `.env` com validação | Sempre que precisar autenticação |
+| `shared/logging_config.py` | Configurar logs + medir latência | Para debug e monitoramento |
+
+> ⚠️ **Importante:** Você **não precisa entender** a implementação interna do `shared/`. Só precisa saber que essas funções existem e usá-las.
 
 ---
 
@@ -91,7 +162,7 @@ ChromaDB é um banco de dados vetorial open-source que:
 
 ### 🏗️ Arquitetura do Pipeline RAG
 
-> Referência completa: [architecture.md](architecture.md)
+> 🔬 **AVANÇADO — OPCIONAL** — Esta seção pode ser pulada na primeira leitura. Para referência completa, veja [architecture.md](architecture.md).
 
 O pipeline RAG é composto por 4 componentes principais:
 
@@ -153,11 +224,11 @@ flowchart TD
 
 **Cosine Similarity** (similaridade cosseno): mede o ângulo entre dois vetores, não a distância. Quanto mais próximo de 1, mais similares são semanticamente.
 
+> 💡 **Intuição:** Pense em duas setas apontando na mesma direção → similaridade alta. Setas apontando para lados opostos → similaridade baixa. Não precisa calcular — o modelo já aprendeu isso durante o treino.
+
+Resultado típico:
+
 ```
-Cosine(A, B) = (A · B) / (||A|| × ||B||)
-
-Resultado: -1 (opostos) → +1 (idênticos) → 0 (independentes)
-
 "Senha" vs "Contraseña"    → 0.92 (diferente idioma, mesmo sentido)
 "Senha" vs "Preço do produto" → 0.31 (sem relação)
 ```
@@ -166,7 +237,9 @@ O modelo aprendeu durante o treino que textos com significado similar produzem v
 
 ---
 
-## Técnicas Avançadas de Produção
+## 🔬 Técnicas Avançadas de Produção (OPCIONAL)
+
+> ⚠️ **Esta seção é para produção.** Pode ser pulada na primeira leitura.
 
 ### 1. Busca Híbrida (Vetorial + BM25)
 
@@ -381,6 +454,34 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 Com RAG, seu agente pode responder perguntas com base em documentos. Mas no mundo real, agentes precisam ir além de responder — eles precisam **executar ações**.
 
 → Leia o módulo [P3a-1: Autoavaliação](../p3a1_self_eval/MATERIAL.md) para aprender a verificar qualidade antes de entregar respostas.
+
+---
+
+## ❓ Troubleshooting
+
+| Erro | Causa | Solução |
+| ------ | ------- | --------- |
+| `ModuleNotFoundError: No module named 'chromadb'` | SDK não instalado | Execute `pip install chromadb` |
+| `ModuleNotFoundError: No module named 'openai'` | SDK não instalado | Execute `pip install openai` |
+| `ValueError: OPENAI_API_KEY não definida` | `.env` ausente | Crie `.env` na raiz com `OPENAI_API_KEY=sua_chave` |
+| `AuthenticationError: Incorrect API key` | Chave inválida | Regenerue em platform.openai.com/api-keys |
+| `RateLimitError` | Muitas requisições rápido | Espere 5s e tente novamente |
+| `ModuleNotFoundError: No module named 'shared'` | Path incorreto | Execute da raiz do projeto |
+| ChromaDB crash / corrompido | Arquivo local danificado | Apague `.chroma/` e reingira documentos |
+
+---
+
+## 📖 Glossário
+
+| Termo | Definição | Analogia |
+| ------- | ----------- | ---------- |
+| **RAG** | Retrieval-Augmented Generation — busca docs relevantes antes de responder | "Abrir o livro certo antes de responder a pergunta" |
+| **Embedding** | Vetor numérico que representa significado de texto | "GPS para significado" — textos similares ficam próximos |
+| **Vector DB** | Banco que armazena e busca embeddings rapidamente | "Biblioteca com catálogo inteligente" |
+| **Chunking** | Dividir texto longo em pedaços menores | "Cortar livro em capítulos para ler melhor" |
+| **Cosine Similarity** | Medida de similaridade entre vetores (0 a 1) | "Quanto mais próximos os GPS, mais similares os textos" |
+| **ChromaDB** | Banco vetorial open-source leve | "Uma opção de Vector DB, como escolher entre Spotify ou Apple Music" |
+| **top_k** | Número de resultados retornados pela busca | "Pedir os 3 melhores resultados" |
 
 ---
 

@@ -37,12 +37,22 @@ def test_01_circuit_breaker_states():
             self.state = "CLOSED"  # ← Pode mudar
         
         def record_failure(self) -> str:
-            """TODO: Registre falha e retorne novo estado."""
-            return self.state  # ← Implemente
+            """Registre falha e retorne novo estado."""
+            self.failures += 1
+            if self.state == "HALF_OPEN":
+                self.state = "OPEN"
+            elif self.failures >= self.failure_threshold and self.state != "OPEN":
+                self.state = "OPEN"
+            return self.state
         
         def record_success(self) -> str:
-            """TODO: Registre sucesso e retorne novo estado."""
-            return self.state  # ← Implemente
+            """Registre sucesso e retorne novo estado."""
+            if self.state == "HALF_OPEN":
+                self.state = "CLOSED"
+                self.failures = 0
+            elif self.state == "OPEN":
+                self.state = "HALF_OPEN"
+            return self.state
     
     cb = CircuitBreaker(failure_threshold=3)
     
@@ -76,12 +86,18 @@ def test_02_checkpoint_save_restore():
             self.results: Dict[str, Any] = {}
         
         def save_checkpoint(self) -> dict:
-            """TODO: Retorne serialização do estado."""
-            return {}  # ← Implemente
+            """Retorne serialização do estado."""
+            return {
+                "steps_completed": self.steps_completed,
+                "current_step": self.current_step,
+                "results": dict(self.results),  # Copia rasa
+            }
         
         def restore_checkpoint(self, state: dict):
-            """TODO: Restaure estado a partir da serialização."""
-            pass  # ← Implemente
+            """Restaure estado a partir da serialização."""
+            self.steps_completed = state.get("steps_completed", 0)
+            self.current_step = state.get("current_step", 0)
+            self.results = state.get("results", {})
     
     planner = PlannerState()
     planner.steps_completed = 5
@@ -158,13 +174,13 @@ def test_04_fallback_logic():
     def execute_fallback(action: str) -> str:
         return "cached_response"
     
-    # TODO: Implemente try/except com fallback
+    # Implemente try/except com fallback
     result = None
     used_fallback = False
     
     try:
         result = execute_primary("api_call")
-    except Exception:
+    except (ConnectionError, TimeoutError, OSError) as e:
         used_fallback = True
         result = execute_fallback("api_call")
     
@@ -190,10 +206,14 @@ def test_05_plan_execution_metrics():
         {"step": 4, "status": "success", "latency_ms": 180},
     ]
     
-    # TODO: Calcule métricas
-    success_rate = None  # ← Calcule
-    avg_latency = None  # ← Calcule (só successes)
-    total_latency = None  # ← Calcule (todos)
+    # Calcule métricas
+    total_steps = len(execution_log)
+    success_steps = [s for s in execution_log if s["status"] == "success"]
+    failed_steps = [s for s in execution_log if s["status"] == "failed"]
+    
+    success_rate = len(success_steps) / total_steps if total_steps > 0 else 0.0
+    avg_latency = sum(s["latency_ms"] for s in success_steps) / len(success_steps) if success_steps else 0.0
+    total_latency = sum(s["latency_ms"] for s in execution_log)
     
     assert 0 <= success_rate <= 1, f"Success rate deve ser [0,1], got {success_rate}"
     assert success_rate > 0.5, f"Success rate mínimo: 0.5, got {success_rate}"

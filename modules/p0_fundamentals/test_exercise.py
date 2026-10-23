@@ -31,8 +31,13 @@ def test_01_token_counting():
     ~2 caracteres por token em português.
     """
     def estimate_tokens(text: str, language: str = "en") -> int:
-        """TODO: Retorne número estimado de tokens."""
-        return 0  # ← Implemente
+        """Retorne número estimado de tokens baseado no idioma."""
+        if not text.strip():
+            return 0
+        
+        # Inglês: ~4 chars/token; Português: ~2.5 chars/token (mais acentos)
+        chars_per_token = 4.0 if language == "en" else 2.5
+        return max(1, round(len(text) / chars_per_token))
     
     english_text = "The quick brown fox jumps over the lazy dog."
     portuguese_text = "O rápido raposo marrom salta sobre o cão preguiçoso."
@@ -61,8 +66,8 @@ def test_02_cost_estimation():
     TODO: Calcule custo baseado em tokens e preço por 1K tokens.
     """
     def calculate_cost(tokens: int, price_per_1k: float) -> float:
-        """TODO: Retorne custo em dólares."""
-        return 0.0  # ← Implemente
+        """Retorne custo em dólares dado número de tokens e preço por 1K."""
+        return (tokens / 1000.0) * price_per_1k
     
     # GPT-4o: $0.01 por 1K input tokens
     gpt4_input_price = 0.01
@@ -88,14 +93,42 @@ def test_03_prompt_structure():
     """
     def validate_prompt(messages: list) -> dict:
         """
-        TODO: Retorne {'valid': bool, 'errors': [...], 'token_estimate': int}.
+        Retorne {'valid': bool, 'errors': [...], 'token_estimate': int}.
         
         Regras:
         - Primeiro message deve ser role='system' ou role='user'
-        - Roles alternam corretamente
+        - Roles alternam corretamente (user→assistant→user...)
         - Content não pode ser vazio
         """
-        return {"valid": True, "errors": [], "token_estimate": 0}  # ← Implemente
+        errors = []
+        token_estimate = 0
+        
+        if not messages:
+            return {"valid": False, "errors": ["Lista vazia"], "token_estimate": 0}
+        
+        # Verificar primeiro message
+        first_role = messages[0]["role"]
+        if first_role not in ("system", "user"):
+            errors.append(f"Primeiro message deve ser system/user, got {first_role}")
+        
+        # Verificar content não vazio e alternância
+        for i, msg in enumerate(messages):
+            if not msg.get("content", "").strip():
+                errors.append(f"Message {i}: content vazio")
+            token_estimate += len(msg.get("content", "")) // 4
+            
+            if i > 0:
+                prev_role = messages[i-1]["role"]
+                curr_role = msg["role"]
+                # user/assistant devem alternar
+                if prev_role == curr_role and prev_role in ("user", "assistant"):
+                    errors.append(f"Messages {i-1} e {i} têm mesmo role '{curr_role}'")
+        
+        return {
+            "valid": len(errors) == 0,
+            "errors": errors,
+            "token_estimate": token_estimate,
+        }
     
     valid_prompt = [
         {"role": "system", "content": "Você é um assistente útil."},
@@ -135,14 +168,39 @@ def test_04_temperature_effect():
     
     def simulate_temperature(base_responses: list, temperature: float, n_samples: int = 100) -> dict:
         """
-        TODO: Simule amostragem com temperatura.
+        Simule amostragem com temperatura.
         
         Low temp (0.1): quase sempre escolhe a resposta mais provável.
         High temp (1.0): distribuição mais uniforme.
         
         Retorne {'unique_responses': int, 'diversity_score': float}.
         """
-        return {"unique_responses": 0, "diversity_score": 0.0}  # ← Implemente
+        import random
+        
+        # Criar pesos baseados na temperatura
+        # Low temp → peso alto para índice 0, baixo para outros
+        # High temp → pesos mais equilibrados
+        if temperature < 0.5:
+            # Temperatura baixa: primeira resposta tem peso dominante
+            weights = [1.0 - temperature] + [temperature / (len(base_responses) - 1)] * (len(base_responses) - 1)
+        else:
+            # Temperatura alta: pesos mais uniformes
+            base_weight = 0.3
+            spread = (1.0 - base_weight) / (len(base_responses) - 1)
+            weights = [base_weight] + [spread] * (len(base_responses) - 1)
+        
+        total_weight = sum(weights)
+        weights = [w / total_weight for w in weights]
+        
+        # Amostragem
+        samples = random.choices(base_responses, weights=weights, k=n_samples)
+        unique = len(set(samples))
+        diversity = unique / len(base_responses)  # Normalizado 0-1
+        
+        return {
+            "unique_responses": unique,
+            "diversity_score": round(diversity, 3),
+        }
     
     responses = ["A", "B", "C", "D", "E"]  # 5 respostas possíveis
     
@@ -189,8 +247,28 @@ def test_05_context_window():
     
     total_tokens = sum(estimate_tokens(m["content"]) for m in messages)
     
-    # TODO: Trunque se exceder max_context_tokens
-    trimmed = messages[:]  # ← Implemente lógica de trim
+    # Truncar removendo mensagens mais antigas (exceto system)
+    trimmed = []
+    current_tokens = 0
+    
+    # Sempre manter o system prompt
+    system_msg = messages[0] if messages and messages[0]["role"] == "system" else None
+    if system_msg:
+        sys_tokens = estimate_tokens(system_msg["content"])
+        if sys_tokens <= max_context_tokens:
+            trimmed.append(system_msg)
+            current_tokens = sys_tokens
+    
+    # Adicionar mensagens da mais recente para a mais antiga até caber
+    conversation_msgs = [m for m in messages[1:] if m["role"] != "system"]
+    for msg in reversed(conversation_msgs):
+        msg_tokens = estimate_tokens(msg["content"])
+        if current_tokens + msg_tokens <= max_context_tokens:
+            trimmed.append(msg)
+            current_tokens += msg_tokens
+    
+    # Reordenar para ordem original
+    trimmed.sort(key=lambda m: messages.index(m) if m in messages else 0)
     
     trimmed_tokens = sum(estimate_tokens(m["content"]) for m in trimmed)
     
