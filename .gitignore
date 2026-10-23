@@ -51,6 +51,9 @@ htmlcov/
 
 # Evaluations (internal notes, not for repo)
 .evaluations/
+
+# Logs
+logs/
 *.cover
 
 # OS
