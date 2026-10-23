@@ -156,8 +156,12 @@ def test_03_max_iterations_guard():
             break  # ← O guard deve impedir isso
         result = bad_generate(i)
     
+    # ⚠️ PONTO CRÍTICO: Valide comportamento — loop para no máximo max_iterations
+    assert actual_iterations <= max_iterations, \
+        f"Loop deve parar em no máximo {max_iterations} iterações, foi {actual_iterations}"
+    # Verifique que o loop realmente executou até o limite antes de parar
     assert actual_iterations == max_iterations, \
-        f"Deveria parar em {max_iterations}, foi {actual_iterations}"
+        f"Deveria executar exatamente {max_iterations} iterações, got {actual_iterations}"
     
     console.print(f"[green]✓[/green] Guard funciona: parou em {actual_iterations} iterações")
 

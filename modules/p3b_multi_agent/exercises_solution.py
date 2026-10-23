@@ -20,17 +20,48 @@ console = Console()
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# TESTE 1: Supervisor Routing — Roteamento correto?
+# SOLUÇÕES COMENTADAS — Funções implementadas com explicações
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-def test_01_supervisor_routing():
+def route_to_specialist(task: str, specialists: list) -> str:
     """
-    Supervisor routing: agente supervisor encaminha tarefas para especialistas.
+    Roteia tarefa para o especialista mais adequado.
     
     Estratégia: keyword matching com scoring.
     Cada especialista tem keywords associadas.
     A tarefa é roteada para o especialista com mais matches.
     Se nenhum match → generalist (agente genérico).
+    """
+    # ⚠️ PONTO CRÍTICO: Normaliza para lowercase para match case-insensitive
+    task_lower = task.lower()
+    best_match = None
+    best_score = 0
+    
+    for spec in specialists:
+        # ⚠️ PONTO CRÍTICO: Conta quantas keywords do especialista estão na task
+        # sum(1 for kw in ...) gera 1 para cada keyword encontrada
+        score = sum(1 for kw in spec["keywords"] if kw in task_lower)
+        if score > best_score:
+            best_score = score
+            best_match = spec["name"]
+    
+    # ⚠️ PONTO CRÍTICO: Se best_score == 0, nenhum especialista corresponde
+    return best_match if best_score > 0 else "generalist"
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# TESTE 1: Supervisor Routing — Roteamento correto?
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+def test_01_supervisor_routing():
+    """
+    Testa roteamento do supervisor para especialistas.
+    
+    Regras:
+    - "bug", "erro", "crash" → "engineer"
+    - "preço", "cobrança", "fatura" → "billing"
+    - "como funciona", "tutorial" → "support"
+    - demais → "generalist"
     """
     specialists = [
         {"name": "engineer", "keywords": ["bug", "erro", "crash", "falha"]},
@@ -38,32 +69,24 @@ def test_01_supervisor_routing():
         {"name": "support", "keywords": ["como", "tutorial", "guia", "instrução"]},
     ]
     
-    def route_to_specialist(task: str) -> str:
-        """
-        Roteia tarefa para o especialista mais adequado.
-        
-        1. Converte task para lowercase
-        2. Para cada especialista, conta quantas keywords aparecem
-        3. Retorna especialista com maior score
-        4. Se nenhum match → "generalist"
-        """
-        task_lower = task.lower()
-        best_match = None
-        best_score = 0
-        
-        for spec in specialists:
-            # Conta quantas keywords do especialista estão na task
-            score = sum(1 for kw in spec["keywords"] if kw in task_lower)
-            if score > best_score:
-                best_score = score
-                best_match = spec["name"]
-        
-        return best_match if best_score > 0 else "generalist"
+    assert route_to_specialist("Sistema caiu com erro 500", specialists) == "engineer"
+    assert route_to_specialist("Quero saber o preço do plano", specialists) == "billing"
+    assert route_to_specialist("Como configuro minha conta?", specialists) == "support"
+    # ⚠️ PONTO CRÍTICO: Valide comportamento — sem keyword match → generalist
+    routed_general = route_to_specialist("Olá", specialists)
+    assert routed_general == "generalist", \
+        f"Sem keywords → 'generalist', got {routed_general!r}"
     
-    assert route_to_specialist("Sistema caiu com erro 500") == "engineer"
-    assert route_to_specialist("Quero saber o preço do plano") == "billing"
-    assert route_to_specialist("Como configuro minha conta?") == "support"
-    assert route_to_specialist("Olá") == "generalist"
+    # ⚠️ PONTO CRÍTICO: Propriedade comportamental — cada keyword mapeia exatamente um especialista
+    test_cases = [
+        ("minha conta está crashando", "engineer"),
+        ("quero pagar a fatura", "billing"),
+        ("me ensina como usar", "support"),
+    ]
+    for query, expected in test_cases:
+        routed = route_to_specialist(query, specialists)
+        assert routed == expected, \
+            f"{query!r} → {expected!r}, got {routed!r}"
     
     console.print("[green]✓[/green] Supervisor roteia corretamente!")
 

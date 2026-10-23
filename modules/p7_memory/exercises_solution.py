@@ -20,19 +20,29 @@ console = Console()
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SOLUÇÕES COMENTADAS — Funções implementadas com explicações
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+def estimate_tokens(text: str) -> int:
+    """
+    Estima número de tokens baseado no comprimento do texto.
+    
+    Regra fixa: ~4 chars/token (inglês).
+    """
+    # ⚠️ PONTO CRÍTICO: Dividir por 4 é heurística simples
+    # Tokenizers reais (como tiktoken) têm mapeamento byte→token não-linear
+    return len(text) // 4  # Placeholder vazio
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # TESTE 1: Short-term Memory — Memória de contexto funciona?
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def test_01_short_term_memory():
     """
-    Memória de curto prazo (context window).
+    Testa memória de curto prazo (context window).
     
-    Funcionamento:
-    1. Mantém lista de mensagens no máximo N
-    2. Quando excede → remove as mais antigas (slice)
-    3. get_context retorna as últimas N mensagens
-    
-    Isso simula como um LLM tem janela limitada de contexto.
+    Regra: Últimas N mensagens mantidas no contexto.
     """
     class ShortTermMemory:
         def __init__(self, max_messages: int = 10):
@@ -40,13 +50,9 @@ def test_01_short_term_memory():
             self.messages: List[Dict[str, str]] = []
         
         def add(self, role: str, content: str):
-            """
-            Adiciona mensagem e remove as mais antigas se exceder.
-            
-            1. Append nova mensagem
-            2. Se len > max → slice das últimas N
-            """
+            """Adiciona mensagem e remove as mais antigas se exceder."""
             self.messages.append({"role": role, "content": content})
+            # ⚠️ PONTO CRÍTICO: Slice negativo pega últimas N elementos
             if len(self.messages) > self.max_messages:
                 self.messages = self.messages[-self.max_messages:]
         
@@ -61,10 +67,14 @@ def test_01_short_term_memory():
         memory.add("user" if i % 2 == 0 else "assistant", f"Mensagem {i}")
     
     context = memory.get_context()
-    assert len(context) == 5, \
-        f"Deveria manter apenas 5 mensagens, got {len(context)}"
-    assert context[0]["content"] == "Mensagem 3", \
-        "Primeira mensagem do contexto deve ser a 3ª (índice 3)"
+    # ⚠️ PONITO CRÍTICO: Valide comportamento — janela deslizante mantém últimas N
+    expected_max = memory.max_messages
+    assert len(context) == expected_max, \
+        f"Janela deve manter {expected_max} mensagens, got {len(context)}"
+    # Verifique que as mensagens são as últimas adicionadas (índices mais altos)
+    for msg in context:
+        content_num = int(msg["content"].split()[-1])
+        assert content_num >= 3, f"Mensagens devem ser as últimas (nº >= 3), got {content_num}"
     
     console.print(f"[green]✓[/green] Short-term: {len(context)} mensagens mantidas")
 
@@ -75,23 +85,14 @@ def test_01_short_term_memory():
 
 def test_02_long_term_memory():
     """
-    Memória de longo prazo (persistente).
-    
-    Estrutura: storage[session_id][key] = {"value": ..., "timestamp": ..., "session": ...}
-    
-    Cada sessão é isolada — dados não vazam entre sessões diferentes.
+    Testa memória de longo prazo (persistente).
     """
     class LongTermMemory:
         def __init__(self):
             self.storage: Dict[str, Any] = {}
         
         def save(self, key: str, value: Any, session_id: str = "default"):
-            """
-            Salva dado com metadados (session, timestamp).
-            
-            1. Cria dict da sessão se não existir
-            2. Armazena valor + timestamp + referência à sessão
-            """
+            """Salva dado com metadados (session, timestamp)."""
             from datetime import datetime
             if session_id not in self.storage:
                 self.storage[session_id] = {}
@@ -102,21 +103,14 @@ def test_02_long_term_memory():
             }
         
         def retrieve(self, key: str, session_id: str = "default") -> Any:
-            """
-            Recupera dado pela chave e sessão.
-            
-            Retorna None se sessão ou chave não existem.
-            """
+            """Recupera dado pela chave e sessão."""
+            # ⚠️ PONTO CRÍTICO: Verificar ambas as chaves evita KeyError
             if session_id in self.storage and key in self.storage[session_id]:
                 return self.storage[session_id][key]["value"]
             return None
         
         def delete(self, key: str, session_id: str = "default") -> bool:
-            """
-            Remove dado e retorna True se encontrado.
-            
-            False se sessão ou chave não existem.
-            """
+            """Remove dado e retorna True se encontrado."""
             if session_id in self.storage and key in self.storage[session_id]:
                 del self.storage[session_id][key]
                 return True
@@ -147,18 +141,10 @@ def test_02_long_term_memory():
 
 def test_03_context_window_management():
     """
-    Gerenciamento do context window do LLM.
+    Testa gerenciamento do context window do LLM.
     
-    Estratégia de truncamento:
-    1. Manter system prompt (primeira mensagem)
-    2. Adicionar mensagens do final para trás até atingir limite
-    3. Parar quando próximo mensagem excederia max_tokens
-    
-    Isso preserva o contexto mais relevante (mais recente).
+    Regra: Se tokens > max_tokens, resumir ou truncar.
     """
-    def estimate_tokens(text: str) -> int:
-        return len(text) // 4  # ~4 chars per token
-    
     messages = [
         {"role": "user", "content": "Olá"},
         {"role": "assistant", "content": "Olá! Como posso ajudar?"},
@@ -341,7 +327,11 @@ def test_05_memory_decay():
     memory.add("preference_language")
     memory.add("last_login")
     
-    assert memory.count() == 3, "Deveria ter 3 memórias"
+    # ⚠️ PONTO CRÍTICO: Valide comportamento — contagem após adição
+    expected_count = 3
+    actual_count = memory.count()
+    assert actual_count == expected_count, \
+        f"Deveria ter {expected_count} memórias após adicionar 3, got {actual_count}"
     
     # Simula expiração: remove manualmente algumas
     del memory.memories["preference_theme"]
@@ -350,8 +340,11 @@ def test_05_memory_decay():
     assert "preference_theme" not in memory.memories, \
         "Memória removida manualmente não deve estar presente"
     
-    assert memory.count() == 2, \
-        f"Deveria ter 2 memórias restantes, got {memory.count()}"
+    # ⚠️ PONTO CRÍTICO: Valide comportamento — contagem após remoção
+    expected_after_remove = 2
+    actual_after_remove = memory.count()
+    assert actual_after_remove == expected_after_remove, \
+        f"Deveria ter {expected_after_remove} memórias após remover 1, got {actual_after_remove}"
     
     console.print(f"[green]✓[/green] Decay: {memory.count()} memórias ativas")
 

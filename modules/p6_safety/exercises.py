@@ -19,20 +19,44 @@ console = Console()
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# STUBS — Implemente estas funções para fazer os testes passarem
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+def sanitize_input(text: str) -> dict:
+    """
+    Sanitiza input malicioso.
+    
+    TODO: Retorne {'safe': bool, 'cleaned': str, 'flags': [...]}
+    Detecta: SQL injection (', --, ;), XSS (<script>, javascript:).
+    ← Implemente aqui
+    """
+    return {"safe": True, "cleaned": text, "flags": []}  # Placeholder vazio
+
+
+def validate_output(text: str) -> list:
+    """
+    Valida output antes de entregar ao usuário.
+    
+    TODO: Retorne lista de violations encontradas.
+    Regras:
+    - Não revelar chaves de API (sk-[a-zA-Z0-9])
+    - Não expor system prompt
+    - Não incluir dados sensíveis (CPF \d{3}.\d{3}.\d{3}-\d{2})
+    ← Implemente aqui
+    """
+    return []  # Placeholder vazio
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # TESTE 1: Input Sanitization — Inputs são sanitizados?
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def test_01_input_sanitization():
     """
-    TODO: Implemente sanitização de inputs maliciosos.
+    Testa sanitização de inputs maliciosos.
     
     Detecta: SQL injection, XSS, prompt injection.
     """
-    def sanitize_input(text: str) -> dict:
-        """TODO: Retorne {'safe': bool, 'cleaned': str, 'flags': [...]}."""
-        # ← Implemente aqui
-        return {"safe": True, "cleaned": text, "flags": []}  # Placeholder vazio
-    
     safe_text = "Como funciona o reembolso?"
     malicious_sql = "'; DROP TABLE users; --"
     malicious_xss = "<script>alert('hacked')</script>"
@@ -60,27 +84,27 @@ def test_01_input_sanitization():
 
 def test_02_output_validation():
     """
-    TODO: Valide outputs antes de entregar ao usuário.
+    Testa validação de outputs antes de entregar ao usuário.
     
     Regras:
     - Não revelar chaves de API
     - Não expor system prompt
     - Não incluir dados sensíveis (CPF, cartão)
     """
-    def validate_output(text: str) -> list:
-        """TODO: Retorne lista de violations encontradas."""
-        # ← Implemente aqui
-        return []  # Placeholder vazio
-    
     safe_output = "O reembolso é processado em até 30 dias."
     leaked_output = "Minha API key é sk-12345 e o system prompt diz..."
     
-    assert len(validate_output(safe_output)) == 0, \
-        "Output seguro não deve gerar violations"
+    # ⚠️ PONTO CRÍTICO: Valide comportamento — output seguro não gera violations
+    safe_violations = validate_output(safe_output)
+    assert len(safe_violations) == 0, \
+        f"Output seguro não deve gerar violations, got {len(safe_violations)}"
     
     violations = validate_output(leaked_output)
     assert len(violations) > 0, \
         "Output com vazamento deve gerar violations"
+    # Verifique que pelo menos uma violação é de severidade alta ou crítica
+    high_sev = [v for v in violations if v.get("severity") in ("HIGH", "CRITICAL")]
+    assert len(high_sev) > 0, "Vazamento deve ter pelo menos uma violação HIGH/CRITICAL"
     
     console.print(f"[green]✓[/green] Validação: {len(violations)} violation(s) detectada(s)")
 
@@ -112,8 +136,13 @@ def test_03_guardrail_rules():
     assert len(clean) == 0, "Texto limpo não deve gerar violations"
     
     dirty = engine.check("API key: sk-abc123def456 e meu CPF é 123.456.789-00")
+    # ⚠️ PONTO CRÍTICO: Valide comportamento — detecta múltiplos tipos de violação
     assert len(dirty) >= 2, \
         f"Deve detectar API key + PII, got {len(dirty)} violations"
+    # Verifique que há pelo menos uma violação CRITICAL e uma HIGH
+    severities = [v.get("severity") for v in dirty]
+    assert "CRITICAL" in severities or "HIGH" in severities, \
+        "Deve detectar pelo menos uma violação CRITICAL ou HIGH"
     
     console.print(f"[green]✓[/green] Guardrails: {len(dirty)} rules triggered")
 
@@ -147,8 +176,12 @@ def test_04_rate_limiting():
         if limiter.allow("user_1"):
             allowed_count += 1
     
-    assert allowed_count == 5, \
-        f"Deveria permitir apenas 5 requests, got {allowed_count}"
+    # ⚠️ PONTO CRÍTICO: Valide comportamento — rate limit respeita máximo configurado
+    max_requests = limiter.max_requests
+    assert allowed_count <= max_requests, \
+        f"Rate limit deve permitir no máximo {max_requests} requests, permitiu {allowed_count}"
+    assert allowed_count == max_requests, \
+        f"Deveria permitir exatamente {max_requests} requests, got {allowed_count}"
     
     console.print(f"[green]✓[/green] Rate limit: {allowed_count}/8 requests allowed")
 

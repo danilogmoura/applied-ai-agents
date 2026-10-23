@@ -118,9 +118,12 @@ def test_02_ttl_expiry():
     
     cache.put("key1", "value1")
     
-    # Deveria estar válido
-    assert cache.get("key1") == "value1", \
-        "Entry recém-criada deve estar válida"
+    # ⚠️ PONTO CRÍTICO: Valide comportamento — entry recém-criada deve estar válida
+    cached = cache.get("key1")
+    assert cached is not None, \
+        "Entry recém-criada deve ser recuperável"
+    assert cached == "value1", \
+        f"Valor recuperado deve ser 'value1', got {cached!r}"
     
     # Simula passagem de tempo (hack: manipula o store diretamente)
     from datetime import datetime, timedelta

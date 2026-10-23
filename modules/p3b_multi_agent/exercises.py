@@ -20,12 +20,27 @@ console = Console()
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# STUBS — Implemente estas funções para fazer os testes passarem
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+def route_to_specialist(task: str, specialists: list) -> str:
+    """
+    Roteia tarefa para especialista mais adequado baseado em keywords.
+    
+    TODO: Retorne o nome do especialista cujas keywords mais se aproximam
+    do texto da tarefa. Se nenhum especialista corresponder, retorne 'generalist'.
+    ← Implemente aqui
+    """
+    return "generalist"  # Placeholder vazio
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # TESTE 1: Supervisor Routing — Roteamento correto?
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def test_01_supervisor_routing():
     """
-    TODO: Implemente o roteamento do supervisor para especialistas.
+    Testa roteamento do supervisor para especialistas.
     
     Regras:
     - "bug", "erro", "crash" → "engineer"
@@ -39,15 +54,24 @@ def test_01_supervisor_routing():
         {"name": "support", "keywords": ["como", "tutorial", "guia", "instrução"]},
     ]
     
-    def route_to_specialist(task: str) -> str:
-        """TODO: Retorne o nome do especialista mais adequado baseado em keywords."""
-        # ← Implemente aqui
-        return "generalist"  # Placeholder vazio
+    assert route_to_specialist("Sistema caiu com erro 500", specialists) == "engineer"
+    assert route_to_specialist("Quero saber o preço do plano", specialists) == "billing"
+    assert route_to_specialist("Como configuro minha conta?", specialists) == "support"
+    # ⚠️ PONTO CRÍTICO: Valide comportamento — sem keyword match → generalist
+    routed_general = route_to_specialist("Olá", specialists)
+    assert routed_general == "generalist", \
+        f"Sem keywords → 'generalist', got {routed_general!r}"
     
-    assert route_to_specialist("Sistema caiu com erro 500") == "engineer"
-    assert route_to_specialist("Quero saber o preço do plano") == "billing"
-    assert route_to_specialist("Como configuro minha conta?") == "support"
-    assert route_to_specialist("Olá") == "generalist"
+    # ⚠️ PONTO CRÍTICO: Propriedade comportamental — cada keyword mapeia exatamente um especialista
+    test_cases = [
+        ("minha conta está crashando", "engineer"),
+        ("quero pagar a fatura", "billing"),
+        ("me ensina como usar", "support"),
+    ]
+    for query, expected in test_cases:
+        routed = route_to_specialist(query, specialists)
+        assert routed == expected, \
+            f"{query!r} → {expected!r}, got {routed!r}"
     
     console.print("[green]✓[/green] Supervisor roteia corretamente!")
 

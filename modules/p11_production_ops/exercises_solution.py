@@ -106,8 +106,15 @@ def test_01_cicd_pipeline():
     
     assert result.get("deployed") is True, \
         "Pipeline completo deve terminar com deployed=True"
-    assert len(result.get("stages_executed", [])) == 4, \
-        "Devem ter 4 estágios executados"
+    
+    # ⚠️ PONTO CRÍTICO: Valide comportamento — pipeline executou todos os estágios
+    expected_stages = 4  # lint → test → build → deploy
+    stages = result.get("stages_executed", [])
+    assert len(stages) == expected_stages, \
+        f"Pipeline deve executar {expected_stages} estágios, executou {len(stages)}"
+    # Verifique que cada estágio esperado está presente
+    for stage_name in ["lint", "test", "build", "deploy"]:
+        assert stage_name in stages, f"Estágio '{stage_name}' deveria estar no pipeline"
     
     console.print(f"[green]✓[/green] CI/CD: {len(result['stages_executed'])} stages passed ✓")
 
@@ -193,8 +200,16 @@ def test_02_health_check():
     
     assert result["overall"] in ("healthy", "degraded", "unhealthy"), \
         "Overall deve ser healthy/degraded/unhealthy"
-    assert len(result["checks"]) == 3, \
-        f"Deve ter 3 checks, got {len(result['checks'])}"
+    
+    # ⚠️ PONTO CRÍTICO: Valide comportamento — todas as verificações foram executadas
+    expected_checks = 3  # endpoint_status, memory_usage, disk_space
+    checks = result.get("checks", [])
+    assert len(checks) == expected_checks, \
+        f"Health check deve executar {expected_checks} verificações, executou {len(checks)}"
+    # Verifique que cada verificação esperada está presente
+    for check_name in ["endpoint_status", "memory_usage", "disk_space"]:
+        found = any(c.get("name") == check_name for c in checks)
+        assert found, f"Verificação '{check_name}' deveria estar nos resultados"
     
     console.print(f"[green]✓[/green] Health: {result['status']} ({len(result['checks'])} checks)")
 

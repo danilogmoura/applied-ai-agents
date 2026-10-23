@@ -110,6 +110,11 @@ def test_03_accuracy_threshold():
     assert 0 <= accuracy <= 1, f"Accuracy deve ser entre 0 e 1, got {accuracy}"
     assert accuracy < 1.0, "Este teste故意 tem um erro — accuracy não pode ser 100%"
     
+    # ⚠️ PONTO CRÍTICO: Valide comportamento — accuracy derivada dos dados
+    expected_accuracy = correct / total if total > 0 else 0.0
+    assert abs(accuracy - expected_accuracy) < 1e-9, \
+        f"Accuracy deve ser {expected_accuracy:.2f} ({correct}/{total}), got {accuracy:.2f}"
+    
     console.print(f"[green]✓[/green] Accuracy: {accuracy:.2f} ({correct}/{total})")
 
 

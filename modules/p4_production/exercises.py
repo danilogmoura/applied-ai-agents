@@ -19,12 +19,27 @@ console = Console()
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# STUBS — Implemente estas funções para fazer os testes passarem
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+def measure_middleware(func, *args) -> dict:
+    """
+    Middleware de monitoramento de timing.
+    
+    TODO: Meça o tempo de execução da função e retorne:
+    {'success': bool, 'latency_ms': float, 'request_id': str}
+    ← Implemente aqui
+    """
+    return {"success": False, "latency_ms": 0, "request_id": ""}  # Placeholder vazio
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # TESTE 1: API Endpoint Validation — Endpoints funcionam?
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def test_01_api_endpoint_validation():
     """
-    TODO: Valide que endpoints da API retornam status codes corretos.
+    Testa validação de endpoints da API.
     
     Simula uma API FastAPI com endpoints de saúde e processamento.
     """
@@ -36,14 +51,14 @@ def test_01_api_endpoint_validation():
             return {"error": "text field required"}
         return {"classification": "URGENTE", "confidence": 0.95}
     
-    # TODO: Valide health endpoint
+    # Valide health endpoint
     health = mock_get_health()
     assert health["status"] == "healthy", \
         f"Health check deve retornar 'healthy', got {health['status']}"
     assert health["uptime_seconds"] > 0, \
         "Uptime deve ser positivo"
     
-    # TODO: Valide classify endpoint
+    # Valide classify endpoint
     result = mock_post_classify({"text": "Erro 500 na API"})
     assert "classification" in result, \
         "Response deve ter campo 'classification'"
@@ -60,7 +75,7 @@ def test_01_api_endpoint_validation():
 
 def test_02_input_validation():
     """
-    TODO: Implemente validação de inputs com regras Pydantic-like.
+    Testa validação de inputs com regras Pydantic-like.
     """
     class RequestValidator:
         def __init__(self, text: str, model: str = "gpt-4o-mini"):
@@ -74,8 +89,12 @@ def test_02_input_validation():
     
     # Texto válido
     valid = RequestValidator(text="Olá, como funciona?")
-    assert len(valid.validate()) == 0, \
-        "Texto válido não deve gerar erros"
+    # ⚠️ PONTO CRÍTICO: Valide comportamento — texto válido não gera erros
+    valid_errors = valid.validate()
+    assert len(valid_errors) == 0, \
+        f"Texto válido não deve gerar erros, got {len(valid_errors)}"
+    # Verifique que o tipo de retorno é uma lista
+    assert isinstance(valid_errors, list), f"validate() deve retornar lista, got {type(valid_errors)}"
     
     # Texto vazio
     empty = RequestValidator(text="")
@@ -98,18 +117,13 @@ def test_02_input_validation():
 
 def test_03_middleware_timing():
     """
-    TODO: Implemente middleware de monitoramento de timing.
+    Testa middleware de monitoramento de timing.
     """
     import time
     
     def simulate_request(duration_ms: float) -> dict:
         time.sleep(duration_ms / 1000)
         return {"result": "ok"}
-    
-    def measure_middleware(func, *args) -> dict:
-        """TODO: Meça timing e retorne {'success': bool, 'latency_ms': float, 'request_id': str}."""
-        # ← Implemente aqui
-        return {"success": False, "latency_ms": 0, "request_id": ""}  # Placeholder vazio
     
     metrics = measure_middleware(simulate_request, 50)
     

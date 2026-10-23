@@ -19,12 +19,39 @@ console = Console()
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# STUBS — Implemente estas funções para fazer os testes passarem
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+def cosine_similarity(a: list, b: list) -> float:
+    """
+    Calcula similaridade cosseno entre dois vetores.
+    
+    TODO: Retorne valor entre -1 e 1.
+    Fórmula: dot(a,b) / (||a|| × ||b||)
+    ← Implemente aqui
+    """
+    return 0.0  # Placeholder vazio
+
+
+def chunk_document(text: str, chunk_size: int = 500, overlap: int = 50) -> list:
+    """
+    Divide texto em chunks sobrepostos.
+    
+    TODO: Retorne lista de strings (chunks).
+    Regra: chunks de ~chunk_size chars com overlap de overlap chars.
+    Não cortar palavras no meio.
+    ← Implemente aqui
+    """
+    return []  # Placeholder vazio
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # TESTE 1: Embedding Similarity — Similaridade semântica funciona?
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def test_01_embedding_similarity():
     """
-    TODO: Implemente cálculo de similaridade entre embeddings.
+    Testa cálculo de similaridade entre embeddings.
     
     Frases semanticamente similares devem ter maior similaridade.
     """
@@ -32,11 +59,6 @@ def test_01_embedding_similarity():
     query = [0.8, 0.1, 0.3]  # "política de reembolso"
     doc_a = [0.7, 0.2, 0.4]  # "como pedir dinheiro de volta" → SIMILAR
     doc_b = [0.1, 0.9, 0.2]  # "treinamento de funcionários" → DIFERENTE
-    
-    def cosine_similarity(a: list, b: list) -> float:
-        """TODO: Calcule similaridade cosseno entre dois vetores."""
-        # ← Implemente aqui
-        return 0.0  # Placeholder vazio
     
     sim_a = cosine_similarity(query, doc_a)
     sim_b = cosine_similarity(query, doc_b)
@@ -55,16 +77,11 @@ def test_01_embedding_similarity():
 
 def test_02_document_chunking():
     """
-    TODO: Implemente chunking de documentos.
+    Testa chunking de documentos.
     
     Regra: chunks de ~500 tokens com overlap de 50.
     """
     long_text = "A política de reembolso permite solicitações dentro de 30 dias após a compra. " * 20
-    
-    def chunk_document(text: str, chunk_size: int = 500, overlap: int = 50) -> list:
-        """TODO: Divida o texto em chunks sobrepostos."""
-        # ← Implemente aqui
-        return []  # Placeholder vazio
     
     chunks = chunk_document(long_text)
     
@@ -87,7 +104,7 @@ def test_02_document_chunking():
 
 def test_03_retrieval_quality():
     """
-    TODO: Verifique se a recuperação traz docs relevantes.
+    Testa se a recuperação traz docs relevantes.
     
     MRR (Mean Reciprocal Rank): quanto menor o rank, melhor.
     Hit@K: o documento relevante está nos top K resultados?
@@ -106,7 +123,7 @@ def test_03_retrieval_quality():
     # Simula ranking retornado pelo sistema
     retrieved_ranks = [3, 1, 7, 12]  # IDs dos docs na ordem de relevância
     
-    # TODO: Calcule MRR (Reciprocal Rank = 1/rank_do_primeiro_relevante)
+    # Calcule MRR (Reciprocal Rank = 1/rank_do_primeiro_relevante)
     relevant_ids = {1, 3}  # Docs sobre reembolso
     
     first_relevant_rank = None
@@ -117,7 +134,7 @@ def test_03_retrieval_quality():
     
     mrr = None if first_relevant_rank is None else 1.0 / first_relevant_rank
     
-    # TODO: Calcule Hit@3 (documento relevante está nos top 3?)
+    # Calcule Hit@3 (documento relevante está nos top 3?)
     hit_at_3 = any(doc_id in relevant_ids for doc_id in retrieved_ranks[:3])
     
     assert mrr is not None and mrr > 0, \

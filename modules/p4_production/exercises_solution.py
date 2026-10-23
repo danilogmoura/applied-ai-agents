@@ -19,6 +19,51 @@ console = Console()
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SOLUÇÕES COMENTADAS — Funções implementadas com explicações
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+def measure_middleware(func, *args) -> dict:
+    """
+    Mede timing de uma função e retorna métricas.
+    
+    Em FastAPI, isso seria um middleware que:
+    1. Registra timestamp antes da request
+    2. Executa a view
+    3. Calcula latência
+    4. Adiciona headers de timing na response
+    
+    Usamos uuid para request tracing.
+    """
+    # ⚠️ PONTO CRÍTICO: Gera request_id único para tracing/distribuição
+    request_id = str(uuid.uuid4())[:8]
+    
+    # ⚠️ PONTO CRÍTICO: Registra tempo ANTES da execução (baseline)
+    start = time.time()
+    
+    try:
+        # Executa função com args passados
+        result = func(*args)
+        # ⚠️ PONTO CRÍTICO: Tempo DEPOIS — subtração dá delta em segundos
+        latency = (time.time() - start) * 1000  # converte para ms
+        return {
+            "success": True,
+            "latency_ms": latency,
+            "request_id": request_id,
+        }
+    except Exception:
+        # Mesmo em falha, medimos o tempo até o erro
+        latency = (time.time() - start) * 1000
+        return {
+            "success": False,
+            "latency_ms": latency,
+            "request_id": request_id,
+        }
+
+
+import uuid
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # TESTE 1: API Endpoint Validation — Endpoints funcionam?
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -96,8 +141,12 @@ def test_02_input_validation():
     
     # Texto válido
     valid = RequestValidator(text="Olá, como funciona?")
-    assert len(valid.validate()) == 0, \
-        "Texto válido não deve gerar erros"
+    # ⚠️ PONTO CRÍTICO: Valide comportamento — texto válido não gera erros
+    valid_errors = valid.validate()
+    assert len(valid_errors) == 0, \
+        f"Texto válido não deve gerar erros, got {len(valid_errors)}"
+    # Verifique que o tipo de retorno é uma lista
+    assert isinstance(valid_errors, list), f"validate() deve retornar lista, got {type(valid_errors)}"
     
     # Texto vazio
     empty = RequestValidator(text="")
@@ -120,51 +169,13 @@ def test_02_input_validation():
 
 def test_03_middleware_timing():
     """
-    Middleware de monitoramento de timing.
-    
-    Em FastAPI, isso seria um middleware que:
-    1. Registra timestamp antes da request
-    2. Executa a view
-    3. Calcula latência
-    4. Adiciona headers de timing na response
-    
-    Usamos uuid para request tracing.
+    Testa middleware de monitoramento de timing.
     """
     import time
-    import uuid
     
     def simulate_request(duration_ms: float) -> dict:
         time.sleep(duration_ms / 1000)
         return {"result": "ok"}
-    
-    def measure_middleware(func, *args) -> dict:
-        """
-        Mede timing de uma função e retorna métricas.
-        
-        1. Gera request_id único para tracing
-        2. Registra start time
-        3. Executa função dentro de try/except
-        4. Calcula latência em ms
-        5. Retorna métricas padronizadas
-        """
-        start = time.time()
-        request_id = str(uuid.uuid4())[:8]
-        
-        try:
-            result = func(*args)
-            latency = (time.time() - start) * 1000
-            return {
-                "success": True,
-                "latency_ms": latency,
-                "request_id": request_id,
-            }
-        except Exception:
-            latency = (time.time() - start) * 1000
-            return {
-                "success": False,
-                "latency_ms": latency,
-                "request_id": request_id,
-            }
     
     metrics = measure_middleware(simulate_request, 50)
     

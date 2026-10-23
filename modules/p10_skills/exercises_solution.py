@@ -77,8 +77,13 @@ def test_01_skill_registry():
                       lambda x: {"sentiment": "positive"})
     
     names = registry.list_all()
-    assert len(names) == 3, \
-        f"Deve ter 3 skills registradas, got {len(names)}"
+    # ⚠️ PONTO CRÍTICO: Valide comportamento — registry tem skills registradas
+    expected_count = 3
+    assert len(names) == expected_count, \
+        f"Deve ter {expected_count} skills registradas, got {len(names)}"
+    # Verifique que todas as skills esperadas estão presentes
+    for skill_name in ["summarize", "translate", "sentiment"]:
+        assert skill_name in names, f"Skill '{skill_name}' deveria estar registrada"
     
     summarize = registry.get("summarize")
     assert summarize is not None, "Skill 'summarize' deve existir"

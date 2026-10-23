@@ -19,12 +19,12 @@ console = Console()
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# TESTE 1: Embedding Similarity — Similaridade semântica funciona?
+# SOLUÇÕES COMENTADAS — Funções implementadas com explicações
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-def test_01_embedding_similarity():
+def cosine_similarity(a: list, b: list) -> float:
     """
-    Similaridade cosseno mede o ângulo entre dois vetores.
+    Calcula similaridade cosseno entre dois vetores.
     
     Fórmula: cos(θ) = dot(a,b) / (||a|| × ||b||)
     
@@ -34,31 +34,74 @@ def test_01_embedding_similarity():
     
     Para embeddings, usamos apenas [0, 1] normalizando antes.
     """
+    # ⚠️ PONTO CRÍTICO: Produto escalar — multiplica componentes correspondentes
+    # zip(a, b) pareia elementos: (a[0],b[0]), (a[1],b[1]), ...
+    dot_product = sum(x * y for x, y in zip(a, b))
+    
+    # ⚠️ PONTO CRÍTICO: Norma (magnitude) de cada vetor
+    # √(Σ(vᵢ²)) — soma dos quadrados de todos os componentes
+    norm_a = sum(x * x for x in a) ** 0.5
+    norm_b = sum(y * y for y in b) ** 0.5
+    
+    # ⚠️ PONTO CRÍTICO: Se qualquer vetor tem norma zero,
+    # divisão por zero → retornar 0.0 (vetor nulo não tem direção)
+    if norm_a == 0 or norm_b == 0:
+        return 0.0
+    
+    return dot_product / (norm_a * norm_b)
+
+
+def chunk_document(text: str, chunk_size: int = 500, overlap: int = 50) -> list:
+    """
+    Divide texto em chunks sobrepostos.
+    
+    Overlap (sobreposição) evita perder informações nas bordas dos chunks.
+    Exemplo: chunk 1 termina com "...compra." chunk 2 começa com "A política..."
+    
+    1. Divide em blocos de chunk_size caracteres
+    2. Cada bloco sobrepõe overlap caracteres ao anterior
+    3. Mantém integridade (não corta palavras no meio)
+    """
+    # ⚠️ PONTO CRÍTICO: Texto vazio deve retornar lista vazia, não causar erro
+    if not text.strip():
+        return []
+    
+    chunks = []
+    start = 0
+    
+    while start < len(text):
+        end = start + chunk_size
+        
+        # Se chegou ao fim, pega tudo restante
+        if end >= len(text):
+            chunks.append(text[start:])
+            break
+        
+        # ⚠️ PONTO CRÍTICO: rfind encontra o ÚLTIMO espaço ANTES de end
+        # Isso evita cortar palavra no meio — cortamos no espaço mais próximo
+        space_pos = text.rfind(' ', start, end)
+        if space_pos == -1:
+            space_pos = end  # Força corte se não houver espaço (palavra muito longa)
+        
+        chunks.append(text[start:space_pos])
+        
+        # ⚠️ PONTO CRÍTICO: Próximo chunk começa overlap caracteres DEPOIS do corte atual
+        # space_pos - overlap = recua overlap chars em relação ao corte
+        # Mas se overlap > space_pos, vai além do início → usa end como fallback
+        start = space_pos - overlap if space_pos > overlap else end
+    
+    return chunks
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# TESTE 1: Embedding Similarity — Similaridade semântica funciona?
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+def test_01_embedding_similarity():
     # Embeddings simulados (vetores de dimensão reduzida p/ teste)
     query = [0.8, 0.1, 0.3]  # "política de reembolso"
     doc_a = [0.7, 0.2, 0.4]  # "como pedir dinheiro de volta" → SIMILAR
     doc_b = [0.1, 0.9, 0.2]  # "treinamento de funcionários" → DIFERENTE
-    
-    def cosine_similarity(a: list, b: list) -> float:
-        """
-        Calcula similaridade cosseno entre dois vetores.
-        
-        1. Calcula produto escalar: Σ(aᵢ × bᵢ)
-        2. Calcula norma de cada vetor: √(Σ(vᵢ²))
-        3. Retorna dot(a,b) / (norm(a) × norm(b))
-        """
-        # Produto escalar
-        dot_product = sum(x * y for x, y in zip(a, b))
-        
-        # Normas (magnitude) dos vetores
-        norm_a = sum(x * x for x in a) ** 0.5
-        norm_b = sum(y * y for y in b) ** 0.5
-        
-        # Evita divisão por zero
-        if norm_a == 0 or norm_b == 0:
-            return 0.0
-        
-        return dot_product / (norm_a * norm_b)
     
     sim_a = cosine_similarity(query, doc_a)
     sim_b = cosine_similarity(query, doc_b)
@@ -76,47 +119,7 @@ def test_01_embedding_similarity():
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def test_02_document_chunking():
-    """
-    Chunking divide documentos longos em pedaços menores para embedding.
-    
-    Overlap (sobreposição) evita perder informações nas bordas dos chunks.
-    Exemplo: chunk 1 termina com "...compra." chunk 2 começa com "A política..."
-    """
     long_text = "A política de reembolso permite solicitações dentro de 30 dias após a compra. " * 20
-    
-    def chunk_document(text: str, chunk_size: int = 500, overlap: int = 50) -> list:
-        """
-        Divide texto em chunks sobrepostos.
-        
-        1. Divide em blocos de chunk_size caracteres
-        2. Cada bloco sobrepõe overlap caracteres ao anterior
-        3. Mantém integridade (não corta palavras no meio)
-        """
-        if not text.strip():
-            return []
-        
-        chunks = []
-        start = 0
-        
-        while start < len(text):
-            end = start + chunk_size
-            
-            # Se chegou ao fim, pega tudo restante
-            if end >= len(text):
-                chunks.append(text[start:])
-                break
-            
-            # Tenta cortar no espaço mais próximo (evita cortar palavra)
-            space_pos = text.rfind(' ', start, end)
-            if space_pos == -1:
-                space_pos = end  # Força corte se não houver espaço
-            
-            chunks.append(text[start:space_pos])
-            
-            # Próximo chunk começa overlap caracteres depois do atual
-            start = space_pos - overlap if space_pos > overlap else end
-        
-        return chunks
     
     chunks = chunk_document(long_text)
     
@@ -138,16 +141,6 @@ def test_02_document_chunking():
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def test_03_retrieval_quality():
-    """
-    Métricas de qualidade de recuperação:
-    
-    MRR (Mean Reciprocal Rank): 1 / posição do primeiro resultado relevante
-    - MRR = 1.0 → primeiro resultado é relevante (perfeito!)
-    - MRR = 0.5 → segundo resultado é relevante
-    
-    Hit@K: resultado relevante está nos top K?
-    - Hit@3 = True → relevante está entre os 3 primeiros
-    """
     documents = [
         {"id": 1, "content": "Reembolsos em até 30 dias"},
         {"id": 2, "content": "SLA de 99.9% uptime"},
@@ -191,14 +184,6 @@ def test_03_retrieval_quality():
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def test_04_context_window():
-    """
-    O context window é o limite máximo de tokens que um LLM processa.
-    
-    Se system_prompt + query + chunks + resposta > context_window,
-    o modelo truncará ou rejeitará a requisição.
-    
-    Recomendação: usar no máximo 50% do contexto para deixar margem.
-    """
     system_prompt_tokens = 150
     user_query_tokens = 50
     retrieved_chunks = [200, 180, 220]  # 3 chunks recuperados
@@ -230,17 +215,6 @@ def test_04_context_window():
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def test_05_rag_pipeline():
-    """
-    Pipeline RAG completo:
-    
-    1. INGESTION: Documentos são lidos e divididos em chunks
-    2. EMBEDDING: Cada chunk recebe um vetor embedding
-    3. RETRIEVAL: Query é embutida e docs similares são buscados
-    4. CONTEXT: Chunks relevantes são concatenados ao prompt
-    5. RESPONSE: LLM gera resposta baseada no contexto
-    
-    Métricas monitoram cada etapa.
-    """
     docs_ingested = 4
     queries_processed = 3
     avg_relevance_score = 0.85

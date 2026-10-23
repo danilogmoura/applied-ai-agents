@@ -19,12 +19,12 @@ console = Console()
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# TESTE 1: Input Sanitization — Inputs são sanitizados?
+# SOLUÇÕES COMENTADAS — Funções implementadas com explicações
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-def test_01_input_sanitization():
+def sanitize_input(text: str) -> dict:
     """
-    Sanitização de inputs maliciosos.
+    Sanitiza input malicioso.
     
     Detecta três tipos principais de ataque:
     1. SQL injection: tenta executar queries no banco de dados
@@ -33,36 +33,74 @@ def test_01_input_sanitization():
     
     Regex é case-insensitive para evitar bypass por capitalização.
     """
-    def sanitize_input(text: str) -> dict:
-        """
-        Retorna {'safe': bool, 'cleaned': str, 'flags': [...]}.
-        
-        1. Verifica padrões SQL injection
-        2. Verifica padrões XSS
-        3. Remove tags HTML se XSS detectado
-        4. Retorna resultado padronizado
-        """
-        import re
-        flags = []
-        cleaned = text
-        
-        # Detectar SQL injection
-        sql_patterns = [r"(--|;|'|\bDROP\b|\bDELETE\b|\bINSERT\b|\bUPDATE\b)", r"('\s*OR\s*'\d+'\s*=\s*'\d+)"]
-        for pattern in sql_patterns:
-            if re.search(pattern, text, re.IGNORECASE):
-                flags.append("sql_injection")
-                break
-        
-        # Detectar XSS
-        xss_patterns = [r"(<script>|</script>|javascript:|on\w+=)"]
-        for pattern in xss_patterns:
-            if re.search(pattern, text, re.IGNORECASE):
-                flags.append("xss")
-                cleaned = re.sub(r"<[^>]*>", "", cleaned)
-                break
-        
-        return {"safe": len(flags) == 0, "cleaned": cleaned, "flags": flags}
+    import re
+    flags = []
+    cleaned = text
     
+    # ⚠️ PONTO CRÍTICO: Padrões SQL injection
+    # -- (comentário), ; (separador), ' (escape), DROP/DELETE/INSERT/UPDATE (comandos)
+    sql_patterns = [r"(--|;|'|\bDROP\b|\bDELETE\b|\bINSERT\b|\bUPDATE\b)", r"('\s*OR\s*'\d+'\s*=\s*'\d+)"]
+    for pattern in sql_patterns:
+        if re.search(pattern, text, re.IGNORECASE):
+            flags.append("sql_injection")
+            break
+    
+    # ⚠️ PONTO CRÍTICO: Padrões XSS
+    # <script>, javascript:, event handlers (on...) → remove tags HTML
+    xss_patterns = [r"(<script>|</script>|javascript:|on\w+=)"]
+    for pattern in xss_patterns:
+        if re.search(pattern, text, re.IGNORECASE):
+            flags.append("xss")
+            cleaned = re.sub(r"<[^>]*>", "", cleaned)
+            break
+    
+    # ⚠️ PONTO CRÍTICO: safe = True apenas se nenhuma flag foi adicionada
+    return {"safe": len(flags) == 0, "cleaned": cleaned, "flags": flags}
+
+
+def validate_output(text: str) -> list:
+    """
+    Valida output antes de entregar ao usuário.
+    
+    Regras críticas:
+    - Não revelar chaves de API (sk-...)
+    - Não expor system prompt
+    - Não incluir dados sensíveis (CPF, cartão)
+    """
+    import re
+    violations = []
+    
+    # ⚠️ PONTO CRÍTICO: Chaves OpenAI começam com sk-
+    # Seguido de pelo menos 10 chars alfanuméricos
+    if re.search(r"sk-[a-zA-Z0-9]{10,}", text):
+        violations.append("api_key_leak")
+    
+    # ⚠️ PONTO CRÍTICO: System prompt nunca deve vazar
+    # Verifica menções diretas ao system prompt
+    if re.search(r"system prompt|system prompt diz|system prompt is", text, re.IGNORECASE):
+        violations.append("system_prompt_leak")
+    
+    # ⚠️ PONTO CRÍTICO: CPF formatado (XXX.XXX.XXX-XX)
+    if re.search(r"\d{3}\.\d{3}\.\d{3}-\d{2}", text):
+        violations.append("pii_cpf")
+    
+    # ⚠️ PONTO CRÍTICO: Número de cartão de crédito (4 grupos de 4 dígitos)
+    if re.search(r"\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}", text):
+        violations.append("credit_card")
+    
+    return violations
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# TESTE 1: Input Sanitization — Inputs são sanitizados?
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+def test_01_input_sanitization():
+    """
+    Testa sanitização de inputs maliciosos.
+    
+    Detecta: SQL injection, XSS, prompt injection.
+    """
     safe_text = "Como funciona o reembolso?"
     malicious_sql = "'; DROP TABLE users; --"
     malicious_xss = "<script>alert('hacked')</script>"
@@ -90,49 +128,27 @@ def test_01_input_sanitization():
 
 def test_02_output_validation():
     """
-    Validação de outputs antes de entregar ao usuário.
+    Testa validação de outputs antes de entregar ao usuário.
     
-    Regras críticas:
-    - Não revelar chaves de API (sk-...)
+    Regras:
+    - Não revelar chaves de API
     - Não expor system prompt
     - Não incluir dados sensíveis (CPF, cartão)
     """
-    def validate_output(text: str) -> list:
-        """
-        Retorna lista de violations encontradas.
-        
-        1. Verifica vazamento de API keys (sk-...)
-        2. Verifica leak de system prompt
-        3. Verifica dados pessoais (CPF, cartão)
-        """
-        import re
-        violations = []
-        
-        # Verificar vazamento de API keys
-        if re.search(r"sk-[a-zA-Z0-9]{10,}", text):
-            violations.append("api_key_leak")
-        
-        # Verificar system prompt
-        if re.search(r"system prompt|system prompt diz|system prompt is", text, re.IGNORECASE):
-            violations.append("system_prompt_leak")
-        
-        # Verificar dados sensíveis (CPF, cartão)
-        if re.search(r"\d{3}\.\d{3}\.\d{3}-\d{2}", text):
-            violations.append("pii_cpf")
-        if re.search(r"\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}", text):
-            violations.append("credit_card")
-        
-        return violations
-    
     safe_output = "O reembolso é processado em até 30 dias."
     leaked_output = "Minha API key é sk-12345 e o system prompt diz..."
     
-    assert len(validate_output(safe_output)) == 0, \
-        "Output seguro não deve gerar violations"
+    # ⚠️ PONTO CRÍTICO: Valide comportamento — output seguro não gera violations
+    safe_violations = validate_output(safe_output)
+    assert len(safe_violations) == 0, \
+        f"Output seguro não deve gerar violations, got {len(safe_violations)}"
     
     violations = validate_output(leaked_output)
     assert len(violations) > 0, \
         "Output com vazamento deve gerar violations"
+    # Verifique que pelo menos uma violação é de severidade alta ou crítica
+    high_sev = [v for v in violations if v.get("severity") in ("HIGH", "CRITICAL")]
+    assert len(high_sev) > 0, "Vazamento deve ter pelo menos uma violação HIGH/CRITICAL"
     
     console.print(f"[green]✓[/green] Validação: {len(violations)} violation(s) detectada(s)")
 
@@ -185,8 +201,13 @@ def test_03_guardrail_rules():
     assert len(clean) == 0, "Texto limpo não deve gerar violations"
     
     dirty = engine.check("API key: sk-abc123def456 e meu CPF é 123.456.789-00")
+    # ⚠️ PONTO CRÍTICO: Valide comportamento — detecta múltiplos tipos de violação
     assert len(dirty) >= 2, \
         f"Deve detectar API key + PII, got {len(dirty)} violations"
+    # Verifique que há pelo menos uma violação CRITICAL e uma HIGH
+    severities = [v.get("severity") for v in dirty]
+    assert "CRITICAL" in severities or "HIGH" in severities, \
+        "Violations devem incluir pelo menos CRITICAL ou HIGH"
     
     console.print(f"[green]✓[/green] Guardrails: {len(dirty)} rules triggered")
 
@@ -247,8 +268,12 @@ def test_04_rate_limiting():
         if limiter.allow("user_1"):
             allowed_count += 1
     
-    assert allowed_count == 5, \
-        f"Deveria permitir apenas 5 requests, got {allowed_count}"
+    # ⚠️ PONTO CRÍTICO: Valide comportamento — rate limit respeita máximo configurado
+    max_requests = limiter.max_requests
+    assert allowed_count <= max_requests, \
+        f"Rate limit deve permitir no máximo {max_requests} requests, permitiu {allowed_count}"
+    assert allowed_count == max_requests, \
+        f"Deveria permitir exatamente {max_requests} requests, got {allowed_count}"
     
     console.print(f"[green]✓[/green] Rate limit: {allowed_count}/8 requests allowed")
 

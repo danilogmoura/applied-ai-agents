@@ -20,12 +20,27 @@ console = Console()
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# STUBS — Implemente estas funções para fazer os testes passarem
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+def estimate_tokens(text: str) -> int:
+    """
+    Estima número de tokens baseado no comprimento do texto.
+    
+    TODO: Retorne número estimado de tokens.
+    Regra: ~4 chars/token (inglês).
+    ← Implemente aqui
+    """
+    return len(text) // 4  # Placeholder vazio
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # TESTE 1: Short-term Memory — Memória de contexto funciona?
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def test_01_short_term_memory():
     """
-    TODO: Implemente memória de curto prazo (context window).
+    Testa memória de curto prazo (context window).
     
     Regra: Últimas N mensagens mantidas no contexto.
     """
@@ -51,10 +66,14 @@ def test_01_short_term_memory():
         memory.add("user" if i % 2 == 0 else "assistant", f"Mensagem {i}")
     
     context = memory.get_context()
-    assert len(context) == 5, \
-        f"Deveria manter apenas 5 mensagens, got {len(context)}"
-    assert context[0]["content"] == "Mensagem 3", \
-        "Primeira mensagem do contexto deve ser a 3ª (índice 3)"
+    # ⚠️ PONTO CRÍTICO: Valide comportamento — janela deslizante mantém últimas N
+    expected_max = memory.max_messages
+    assert len(context) == expected_max, \
+        f"Janela deve manter {expected_max} mensagens, got {len(context)}"
+    # Verifique que as mensagens são as últimas adicionadas (índices mais altos)
+    for msg in context:
+        content_num = int(msg["content"].split()[-1])
+        assert content_num >= 3, f"Mensagens devem ser as últimas (nº >= 3), got {content_num}"
     
     console.print(f"[green]✓[/green] Short-term: {len(context)} mensagens mantidas")
 
@@ -65,7 +84,7 @@ def test_01_short_term_memory():
 
 def test_02_long_term_memory():
     """
-    TODO: Implemente memória de longo prazo (persistente).
+    Testa memória de longo prazo (persistente).
     """
     class LongTermMemory:
         def __init__(self):
@@ -111,13 +130,10 @@ def test_02_long_term_memory():
 
 def test_03_context_window_management():
     """
-    TODO: Gerencie o context window do LLM eficientemente.
+    Testa gerenciamento do context window do LLM.
     
     Regra: Se tokens > max_tokens, resumir ou truncar.
     """
-    def estimate_tokens(text: str) -> int:
-        return len(text) // 4  # ~4 chars per token
-    
     messages = [
         {"role": "user", "content": "Olá"},
         {"role": "assistant", "content": "Olá! Como posso ajudar?"},
@@ -129,7 +145,7 @@ def test_03_context_window_management():
     
     total_tokens = sum(estimate_tokens(m["content"]) for m in messages)
     
-    # TODO: Truncar se exceder max_tokens - manter system prompt + últimas mensagens
+    # Truncar se exceder max_tokens - manter system prompt + últimas mensagens
     trimmed_messages = []
     current_tokens = 0
     
@@ -255,7 +271,11 @@ def test_05_memory_decay():
     memory.add("preference_language")
     memory.add("last_login")
     
-    assert memory.count() == 3, "Deveria ter 3 memórias"
+    # ⚠️ PONTO CRÍTICO: Valide comportamento — contagem após adição
+    expected_count = 3
+    actual_count = memory.count()
+    assert actual_count == expected_count, \
+        f"Deveria ter {expected_count} memórias após adicionar 3, got {actual_count}"
     
     # Simula expiração: remove manualmente algumas
     del memory.memories["preference_theme"]
@@ -264,8 +284,11 @@ def test_05_memory_decay():
     assert "preference_theme" not in memory.memories, \
         "Memória removida manualmente não deve estar presente"
     
-    assert memory.count() == 2, \
-        f"Deveria ter 2 memórias restantes, got {memory.count()}"
+    # ⚠️ PONTO CRÍTICO: Valide comportamento — contagem após remoção
+    expected_after_remove = 2
+    actual_after_remove = memory.count()
+    assert actual_after_remove == expected_after_remove, \
+        f"Deveria ter {expected_after_remove} memórias após remover 1, got {actual_after_remove}"
     
     console.print(f"[green]✓[/green] Decay: {memory.count()} memórias ativas")
 
