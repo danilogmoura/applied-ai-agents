@@ -1,10 +1,13 @@
 # 🏗️ Architecture Design — Sistema de Skills Modular
 
 > **Desafio:** Projete um sistema de skills reutilizáveis e composáveis para um agente de IA versátil.
+>
+> 🔬 **AVANÇADO / OPCIONAL** — Este desafio assume noções de arquitetura e infra. Se você ainda está aprendendo os fundamentos, tudo bem pular na primeira passada e voltar depois.
 
 ## Cenário
 
 Uma empresa quer construir um agente que faça várias coisas:
+
 - Classificar tickets
 - Buscar informações em APIs externas
 - Gerar resumos de documentos
@@ -13,15 +16,24 @@ Uma empresa quer construir um agente que faça várias coisas:
 - Calcular custos de projetos
 
 Requisitos:
+
 - Cada skill deve ser **independente** e **testável**
 - Skills devem ser **componíveis** em pipelines
 - Novas skills podem ser adicionadas sem quebrar existentes
-- Versionamento SemVer para evolução segura
+- Versionamento SemVer (Semantic Versioning — versionamento semântico no formato `MAJOR.MINOR.PATCH`, onde MAJOR muda quando há quebra de compatibilidade) para evolução segura
 - Filtros no pipeline (confiança mínima, rate limiting)
 
 ---
 
 ## Entregáveis
+
+> 🧭 **Como abordar este desafio.** Não existe uma única arquitetura correta — o que se avalia é o seu **raciocínio**. Sugestão de caminho:
+>
+> 1. Comece rascunhando o diagrama com blocos e setas (ASCII serve).
+> 2. Para cada decisão na tabela, registre *o que escolheu* **e por quê**.
+> 3. Feche com números de custo/reuso, mesmo estimados.
+>
+> Exemplo ilustrativo (não é gabarito): ao compor skills, defina claramente o contrato entre elas (o que cada uma recebe e devolve) — composição sem contrato vira acoplamento frágil.
 
 ### 1. Diagrama da Arquitetura
 
@@ -32,6 +44,7 @@ Requisitos:
 ```
 
 Defina:
+
 - Como skills são registradas e descobertas?
 - Como pipelines são definidos?
 - Onde ficam os filtros e validações?
@@ -39,9 +52,9 @@ Defina:
 ### 2. Decisões Arquiteturais
 
 | Decisão | Opções | Sua Escolha | Justificativa |
-|---------|--------|-------------|---------------|
+| --------- | -------- | ------------- | --------------- |
 | **Registro** | Registry centralizado | Service discovery | ? |
-| **Composição** | Pipeline linear | DAG (grafo direcionado) | ? |
+| **Composição** | Pipeline linear | DAG (Directed Acyclic Graph — grafo direcionado acíclico, permite ramificar/combinar skills em vez de só encadear em fila) | ? |
 | **Versionamento** | SemVer estrito | Compatibilidade por contrato | ? |
 | **Error handling** | Fail-fast | Fallback por skill | ? |
 | **Filtros** | Middleware | Inline nas skills | ? |
@@ -63,6 +76,7 @@ Pipeline:
 ```
 
 Para cada etapa, defina:
+
 - Input schema
 - Output schema
 - Filtros aplicados
@@ -71,7 +85,7 @@ Para cada etapa, defina:
 ### 4. Matriz de Dependências
 
 | Skill | Depende de | É usada por | Versão |
-|-------|-----------|-------------|--------|
+| ------- | ----------- | ------------- | -------- |
 | Intent Classifier | Nenhuma | Pipeline router | 1.0.0 |
 | Document Fetcher | HTTP client | Summarizer, Extractor | 1.2.0 |
 | Summarizer | Document Fetcher | Output validator | 2.0.0 |
@@ -97,7 +111,7 @@ Quebra de versão (major): quais pipelines seriam afetados?
 ## Critérios de Avaliação
 
 | Critério | Excelente (5) | Bom (3) | Fraco (1) |
-|----------|--------------|---------|-----------|
+| ---------- | -------------- | --------- | ----------- |
 | **Modularidade** | Skills truly independentes | Acoplamento parcial | Dependências circulares |
 | **Composição** | Pipeline flexível e claro | Composição rígida | Sem composição |
 | **Versionamento** | Breaking changes mapeados | Versões listadas | Sem versionamento |

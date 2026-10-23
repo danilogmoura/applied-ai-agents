@@ -1,6 +1,8 @@
 # 🏗️ Architecture Design — Tool Calling Agent
 
 > **Desafio:** Projete um agente com tool calling para automação de suporte técnico.
+>
+> 🔬 **AVANÇADO / OPCIONAL** — Este desafio assume noções de arquitetura e infra. Se você ainda está aprendendo os fundamentos, tudo bem pular na primeira passada e voltar depois.
 
 ## Cenário
 
@@ -22,6 +24,14 @@ Requisitos:
 ---
 
 ## Entregáveis
+
+> 🧭 **Como abordar este desafio.** Não existe uma única arquitetura correta — o que se avalia é o seu **raciocínio**. Sugestão de caminho:
+>
+> 1. Comece rascunhando o diagrama com blocos e setas (ASCII serve).
+> 2. Para cada decisão na tabela, registre *o que escolheu* **e por quê**.
+> 3. Feche com números de custo/latência, mesmo estimados.
+>
+> Exemplo ilustrativo (não é gabarito): no loop tool-calling, deixe explícita a borda que volta do resultado da ferramenta para a próxima decisão do modelo — é aí que entram timeout e retry.
 
 ### 1. Diagrama da Arquitetura
 

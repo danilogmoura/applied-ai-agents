@@ -1,13 +1,15 @@
 # 🏗️ Architecture Design — Streaming de Respostas
 
 > **Desafio:** Projete um sistema de streaming para respostas de LLM em tempo real.
+>
+> 🔬 **AVANÇADO / OPCIONAL** — Este desafio assume noções de arquitetura e infra. Se você ainda está aprendendo os fundamentos, tudo bem pular na primeira passada e voltar depois.
 
 ## Cenário
 
 Uma aplicação web precisa mostrar respostas de IA token-by-token:
 
 - **10K usuários simultâneos** em horário de pico
-- **SLA**: TTFT (Time To First Token) < 500ms
+- **SLA**: TTFT (Time To First Token — tempo até o primeiro token, ou seja, quanto o usuário espera antes de ver a primeira palavra na tela) < 500ms
 - **Orçamento**: máximo $500/mês em API calls
 - **Requisito**: usuário pode cancelar geração a qualquer momento
 - **Fallback**: se streaming falha, retorna resposta completa
@@ -15,6 +17,14 @@ Uma aplicação web precisa mostrar respostas de IA token-by-token:
 ---
 
 ## Entregáveis
+
+> 🧭 **Como abordar este desafio.** Não existe uma única arquitetura correta — o que se avalia é o seu **raciocínio**. Sugestão de caminho:
+>
+> 1. Comece rascunhando o diagrama com blocos e setas (ASCII serve).
+> 2. Para cada decisão na tabela, registre *o que escolheu* **e por quê**.
+> 3. Feche com números de latência/custo, mesmo estimados.
+>
+> Exemplo ilustrativo (não é gabarito): em streaming, marque no diagrama onde a resposta é "parcial" vs. "final" — é essa fronteira que define cancelamento e re-renderização.
 
 ### 1. Diagrama da Arquitetura
 

@@ -1,10 +1,13 @@
 # 🏗️ Architecture Design — Sistema de Memória para Agentes
 
 > **Desafio:** Projete um sistema de memória que permita a um agente "lembrar" de conversas anteriores sem exceder o limite de contexto.
+>
+> 🔬 **AVANÇADO / OPCIONAL** — Este desafio assume noções de arquitetura e infra. Se você ainda está aprendendo os fundamentos, tudo bem pular na primeira passada e voltar depois.
 
 ## Cenário
 
 Um agente de assistente pessoal precisa:
+
 - **Lembrar preferências do usuário** (nome, idioma, horários) — permanente
 - **Lembrar contexto da conversa atual** — curto prazo
 - **Lembrar tópicos de sessões anteriores** — longo prazo
@@ -17,6 +20,14 @@ Problema: uma conversa de 1 semana pode gerar 50K+ tokens de histórico. Como ma
 
 ## Entregáveis
 
+> 🧭 **Como abordar este desafio.** Não existe uma única arquitetura correta — o que se avalia é o seu **raciocínio**. Sugestão de caminho:
+>
+> 1. Comece rascunhando o diagrama com blocos e setas (ASCII serve).
+> 2. Para cada decisão na tabela, registre *o que escolheu* **e por quê**.
+> 3. Feche com números de custo de memória, mesmo estimados.
+>
+> Exemplo ilustrativo (não é gabarito): o cerne aqui é decidir *o que entra no contexto* de cada chamada — nem tudo que foi lembrado precisa virar token pago.
+
 ### 1. Diagrama da Arquitetura
 
 ```
@@ -28,6 +39,7 @@ Problema: uma conversa de 1 semana pode gerar 50K+ tokens de histórico. Como ma
 ```
 
 Defina:
+
 - Quais stores existem?
 - Quando dados migram de curto para longo prazo?
 - Como o summarizer funciona?
@@ -35,7 +47,7 @@ Defina:
 ### 2. Decisões Arquiteturais
 
 | Decisão | Opções | Sua Escolha | Justificativa |
-|---------|--------|-------------|---------------|
+| --------- | -------- | ------------- | --------------- |
 | **Memória curta** | Sliding window | Token budget | ? |
 | **Memória longa** | Vetores (embeddings) | Texto estruturado | ? |
 | **Sumarização** | Automática (LLM) | Manual / template | ? |
@@ -64,10 +76,15 @@ Quantos tokens ocupa cada etapa?
 
 ### 4. Estimativa de Custo de Memória
 
+> 💡 **Como calcular custo.** Fórmula: `custo = (tokens / 1_000_000) × preço_por_milhão`.
+> Preços de referência (USD por 1M tokens): **gpt-4o-mini** $0.15 entrada / $0.60 saída; **gpt-4o** $2.50 / $10.00; **text-embedding-3-small** $0.02.
+> Regra prática de tokens: ~4 caracteres ≈ 1 token (≈ 750 tokens por página de texto).
+> Lembre: memória recuperada vira **entrada extra** em toda chamada ao LLM — é o principal ofensor de custo aqui.
+
 Calcule quantos tokens a memória consome por sessão típica:
 
 | Componente | Tokens/session | Sessions/dia | Custo diário |
-|------------|---------------|--------------|-------------|
+| ------------ | --------------- | -------------- | ------------- |
 | Memória curta | ? | ? | ? |
 | Memória longa (recuperada) | ? | ? | ? |
 | Sumarizações | ? | ? | ? |
@@ -92,7 +109,7 @@ Está dentro de $100/mês?
 ## Critérios de Avaliação
 
 | Critério | Excelente (5) | Bom (3) | Fraco (1) |
-|----------|--------------|---------|-----------|
+| ---------- | -------------- | --------- | ----------- |
 | **Hierarquia** | Curto/longo bem separados | Separação básica | Tudo misturado |
 | **Sumarização** | Custo/benefício analisado | Apenas descreve | Não considera custo |
 | **Recuperação** | Relevância garantida | Busca ingênua | Sem recuperação |

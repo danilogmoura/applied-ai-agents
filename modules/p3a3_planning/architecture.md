@@ -1,6 +1,8 @@
 # 🏗️ Architecture Design — Planner com Resiliência
 
 > **Desafio:** Projete um planner resiliente para agente que executa tarefas multi-etapas.
+>
+> 🔬 **AVANÇADO / OPCIONAL** — Este desafio assume noções de arquitetura e infra. Se você ainda está aprendendo os fundamentos, tudo bem pular na primeira passada e voltar depois.
 
 ## Cenário
 
@@ -27,6 +29,14 @@ Requisitos:
 
 ## Entregáveis
 
+> 🧭 **Como abordar este desafio.** Não existe uma única arquitetura correta — o que se avalia é o seu **raciocínio**. Sugestão de caminho:
+>
+> 1. Comece rascunhando o diagrama com blocos e setas (ASCII serve).
+> 2. Para cada decisão na tabela, registre *o que escolheu* **e por quê**.
+> 3. Feche com números de custo/latência, mesmo estimados.
+>
+> Exemplo ilustrativo (não é gabarito): ao desenhar checkpoints, pense em "se o processo morrer aqui, de onde ele retoma?" — isso guia onde colocar cada ponto de recuperação.
+
 ### 1. Diagrama da Arquitetura
 
 Descreva o fluxo do planner com checkpoints:
@@ -41,13 +51,15 @@ Defina:
 
 - Quantos checkpoints salvar durante execução?
 - Quando o circuit breaker abre/fecha?
-- Como o planner decide qual retry usar (backoff vs fallback)?
+- Como o planner decide qual retry usar — exponential backoff (retentativa com espera que dobra a cada falha) vs. fallback (caminho alternativo)?
+
+> 💡 **Termos deste desafio.** *Exponential backoff* = entre tentativas, aguardar 1s, 2s, 4s… para não martelar um serviço já sobrecarregado. *Jitter* = uma pitada de aleatoriedade nesse tempo, para evitar que muitas requisições "tentem juntas" ao mesmo tempo. *Circuit breaker* (disjuntor): se um serviço falha demais, "desliga" temporariamente e segue sem ele.
 
 ### 2. Estratégia de Checkpoints
 
 Para cada etapa, defina:
 
-| Passo | Estado a Salvar | Freqüência | Formato |
+| Passo | Estado a Salvar | Frequência | Formato |
 | ------- | ----------------- | ------------ | --------- |
 | 1. Buscar dados | ? | ? | ? |
 | 2. Processar | ? | ? | ? |
