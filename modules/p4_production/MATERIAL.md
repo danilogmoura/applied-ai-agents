@@ -26,6 +26,7 @@ Você precisa ter concluído o módulo [P3b: Multiagente](../p3b_multi_agent/MAT
 9. Resumo do Módulo
 
 ### 🔬 Avançado — OPCIONAL
+
  1. Arquitetura de Produção (ver `architecture.md`)
  2. Modelos Pydantic como Contrato
  3. Middleware de Monitoramento
@@ -34,6 +35,7 @@ Você precisa ter concluído o módulo [P3b: Multiagente](../p3b_multi_agent/MAT
  6. docker-compose — Infraestrutura Completa
 
 ### 🛠️ Prático
+
  1. 📦 Infraestrutura do Curso
  2. ❓ Troubleshooting
 
@@ -350,7 +352,7 @@ applied-ai-agents/
 │   └── p4_production/
 │       ├── MATERIAL.md          ← Você está aqui
 │       ├── run.py               ← API FastAPI funcional
-│       ├── test_exercise.py     ← Exercícios (TODOs)
+│       ├── exercises.py       ← Exercícios práticos (IMPLEMENTE os TODOs!)
 │       ├── architecture.md      ← Diagramas arquiteturais
 │       └── app/                 ← Aplicação FastAPI completa
 ├── shared/

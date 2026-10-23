@@ -26,13 +26,14 @@ Você precisa ter concluído o módulo [P9: Cache e Otimização](../p9_caching/
 
 ### 🔬 Avançado — OPCIONAL
 
-9. Versionamento Semântico
+1. Versionamento Semântico
 2. Pipeline Composition
 3. Arquitetura do Sistema de Skills
 4. Filtros no Pipeline
 5. Error Handling em Pipelines
 
 ### 🛠️ Prático
+
  1. 📦 Infraestrutura do Curso
  2. ❓ Troubleshooting
 
@@ -323,7 +324,7 @@ applied-ai-agents/
 ├── modules/
 │   ├── p10_skills/
 │   │   ├── run.py          ← Executa skill registry + pipeline engine
-│   │   └── test_exercise.py ← Testes (IMPLEMENTE os TODOs!)
+│   │   └── exercises.py    ← Exercícios práticos (IMPLEMENTE os TODOs!)
 ├── shared/                  ← Módulos reutilizáveis em TODOS os módulos
 │   ├── cost.py              ← count_tokens(), estimate_cost()
 │   └── logging_config.py    ← setup_logging(), measure_latency()

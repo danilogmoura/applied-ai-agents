@@ -27,6 +27,7 @@ Você precisa ter concluído o módulo [P6: Segurança e Guardrails](../p6_safet
 10. Resumo do Módulo
 
 ### 🔬 Avançado — OPCIONAL
+
  1. Long-Term Memory = Persistent Knowledge
  2. Summarization Automática
  3. Como Sumarização Funciona na Prática
@@ -34,6 +35,7 @@ Você precisa ter concluído o módulo [P6: Segurança e Guardrails](../p6_safet
  5. Importância e Forgetting
 
 ### 🛠️ Prático
+
  1. 📦 Infraestrutura do Curso
  2. ❓ Troubleshooting
 
@@ -357,7 +359,7 @@ applied-ai-agents/
 │   └── p7_memory/
 │       ├── MATERIAL.md          ← Você está aqui
 │       ├── run.py               ← ShortTermMemory + LongTermMemory funcionais
-│       ├── test_exercise.py     ← Exercícios (TODOs)
+│       ├── exercises.py       ← Exercícios práticos (IMPLEMENTE os TODOs!)
 │       └── architecture.md      ← Diagramas arquiteturais do sistema de memória
 ├── shared/
 │   ├── cost.py                  ← count_tokens(), estimate_cost()

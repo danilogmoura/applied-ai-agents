@@ -26,13 +26,14 @@ Você precisa ter concluído o módulo [P7: Memória e Contexto](../p7_memory/MA
 
 ### 🔬 Avançado — OPCIONAL
 
-9. Server-Sent Events (SSE)
+1. Server-Sent Events (SSE)
 2. Como SSE Funciona no Wire
 3. Abort/Cancel
 4. Buffering Inteligente
 5. Arquitetura do Pipeline Streaming
 
 ### 🛠️ Prático
+
  1. 📦 Infraestrutura do Curso
  2. ❓ Troubleshooting
 
@@ -259,7 +260,7 @@ applied-ai-agents/
 ├── modules/
 │   ├── p8_streaming/
 │   │   ├── run.py          ← Executa streaming agent + SSE event generator
-│   │   └── test_exercise.py ← Testes (IMPLEMENTE os TODOs!)
+│   │   └── exercises.py       ← Exercícios práticos (IMPLEMENTE os TODOs!)
 ├── shared/                  ← Módulos reutilizáveis em TODOS os módulos
 │   ├── cost.py              ← count_tokens(), estimate_cost()
 │   └── logging_config.py    ← setup_logging(), measure_latency()

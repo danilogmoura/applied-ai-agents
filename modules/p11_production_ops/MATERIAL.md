@@ -26,12 +26,13 @@ Você precisa ter concluído o módulo [P10: Design e Composição de Skills](..
 
 ### 🔬 Avançado — OPCIONAL
 
-9. Logging Estruturado
+1. Logging Estruturado
 2. Prompt Testing (A/B)
 3. Rollback Automático
 4. Algoritmo: Exponential Backoff com Jitter
 
 ### 🛠️ Prático
+
  1. 📦 Infraestrutura do Curso
  2. ❓ Troubleshooting
 
@@ -253,7 +254,7 @@ applied-ai-agents/
 ├── modules/
 │   ├── p11_production_ops/
 │   │   ├── run.py          ← Executa metrics collector + prompt tester + rollback manager
-│   │   └── test_exercise.py ← Testes (IMPLEMENTE os TODOs!)
+│   │   └── exercises.py    ← Exercícios práticos (IMPLEMENTE os TODOs!)
 ├── shared/                  ← Módulos reutilizáveis em TODOS os módulos
 │   ├── cost.py              ← count_tokens(), estimate_cost()
 │   └── logging_config.py    ← setup_logging(), measure_latency()

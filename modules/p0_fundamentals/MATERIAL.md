@@ -27,11 +27,11 @@ Se você já tem experiência com programação, vai entender os exemplos mais r
 
 ### 🔬 Avançado (opcional na primeira leitura)
 
-7. [Algoritmo: BPE](#algoritmo-byte-pair-encoding-bpe)
+1. [Algoritmo: BPE](#algoritmo-byte-pair-encoding-bpe)
 
 ### Prático
 
-8. [📦 Infraestrutura do Curso](#infraestrutura-do-curso-importante)
+1. [📦 Infraestrutura do Curso](#infraestrutura-do-curso-importante)
 2. [Resumo do Módulo](#resumo-do-módulo)
 3. [Checklist Final](#checklist-como-saber-se-você-atingiu-o-objetivo)
 4. [Troubleshooting](#troubleshooting)
@@ -105,7 +105,7 @@ applied-ai-agents/
 │   └── p0_fundamentals/
 │       ├── MATERIAL.md    ← Este arquivo
 │       ├── run.py         ← Código executável (4 demos)
-│       └── test_exercise.py ← Exercícios com TODOs
+│       └── exercises.py   ← Exercícios práticos (IMPLEMENTE os TODOs!)
 ├── shared/             ← MÓDULOS COMPARTILHADOS (usados em TODOS os módulos)
 │   ├── cost.py          ← Funções de custo (count_tokens, estimate_cost)
 │   ├── security.py      ← Gerenciamento de API keys

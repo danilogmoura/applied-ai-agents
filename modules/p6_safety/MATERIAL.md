@@ -28,11 +28,13 @@ Você precisa ter concluído o módulo [P5: Avaliação](../p5_evaluation/MATERI
 11. Resumo do Módulo
 
 ### 🔬 Avançado — OPCIONAL
+
  1. Como Prompt Injection Funciona (detalhes técnicos)
  2. Token-level manipulation
  3. Jailbreak Detection
 
 ### 🛠️ Prático
+
  1. 📦 Infraestrutura do Curso
  2. ❓ Troubleshooting
 
@@ -274,7 +276,7 @@ applied-ai-agents/
 │   └── p6_safety/
 │       ├── MATERIAL.md          ← Você está aqui
 │       ├── run.py               ← Detector de ameaças + content filter
-│       └── test_exercise.py     ← Exercícios (TODOs)
+│       └── exercises.py       ← Exercícios práticos (IMPLEMENTE os TODOs!)
 ├── shared/
 │   ├── governance.py            ← ActionRequest, RiskLevel, require_approval()
 │   └── security.py              ← get_required_secret(), validate_secrets()

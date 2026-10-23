@@ -194,7 +194,7 @@ python modules/p11_production_ops/run.py
 pytest
 
 # Testes de um módulo específico
-pytest modules/p2_rag/test_exercise.py
+pytest modules/p2_rag/exercises.py
 
 # Com cobertura
 pytest --cov=modules --cov-report=term-missing

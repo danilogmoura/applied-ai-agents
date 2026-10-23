@@ -28,6 +28,7 @@ Você precisa ter concluído o módulo [P4: Produção](../p4_production/MATERIA
 11. Resumo do Módulo
 
 ### 🔬 Avançado — OPCIONAL
+
  1. Como Fuzzy Match Calcula Similaridade (Levenshtein)
  2. Significância Estatística: Quando um Score é Real?
  3. Regra prática: Tamanho mínimo do dataset
@@ -36,6 +37,7 @@ Você precisa ter concluído o módulo [P4: Produção](../p4_production/MATERIA
  6. Benchmarking Regressivo
 
 ### 🛠️ Prático
+
  1. 📦 Infraestrutura do Curso
  2. ❓ Troubleshooting
 
@@ -324,7 +326,7 @@ applied-ai-agents/
 │   └── p5_evaluation/
 │       ├── MATERIAL.md          ← Você está aqui
 │       ├── run.py               ← Evaluator completo com múltiplas métricas
-│       └── test_exercise.py     ← Exercícios (TODOs)
+│       └── exercises.py       ← Exercícios práticos (IMPLEMENTE os TODOs!)
 ├── shared/
 │   ├── cost.py                  ← count_tokens(), estimate_cost()
 │   └── logging_config.py        ← setup_logging()

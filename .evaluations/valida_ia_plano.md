@@ -52,7 +52,7 @@ Cada módulo passa pelas 7 dimensões da rubrica VALIDA-IA.
 - [ ] Output esperado descrito no miniproject.md?
 - [ ] Critérios de sucesso definidos?
 - [ ] run.py executa sem erros e ensina algo?
-- [ ] test_exercise.py valida aprendizado?
+- [ ] exercises.py valida aprendizado?
 
 ---
 

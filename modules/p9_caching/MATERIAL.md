@@ -26,12 +26,13 @@ Você precisa ter concluído o módulo [P8: Streaming e Tempo Real](../p8_stream
 
 ### 🔬 Avançado — OPCIONAL
 
-9. Arquitetura da Cache Layer
+1. Arquitetura da Cache Layer
 2. Algoritmo: LRU vs LFU (Eviction Policy)
 3. Model Routing
 4. Como Funciona Internamente
 
 ### 🛠️ Prático
+
  1. 📦 Infraestrutura do Curso
  2. ❓ Troubleshooting
 
@@ -265,7 +266,7 @@ applied-ai-agents/
 ├── modules/
 │   ├── p9_caching/
 │   │   ├── run.py          ← Executa response cache + model router
-│   │   └── test_exercise.py ← Testes (IMPLEMENTE os TODOs!)
+│   │   └── exercises.py       ← Exercícios práticos (IMPLEMENTE os TODOs!)
 ├── shared/                  ← Módulos reutilizáveis em TODOS os módulos
 │   ├── cost.py              ← count_tokens(), estimate_cost()
 │   └── logging_config.py    ← setup_logging(), measure_latency()

@@ -23,12 +23,12 @@ Você precisa ter concluído o módulo [P3a-3: Planejamento](../p3a3_planning/MA
 
 ### 🔬 Avançado (opcional na primeira leitura)
 
-6. [Arquitetura Multiagente](#️-arquitetura-multiagente)
+1. [Arquitetura Multiagente](#️-arquitetura-multiagente)
 2. [Pipeline na Prática — Passo a Passo](#pipeline-na-prática--passo-a-passo)
 
 ### Prático
 
-8. [O que você vai ver](#-o-que-você-vai-ver)
+1. [O que você vai ver](#-o-que-você-vai-ver)
 2. [Exercício Prático](#exercício-prático)
 3. [Perguntas para Reflexão](#perguntas-para-reflexão)
 4. [Resumo do Módulo](#resumo-do-módulo)
@@ -48,7 +48,7 @@ applied-ai-agents/
 │       ├── MATERIAL.md    ← Este arquivo
 │       ├── run.py         ← Código executável (supervisor + especialistas)
 │       ├── architecture.md ← Diagramas detalhados da arquitetura
-│       └── test_exercise.py ← Exercícios com TODOs
+│       └── exercises.py    ← Exercícios práticos (IMPLEMENTE os TODOs!)
 ├── shared/             ← MÓDULOS COMPARTILHADOS (usados em TODOS os módulos)
 │   ├── cost.py          ← Funções de custo (count_tokens, estimate_cost)
 │   ├── security.py      ← Gerenciamento de API keys

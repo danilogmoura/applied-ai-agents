@@ -283,7 +283,7 @@ agentforge/
 ## Dicas
 
 - **Comece pequeno:** Implemente um módulo por vez
-- **Teste frequentemente:** Use os `test_exercise.py` de cada módulo
+- **Teste frequentemente:** Use os `exercises.py` de cada módulo (IMPLEMENTE os TODOs!)
 - **Documente decisões:** Mantenha um log de arquitetura
 - **Use os miniprojects:** Cada `miniproject.md` é um bloco reutilizável
 - **Colabore:** Discuta design decisions com colegas

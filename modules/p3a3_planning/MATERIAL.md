@@ -23,12 +23,12 @@ Você precisa ter concluído o módulo [P3a-2: Tool Calling](../p3a2_tool_callin
 
 ### 🔬 Avançado (opcional na primeira leitura)
 
-5. [Simulação de Serviço](#simulação-de-serviço)
+1. [Simulação de Serviço](#simulação-de-serviço)
 2. [Arquitetura do Planner Resiliente](#️-arquitetura-do-planner-resiliente)
 
 ### Prático
 
-7. [O que você vai ver](#-o-que-você-vai-ver)
+1. [O que você vai ver](#-o-que-você-vai-ver)
 2. [Exercício Prático](#exercício-prático)
 3. [Perguntas para Reflexão](#perguntas-para-reflexão)
 4. [Resumo do Módulo](#resumo-do-módulo)
@@ -48,7 +48,7 @@ applied-ai-agents/
 │       ├── MATERIAL.md    ← Este arquivo
 │       ├── run.py         ← Código executável (circuit breaker + checkpoint)
 │       ├── architecture.md ← Diagrama detalhado da arquitetura
-│       └── test_exercise.py ← Exercícios com TODOs
+│       └── exercises.py    ← Exercícios práticos (IMPLEMENTE os TODOs!)
 ├── shared/             ← MÓDULOS COMPARTILHADOS (usados em TODOS os módulos)
 │   ├── cost.py          ← Funções de custo (count_tokens, estimate_cost)
 │   ├── security.py      ← Gerenciamento de API keys
