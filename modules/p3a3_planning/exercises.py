@@ -63,10 +63,62 @@ def test_01_circuit_breaker_states():
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# TESTE 2: Checkpoint Save/Restore — Estado preservado?
+# TESTE 2: Task Decomposition — Tarefa decomposta corretamente?
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-def test_02_checkpoint_save_restore():
+def test_02_task_decomposition():
+    """
+    Implemente decomposição de tarefa complexa em subtarefas.
+    
+    Cenário: Planner TechCorp recebe "Construir sistema RAG" e deve
+    decompor em subtarefas com dependências.
+    
+    Regra: Tarefa principal → lista de subtarefas ordenadas com dependências.
+    Cada subtarefa tem: id, task, depends_on (lista de ids).
+    
+    Exemplo de saída esperada:
+    [
+        {"id": 0, "task": "indexar documentos", "depends_on": []},
+        {"id": 1, "task": "treinar embedding", "depends_on": [0]},
+        {"id": 2, "task": "criar API de busca", "depends_on": [1]},
+        {"id": 3, "task": "integrar frontend", "depends_on": [2]},
+    ]
+    """
+    def decompose_task(task: str) -> list:
+        """TODO: Retorne lista de dicts {'id': int, 'task': str, 'depends_on': list[int]}."""
+        # ← Implemente aqui
+        return []
+    
+    result = decompose_task("Construir sistema RAG")
+    assert len(result) >= 3, \
+        f"Deve ter pelo menos 3 subtarefas, got {len(result)}"
+    assert all("depends_on" in t for t in result), \
+        "Cada tarefa deve ter campo 'depends_on'"
+    assert all("task" in t for t in result), \
+        "Cada tarefa deve ter campo 'task'"
+    assert all("id" in t for t in result), \
+        "Cada tarefa deve ter campo 'id'"
+    
+    # Propriedade comportamental: primeira tarefa não depende de nenhuma
+    first_task = next(t for t in result if t["id"] == min(sub["id"] for sub in result))
+    assert len(first_task["depends_on"]) == 0, \
+        "Primeira tarefa não deve ter dependências"
+    
+    # Propriedade: todas as dependências referenciam ids existentes
+    all_ids = {t["id"] for t in result}
+    for t in result:
+        for dep in t["depends_on"]:
+            assert dep in all_ids, \
+                f"Tarefa {t['id']} referencia dependência {dep} que não existe"
+    
+    console.print(f"[green]✓[/green] Task Decomposition: {len(result)} subtarefas ✓")
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# TESTE 3: Checkpoint Save/Restore — Estado preservado?
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+def test_03_checkpoint_save_restore():
     """
     TODO: Implemente salvar e restaurar checkpoint.
     """
@@ -130,9 +182,9 @@ def test_02_checkpoint_save_restore():
 # TESTE 3: Step Validation — Cada passo é válido?
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-def test_03_step_validation():
+def test_04_step_validation():
     """
-    TODO: Valide cada passo do plano antes de executar.
+    Valide cada passo do plano antes de executar.
     """
     plan = [
         {"action": "search_docs", "params": {"query": "reembolso"}},
@@ -163,9 +215,9 @@ def test_03_step_validation():
 # TESTE 4: Fallback Logic — Fallback acionado corretamente?
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-def test_04_fallback_logic():
+def test_05_fallback_logic():
     """
-    TODO: Implemente lógica de fallback quando passo principal falha.
+    Implemente lógica de fallback quando passo principal falha.
     """
     def execute_primary(action: str) -> str:
         if action == "api_call":
@@ -192,9 +244,9 @@ def test_04_fallback_logic():
 # TESTE 5: Plan Execution Metrics — Métricas do plano?
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-def test_05_plan_execution_metrics():
+def test_06_plan_execution_metrics():
     """
-    TODO: Calcule métricas de execução do plano.
+    Colete métricas de execução do plano.
     """
     execution_log = [
         {"step": 1, "status": "success", "latency_ms": 150},
@@ -226,9 +278,9 @@ def test_05_plan_execution_metrics():
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def run_all():
-    tests = [test_01_circuit_breaker_states, test_02_checkpoint_save_restore,
-             test_03_step_validation, test_04_fallback_logic,
-             test_05_plan_execution_metrics]
+    tests = [test_01_circuit_breaker_states, test_02_task_decomposition,
+             test_03_checkpoint_save_restore, test_04_step_validation,
+             test_05_fallback_logic, test_06_plan_execution_metrics]
     
     console.print(Panel("🧪 Exercícios Práticos — IMPLEMENTE os TODOs!",
                         title="[bold cyan]P3a-3: Planejamento e Retomada[/bold cyan]",

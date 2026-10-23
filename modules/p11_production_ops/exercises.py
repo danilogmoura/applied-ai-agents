@@ -334,13 +334,71 @@ def test_05_ab_testing():
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# TESTE 6: Health Check Monitoring — Monitor contínuo com threshold?
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+def test_06_health_check_monitoring():
+    """
+    Implemente monitor de saúde que verifica endpoints continuamente.
+    
+    Cenário: Monitoramento da API TechCorp no Grafana.
+    Regra: Se N checks consecutivos falham → alerta CRITICAL.
+    
+    Funcionamento:
+    - check(url) → retorna True se endpoint responde, False se não
+    - record_result(healthy) → registra resultado
+    - Se failures >= threshold → dispara alerta CRITICAL
+    - Se success após falhas → reseta contador
+    
+    Isso permite detecção precoce de incidentes antes de afetar usuários.
+    """
+    class HealthMonitor:
+        def __init__(self, threshold: int = 3):
+            self.threshold = threshold
+            self.failures = 0
+            self.alerts: List[dict] = []
+        
+        def check(self, url: str) -> bool:
+            """TODO: Verifique se endpoint responde. Retorne True se saudável."""
+            # ← Implemente aqui
+            return False
+        
+        def record_result(self, healthy: bool, url: str = ""):
+            """TODO: Registre resultado e dispare alerta se exceder threshold."""
+            # ← Implemente aqui
+            pass
+        
+        def get_alerts(self) -> List[dict]:
+            """Retorne lista de alertas disparados."""
+            return self.alerts
+    
+    monitor = HealthMonitor(threshold=3)
+    
+    # Simula 3 falhas consecutivas → deve disparar CRITICAL
+    for i in range(3):
+        monitor.record_result(False, "https://api.techcorp.com/health")
+    
+    assert monitor.failures >= 3, \
+        f"Deve registrar {monitor.threshold}+ falhas consecutivas, got {monitor.failures}"
+    assert len(monitor.get_alerts()) > 0, \
+        "Alerta CRITICAL deve ser disparado após threshold de falhas"
+    
+    # Sucesso após falhas deve resetar contador
+    monitor.record_result(True, "https://api.techcorp.com/health")
+    assert monitor.failures == 0, \
+        "Sucesso deve resetar contador de falhas"
+    
+    console.print(f"[green]✓[/green] Health Monitor: {len(monitor.get_alerts())} alert(s) triggered ✓")
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # RUN ALL
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def run_all():
     tests = [test_01_cicd_pipeline, test_02_health_check,
              test_03_monitoring_dashboard, test_04_rollback_decision,
-             test_05_ab_testing]
+             test_05_ab_testing, test_06_health_check_monitoring]
     
     console.print(Panel("🧪 Exercícios Práticos — IMPLEMENTE os TODOs!",
                         title="[bold cyan]P11: Produção e Operações[/bold cyan]",

@@ -319,14 +319,36 @@ chunks.append(text[start:space_pos])
 
 ## Status de Execução
 
-**Última atualização:** 2026-10-23
+**Última atualização:** 2026-10-23 (commit `a956b67`)
 
 | Fase | Melhorias | Arquivos | Status | Resultado |
 | ------ | ----------- | ---------- | ------------ | --------- |
 | **Fase 1** | M1 (extrair stubs) + M5 (comentários inline) | 32 arquivos (15 pares) | ✅ **CONCLUÍDA** | 15/15 módulos processados, zero lint errors |
 | **Fase 2** | M2 (asserts menos prescritivos) | ~42 asserts → ~6 mantidos | ✅ **CONCLUÍDA** | Redução de ~85% nos asserts prescritivos |
-| **Fase 3** | M3 (contexto prático) | 4 módulos prioritários | ⏳ Pendente | — |
+| **Fase 3** | M3 (contexto prático) | 4 módulos prioritários | ✅ **CONCLUÍDA** | p2_rag, p3b_multi_agent, p4_production, p11_production_ops enriquecidos |
 | **Fase 4** | M4 (densidade equilibrada) | 2 módulos | ⏳ Pendente | — |
+
+### Detalhamento Fase 3 (M3)
+
+**Módulos processados (4 pares = 8 arquivos):**
+
+- p2_rag — Cenário TechCorp Brasil (10K docs, embeddings 3D, MRR/Hit@K)
+- p3b_multi_agent — Chatbot suporte (500 tickets/dia, 4 especialistas, fallback)
+- p4_production — API production (SLA p95<200ms, error_rate<1%, rate limit 100req/min)
+- p11_production_ops — CI/CD pipeline (GitHub Actions, golden dataset 500 ex., rollback decision)
+
+**O que foi feito:**
+
+- Adicionado contexto de empresa fictícia "TechCorp" em todos os exercícios
+- Expandido listas de documentos com campos source/category
+- Adicionado métricas reais de produção (latência p95, error_rate, accuracy thresholds)
+- Enriquecido cenários multiagente com volume/taxas reais de tickets
+- Corrigido duplicação `class MetricsCollector:` em p11/exercises.py
+
+**Validação:**
+
+- `py_compile`: ✓ Todos os 8 arquivos compilam
+- VS Code linter: ✓ Zero erros
 
 ### Detalhamento Fase 1 (M1+M5)
 
