@@ -1,0 +1,327 @@
+"""Módulo P11 — Exercícios Práticos
+
+Execute com: python modules/p11_production_ops/exercises.py
+
+IMPLEMENTE os TODOs para fazer os testes passarem.
+"""
+
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+from typing import Any, Callable, Dict, List, Optional
+
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from rich.console import Console
+from rich.panel import Panel
+
+console = Console()
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# TESTE 1: CI/CD Pipeline — Estágios do pipeline funcionam?
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+def test_01_cicd_pipeline():
+    """
+    TODO: Implemente pipeline de CI/CD com estágios sequenciais.
+    
+    Estágios: lint → test → build → deploy
+    Se um estágio falha, pipeline para e marca falha.
+    """
+    class CICDPipeline:
+        def __init__(self):
+            self.stages: List[str] = []
+            self.results: List[dict] = []
+        
+        def add_stage(self, name: str, handler: Callable[[dict], dict]):
+            """TODO: Adicione estágio ao pipeline."""
+            # ← Implemente aqui
+            pass
+        
+        def execute(self, context: dict) -> dict:
+            """TODO: Execute pipeline sequencialmente."""
+            # ← Implemente aqui
+            return {}  # Placeholder vazio
+    
+    pipeline = CICDPipeline()
+    
+    def lint_step(ctx):
+        if not ctx.get("code", "").strip():
+            raise ValueError("Código vazio")
+        return {"linted": True}
+    
+    def test_step(ctx):
+        if not ctx.get("tests_passed", False):
+            raise ValueError("Testes falharam")
+        return {"tested": True}
+    
+    def build_step(ctx):
+        return {"built": True, "artifact": "model.bin"}
+    
+    def deploy_step(ctx):
+        return {"deployed": True, "url": "https://api.example.com/v1"}
+    
+    pipeline.add_stage("lint", lint_step)
+    pipeline.add_stage("test", test_step)
+    pipeline.add_stage("build", build_step)
+    pipeline.add_stage("deploy", deploy_step)
+    
+    result = pipeline.execute({
+        "code": "print('hello')",
+        "tests_passed": True
+    })
+    
+    assert result.get("deployed") is True, \
+        "Pipeline completo deve terminar com deployed=True"
+    assert len(result.get("stages_executed", [])) == 4, \
+        "Devem ter 4 estágios executados"
+    
+    console.print(f"[green]✓[/green] CI/CD: {len(result['stages_executed'])} stages passed ✓")
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# TESTE 2: Health Check Service — Verificações básicas funcionam?
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+def test_02_health_check():
+    """
+    TODO: Implemente serviço de health check com múltiplas verificações.
+    
+    Checks: endpoint_status, memory_usage, disk_space.
+    """
+    class HealthCheckService:
+        def __init__(self):
+            self.checks_configured: List[str] = []
+        
+        def configure_check(self, name: str, check_fn: Callable[[], dict]):
+            """TODO: Configure verificação."""
+            # ← Implemente aqui
+            pass
+        
+        def run_all(self) -> dict:
+            """TODO: Execute todas as verificações."""
+            # ← Implemente aqui
+            return {}  # Placeholder vazio
+    
+    service = HealthCheckService()
+    
+    service.configure_check("endpoint_status", 
+                           lambda: {"status": "healthy", "response_time_ms": 45})
+    service.configure_check("memory_usage",
+                           lambda: {"status": "healthy", "usage_pct": 62.5})
+    service.configure_check("disk_space",
+                           lambda: {"status": "warning", "available_gb": 15})
+    
+    result = service.run_all()
+    
+    assert result["overall"] in ("healthy", "degraded", "unhealthy"), \
+        "Overall deve ser healthy/degraded/unhealthy"
+    assert len(result["checks"]) == 3, \
+        f"Deve ter 3 checks, got {len(result['checks'])}"
+    
+    console.print(f"[green]✓[/green] Health: {result['status']} ({len(result['checks'])} checks)")
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# TESTE 3: Monitoring Dashboard — Métricas coletadas?
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+def test_03_monitoring_dashboard():
+    """
+    TODO: Colete métricas para dashboard de monitoramento.
+    
+    Métricas: latency_p50/p95/p99, error_rate, tokens_per_second, cost_per_hour.
+    """
+    class MetricsCollector:
+        def __init__(self):
+            self.latencies: List[float] = []
+            self.errors: int = 0
+            self.total_requests: int = 0
+            self.tokens_used: int = 0
+        
+        def record_request(self, latency_ms: float, success: bool, tokens: int):
+            """Registre métrica de uma requisição."""
+            # ← Implemente aqui
+            pass
+        
+        def get_percentiles(self) -> dict:
+            """Calcule p50, p95, p99 de latência."""
+            # ← Implemente aqui
+            return {"p50": 0, "p95": 0, "p99": 0}
+        
+        def get_error_rate(self) -> float:
+            """Calcule taxa de erro."""
+            # ← Implemente aqui
+            return 0.0
+    
+    collector = MetricsCollector()
+    
+    # Simula 100 requests
+    import random
+    for _ in range(100):
+        latency = random.uniform(50, 500)
+        success = random.random() > 0.05  # 5% de erro
+        tokens = random.randint(100, 2000)
+        collector.record_request(latency, success, tokens)
+    
+    percentiles = collector.get_percentiles()
+    error_rate = collector.get_error_rate()
+    
+    assert percentiles["p99"] >= percentiles["p95"] >= percentiles["p50"], \
+        "P99 >= P95 >= P50"
+    assert 0 <= error_rate <= 1, \
+        f"Error rate deve ser entre 0 e 1, got {error_rate}"
+    
+    console.print(f"[green]✓[/green] Metrics: p50={percentiles['p50']:.0f}ms, "
+                  f"p95={percentiles['p95']:.0f}ms, error_rate={error_rate:.0%}")
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# TESTE 4: Rollback Decision — Decisão de rollback correta?
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+def test_04_rollback_decision():
+    """
+    TODO: Implemente árvore de decisão para rollback automático.
+    
+    Regras:
+    - Error rate > 10% → rollback imediato
+    - Latency p95 > 2x baseline → warning
+    - Accuracy drop > 5% vs baseline → rollback
+    """
+    class RollbackDecider:
+        def __init__(self, baseline: dict):
+            self.baseline = baseline
+            self.decisions: List[dict] = []
+        
+        def evaluate(self, current: dict) -> dict:
+            """Avalie métricas atuais vs baseline e retorne decisão."""
+            # ← Implemente aqui
+            return {"action": "keep", "reason": ""}
+        
+        def get_history(self) -> List[dict]:
+            """Retorne histórico de decisões."""
+            return self.decisions
+    
+    baseline = {
+        "error_rate": 0.02,
+        "latency_p95": 300,
+        "accuracy": 0.95,
+    }
+    
+    decider = RollbackDecider(baseline)
+    
+    # Cenário 1: Tudo OK
+    ok_metrics = {"error_rate": 0.01, "latency_p95": 250, "accuracy": 0.96}
+    decision_ok = decider.evaluate(ok_metrics)
+    assert decision_ok["action"] == "keep", \
+        "Métricas boas devem manter deployment"
+    
+    # Cenário 2: Error rate alto → rollback
+    bad_metrics = {"error_rate": 0.15, "latency_p95": 400, "accuracy": 0.90}
+    decision_bad = decider.evaluate(bad_metrics)
+    assert decision_bad["action"] == "rollback", \
+        "Error rate > 10% deve triggerar rollback"
+    
+    console.print(f"[green]✓[/green] Rollback: keep ✓, rollback triggered ✓")
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# TESTE 5: A/B Testing — Testes A/B configurados?
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+def test_05_ab_testing():
+    """
+    TODO: Implemente framework de A/B testing para modelos.
+    
+    Compara performance de múltiplos modelos em produção.
+    """
+    class ABTestManager:
+        def __init__(self, test_id: str):
+            self.test_id = test_id
+            self.variants: Dict[str, dict] = {}
+        
+        def add_variant(self, variant_name: str, traffic_pct: float):
+            """Adicione variante com porcentagem de tráfego."""
+            # ← Implemente aqui
+            pass
+        
+        def assign(self, request_id: str) -> str:
+            """Atribua request a uma variante baseada no hash."""
+            # ← Implemente aqui
+            return ""
+        
+        def record_result(self, variant: str, success: bool, metric_value: float):
+            """Registre resultado para uma variante."""
+            # ← Implemente aqui
+            pass
+        
+        def get_winner(self) -> Optional[str]:
+            """Retorne variante vencedora (maior avg metric)."""
+            # ← Implemente aqui
+            return None
+    
+    manager = ABTestManager("model_comparison_v1")
+    
+    manager.add_variant("gpt-4", 0.5)
+    manager.add_variant("claude-3", 0.5)
+    
+    # Simula resultados
+    results_gpt = [0.92, 0.88, 0.95, 0.90, 0.93]
+    results_claude = [0.89, 0.91, 0.87, 0.94, 0.90]
+    
+    for i, val in enumerate(results_gpt):
+        manager.record_result("gpt-4", True, val)
+    for val in results_claude:
+        manager.record_result("claude-3", True, val)
+    
+    winner = manager.get_winner()
+    
+    assert winner is not None, \
+        "Deve haver um vencedor após registrar resultados"
+    
+    avg_gpt = sum(results_gpt) / len(results_gpt)
+    avg_claude = sum(results_claude) / len(results_claude)
+    
+    expected_winner = "gpt-4" if avg_gpt > avg_claude else "claude-3"
+    assert winner == expected_winner, \
+        f"Winner should be {expected_winner}, got {winner}"
+    
+    console.print(f"[green]✓[/green] A/B Test: winner={winner} "
+                  f"(gpt4={avg_gpt:.2f} vs claude3={avg_claude:.2f})")
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# RUN ALL
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+def run_all():
+    tests = [test_01_cicd_pipeline, test_02_health_check,
+             test_03_monitoring_dashboard, test_04_rollback_decision,
+             test_05_ab_testing]
+    
+    console.print(Panel("🧪 Exercícios Práticos — IMPLEMENTE os TODOs!",
+                        title="[bold cyan]P11: Produção e Operações[/bold cyan]",
+                        border_style="cyan"))
+    
+    passed = failed = 0
+    for test_fn in tests:
+        try:
+            test_fn()
+            passed += 1
+        except AssertionError as e:
+            console.print(f"[red]✗ {test_fn.__name__}: {e}[/red]")
+            failed += 1
+        except Exception as e:
+            console.print(f"[red]✗ {test_fn.__name__}: Erro — {e}[/red]")
+            failed += 1
+    
+    console.print(f"\nResultado: [bold green]{passed}/{passed+failed}[/bold green] passaram")
+    if not failed:
+        console.print("[bold green]🎉 Todos os testes passaram![/bold green]")
+
+
+if __name__ == "__main__":
+    run_all()
