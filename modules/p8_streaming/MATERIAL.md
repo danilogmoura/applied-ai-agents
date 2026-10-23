@@ -355,3 +355,11 @@ Com streaming, seus agentes respondem rapidamente. Mas respostas repetidas gasta
 ## Material Complementar
 
 (empty)
+
+---
+
+## 🧭 Navegação
+
+| ← Anterior | Índice | Próximo → |
+| --- | --- | --- |
+| [← P7: Memória e Contexto](../p7_memory/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [P9: Cache e Otimização de Custo →](../p9_caching/MATERIAL.md) |

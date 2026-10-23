@@ -385,3 +385,11 @@ Com caching, seus agentes são econômicos. Mas como organizar código em compon
 ## Material Complementar
 
 (empty)
+
+---
+
+## 🧭 Navegação
+
+| ← Anterior | Índice | Próximo → |
+| --- | --- | --- |
+| [← P8: Streaming e Tempo Real](../p8_streaming/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [P10: Design de Skills →](../p10_skills/MATERIAL.md) |

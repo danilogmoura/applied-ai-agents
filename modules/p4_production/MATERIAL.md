@@ -435,3 +435,11 @@ Com sua API em produção, seus agentes estão respondendo perguntas. Mas como s
 ## Material Complementar
 
 (empty)
+
+---
+
+## 🧭 Navegação
+
+| ← Anterior | Índice | Próximo → |
+| --- | --- | --- |
+| [← P3b: Sistema Multiagente](../p3b_multi_agent/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [P5: Avaliação e Testes →](../p5_evaluation/MATERIAL.md) |

@@ -396,3 +396,11 @@ Você chegou ao final do curso! Aqui estão sugestões de como continuar:
 ## Material Complementar
 
 (empty)
+
+---
+
+## 🧭 Navegação
+
+| ← Anterior | Índice | Próximo → |
+| --- | --- | --- |
+| [← P10: Design de Skills](../p10_skills/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | — |

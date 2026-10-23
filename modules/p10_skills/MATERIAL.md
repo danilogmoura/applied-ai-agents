@@ -444,3 +444,11 @@ Com skills versionadas e pipelines compostos, seu sistema está organizado. Mas 
 ## Material Complementar
 
 (empty)
+
+---
+
+## 🧭 Navegação
+
+| ← Anterior | Índice | Próximo → |
+| --- | --- | --- |
+| [← P9: Cache e Otimização de Custo](../p9_caching/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [P11: Operations de Produção →](../p11_production_ops/MATERIAL.md) |

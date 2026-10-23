@@ -266,3 +266,11 @@ Com a viabilidade estabelecida, o próximo passo é resolver o problema mais com
 ## Material Complementar
 
 (empty)
+
+---
+
+## 🧭 Navegação
+
+| ← Anterior | Índice | Próximo → |
+| --- | --- | --- |
+| [← P0: Primeiro Fluxo com LLM](../p0_first_llm/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [P2: Pipeline RAG →](../p2_rag/MATERIAL.md) |

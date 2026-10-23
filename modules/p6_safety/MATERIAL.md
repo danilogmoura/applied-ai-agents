@@ -326,3 +326,11 @@ Com guardrails implementados, seus agentes estão protegidos contra ataques. Mas
 ## Material Complementar
 
 (empty)
+
+---
+
+## 🧭 Navegação
+
+| ← Anterior | Índice | Próximo → |
+| --- | --- | --- |
+| [← P5: Avaliação e Testes](../p5_evaluation/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [P7: Memória e Contexto →](../p7_memory/MATERIAL.md) |

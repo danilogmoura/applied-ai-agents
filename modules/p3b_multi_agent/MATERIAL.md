@@ -425,3 +425,11 @@ Com multi-agentes, você tem um sistema inteligente mas ainda local. Para usar e
 ## Material Complementar
 
 (empty)
+
+---
+
+## 🧭 Navegação
+
+| ← Anterior | Índice | Próximo → |
+| --- | --- | --- |
+| [← P3a-3: Planejamento e Retomada](../p3a3_planning/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [P4: Produção (FastAPI) →](../p4_production/MATERIAL.md) |

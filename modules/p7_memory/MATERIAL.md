@@ -410,3 +410,11 @@ Com memória implementada, seus agentes mantêm contexto entre conversas. Mas re
 ## Material Complementar
 
 (empty)
+
+---
+
+## 🧭 Navegação
+
+| ← Anterior | Índice | Próximo → |
+| --- | --- | --- |
+| [← P6: Segurança e Guardrails](../p6_safety/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [P8: Streaming e Tempo Real →](../p8_streaming/MATERIAL.md) |

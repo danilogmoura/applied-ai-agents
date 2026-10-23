@@ -363,3 +363,11 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 Com autoavaliação, seu agente verifica a qualidade antes de entregar. Mas ainda só gera texto — não executa ações no mundo real.
 
 → Leia o módulo [P3a-2: Tool Calling](../p3a2_tool_calling/MATERIAL.md) para aprender como agentes usam ferramentas externas.
+
+---
+
+## 🧭 Navegação
+
+| ← Anterior | Índice | Próximo → |
+| --- | --- | --- |
+| [← P2: Pipeline RAG](../p2_rag/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [P3a-2: Tool Calling →](../p3a2_tool_calling/MATERIAL.md) |

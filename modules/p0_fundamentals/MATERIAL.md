@@ -477,3 +477,11 @@ Escolha UM dos prompts que você reescreveu na Parte A. Envie-o para um LLM (pod
 
 - [Hugging Face Course](https://huggingface.co/course) — Curso gratuito de NLP
 - [DeepLearning.AI Short Courses](https://www.deeplearning.ai/short-courses/) — Microcursos sobre IA
+
+---
+
+## 🧭 Navegação
+
+| ← Anterior | Índice | Próximo → |
+| --- | --- | --- |
+| — | [📖 Sumário do curso](../../README.md) | [P0: Primeiro Fluxo com LLM →](../p0_first_llm/MATERIAL.md) |

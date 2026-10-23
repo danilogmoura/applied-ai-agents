@@ -347,3 +347,11 @@ Com resilience patterns, seu agente individual sobrevive a falhas. Mas tarefas c
 (empty)
 
 → Leia o módulo [P3b: Multi-Agent Supervisor](../p3b_multi_agent/MATERIAL.md) para aprender arquitetura multiagente.
+
+---
+
+## 🧭 Navegação
+
+| ← Anterior | Índice | Próximo → |
+| --- | --- | --- |
+| [← P3a-2: Tool Calling](../p3a2_tool_calling/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [P3b: Sistema Multiagente →](../p3b_multi_agent/MATERIAL.md) |

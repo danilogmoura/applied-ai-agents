@@ -395,3 +395,11 @@ Com avaliação em produção, seus agentes entregam respostas consistentes. Mas
 
 - [Creating Golden Datasets](https://medium.com/@langchain/create-golden-datasets-for-llm-evaluation) — LangChain Blog
 - [Evaluation Best Practices](https://docs.arize.com/phoenix) — Arize Phoenix Docs
+
+---
+
+## 🧭 Navegação
+
+| ← Anterior | Índice | Próximo → |
+| --- | --- | --- |
+| [← P4: Produção (FastAPI)](../p4_production/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [P6: Segurança e Guardrails →](../p6_safety/MATERIAL.md) |

@@ -626,3 +626,11 @@ Agora que você construiu seu primeiro agente, o próximo passo é aprender a **
 - [Prompt Engineering Guide](https://www.promptingguide.tech/) — Técnicas avançadas de prompt
 
 ## 🔗 Próximos Passos
+
+---
+
+## 🧭 Navegação
+
+| ← Anterior | Índice | Próximo → |
+| --- | --- | --- |
+| [← P0-F: Fundamentos](../p0_fundamentals/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [P1: Análise de Viabilidade →](../p1_feasibility/MATERIAL.md) |

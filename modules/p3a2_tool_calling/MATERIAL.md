@@ -410,3 +410,11 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 Com tool calling, seu agente pode executar ações. Mas o mundo real é caótico — APIs falham, timeouts acontecem, serviços ficam indisponíveis.
 
 → Leia o módulo [P3a-3: Resilience Patterns](../p3a3_planning/MATERIAL.md) para aprender circuit breakers, checkpoints e retry strategies.
+
+---
+
+## 🧭 Navegação
+
+| ← Anterior | Índice | Próximo → |
+| --- | --- | --- |
+| [← P3a-1: Autoavaliação](../p3a1_self_eval/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [P3a-3: Planejamento e Retomada →](../p3a3_planning/MATERIAL.md) |

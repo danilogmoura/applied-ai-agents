@@ -488,3 +488,11 @@ Com RAG, seu agente pode responder perguntas com base em documentos. Mas no mund
 ## Material Complementar
 
 (empty)
+
+---
+
+## 🧭 Navegação
+
+| ← Anterior | Índice | Próximo → |
+| --- | --- | --- |
+| [← P1: Análise de Viabilidade](../p1_feasibility/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [P3a-1: Autoavaliação →](../p3a1_self_eval/MATERIAL.md) |
