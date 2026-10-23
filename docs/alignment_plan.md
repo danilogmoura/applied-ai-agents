@@ -66,11 +66,13 @@ Definida a partir do índice atual do README. Esta é a sequência usada nos lin
 ```
 
 ### Diretrizes
+
 - **Não remover conteúdo** essencial (princípios, pré-requisitos, instalação) — apenas **reorganizar**: introdução e sumário primeiro, setup depois.
 - Sumário vira **lista numerada contínua** (1–16), lida como capítulos, em vez de 4 tabelas separadas por "fase". As fases viram subtítulos dentro da introdução ou cabeçalhos leves do sumário.
 - Cada linha do índice aponta para o `MATERIAL.md` (o "capítulo"); `run.py` e `miniproject.md` ficam como links secundários.
 
 ### Guardrails
+
 - Manter todos os caminhos de link existentes e válidos.
 - Não inventar módulos nem reordenar a sequência pedagógica.
 
@@ -96,11 +98,13 @@ Inserido **no fim** de cada arquivo:
 - Último capítulo: célula "Próximo" = `—`.
 
 ### Regras de aplicação
+
 - Aplicar nos **16** arquivos `modules/*/MATERIAL.md`.
 - Se o arquivo já termina com uma seção "Próximos Passos"/"Material Complementar", o rodapé de navegação entra **depois** dela (por último).
 - Caminhos relativos: de `modules/<pasta>/MATERIAL.md`, o vizinho é `../<outra_pasta>/MATERIAL.md` e o índice é `../../README.md`.
 
 ### Guardrails
+
 - Não alterar o corpo do material — só acrescentar o rodapé.
 - Conferir que cada pasta vizinha existe antes de gerar o link (evitar link quebrado).
 
