@@ -201,8 +201,10 @@ flowchart TD
     Probs --> Output["Output: 'azul'"]
     Output --> Next["Próximo passo:\n'O céu é azul ___'"]
     
-    style Treino fill:#9cf,stroke:#333
-    style Predicao fill:#fc9,stroke:#333
+    classDef foundation fill:#e3f2fd,stroke:#90caf9,color:#000,stroke-width:2px
+    classDef core fill:#fff3e0,stroke:#ffcc80,color:#000,stroke-width:2px
+    class Treino foundation
+    class Predicao core
 ```
 
 **Dois momentos distintos:**
@@ -316,7 +318,8 @@ flowchart TD
     Comportamento --> Inventao["Inventa detalhes plausíveis\nCitações, datas, nomes"]
     Comportamento --> Contradicao["Se contradiz em conversas longas"]
     
-    style Treino fill:#f99,stroke:#333
+    classDef warning fill:#ffebee,stroke:#ef9a9a,color:#000,stroke-width:2px
+    class Treino warning
 ```
 
 ### Mitigações práticas
