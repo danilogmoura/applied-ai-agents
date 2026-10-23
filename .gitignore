@@ -48,6 +48,9 @@ data/chroma_db/
 .pytest_cache/
 .coverage
 htmlcov/
+
+# Evaluations (internal notes, not for repo)
+.evaluations/
 *.cover
 
 # OS
