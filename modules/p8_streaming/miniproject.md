@@ -4,7 +4,7 @@
 
 ## O que você vai construir
 
-Um stream handler `streaming_system.py` que:
+Um stream handler `streaming_system.py` (classe `StreamingAgent`) que:
 
 1. **Gera** chunks de tamanho limitado
 2. **Formata** como SSE (Server-Sent Events)
@@ -13,8 +13,10 @@ Um stream handler `streaming_system.py` que:
 
 ## Requisitos
 
+> ℹ️ **Arquitetura de referência:** No `run.py`, o streaming é composto por `StreamingAgent` (gera os chunks), `SSEEventGenerator` (formata SSE) e `LiveStreamDisplay` (console). Aqui você pode começar com uma classe única `StreamingAgent`.
+
 ```python
-class StreamingSystem:
+class StreamingAgent:
     def stream_chunks(self, text: str, max_chunk_size: int = 50) -> Generator[str, None, None]:
         """Gerar chunks de tamanho limitado."""
         ...
@@ -49,7 +51,7 @@ import json
 import time
 from datetime import datetime
 
-class StreamingSystem:
+class StreamingAgent:
     def stream_chunks(self, text: str, max_chunk_size: int = 50) -> Generator[str, None, None]:
         """Gerar chunks de tamanho limitado para streaming."""
         # Divide por palavras para evitar cortar no meio
@@ -266,7 +268,7 @@ if __name__ == "__main__":
     parser.add_argument("--compare", action="store_true", help="Compara streaming vs blocking")
     args = parser.parse_args()
     
-    system = StreamingSystem()
+    system = StreamingAgent()
     
     # Texto para processar
     text = args.text

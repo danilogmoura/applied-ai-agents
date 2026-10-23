@@ -11,6 +11,8 @@ Uma API `agent_api.py` (FastAPI) que:
 3. **Gera** Docker config para deploy
 4. **Garante** formato consistente de response
 
+> ℹ️ **Arquitetura de referência:** O `run.py` deste módulo é uma **aplicação FastAPI real** (com rotas, middleware e `main()`), que é o padrão profissional de produção. Este mini-projeto usa uma classe simplificada `AgentAPI` para você praticar os conceitos (validação, timing, Docker, formato de response) sem precisar subir um servidor. As duas abordagens são compatíveis: quando terminar, compare com o app FastAPI do `run.py`.
+
 ## Requisitos
 
 ```python

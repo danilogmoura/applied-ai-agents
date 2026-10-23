@@ -15,6 +15,8 @@ Você vai construir um `TicketClassifier` que:
 
 Abra [`ticket_classifier_skeleton.py`](ticket_classifier_skeleton.py) como ponto de partida. Cada método tem comentários `TODO` indicando o que implementar.
 
+> ℹ️ **Nota de nomes:** O `run.py` deste módulo é apenas uma **demonstração** e usa funções soltas (`classify_ticket()`, `classify_batch()`, `classify_with_rules()`). Já o seu mini-projeto deve seguir a **classe `TicketClassifier`** do esqueleto — que é a referência oficial. Não se confunda com a diferença: o esqueleto é o que você entrega.
+
 ### Estrutura da classe
 
 ```

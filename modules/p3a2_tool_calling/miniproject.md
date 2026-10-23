@@ -4,7 +4,7 @@
 
 ## O que você vai construir
 
-Um executor `tool_caller.py` que:
+Um executor `tool_caller.py` (classe `ToolCallingAgent`) que:
 
 1. **Gera** schema de ferramentas a partir de descrições
 2. **Roteia** requests para a ferramenta correta
@@ -15,7 +15,7 @@ Um executor `tool_caller.py` que:
 ## Requisitos
 
 ```python
-class ToolCallingSystem:
+class ToolCallingAgent:
     def generate_tool_schema(self, name: str, description: str, 
                              params: dict) -> dict:
         """Gerar schema JSON de uma ferramenta."""
@@ -49,7 +49,7 @@ Defina uma lista de ferramentas pré-configuradas que o sistema pode usar:
 import json
 from datetime import datetime
 
-class ToolCallingSystem:
+class ToolCallingAgent:
     def __init__(self):
         # Registry de ferramentas disponíveis
         self.tools = {
@@ -246,7 +246,7 @@ python tool_caller.py --batch requests.json --output execution_log.json
 
 Marque cada item **só se conseguir fazer sem olhar o material**:
 
-- [ ] Classe `ToolCallingSystem` tem registry de pelo menos 3 ferramentas
+- [ ] Classe `ToolCallingAgent` tem registry de pelo menos 3 ferramentas
 - [ ] `route_request()` identifica corretamente a tool baseada em keywords
 - [ ] `classify_risk()` retorna low/medium/high/critical corretamente
 - [ ] `execute_with_hitl()` bloqueia operações high/critical sem aprovação

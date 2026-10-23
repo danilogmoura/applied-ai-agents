@@ -4,7 +4,7 @@
 
 ## O que você vai construir
 
-Um ops system `ops_system.py` que:
+Um ops system `ops_system.py` (classe `MetricsCollector`) que:
 
 1. **Executa** pipeline CI/CD com estágios sequenciais
 2. **Monitora** health check de serviços IA
@@ -14,8 +14,10 @@ Um ops system `ops_system.py` que:
 
 ## Requisitos
 
+> ℹ️ **Arquitetura de referência:** No `run.py`, as operações são compostas por `MetricsCollector` (recolhe métricas e percentis), `PromptTester` e `PromptManager` (testa e versiona prompts). Aqui você pode começar com uma classe única `MetricsCollector`.
+
 ```python
-class OpsSystem:
+class MetricsCollector:
     def run_cicd_pipeline(self, stages: list = None) -> dict:
         """Executar pipeline CI/CD: lint → test → build → deploy."""
         ...
@@ -59,7 +61,7 @@ import json
 import time
 import random
 
-class OpsSystem:
+class MetricsCollector:
     def __init__(self):
         self.metrics = {
             "latencies": [],       # latências em ms
@@ -449,7 +451,7 @@ if __name__ == "__main__":
     parser.add_argument("--output", help="Arquivo de output")
     args = parser.parse_args()
     
-    ops = OpsSystem()
+    ops = MetricsCollector()
     
     if args.health_check:
         health = ops.run_health_checks()

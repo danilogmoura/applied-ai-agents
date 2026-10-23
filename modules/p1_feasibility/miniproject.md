@@ -11,6 +11,8 @@ Um analisador `feasibility_analyzer.py` que avalia se um problema é candidato a
 3. **Avalia threshold** de accuracy mínimo aceitável
 4. **Gera memorando** executivo com recomendação
 
+> ℹ️ **Nota de nomes:** O `run.py` deste módulo é uma **demonstração** e usa funções soltas (`run_benchmarks_simulated()`, `generate_memorandum()`) com um dataclass `BenchmarkResult`. Já o seu mini-projeto deve seguir a **classe `FeasibilityAnalyzer`** descrita abaixo — que é a referência oficial do que você entrega.
+
 ## Requisitos
 
 ```python

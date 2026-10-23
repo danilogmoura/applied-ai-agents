@@ -4,7 +4,7 @@
 
 ## O que você vai construir
 
-Um avaliador `eval_framework.py` que:
+Um avaliador `eval_framework.py` (classe `Evaluator`) que:
 
 1. **Constrói** dataset golden (ground truth)
 2. **Calcula** métricas: exact match, fuzzy match (Levenshtein)
@@ -14,7 +14,7 @@ Um avaliador `eval_framework.py` que:
 ## Requisitos
 
 ```python
-class EvalFramework:
+class Evaluator:
     def build_golden_dataset(self, questions: list, answers: list) -> list:
         """Criar dataset golden (pergunta → resposta esperada)."""
         ...
@@ -47,7 +47,7 @@ Crie um conjunto de perguntas e respostas esperadas para avaliação:
 import json
 from typing import List, Tuple
 
-class EvalFramework:
+class Evaluator:
     def __init__(self):
         self.golden_dataset = []
     
@@ -238,7 +238,7 @@ if __name__ == "__main__":
                         help="Arquivos para A/B testing")
     args = parser.parse_args()
     
-    framework = EvalFramework()
+    framework = Evaluator()
     
     if args.golden and args.predictions:
         # Carrega datasets

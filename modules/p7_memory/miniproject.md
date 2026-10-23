@@ -4,7 +4,7 @@
 
 ## O que você vai construir
 
-Um memory manager `memory_system.py` que:
+Um memory manager `memory_system.py` (classe `AgentWithMemory`) que:
 
 1. **Gerencia** memória de curto prazo (context window)
 2. **Persiste** memória de longo prazo entre sessões
@@ -13,8 +13,10 @@ Um memory manager `memory_system.py` que:
 
 ## Requisitos
 
+> ℹ️ **Arquitetura de referência:** No `run.py`, a memória é dividida em `ShortTermMemory` (context window) e `LongTermMemory` (persistente), orquestradas pela classe principal `AgentWithMemory`. Aqui você pode começar com uma classe única `AgentWithMemory`; quando quiser, separe curta e longa memória em classes próprias, como na referência.
+
 ```python
-class MemorySystem:
+class AgentWithMemory:
     def add_to_short_term(self, role: str, content: str, max_messages: int = 10) -> list:
         """Adicionar mensagem à memória curta, remover excessos."""
         ...
@@ -48,7 +50,7 @@ from typing import Any, List, Dict, Optional
 import json
 import os
 
-class MemorySystem:
+class AgentWithMemory:
     def __init__(self):
         self.short_term = []  # Context window atual
         self.long_term = {}   # Memória persistente {session_id: {key: {value, last_accessed}}}
@@ -285,7 +287,7 @@ if __name__ == "__main__":
     parser.add_argument("--load", action="store_true", help="Carrega estado")
     args = parser.parse_args()
     
-    system = MemorySystem()
+    system = AgentWithMemory()
     
     # Carrega estado se solicitado
     if args.load:

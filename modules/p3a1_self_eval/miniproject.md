@@ -4,7 +4,7 @@
 
 ## O que você vai construir
 
-Um gerador `self_eval_generator.py` que:
+Um gerador `self_eval_generator.py` (classe `SelfEvaluatingAgent`) que:
 
 1. **Gera** resposta inicial para uma pergunta
 2. **Avalia** a resposta (clareza, precisão, completude)
@@ -14,7 +14,7 @@ Um gerador `self_eval_generator.py` que:
 ## Requisitos
 
 ```python
-class SelfEvalGenerator:
+class SelfEvaluatingAgent:
     def generate_response(self, question: str) -> dict:
         """Gerar resposta inicial."""
         ...
@@ -42,7 +42,7 @@ Como ainda não estamos chamando LLMs reais, simule respostas com templates:
 ```python
 import random
 
-class SelfEvalGenerator:
+class SelfEvaluatingAgent:
     def __init__(self):
         self.iteration_log = []
     
@@ -189,7 +189,7 @@ if __name__ == "__main__":
     parser.add_argument("--threshold", type=float, default=0.7)
     args = parser.parse_args()
     
-    generator = SelfEvalGenerator()
+    generator = SelfEvaluatingAgent()
     result = generator.run_iteration_loop(
         args.question,
         max_iterations=args.max_iters,

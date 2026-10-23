@@ -11,6 +11,8 @@ Um sistema `mini_rag.py` que:
 3. **Gera** resposta baseada no contexto recuperado
 4. **Avalia** qualidade da recuperação (MRR, hit rate)
 
+> ℹ️ **Arquitetura:** Este mini-projeto apresenta tudo numa classe única (`MiniRAG`) para simplificar o aprendizado. O `run.py` de referência usa uma arquitetura **modular** com três classes separadas — `SimpleEmbedder` (embeddings), `ChromaVectorStore` (índice/recuperação) e `RAGPipeline` (orquestração). Ambas as abordagens são válidas: comece com a classe única e, quando se sentir confortável, refatore para as três classes modulares (boa prática).
+
 ## Requisitos
 
 ```python

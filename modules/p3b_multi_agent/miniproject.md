@@ -4,7 +4,7 @@
 
 ## O que você vai construir
 
-Um orquestrador `multi_agent_system.py` que:
+Um orquestrador `multi_agent_system.py` (classes `Agent` + `SupervisorAgent`) que:
 
 1. **Roteia** requests para especialistas via supervisor
 2. **Fallback** quando especialista falha
@@ -14,8 +14,26 @@ Um orquestrador `multi_agent_system.py` que:
 ## Requisitos
 
 ```python
-class MultiAgentSystem:
-    def route_to_specialist(self, request: str, specialists: list) -> dict:
+class Agent:
+    def __init__(self, name: str, role: str, model: str = "gpt-4o-mini"):
+        """Agente especialista com identidade e domínio próprios."""
+        ...
+
+    def execute(self, task: str) -> str:
+        """Executa tarefa dentro do domínio do especialista (pode falhar)."""
+        ...
+
+    def get_status(self) -> dict:
+        """Retorna status: nome, papel, chamadas, tokens e custo."""
+        ...
+
+
+class SupervisorAgent:
+    def add_specialist(self, agent: Agent) -> None:
+        """Registra um especialista no time."""
+        ...
+
+    def route_to_specialist(self, request: str) -> dict:
         """Supervisor roteia request para melhor especialista."""
         ...
     
@@ -39,15 +57,15 @@ class MultiAgentSystem:
 
 ## 📖 Guia Passo a Passo
 
-### Passo 1 — Crie a classe base com especialistas pré-definidos
+### Passo 1 — Crie a classe `Agent` com especialistas pré-definidos
 
-Defina uma lista de agentes especialistas, cada um com domínio específico:
+Defina uma classe `Agent` (especialista) e registre instâncias dela no `SupervisorAgent`. Cada agente tem um domínio específico:
 
 ```python
 import random
 from datetime import datetime
 
-class MultiAgentSystem:
+class SupervisorAgent:
     def __init__(self):
         # Especialistas disponíveis
         self.specialists = {
@@ -235,7 +253,7 @@ if __name__ == "__main__":
     parser.add_argument("--hierarchy", action="store_true")
     args = parser.parse_args()
     
-    system = MultiAgentSystem()
+    system = SupervisorAgent()
     
     if args.hierarchy:
         hierarchy = {
@@ -272,7 +290,7 @@ python multi_agent_system.py --hierarchy org_chart.json --batch tasks.json
 
 Marque cada item **só se conseguir fazer sem olhar o material**:
 
-- [ ] `MultiAgentSystem` tem registry de pelo menos 4 especialistas
+- [ ] `SupervisorAgent` tem registry de pelo menos 4 especialistas (`Agent`)
 - [ ] `route_to_specialist()` escolhe especialista baseado em keyword matching
 - [ ] `handle_specialist_failure()` faz fallback para outro especialista
 - [ ] `share_context()` extrai e compartilha insights entre agentes

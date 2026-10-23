@@ -4,7 +4,7 @@
 
 ## O que você vai construir
 
-Um skill orchestrator `skill_system.py` que:
+Um skill orchestrator `skill_system.py` (classe `SkillRegistry`) que:
 
 1. **Registra** skills com schema e handlers
 2. **Compose** múltiplas skills em pipeline
@@ -13,8 +13,10 @@ Um skill orchestrator `skill_system.py` que:
 
 ## Requisitos
 
+> ℹ️ **Arquitetura de referência:** No `run.py`, o sistema de skills é composto por `SkillRegistry` (registra e descobre skills), `BaseSkill` (classe base das skills) e `Pipeline` (execução em sequência). Aqui você pode começar com uma classe única `SkillRegistry`.
+
 ```python
-class SkillSystem:
+class SkillRegistry:
     def register_skill(self, name: str, description: str, 
                        handler: Callable[[dict], dict]) -> None:
         """Registrar nova skill no registry."""
@@ -53,7 +55,7 @@ from typing import Callable, Dict, List, Optional, Any
 from datetime import datetime
 import json
 
-class SkillSystem:
+class SkillRegistry:
     def __init__(self):
         self.skills = {}          # name -> {description, handlers, versions}
         self.pipeline_log = []
@@ -243,9 +245,9 @@ class Pipeline:
 ### Passo 5 — Adicione skills pré-definidas
 
 ```python
-def create_sample_skills() -> 'SkillSystem':
+def create_sample_skills() -> 'SkillRegistry':
     """Cria sistema com skills de exemplo."""
-    system = SkillSystem()
+    system = SkillRegistry()
     
     # Skill: sumarizar texto
     def summarize_handler(data: dict) -> dict:

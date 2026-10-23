@@ -4,7 +4,7 @@
 
 ## O que você vai construir
 
-Um guardrail `safety_system.py` que:
+Um guardrail `safety_system.py` (classe `SafetyGuardrails`) que:
 
 1. **Sanitiza** inputs (SQL injection, XSS, prompt injection)
 2. **Valida** outputs (vazamento de dados, conteúdo inadequado)
@@ -13,8 +13,10 @@ Um guardrail `safety_system.py` que:
 
 ## Requisitos
 
+> ℹ️ **Arquitetura de referência:** No `run.py`, a segurança é composta por várias classes: `PromptInjectionDetector` (detecta injection/jailbreak), `ContentFilter`, `OutputValidator` e a classe principal `SafetyGuardrails` (orquestra tudo). Aqui você pode começar com uma classe única `SafetyGuardrails`; quando quiser, extraia os detectores para classes separadas, como na referência.
+
 ```python
-class SafetySystem:
+class SafetyGuardrails:
     def sanitize_input(self, text: str) -> dict:
         """Detectar SQL injection, XSS, prompt injection."""
         ...
@@ -47,7 +49,7 @@ Detecte SQL injection, XSS e prompt injection:
 import re
 from typing import List, Dict
 
-class SafetySystem:
+class SafetyGuardrails:
     def __init__(self):
         self.sql_patterns = [
             r"(?i)(\b(SELECT|INSERT|UPDATE|DELETE|DROP|UNION|ALTER)\b.*\b(FROM|INTO|TABLE|SET|WHERE)\b)",
@@ -349,7 +351,7 @@ if __name__ == "__main__":
     parser.add_argument("--output", help="Arquivo de output do relatório")
     args = parser.parse_args()
     
-    system = SafetySystem()
+    system = SafetyGuardrails()
     
     if args.text:
         # Sanitiza input

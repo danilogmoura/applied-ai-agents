@@ -4,7 +4,7 @@
 
 ## O que você vai construir
 
-Um cache manager `cache_system.py` que:
+Um cache manager `cache_system.py` (classe `ResponseCache`) que:
 
 1. **Tracka** hit/miss rates de queries
 2. **Implementa** TTL (time-to-live) para entries
@@ -13,8 +13,10 @@ Um cache manager `cache_system.py` que:
 
 ## Requisitos
 
+> ℹ️ **Arquitetura de referência:** No `run.py`, a otimização é composta por `ResponseCache` (cache com TTL e hit/miss), `ModelRouter` (escolhe o modelo) e `OptimizedAgent` (orquestra tudo). Aqui você pode começar com uma classe única `ResponseCache`.
+
 ```python
-class CacheSystem:
+class ResponseCache:
     def get(self, key: str) -> Optional[Any]:
         """Retornar valor se no cache, None se miss."""
         ...
@@ -57,7 +59,7 @@ import hashlib
 import json
 import random
 
-class CacheSystem:
+class ResponseCache:
     def __init__(self):
         self.store = {}           # key -> {value, expires_at, accessed_at}
         self.hits = 0
@@ -304,7 +306,7 @@ if __name__ == "__main__":
     parser.add_argument("--test-key-gen", action="store_true", help="Testa geração de chaves")
     args = parser.parse_args()
     
-    cache = CacheSystem()
+    cache = ResponseCache()
     
     if args.test_key_gen:
         results = cache.test_key_generation()

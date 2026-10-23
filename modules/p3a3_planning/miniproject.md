@@ -4,7 +4,7 @@
 
 ## O que você vai construir
 
-Um executor `planner.py` que:
+Um executor `planner.py` (classe `ResilientPlanner`) que:
 
 1. **Executa** plano multi-step com circuit breaker
 2. **Salva/restaura** checkpoints a cada step
@@ -13,8 +13,10 @@ Um executor `planner.py` que:
 
 ## Requisitos
 
+> ℹ️ **Arquitetura de referência:** No `run.py`, o planner é composto por duas classes: `CircuitBreaker` (gerencia os estados open/closed/half-open) e `ResilientPlanner` (orquestra steps, checkpoints e fallback). Aqui você pode começar com uma classe única `ResilientPlanner`; quando quiser, extraia o circuit breaker para a sua própria classe `CircuitBreaker`, como na referência.
+
 ```python
-class Planner:
+class ResilientPlanner:
     def execute_with_circuit_breaker(self, plan: list) -> dict:
         """Executar plano com circuit breaker (open/closed/half-open)."""
         ...
@@ -54,7 +56,7 @@ class CircuitState(Enum):
     OPEN = "open"          # Todas chamadas bloqueadas
     HALF_OPEN = "half_open" # 1 chamada de teste
 
-class Planner:
+class ResilientPlanner:
     def __init__(self, checkpoint_dir: str = "./checkpoints"):
         self.checkpoint_dir = checkpoint_dir
         self.circuits = {}  # step_name → CircuitState
