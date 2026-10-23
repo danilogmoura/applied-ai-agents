@@ -55,13 +55,14 @@ def route_to_specialist(task: str, specialists: list) -> str:
 
 def test_01_supervisor_routing():
     """
-    Testa roteamento do supervisor para especialistas.
+    Roteamento do supervisor para especialistas.
     
-    Regras:
-    - "bug", "erro", "crash" → "engineer"
-    - "preço", "cobrança", "fatura" → "billing"
-    - "como funciona", "tutorial" → "support"
-    - demais → "generalist"
+    Cenário: Chatbot de suporte técnico da TechCorp Brasil.
+    Volume: ~500 tickets/dia distribuídos assim:
+      - 40% dúvidas técnicas (→ engineer)
+      - 25% cobranças/faturas (→ billing)
+      - 20% tutoriais/configuração (→ support)
+      - 15% outros (→ generalist)
     """
     specialists = [
         {"name": "engineer", "keywords": ["bug", "erro", "crash", "falha"]},

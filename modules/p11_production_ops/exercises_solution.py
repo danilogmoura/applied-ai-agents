@@ -27,6 +27,13 @@ def test_01_cicd_pipeline():
     """
     Pipeline de CI/CD com estágios sequenciais.
     
+    Cenário: Pipeline TechCorp no GitHub Actions.
+    Golden dataset: 500 exemplos anotados para validação de modelo.
+    Thresholds mínimos:
+      - Accuracy >= 0.85
+      - F1-score >= 0.80
+      - Latência p95 < 500ms
+    
     Funcionamento:
     1. add_stage(name, handler) → registra nome e função do estágio
     2. execute(context) → itera sobre stages em ordem
@@ -127,6 +134,15 @@ def test_02_health_check():
     """
     Serviço de health check com múltiplas verificações.
     
+    Cenário: Monitoramento contínuo da API TechCorp.
+    Checks configurados:
+      - endpoint_status: latência de resposta (< 200ms)
+      - memory_usage: consumo de RAM (< 80%)
+      - disk_space: espaço em disco disponível (> 10GB)
+    
+    Status: healthy (tudo OK), degraded (algum warning),
+    unhealthy (algum critical).
+    
     Funcionamento:
     1. configure_check(name, fn) → registra verificação
     2. run_all() → executa todas as verificações
@@ -222,6 +238,15 @@ def test_03_monitoring_dashboard():
     """
     Colete métricas para dashboard de monitoramento.
     
+    Cenário: Dashboard Grafana da API TechCorp.
+    Métricas coletadas:
+      - latency_p50/p95/p99: percentis de latência (ms)
+      - error_rate: taxa de erro (fracção [0,1])
+      - tokens_per_second: throughput do modelo
+      - cost_per_hour: custo estimado por hora
+    
+    SLA: p95 < 200ms, error_rate < 0.01.
+    
     Funcionamento:
     1. record_request(latency, success, tokens) → armazena dados
     2. get_percentiles() → calcula p50/p95/p99 usando ordenação
@@ -315,6 +340,17 @@ def test_03_monitoring_dashboard():
 def test_04_rollback_decision():
     """
     Árvore de decisão para rollback automático.
+    
+    Cenário: Decisão automática de rollback na TechCorp.
+    Baseline (modelo atual v1.0):
+      - accuracy: 0.82
+      - error_rate: 0.02
+      - latency_p95: 300ms
+    
+    Modelo candidato v1.1:
+      - accuracy: 0.87 (+6% vs baseline)
+      - error_rate: 0.03
+      - latency_p95: 350ms
     
     Regras (prioridade):
     1. Error rate > 10% → rollback imediato (mais crítico)

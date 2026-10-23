@@ -25,7 +25,14 @@ console = Console()
 
 def test_01_cicd_pipeline():
     """
-    TODO: Implemente pipeline de CI/CD com estágios sequenciais.
+    Pipeline de CI/CD com estágios sequenciais.
+    
+    Cenário: Pipeline TechCorp no GitHub Actions.
+    Golden dataset: 500 exemplos anotados para validação de modelo.
+    Thresholds mínimos:
+      - Accuracy >= 0.85
+      - F1-score >= 0.80
+      - Latência p95 < 500ms
     
     Estágios: lint → test → build → deploy
     Se um estágio falha, pipeline para e marca falha.
@@ -94,9 +101,16 @@ def test_01_cicd_pipeline():
 
 def test_02_health_check():
     """
-    TODO: Implemente serviço de health check com múltiplas verificações.
+    Serviço de health check com múltiplas verificações.
     
-    Checks: endpoint_status, memory_usage, disk_space.
+    Cenário: Monitoramento contínuo da API TechCorp.
+    Checks configurados:
+      - endpoint_status: latência de resposta (< 200ms)
+      - memory_usage: consumo de RAM (< 80%)
+      - disk_space: espaço em disco disponível (> 10GB)
+    
+    Status: healthy (tudo OK), degraded (algum warning),
+    unhealthy (algum critical).
     """
     class HealthCheckService:
         def __init__(self):
@@ -145,9 +159,16 @@ def test_02_health_check():
 
 def test_03_monitoring_dashboard():
     """
-    TODO: Colete métricas para dashboard de monitoramento.
+    Colete métricas para dashboard de monitoramento.
     
-    Métricas: latency_p50/p95/p99, error_rate, tokens_per_second, cost_per_hour.
+    Cenário: Dashboard Grafana da API TechCorp.
+    Métricas coletadas:
+      - latency_p50/p95/p99: percentis de latência (ms)
+      - error_rate: taxa de erro (fracção [0,1])
+      - tokens_per_second: throughput do modelo
+      - cost_per_hour: custo estimado por hora
+    
+    SLA: p95 < 200ms, error_rate < 0.01.
     """
     class MetricsCollector:
         def __init__(self):
@@ -198,13 +219,17 @@ def test_03_monitoring_dashboard():
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def test_04_rollback_decision():
-    """
-    TODO: Implemente árvore de decisão para rollback automático.
+    r"""
+    Implemente árvore de decisão para rollback automático.
+    
+    Cenário: Decisão automática de rollback na TechCorp.
+    Baseline v1.0: acc=0.82, err=0.02, lat_p95=300ms
+    Modelo candidato v1.1: acc=0.87 (+6%), err=0.03, lat_p95=350ms
     
     Regras:
-    - Error rate > 10% → rollback imediato
-    - Latency p95 > 2x baseline → warning
-    - Accuracy drop > 5% vs baseline → rollback
+        Error rate > 10% -> rollback imediato
+        Latency p95 > 2x baseline -> warning
+        Accuracy drop > 5% vs baseline -> rollback
     """
     class RollbackDecider:
         def __init__(self, baseline: dict):

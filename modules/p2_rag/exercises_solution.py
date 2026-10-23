@@ -98,6 +98,13 @@ def chunk_document(text: str, chunk_size: int = 500, overlap: int = 50) -> list:
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def test_01_embedding_similarity():
+    """
+    Similaridade cosseno entre embeddings.
+    
+    Cenário: Chatbot de suporte da TechCorp Brasil.
+    Base de conhecimento: 10K documentos (políticas, SLAs, tutoriais).
+    Embeddings: vetor de dimensão reduzida p/ teste (3D).
+    """
     # Embeddings simulados (vetores de dimensão reduzida p/ teste)
     query = [0.8, 0.1, 0.3]  # "política de reembolso"
     doc_a = [0.7, 0.2, 0.4]  # "como pedir dinheiro de volta" → SIMILAR
@@ -119,7 +126,20 @@ def test_01_embedding_similarity():
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def test_02_document_chunking():
-    long_text = "A política de reembolso permite solicitações dentro de 30 dias após a compra. " * 20
+    """
+    Chunking de documentos.
+    
+    Cenário: Documentação técnica da TechCorp (~50KB por manual).
+    Regra: chunks de ~chunk_size chars com overlap de overlap chars.
+    Overlap evita perder informações nas bordas dos chunks.
+    Não cortar palavras no meio.
+    """
+    long_text = (
+        "A política de reembolso permite solicitações dentro de 30 dias após a compra. "
+        "Reembolso completo disponível nos primeiros 7 dias. "
+        "Solicitações entre 7 e 30 dias recebem 50% do valor. "
+        "Documentos necessários: nota fiscal, comprovante de pagamento. "
+    ) * 20
     
     chunks = chunk_document(long_text)
     
@@ -141,17 +161,33 @@ def test_02_document_chunking():
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def test_03_retrieval_quality():
+    """
+    Recuperação de docs relevantes.
+    
+    Cenário: Busca RAG na base de conhecimento da TechCorp.
+    Regra: MRR >= 0.5 e Hit@3 >= 0.7 são aceitáveis para produção.
+    
+    Dados reais:
+    - Base: 10K documentos categorizados
+    - Query: "Como faço para pedir reembolso?"
+    - Docs relevantes: IDs 1 e 3 (políticas de reembolso)
+    - Sistema retorna top-12 docs ordenados por similaridade
+    """
     documents = [
-        {"id": 1, "content": "Reembolsos em até 30 dias"},
-        {"id": 2, "content": "SLA de 99.9% uptime"},
-        {"id": 3, "content": "Política de reembolso completo em 7 dias"},
-        {"id": 4, "content": "Treinamento inclui configuração inicial"},
+        {"id": 1, "content": "Reembolsos em até 30 dias", "source": "policy_v2.pdf", "category": "financeiro"},
+        {"id": 2, "content": "SLA de 99.9% uptime", "source": "sla_contract.pdf", "category": "infraestrutura"},
+        {"id": 3, "content": "Política de reembolso completo em 7 dias", "source": "policy_v2.pdf", "category": "financeiro"},
+        {"id": 4, "content": "Treinamento inclui configuração inicial", "source": "training_manual.pdf", "category": "tutorial"},
+        {"id": 5, "content": "Horário de atendimento: 9h às 18h", "source": "contact_info.pdf", "category": "contato"},
+        {"id": 6, "content": "Garantia estendida: comprar separadamente", "source": "warranty_policy.pdf", "category": "financeiro"},
+        {"id": 7, "content": "Troca de produto: 7 dias sem justificativa", "source": "return_policy.pdf", "category": "financeiro"},
+        {"id": 8, "content": "Suporte técnico via chat e telefone", "source": "support_channels.pdf", "category": "contato"},
     ]
     
     query = "Como faço para pedir reembolso?"
     
-    # Simula ranking retornado pelo sistema
-    retrieved_ranks = [3, 1, 7, 12]  # IDs dos docs na ordem de relevância
+    # Simula ranking retornado pelo sistema (top-12 docs ordenados por similaridade)
+    retrieved_ranks = [3, 1, 7, 12, 5, 8, 2, 6, 4, 9, 10, 11]
     
     # Calcula MRR: encontra primeiro doc relevante e calcula 1/rank
     relevant_ids = {1, 3}  # Docs sobre reembolso
@@ -184,6 +220,21 @@ def test_03_retrieval_quality():
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def test_04_context_window():
+    """
+    Context window do LLM.
+    
+    Cenário: Chatbot TechCorp com gpt-4o-mini.
+    Context window: 128k tokens (gpt-4o), mas usamos 50% como margem segura.
+    
+    Componentes que ocupam espaço no contexto:
+    - system_prompt: instruções do sistema (~150 tokens)
+    - user_query: pergunta do usuário (~50 tokens)
+    - retrieved_chunks: chunks recuperados pelo RAG (~200 cada)
+    - expected_response: estimativa da resposta gerada (~300 tokens)
+    
+    Regra: usar no máximo 50% do contexto é recomendado para deixar
+    espaço para a resposta gerada.
+    """
     system_prompt_tokens = 150
     user_query_tokens = 50
     retrieved_chunks = [200, 180, 220]  # 3 chunks recuperados

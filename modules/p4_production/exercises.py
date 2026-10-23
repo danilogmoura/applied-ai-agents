@@ -118,6 +118,15 @@ def test_02_input_validation():
 def test_03_middleware_timing():
     """
     Testa middleware de monitoramento de timing.
+    
+    Cenário: API TechCorp com SLA de latência.
+    Requisitos:
+      - Latência p95 < 200ms
+      - Taxa de erro < 1%
+      - Rate limiting: 100 req/min por cliente
+    
+    O middleware deve registrar timing para cada request,
+    permitindo identificar gargalos no sistema.
     """
     import time
     
@@ -142,7 +151,16 @@ def test_03_middleware_timing():
 
 def test_04_docker_configuration():
     """
-    TODO: Valide configuração Docker básica.
+    Valida configuração Docker básica.
+    
+    Cenário: Deploy da API TechCorp no Kubernetes.
+    Requisitos mínimos:
+      - Imagem base: python:3.12-slim (menor superfície de ataque)
+      - Porta exposta: 8000 (FastAPI default)
+      - Variáveis obrigatórias: OPENAI_API_KEY
+      - Healthcheck configurado (monitoramento contínuo)
+    
+    Em produção, usaríamos docker-compose ou K8s manifests.
     """
     docker_config = {
         "image": "python:3.12-slim",
@@ -174,9 +192,15 @@ def test_04_docker_configuration():
 
 def test_05_response_format():
     """
-    TODO: Verifique que todas as respostas seguem o formato padrão.
+    Verifique que todas as respostas seguem o formato padrão.
     
-    Padrão: {"status": "success"|"error", "data": ..., "meta": {...}}
+    Cenário: API TechCorp com contrato de interface definido.
+    Padrão de resposta:
+      - Sucesso: {"status": "success", "data": {...}, "meta": {...}}
+      - Erro: {"status": "error", "error": "...", "meta": {...}}
+    
+    Meta inclui metadados comuns (timestamp, version).
+    Consistência facilita parsing pelo cliente frontend.
     """
     def format_response(success: bool, data=None, error=None) -> dict:
         """TODO: Formate resposta no padrão consistente."""

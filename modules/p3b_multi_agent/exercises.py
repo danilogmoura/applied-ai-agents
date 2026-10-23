@@ -42,6 +42,13 @@ def test_01_supervisor_routing():
     """
     Testa roteamento do supervisor para especialistas.
     
+    Cenário: Chatbot de suporte técnico da TechCorp Brasil.
+    Volume: ~500 tickets/dia distribuídos assim:
+      - 40% dúvidas técnicas (→ engineer)
+      - 25% cobranças/faturas (→ billing)
+      - 20% tutoriais/configuração (→ support)
+      - 15% outros (→ generalist)
+    
     Regras:
     - "bug", "erro", "crash" → "engineer"
     - "preço", "cobrança", "fatura" → "billing"
@@ -82,7 +89,11 @@ def test_01_supervisor_routing():
 
 def test_02_specialist_failure():
     """
-    TODO: Implemente redistribuição quando especialista falha.
+    Redistribuição quando especialista falha.
+    
+    Cenário: Engineer indisponível (servidor down).
+    Fallback: redistribuir para outro especialista disponível.
+    Prioridade: billing → support → generalist.
     """
     specialists = ["engineer", "billing", "support", "generalist"]
     
@@ -119,9 +130,12 @@ def test_02_specialist_failure():
 
 def test_03_agent_coordination():
     """
-    TODO: Verifique coordenação entre agentes.
+    Coordenação entre agentes.
     
-    Dois agentes trabalhando juntos devem compartilhar contexto.
+    Cenário: Pipeline de análise de mercado.
+    - researcher: coleta dados e insights
+    - writer: produz relatório baseado nos findings
+    Contexto compartilhado garante consistência entre etapas.
     """
     class Agent:
         def __init__(self, name: str):
@@ -160,7 +174,16 @@ def test_03_agent_coordination():
 
 def test_04_multi_agent_cost():
     """
-    TODO: Calcule custo total de múltiplos agentes.
+    Custo total de múltiplos agentes.
+    
+    Cenário: Pipeline TechCorp com 4 agentes.
+    Custos por execução (estimados em tokens):
+      - supervisor: roteamento (~$0.002)
+      - engineer: diagnóstico técnico (~$0.005)
+      - billing: processamento financeiro (~$0.001)
+      - support: resposta genérica (~$0.003)
+    
+    Objetivo: calcular métricas de custo para otimização.
     """
     agent_costs = {
         "supervisor": 0.002,
