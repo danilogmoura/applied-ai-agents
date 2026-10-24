@@ -15,6 +15,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from rich.console import Console
 from rich.panel import Panel
 
+from shared.hints import format_hint
+
 console = Console()
 
 
@@ -58,6 +60,9 @@ def test_01_embedding_similarity():
     Embeddings: vetor de dimensão reduzida p/ teste (3D).
     
     Frases semanticamente similares devem ter maior similaridade.
+
+    HINT: implemente cosine_similarity(a, b) = produto escalar dividido pelo produto
+    das normas; docs próximos à query devem retornar valor maior.
     """
     # Embeddings simulados (vetores de dimensão reduzida p/ teste)
     query = [0.8, 0.1, 0.3]  # "política de reembolso"
@@ -87,6 +92,9 @@ def test_02_document_chunking():
     Regra: chunks de ~chunk_size chars com overlap de overlap chars.
     Overlap evita perder informações nas bordas dos chunks.
     Não cortar palavras no meio.
+
+    HINT: chame chunk_document(long_text) e guarde o retorno em chunks; avance a janela
+    de chunk_size - overlap caracteres, quebrando nos espaços.
     """
     long_text = (
         "A política de reembolso permite solicitações dentro de 30 dias após a compra. "
@@ -94,6 +102,9 @@ def test_02_document_chunking():
         "Solicitações entre 7 e 30 dias recebem 50% do valor. "
         "Documentos necessários: nota fiscal, comprovante de pagamento. "
     ) * 20
+    
+    chunks = chunk_document(long_text)  # ← Implemente chunk_document acima
+    
     assert len(chunks) > 1, \
         f"Texto longo deveria gerar múltiplos chunks, got {len(chunks)}"
     assert isinstance(chunks, list), "Chunks deve ser uma lista"
@@ -126,6 +137,9 @@ def test_03_retrieval_quality():
     - Query: "Como faço para pedir reembolso?"
     - Docs relevantes: IDs 1 e 3 (políticas de reembolso)
     - Sistema retorna top-12 docs ordenados por similaridade
+
+    HINT: MRR = 1 / rank do primeiro doc relevante; Hit@3 verifica se algum relevante
+    aparece entre os 3 primeiros. Os IDs relevantes estão em relevant_ids.
     """
     documents = [
         {"id": 1, "content": "Reembolsos em até 30 dias", "source": "policy_v2.pdf", "category": "financeiro"},
@@ -188,6 +202,9 @@ def test_04_context_window():
     
     Regra: usar no máximo 50% do contexto é recomendado para deixar
     espaço para a resposta gerada.
+
+    HINT: some system_prompt_tokens + user_query_tokens + todos os retrieved_chunks +
+    expected_response_tokens; o total deve ficar abaixo de recommended_max.
     """
     system_prompt_tokens = 150
     user_query_tokens = 50
@@ -225,6 +242,9 @@ def test_05_rag_pipeline():
     - retrieval_accuracy: % queries com doc relevante ([0,1], >= 0.7)
     - avg_chunk_size: tamanho médio dos chunks em tokens (> 0)
     - cost_per_query: custo estimado por query em USD (> 0)
+
+    HINT: ingestion_rate = docs_ingested / ingestion_time_s; retrieval_accuracy vem de
+    avg_relevance_score; custo = input×price_input + output×price_output (por 1k).
     """
     docs_ingested = 4
     queries_processed = 3
@@ -277,9 +297,13 @@ def run_all():
             passed += 1
         except AssertionError as e:
             console.print(f"[red]✗ {test_fn.__name__}: {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
         except Exception as e:
             console.print(f"[red]✗ {test_fn.__name__}: Erro — {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
     console.print(f"\nResultado: [bold green]{passed}/{passed+failed}[/bold green] passaram")
     if not failed:
