@@ -189,9 +189,10 @@ def test_03_agent_coordination():
     # Compartilha contexto
     agent_a.share_context(agent_b)
     
-    assert "findings" in agent_b.context, \
-        "Agente B deveria receber contexto de A"
-    assert agent_b.context["findings"] == "IA generativa cresce 40% ao mês", \
+    # receive_context prefixa com o nome do remetente (evita colisao de namespace)
+    assert "researcher_findings" in agent_b.context, \
+        "Agente B deveria receber contexto de A (prefixado pelo remetente)"
+    assert agent_b.context["researcher_findings"] == "IA generativa cresce 40% ao mês", \
         "Contexto compartilhado deve ser preservado"
     
     console.print("[green]✓[/green] Coordenação: contexto compartilhado ✓")

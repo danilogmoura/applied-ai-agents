@@ -7,6 +7,7 @@ Código completo com explicações detalhadas.
 
 from __future__ import annotations
 
+import time
 import sys
 from pathlib import Path
 

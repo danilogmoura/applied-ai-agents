@@ -441,6 +441,29 @@ Com tool calling, seu agente pode executar ações. Mas o mundo real é caótico
 
 ---
 
+## ✅ Como verificar seus exercícios
+
+Você tem três formas de checar se entendeu e implementou corretamente:
+
+**1. Rodar os exercícios direto no terminal (feedback imediato):**
+```bash
+python modules/06-tool-calling/exercises.py
+```
+Cada função `test_*` imprime ✓ ou ✗ e mostra quantos passaram. Preencha os `TODO` até ver **"Todos os exercícios passaram!"**.
+
+**2. Validar automaticamente com pytest (modo aluno):**
+```bash
+CHECK_MY_EXERCISES=1 pytest -k "06-tool-calling"
+```
+Isso roda os `asserts` dos seus exercícios como testes reais — ideal para CI ou para ter certeza antes de entregar.
+
+**3. Comparar com o gabarito:**
+Abra [`exercises_solution.py`](exercises_solution.py) depois de tentar sozinho. Ele é a referência oficial e passa em todos os próprios testes.
+
+> 💡 **Dica:** tente primeiro sem olhar a solução. Se travar, releve a seção de conceito; só consulte o gabarito como último recurso — o aprendizado vem do esforço de implementar.
+
+---
+
 ## 🧭 Navegação
 
 | ← Anterior | Índice | Próximo → |

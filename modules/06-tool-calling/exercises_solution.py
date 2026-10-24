@@ -90,9 +90,10 @@ def test_02_tool_routing():
     A query com mais matches vence.
     """
     tools = [
-        {"name": "search_web", "keywords": ["pesquisar", "buscar", "encontrar"]},
-        {"name": "read_file", "keywords": ["ler", "arquivo", "documento"]},
-        {"name": "execute_command", "keywords": ["executar", "rodar", "comando"]},
+        # Radicais (stems), nao palavras inteiras: "Pesquise" casa com "pesquis".
+        {"name": "search_web", "keywords": ["pesquis", "buscar", "encontrar"]},
+        {"name": "read_file", "keywords": ["le", "arquivo", "documento"]},
+        {"name": "execute_command", "keywords": ["execut", "rodar", "comando"]},
     ]
     
     def route_query(query: str) -> str:

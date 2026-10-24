@@ -87,8 +87,11 @@ def test_01_circuit_breaker_states():
     assert cb.state == "OPEN", \
         f"Após {cb.failure_threshold} falhas, estado deve ser OPEN, got {cb.state}"
     
-    # Sucesso no HALF_OPEN deve voltar ao CLOSED
-    cb.record_success()
+    # OPEN -> HALF_OPEN (tentativa de recuperacao) -> CLOSED (sucesso no teste)
+    cb.record_success()   # OPEN -> HALF_OPEN
+    assert cb.state == "HALF_OPEN", \
+        f"Primeiro sucesso no OPEN deve levar a HALF_OPEN, got {cb.state}"
+    cb.record_success()   # HALF_OPEN -> CLOSED
     assert cb.state == "CLOSED", \
         f"Sucesso no HALF_OPEN deve voltar ao CLOSED, got {cb.state}"
     
@@ -143,7 +146,9 @@ def test_02_checkpoint_save_restore():
     planner = PlannerState()
     planner.steps_completed = 5
     planner.current_step = 6
-    planner.results = {"step_1": "ok", "step_2": "done"}
+    # Cada resultado e um dict (payload estruturado), coerente com a
+    # validacao abaixo que exige isinstance(value, dict).
+    planner.results = {"step_1": {"status": "ok"}, "step_2": {"status": "done"}}
     
     # Salva
     checkpoint = planner.save_checkpoint()

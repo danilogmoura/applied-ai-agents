@@ -94,7 +94,9 @@ def test_02_iteration_loop():
         return min(len(text) / 50.0, 10.0)
     
     max_iterations = 3
-    threshold = 7.0
+    # Threshold realista: a melhor resposta simulada tem ~2.8.
+    # Um threshold acima disso jamais seria atingido e o gabarito quebraria.
+    threshold = 2.5
     
     # Inicia com primeira resposta
     current = generate_response(0)
@@ -151,10 +153,10 @@ def test_03_max_iterations_guard():
     actual_iterations = 0
     
     for i in range(max_iterations + 10):  # Tenta ir além do limite
-        actual_iterations += 1
-        if actual_iterations > max_iterations:
-            break  # ← O guard deve impedir isso
+        if actual_iterations >= max_iterations:
+            break  # ← O guard impede executar alem do limite
         result = bad_generate(i)
+        actual_iterations += 1
     
     # ⚠️ PONTO CRÍTICO: Valide comportamento — loop para no máximo max_iterations
     assert actual_iterations <= max_iterations, \

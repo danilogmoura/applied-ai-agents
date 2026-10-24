@@ -181,6 +181,8 @@ def test_02_health_check():
             for name, check_fn in self.checks:
                 try:
                     result = check_fn()
+                    # Injeta o nome para o consumidor identificar cada verificacao
+                    result = {"name": name, **result}
                     checks_result.append(result)
                     if result.get("status") == "critical":
                         has_critical = True

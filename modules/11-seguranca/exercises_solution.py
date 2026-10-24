@@ -68,25 +68,26 @@ def validate_output(text: str) -> list:
     - Não incluir dados sensíveis (CPF, cartão)
     """
     import re
+    # Cada violacao e um dict com tipo + severidade (consumidor pode filtrar por HIGH/CRITICAL)
     violations = []
     
     # ⚠️ PONTO CRÍTICO: Chaves OpenAI começam com sk-
     # Seguido de pelo menos 10 chars alfanuméricos
     if re.search(r"sk-[a-zA-Z0-9]{10,}", text):
-        violations.append("api_key_leak")
+        violations.append({"type": "api_key_leak", "severity": "CRITICAL"})
     
     # ⚠️ PONTO CRÍTICO: System prompt nunca deve vazar
     # Verifica menções diretas ao system prompt
     if re.search(r"system prompt|system prompt diz|system prompt is", text, re.IGNORECASE):
-        violations.append("system_prompt_leak")
+        violations.append({"type": "system_prompt_leak", "severity": "HIGH"})
     
     # ⚠️ PONTO CRÍTICO: CPF formatado (XXX.XXX.XXX-XX)
     if re.search(r"\d{3}\.\d{3}\.\d{3}-\d{2}", text):
-        violations.append("pii_cpf")
+        violations.append({"type": "pii_cpf", "severity": "CRITICAL"})
     
     # ⚠️ PONTO CRÍTICO: Número de cartão de crédito (4 grupos de 4 dígitos)
     if re.search(r"\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}", text):
-        violations.append("credit_card")
+        violations.append({"type": "credit_card", "severity": "CRITICAL"})
     
     return violations
 
@@ -304,7 +305,8 @@ def test_05_jailbreak_detection():
         import re
         
         jailbreak_patterns = [
-            r"ignore\s+(all|every|previous|the\s+system)\s+(instructions|prompts?|rules)",
+            # Permite multiplos qualificadores: "Ignore all previous instructions".
+            r"ignore\s+(all|every|previous|the\s+system)(?:\s+(all|every|previous))*\s+(instructions|prompts?|rules)",
             r"developer\s+mode",
             r"\bDAN\b.*\b(do\s+anything\s+now|do\s+anything)",
             r"act\s+as\s+(an?\s+hacker|an?\s+attacker|an?\s+evil)",
