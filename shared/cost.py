@@ -75,7 +75,7 @@ def count_tokens(text: str | list[dict], model: str = "gpt-4o-mini") -> int:
 def estimate_cost(
     input_tokens: int,
     output_tokens: int,
-    cached_tokens: int = 0,
+    cached_tokens: "int | str" = 0,
     model: str = "gpt-4o-mini",
 ) -> float:
     """
@@ -84,12 +84,22 @@ def estimate_cost(
     Args:
         input_tokens: Tokens na entrada (prompt).
         output_tokens: Tokens na saída (resposta).
-        cached_tokens: Tokens servidos do cache de pré-visualização.
+        cached_tokens: Tokens servidos do cache de pré-visualizacao. Por
+            conveniencia, se for passado um STR aqui (erro comum nos modulos,
+            que chamam estimate_cost(i, o, model)), ele e tratado como 'model'
+            e cached_tokens volta a 0.
         model: Modelo utilizado.
     
     Returns:
-        Custo estimado em dólares americanos.
+        Custo estimado em dolares americanos.
     """
+    # Tolerancia ao padrao estimate_cost(input, output, model): muitos run.py
+    # passam o nome do modelo como 3o argumento posicional. Sem isso, a string
+    # cairia em cached_tokens e estouraria em (int - str) para modelos fora da
+    # tabela de precos (ex.: Qwen). Normaliza antes de calcular.
+    if isinstance(cached_tokens, str):
+        model, cached_tokens = cached_tokens, 0
+    
     prices = TOKEN_PRICES.get(model)
     if not prices:
         # Estimativa genérica se modelo não estiver na tabela

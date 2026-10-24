@@ -305,10 +305,11 @@ class ToolCallingAgent:
         llm_response = self._call_llm(messages, tools=self.get_tools_schema())
         
         # Verifica se o LLM quer usar ferramenta
-        if llm_response.message.tool_calls:
+        assistant_message = llm_response["message"]
+        if assistant_message.tool_calls:
             tool_results = []
             
-            for tool_call in llm_response.message.tool_calls:
+            for tool_call in assistant_message.tool_calls:
                 func = tool_call.function
                 tool_name = func.name
                 
@@ -331,23 +332,37 @@ class ToolCallingAgent:
                 console.print(f"  [green]✓ Resultado:[/] {result[:200]}")
             
             # Segunda chamada: gera resposta com resultados das ferramentas
-            messages.append(llm_response.message)
+            assistant_dump = assistant_message.model_dump(exclude_unset=True)
+            messages.append(assistant_dump)
             
+            tool_dumps = []
             for tr in tool_results:
-                messages.append({
+                tool_msg = {
                     "role": "tool",
                     "tool_call_id": tr["tool_call_id"],
                     "content": tr["result"],
-                })
+                }
+                messages.append(tool_msg)
+                # Persiste no historico junto com a mensagem do assistente que
+                # pediu a ferramenta. Sem isso, a proxima query enviaria um
+                # assistant.tool_calls "orfao" (sem o role=tool correspondente),
+                # o que a API recusa e devolve resposta vazia.
+                self.conversation_history.append(tool_msg)
             
             final_response = self._call_llm(messages)
-            answer = final_response.message.content or "Não consegui processar."
+            answer = final_response["message"].content or "Não consegui processar."
         else:
             # Responde sem usar ferramentas
-            answer = llm_response.message.content or "Não tenho resposta para isso."
+            answer = assistant_message.content or "Não tenho resposta para isso."
         
-        # Atualiza histórico
-        self.conversation_history.append(llm_response.message.model_dump() if hasattr(llm_response.message, 'model_dump') else {"role": "assistant", "content": answer})
+        # Atualiza histórico (apenas quando NAO houve ferramenta; no caminho de
+        # ferramenta já gravamos assistant + tool acima).
+        if not assistant_message.tool_calls:
+            self.conversation_history.append(
+                assistant_message.model_dump()
+                if hasattr(assistant_message, 'model_dump')
+                else {"role": "assistant", "content": answer}
+            )
         
         # Exibe resposta final
         console.print(f"  [bold green]💬 Resposta:[/]\n{answer}\n")

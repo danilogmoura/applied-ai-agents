@@ -103,12 +103,12 @@ class SimpleEmbedder:
         stopwords = {"a", "e", "o", "de", "do", "da", "em", "um", "uma", "para", 
                      "com", "que", "ou", "se", "na", "no", "as", "os", "é", "por"}
         
-        self.vocab = {
-            word: idx for idx, (word, freq) in enumerate(
-                sorted((w for w in word_freq if w not in stopwords and len(w) > 2), 
-                       key=lambda x: -x[1])
-            )[:self.dimension]
-        }
+        ranked = sorted(
+            (item for item in word_freq.items()
+             if item[0] not in stopwords and len(item[0]) > 2),
+            key=lambda x: -x[1],
+        )[:self.dimension]
+        self.vocab = {word: idx for idx, (word, freq) in enumerate(ranked)}
     
     def fit_transform(self, documents: list[str]) -> list[list[float]]:
         """Gera embeddings para lista de documentos."""
@@ -189,8 +189,8 @@ class ChromaVectorStore:
         if self.collection:
             kwargs: dict = {"n_results": top_k}
             if query_embedding:
-                kwargs["where_embedding"] = query_embedding
-            if query_text:
+                kwargs["query_embeddings"] = [query_embedding]
+            elif query_text:
                 kwargs["query_texts"] = [query_text]
             if where:
                 kwargs["where"] = where

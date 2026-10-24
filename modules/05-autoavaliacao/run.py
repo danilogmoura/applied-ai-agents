@@ -75,6 +75,10 @@ class SelfEvaluatingAgent:
         self.max_iterations = max_iterations
         self.total_input_tokens = 0
         self.total_output_tokens = 0
+        # Guardado entre iteracoes para o prompt de refinamento. Inicializado
+        # vazio para a iteracao 2 nao quebrar caso a autoavaliacao da iteracao 1
+        # falhe (ex.: thinking ON estourando max_tokens do structured output).
+        self._last_issues: list[str] = []
     
     def _generate(self, prompt: str) -> str:
         """Chamada real ao LLM."""
@@ -171,7 +175,10 @@ FORMATO OBRIGATÓRIO (JSON apenas):
                     extra_body=get_thinking(self.model),
                     messages=[{"role": "user", "content": eval_prompt}],
                     response_format=SelfEvaluation,
-                    max_tokens=200,
+                    # Folga p/ modelos hibridos: com thinking ON os tokens de
+                    # raciocinio sao cobrados ANTES do JSON; um teto baixo (200)
+                    # truncava a saida e o parse falhava.
+                    max_tokens=1500,
                     temperature=0,
                 )
                 
@@ -277,7 +284,8 @@ def main():
         
         result = agent.generate(case["question"], case.get("context"))
         
-        console.print("\n" + Panel(
+        console.print()
+        console.print(Panel(
             result.answer,
             title=f"✅ Resposta Final ({result.iterations} iteração(ões))",
             border_style="green",
