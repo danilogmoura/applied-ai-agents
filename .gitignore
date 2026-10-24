@@ -77,6 +77,9 @@ setup_corpus_index.sh
 
 # Testes da suíte compartilhada (validação interna do autor)
 tests/
+# Exceção: harness pedagógico que o ALUNO usa para verificar os próprios exercícios.
+# (Roda em qualquer módulo: CHECK_MY_EXERCISES=1 pytest -k <modulo>)
+!tests/test_course_solutions.py
 
 # Guia avançado de produção (subsumido por SETUP_COMPLETE.md + Módulo 09)
 SETUP-PRODUCAO.md
@@ -98,6 +101,10 @@ Thumbs.db
 
 # Evaluations (local, não comitado)
 evaluations/
+
+# Saídas de execução dos módulos (geradas ao rodar run.py / exercises; não são material do aluno)
+modules/*/memorando.md
+modules/*/evaluation_report.json
 
 # Copilot instructions (local, não comitado)
 .github/copilot-instructions.md
