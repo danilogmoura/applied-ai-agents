@@ -138,14 +138,18 @@ def validate_secrets(required_keys: list[str]) -> bool:
 # variavel de chave e base URL, sem tocar nos run.py. Ex.:
 #     LLM_PROVIDER=qwen
 #     QWEN_PLAN_API_KEY=sk-sp-...
-#     QWEN_BASE_URL=https://.../compatible-mode/v1
-#     MODEL=qwen-plus
+#     MODEL=qwen3.8-flash        # thinking ON (default do modelo)
+#     MODEL=qwen3.8-flash-fast   # thinking OFF
 # Para OpenAI (default): basta OPENAI_API_KEY.
+#
+# enable_thinking: na API compativel da Qwen NAO e parametro padrao da OpenAI;
+# via SDK Python vai em extra_body={"enable_thinking": bool}. O nome do modelo
+# com sufixo "-fast" desliga o thinking (espelha o YAML litellm do plano).
 PROVIDERS: dict[str, dict[str, str]] = {
     "openai": {"key_var": "OPENAI_API_KEY", "base_url": ""},
     "qwen": {
         "key_var": "QWEN_PLAN_API_KEY",
-        "base_url": "https://maas.qwencloudapi.com/compatible-mode/v1",
+        "base_url": "https://token-plan.maas.qwencloudapi.com/compatible-mode/v1",
     },
 }
 
@@ -153,6 +157,38 @@ PROVIDERS: dict[str, dict[str, str]] = {
 def get_provider() -> str:
     """Nome do provider ativo (LLM_PROVIDER), default 'openai'."""
     return os.getenv("LLM_PROVIDER", "openai").strip().lower()
+
+
+def get_thinking(model: Optional[str] = None) -> Optional[dict]:
+    """
+    extra_body de thinking para client.chat.completions.create(), ou None.
+
+    Como ligar/desligar (na ordem de prioridade):
+      1. ENABLE_THINKING=true|false no .env  -> forcado, vale para qualquer modelo.
+      2. sufixo '-fast' no nome do modelo     -> thinking OFF (espelha o YAML litellm).
+      3. caso contrario                       -> thinking ON (default dos modelos hibridos).
+
+    Provider Qwen: devolve {'enable_thinking': bool} (parametro nao-padrao da OpenAI,
+    so aceito via extra_body). Provider OpenAI reasoning (gpt-5*/o*): devolve
+    {'reasoning_effort': 'low'|'minimal'}. Outros providers/modelos: None.
+    """
+    provider = get_provider()
+    if model is None:
+        model = os.getenv("MODEL") or os.getenv("DEFAULT_MODEL") or ""
+
+    override = os.getenv("ENABLE_THINKING")
+    if override is not None:
+        thinking_on = override.strip().lower() in ("1", "true", "yes", "on")
+    else:
+        thinking_on = not model.endswith("-fast")
+
+    if provider == "qwen":
+        return {"enable_thinking": thinking_on}
+    if provider == "openai" and (
+        model.startswith("gpt-5") or model.startswith("o1") or model.startswith("o3")
+    ):
+        return {"reasoning_effort": "low" if thinking_on else "minimal"}
+    return None
 
 
 def get_llm_config() -> tuple[str, Optional[str], str]:
@@ -166,8 +202,8 @@ def get_llm_config() -> tuple[str, Optional[str], str]:
       - MODEL > DEFAULT_MODEL > nome padrao do provider.
 
     Returns:
-        (api_key, base_url, model). base_url e None quando usar o endpoint
-        padrao da OpenAI (SDK ja assume api.openai.com).
+        (api_key, base_url, model). base_url e None quando usar o endpoint padrao
+        da OpenAI. Para o extra_body de thinking use get_thinking(model).
 
     Raises:
         EnvironmentError: se a chave obrigatoria do provider nao estiver definida.
