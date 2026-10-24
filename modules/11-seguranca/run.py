@@ -162,11 +162,11 @@ class ContentFilter:
     """
     
     INAPPROPRIATE_PATTERNS = [
-        r"(?i)(hate\s+speech|discurso\s+de\s+ódio)",
-        r"(?i)(violent\s+content|conteúdo\s?violento)",
-        r"(?i)(illegal\s+activities|atividades\s?ilegais)",
-        r"(?i)(self\s+harm|autolesão|auto\-lesão)",
-        r"(?i)(explicit\s+content|conteúdo\s?explícito)",
+        (r"(?i)(hate\s+speech|discurso\s+de\s+ódio)", "discurso de ódio"),
+        (r"(?i)(violent\s+content|conteúdo\s?violento)", "conteúdo violento"),
+        (r"(?i)(illegal\s+activities|atividades\s?ilegais)", "atividades ilegais"),
+        (r"(?i)(self\s+harm|autolesão|auto\-lesão)", "autolesão"),
+        (r"(?i)(explicit\s+content|conteúdo\s?explícito)", "conteúdo explícito"),
     ]
     
     SENSITIVE_DATA_PATTERNS = [
