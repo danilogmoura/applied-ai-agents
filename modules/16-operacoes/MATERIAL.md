@@ -453,4 +453,4 @@ Abra [`exercises_solution.py`](exercises_solution.py) depois de tentar sozinho. 
 
 | ← Anterior | Índice | Próximo → |
 | --- | --- | --- |
-| [← Módulo 15 — Design e Composição de Skills](../15-skills/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | — |
+| [← Módulo 15 — Design e Composição de Skills](../15-skills/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [🎓 Projeto Final Integrador →](../../FINAL_PROJECT.md) |
