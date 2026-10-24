@@ -23,6 +23,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from rich.console import Console
 from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
+from rich.table import Table
 
 from shared.logging_config import setup_logging
 from shared.cost import count_tokens, estimate_cost, format_cost
@@ -406,7 +407,7 @@ def main():
     )
     
     # Exibe status dos circuit breakers
-    table = __import__("rich.table", fromlist=["Table"]).Table(title="Status dos Circuit Breakers")
+    table = Table(title="Status dos Circuit Breakers")
     table.add_column("Nome")
     table.add_column("Estado")
     table.add_column("Falhas")

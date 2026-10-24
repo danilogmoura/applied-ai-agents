@@ -11,6 +11,7 @@ Endpoints:
 from __future__ import annotations
 
 import logging
+import os
 import time
 import uuid
 from contextlib import asynccontextmanager
@@ -140,7 +141,7 @@ async def shutdown_event():
 if __name__ == "__main__":
     import uvicorn
     
-    port = int(__import__("os").environ.get("API_PORT", "8000"))
+    port = int(os.environ.get("API_PORT", "8000"))
     
     uvicorn.run(
         "app.main:app",
