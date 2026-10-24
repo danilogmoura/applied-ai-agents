@@ -13,8 +13,8 @@
 
 ## Nota global do curso
 
-**Antes das correções: 3,9 / 5 · Depois: ~4,4 / 5 — de "sólido com lacunas de pré-requisito na
-virada para Produção" para "produção-ready didaticamente".**
+**Antes das correções: 3,9 / 5 · Após a 1ª rodada: ~4,4 / 5 · Após a 2ª rodada (T2 + T7):
+~4,6 / 5 — curso agora coeso em progressão, clareza e anti-dependência de fornecedor.**
 
 O curso já era notavelmente bem construído para o "duplo iniciantismo" nos arcos 1–3
 (Fundamentos, Contexto, Autonomia). O risco estava concentrado no **Arco 4 (Produção/Operações,
@@ -24,12 +24,12 @@ fecharam exatamente essa barreira operacional e as inconsistências de superfíc
 | Dimensão | Antes | Depois | O que mudou |
 | --- | :---: | :---: | --- |
 | T1 Pré-requisitos ocultos / dupla iniciação | 3,5 | **4,0–4,5** | `SETUP-PRODUCAO.md` criado + pré-requisito operacional declarado no Módulo 09. |
-| T2 Progressão e carga cognitiva | 4 | **4** | Inalterado — micro-checkpoints em módulos longos ainda pendentes. |
+| T2 Progressão e carga cognitiva | 4 | **4,5** | 13 micro-checkpoints ⏸️ "rode agora" inseridos nos 6 módulos longos (01/02/04/08/09/15). |
 | T3 Teoria vs prática / scaffolding | 4,5 | **4,5+** | Ressalva (testes só até 08) **não se confirmou**: cobertura 16/16. |
 | T4 Alinhamento com a promessa | 3,5 | **4,5** | README 0× "capítulo/livro"; FINAL_PROJECT 0× P-codes + tabela de correspondência. |
 | T5 Clareza, jargão e erros | 4 | **4,5** | Glossário agora em **16/16** módulos (antes só 01–06). |
 | T6 Lacunas críticas | 3,5 | **4,0–4,5** | Onboarding terminal/Docker/git publicado e linkado no 09. |
-| T7 Atualidade e dependência | 4,5 | **4,5** | Inalterado — callout "modelo é exemplo" ainda opcional. |
+| T7 Atualidade e dependência | 4,5 | **5** | Callout "modelo é exemplo" nos módulos densos + `get_model()` centraliza troca; bug de assinatura corrigido. |
 
 ---
 
@@ -70,7 +70,7 @@ fecharam exatamente essa barreira operacional e as inconsistências de superfíc
 
 ## Teste 2 — Progressão lógica e carga cognitiva
 
-**Nota: 4 / 5**
+**Nota original: 4 / 5 → reavaliada: 4,5 / 5** *(resolvido na 2ª rodada — commit `452c83a`)*
 
 **Evidência (pontos fortes):**
 
@@ -196,7 +196,7 @@ fecharam exatamente essa barreira operacional e as inconsistências de superfíc
 
 ## Teste 7 — Atualidade, ferramental e dependência
 
-**Nota: 4,5 / 5**
+**Nota original: 4,5 / 5 → reavaliada: 5 / 5** *(resolvido na 2ª rodada — commits `de9b730` + `2f34b01`)*
 
 **Evidência (pontos fortes):**
 
@@ -236,6 +236,30 @@ As 3 prioridades urgentes foram aplicadas e verificadas no disco:
 **Pendências de baixa prioridade (não bloqueiam):** inserir micro-checkpoints "⏸️ rode agora" nos
 módulos longos (T2); callout recorrente "modelo é exemplo, não requisito" (T7); padronizar o emoji do
 título dos glossários (novos usam `## Glossário`, alguns antigos `## 📖 Glossário`).
+
+---
+
+## Registro pós-correção — 2ª rodada (commits `cd7253c`, `452c83a`, `de9b730`, `2f34b01`)
+
+As três pendências de baixa prioridade da 1ª rodada foram fechadas:
+
+1. **Glossários padronizados (era T5).** Os 16/16 módulos usam agora o título único
+   `## 📖 Glossário` (`cd7253c`). O módulo 01 manteve a numeração do Sumário
+   (`## 6. 📖 Glossário`) e teve a âncora ajustada.
+2. **Micro-checkpoints T2 (`452c83a`).** 13 blocos ⏸️ "Rode agora" distribuídos nos 6 módulos
+   ≥450 linhas (02×3, 01/04/08/09/15×2), cada um apontando para o comando real do módulo e um
+   output verificado no `run.py`. Diff 100% aditivo (96 inserções, 0 remoções).
+3. **Anti-dependência de modelo T7 (`de9b730` + `2f34b01`).** Callout "💡 Modelo é exemplo,
+   não requisito" nos módulos densos (01/08/10/14). Além disso, foi descoberto e corrigido um
+   **bug real**: os run.py de 04/05/06/08 chamavam `get_required_secret("DEFAULT_MODEL",
+   "gpt-4o-mini")` com 2 argumentos contra uma assinatura de 1 → `TypeError` em runtime. Agora há
+   `shared.security.get_model()` (ordem `MODEL` > `DEFAULT_MODEL` > default), e o módulo 01 passou a
+   ler o modelo do ambiente. Trocar provedor = editar `.env`, sem tocar em código.
+
+**Validação:** `py_compile` OK em todos os run.py alterados; `get_model()` testado (default e override);
+suíte compartilhada com 9 passed e 2 falhas **pré-existentes** (`format_cost_small`, `sanitize_for_log`,
+confirmadas por stash no HEAD — alheias a estas mudanças, ficam como dívida técnica separada). Zero
+corrupção (U+FFFD = 0) após todas as edições UTF-8.
 
 ---
 
