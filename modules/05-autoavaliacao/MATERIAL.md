@@ -329,7 +329,7 @@ Execute `python modules/05-autoavaliacao/run.py` e observe:
 
 ---
 
-## Glossário
+## 📖 Glossário
 
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |

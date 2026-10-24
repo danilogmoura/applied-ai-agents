@@ -392,7 +392,7 @@ Erros comuns que iniciantes encontram neste módulo:
 
 ---
 
-## Glossário
+## 📖 Glossário
 
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |

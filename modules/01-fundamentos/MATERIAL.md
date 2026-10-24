@@ -21,7 +21,7 @@ Se você já tem experiência com programação, vai entender os exemplos mais r
 3. [Tokenização: Como texto vira números](#tokenização-como-texto-vire-números)
 4. [Prompt Engineering: A arte de falar com LLMs](#prompt-engineering-a-arte-de-falar-com-llms)
 5. [Por que LLMs Alucinam?](#por-que-llms-alucinam)
-6. [Glossário de Termos Essenciais](#glossário-de-termos-essenciais)
+6. [Glossário](#glossário)
 
 ### 🔬 Avançado (opcional na primeira leitura)
 
@@ -367,7 +367,7 @@ flowchart TD
 
 ---
 
-## 6. Glossário de Termos Essenciais
+## 6. 📖 Glossário
 
 Termos que aparecerão repetidamente ao longo do curso:
 

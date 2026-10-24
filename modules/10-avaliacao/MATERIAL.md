@@ -300,7 +300,7 @@ Execute `python modules/10-avaliacao/run.py` e observe:
 2. Se o LLM-as-a-judge também pode errar, como garantir que ele é justo?
 3. Qual tamanho mínimo de dataset para resultados estatisticamente significativos?
 
-## Glossário
+## 📖 Glossário
 
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |

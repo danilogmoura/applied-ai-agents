@@ -410,7 +410,7 @@ Execute `python modules/15-skills/run.py` e observe:
 
 ---
 
-## Glossário
+## 📖 Glossário
 
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |

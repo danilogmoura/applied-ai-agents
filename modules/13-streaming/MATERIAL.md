@@ -312,7 +312,7 @@ Execute `python modules/13-streaming/run.py` e observe:
 
 ---
 
-## Glossário
+## 📖 Glossário
 
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |

@@ -341,7 +341,7 @@ Execute `python modules/16-operacoes/run.py` e observe:
 
 ---
 
-## Glossário
+## 📖 Glossário
 
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |

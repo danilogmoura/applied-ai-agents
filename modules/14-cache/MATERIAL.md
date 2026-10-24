@@ -340,7 +340,7 @@ Execute `python modules/14-cache/run.py` e observe:
 
 ---
 
-## Glossário
+## 📖 Glossário
 
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |

@@ -446,7 +446,7 @@ temperature = 0.7 (criativo):
 
 ---
 
-## 📖 Glossário Rápido
+## 📖 Glossário
 
 | Termo | Definição | Analogia |
 |-------|-----------|----------|

@@ -377,7 +377,7 @@ Execute `python modules/06-tool-calling/run.py` e observe:
 
 ---
 
-## Glossário
+## 📖 Glossário
 
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |

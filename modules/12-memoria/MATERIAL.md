@@ -328,7 +328,7 @@ Execute `python modules/12-memoria/run.py` e observe:
 2. Se você tivesse 1000 interações, quantas memórias de longo prazo seriam razoáveis?
 3. Como evitar que memórias incorretas ou enviesadas persistam?
 
-## Glossário
+## 📖 Glossário
 
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |

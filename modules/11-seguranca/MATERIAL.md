@@ -237,7 +237,7 @@ Execute `python modules/11-seguranca/run.py` e observe:
 2. Que técnicas adversariais existem além das listadas aqui?
 3. Como balancear segurança vs usabilidade (muitos guardrails = UX ruim)?
 
-## Glossário
+## 📖 Glossário
 
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |
