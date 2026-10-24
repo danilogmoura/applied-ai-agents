@@ -1,6 +1,6 @@
 # 📖 AI Agents Course — Formação Prática em Agentes de IA com Python
 
-Um curso técnico construído sobre **Aprendizagem Baseada em Problemas (PBL)**: cada módulo começa com um problema real e apresenta a teoria apenas quando ela é necessária para destravar o código. Leia como um livro — do capítulo 1 ao 16 — ou salte direto ao tema que você precisa.
+Um curso técnico construído sobre **Aprendizagem Baseada em Problemas (PBL)**: cada módulo começa com um problema real e apresenta a teoria apenas quando ela é necessária para destravar o código. Siga a ordem dos módulos (01 → 16) ou salte direto ao tema que você precisa.
 
 ---
 
@@ -8,20 +8,51 @@ Um curso técnico construído sobre **Aprendizagem Baseada em Problemas (PBL)**:
 
 **Para quem é.** Programadores iniciantes que querem entender — e construir — agentes de IA com Python, sem precisar de um doutorado em machine learning. Se você sabe usar um computador e escrever algumas linhas de código, este curso foi feito para você.
 
-**Como está organizado.** Os 16 capítulos seguem uma progressão deliberada em quatro arcos:
+**Como está organizado.** Os 16 módulos seguem uma progressão deliberada em quatro arcos:
 
 - **Fundamentos (Módulos 01–03):** o que é IA/LLM, tokens, custo e como decidir se um problema merece IA.
 - **Contexto e Qualidade (Módulos 04–05):** dar conhecimento ao modelo (RAG) e fazê-lo avaliar o próprio trabalho.
 - **Autonomia e Resiliência (Módulos 06–08):** agentes que usam ferramentas, planejam tarefas multi-etapas e sobrevivem a falhas — inclusive trabalhando em equipe.
 - **Produção e Operações (Módulos 09–16):** tirar do script local e levar para o mundo real: API, avaliação, segurança, memória, streaming, cache, skills reutilizáveis e operações contínuas.
 
-**Como usar cada capítulo.** Em cada módulo você tem três artefatos que conversam entre si:
+**Ordem e pré-requisitos.** Cada módulo abre com uma seção *⚠️ Pré-requisito* dizendo
+exatamente o que você precisa dominar antes. A cadeia abaixo é a espinha dorsal do curso —
+siga-a linearmente na primeira passada:
 
-1. `MATERIAL.md` — o capítulo (conceito + teoria sob demanda);
+```mermaid
+graph LR
+    classDef opc fill:#fff3e0,stroke:#ffcc80,color:#000
+    M01["01 Fundamentos"] --> M02["02 Primeiro LLM"] --> M04["04 RAG"] --> M05["05 Autoavaliação"] --> M06["06 Tool Calling"] --> M07["07 Planejamento"] --> M08["08 Multiagente"] --> M09["09 API"] --> M10["10 Avaliação"] --> M11["11 Segurança"] --> M12["12 Memória"] --> M13["13 Streaming"] --> M14["14 Cache"] --> M15["15 Skills"] --> M16["16 Operações"]
+    M02 -.-> M03["03 Viabilidade<br/>(opcional/bônus)"]
+    M03:::opc
+```
+
+| Módulo | Pré-requisito direto | Observação |
+|--------|---------------------|------------|
+| 01 Fundamentos | — | porta de entrada; requer [Ponte Python](PYTHON_BRIDGE.md) se faltar fluência |
+| 02 Primeiro LLM | 01 | primeira chamada real a um modelo |
+| 03 Viabilidade | 01 | **opcional**: pode estudar depois do 02 ou até do 08 |
+| 04 RAG | 02 | dá conhecimento ao modelo |
+| 05 Autoavaliação | 04 | loop gerar→avaliar→refinar |
+| 06 Tool Calling | 05 | agente usa funções reais + HITL |
+| 07 Planejamento | 06 | circuit breaker, checkpoints, retry |
+| 08 Multiagente | 07 | supervisor + especialistas |
+| 09 Produção (API) | 08 | primeiro ponto que exige Docker |
+| 10 Avaliação | 09 | golden dataset + A/B testing |
+| 11 Segurança | 10 | guardrails, prompt injection |
+| 12 Memória | 11 | short/long-term memory |
+| 13 Streaming | 12 | SSE token-by-token |
+| 14 Cache | 13 | response cache + economia |
+| 15 Skills | 14 | registry + composição |
+| 16 Operações | 15 | CI/CD, monitoramento, rollback |
+
+**Como usar cada módulo.** Em cada módulo você tem três artefatos que conversam entre si:
+
+1. `MATERIAL.md` — o material didático (conceito + teoria sob demanda);
 2. `run.py` — o código executável que demonstra o conceito;
 3. `miniproject.md` — o mini-projeto integrador, onde você aplica o que aprendeu.
 
-Siga a ordem dos capítulos usando a navegação **← Anterior · Índice · Próximo →** no fim de cada material.
+Siga a ordem dos módulos usando a navegação **← Anterior · Índice · Próximo →** no fim de cada material.
 
 **Pré-requisitos.** Python 3.11+, uma conta na OpenAI (ou compatível) e Docker (necessário só a partir do Módulo 09).
 
@@ -132,7 +163,7 @@ ai-agents-course/
 │   ├── logging_config.py   # Logs estruturados
 │   ├── security.py         # Gestão de secrets (.env)
 │   └── governance.py       # Human-in-the-loop
-├── modules/                # Módulos do curso (capítulos)
+├── modules/                # Módulos do curso
 │   ├── 01-fundamentos/    # Fundamentos (IA, LLM, tokens)
 │   ├── 02-primeiro-llm/       # Primeiro fluxo com LLM
 │   ├── 03-viabilidade/     # Análise de viabilidade

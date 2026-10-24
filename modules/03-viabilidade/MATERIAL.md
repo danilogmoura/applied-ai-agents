@@ -1,6 +1,6 @@
 # Módulo 03 — Análise de Viabilidade
 
-> ⚠️ **MÓDULO OPCIONAL / BÔNUS** — Este módulo pode ser estudado DEPOIS de construir seu primeiro agente funcional (02-primeiro-llm) ou até após o módulo multiagente (p3b). Ele não bloqueia os próximos módulos.
+> ⚠️ **MÓDULO OPCIONAL / BÔNUS** — Este módulo pode ser estudado DEPOIS de construir seu primeiro agente funcional (02-primeiro-llm) ou até após o módulo multiagente (Módulo 08). Ele não bloqueia os próximos módulos.
 
 Este módulo ensina a tomar decisões entre IA e regras heurísticas usando dados reais de benchmark.
 
@@ -8,7 +8,7 @@ Este módulo ensina a tomar decisões entre IA e regras heurísticas usando dado
 
 ## ⚠️ Pré-requisito
 
-**Opcional:** Você pode pular este módulo e voltar depois de construir um agente funcional (02-primeiro-llm ou p3b). Se quiser estudar agora, precisa ter concluído o módulo [Módulo 01 — Fundamentos: O que é IA e LLM?](../01-fundamentos/MATERIAL.md). Especificamente, precisa entender:
+**Opcional:** Você pode pular este módulo e voltar depois de construir um agente funcional (Módulo 02 ou Módulo 08). Se quiser estudar agora, precisa ter concluído o módulo [Módulo 01 — Fundamentos: O que é IA e LLM?](../01-fundamentos/MATERIAL.md). Especificamente, precisa entender:
 
 - O que é um LLM e como ele prediz tokens
 - Por que tokens custam dinheiro
