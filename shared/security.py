@@ -54,6 +54,36 @@ def get_secret(name: str, default: Optional[str] = None) -> Optional[str]:
     return value
 
 
+# Modelo LLM usado quando nenhuma override existe no ambiente.
+# IMPORTANTE: isto é um EXEMPLO, não um requisito. O nome do modelo não faz
+# parte dos conceitos ensinados -- troque por Claude, Gemini, Qwen ou um modelo
+# local (Ollama) definindo MODEL/DEFAULT_MODEL no .env. O código permanece igual.
+DEFAULT_MODEL_NAME = "gpt-4o-mini"
+
+
+def get_model(default: Optional[str] = None) -> str:
+    """
+    Retorna o nome do modelo LLM a usar, centralizando a configuracao.
+
+    Ordem de resolucao: MODEL > DEFAULT_MODEL > default informado >
+    DEFAULT_MODEL_NAME. Assim o aluno troca de provedor editando apenas o
+    .env, sem tocar nos run.py.
+
+    Args:
+        default: Fallback final se nenhuma variavel de ambiente existir.
+
+    Returns:
+        Nome do modelo (string). Nunca levanta erro -- modelo tem sempre
+        fallback, diferentemente de uma secret obrigatoria.
+    """
+    return (
+        os.getenv("MODEL")
+        or os.getenv("DEFAULT_MODEL")
+        or default
+        or DEFAULT_MODEL_NAME
+    )
+
+
 def get_required_secret(name: str) -> str:
     """
     Obtém uma secret obrigatória. Levanta erro se não estiver definida.

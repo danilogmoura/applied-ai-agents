@@ -437,7 +437,7 @@ def main():
         console.print(f"[red]✗ {e}[/]")
         sys.exit(1)
     
-    model = __import__("shared.security").security.get_required_secret("DEFAULT_MODEL", "gpt-4o-mini")
+    model = __import__("shared.security").security.get_model()
     
     # Inicializa pipeline
     pipeline = RAGPipeline(model=model, top_k=2)

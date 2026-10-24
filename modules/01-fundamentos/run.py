@@ -12,6 +12,11 @@ import os
 import json
 import time
 
+
+# Modelo LLM configuravel via ambiente (EXEMPLO, nao requisito).
+# Troque por Claude/Gemini/Qwen/Ollama exportando MODEL no .env.
+MODEL = os.getenv("MODEL", "gpt-4o-mini")
+
 try:
     from openai import OpenAI
     HAS_OPENAI = True
@@ -76,7 +81,7 @@ def demo_temperature() -> None:
     try:
         client = OpenAI()
         resp1 = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=MODEL,
             messages=[{"role": "user", "content": prompt_classificacao}],
             temperature=0.0,
             max_tokens=10,
@@ -84,7 +89,7 @@ def demo_temperature() -> None:
         print(f"   Resposta 1: {resp1.choices[0].message.content.strip()}")
 
         resp2 = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=MODEL,
             messages=[{"role": "user", "content": prompt_classificacao}],
             temperature=0.0,
             max_tokens=10,
@@ -104,7 +109,7 @@ def demo_temperature() -> None:
     try:
         for i in range(3):
             resp = client.chat.completions.create(
-                model="gpt-4o-mini",
+                model=MODEL,
                 messages=[{"role": "user", "content": prompt_criativo}],
                 temperature=1.0,
                 max_tokens=20,
@@ -162,7 +167,7 @@ Retorne APENAS a palavra: BAIXA, MEDIA ou ALTA""",
             for nome_prompt, template in prompts.items():
                 prompt_final = template.format(**ticket)
                 resp = client.chat.completions.create(
-                    model="gpt-4o-mini",
+                    model=MODEL,
                     messages=[{"role": "user", "content": prompt_final}],
                     temperature=0.0,
                     max_tokens=10,
