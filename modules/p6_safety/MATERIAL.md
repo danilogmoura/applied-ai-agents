@@ -1,7 +1,5 @@
 # Módulo P6 — Segurança e Guardrails
 
-> ⚠️ **Revisão:** Este material está em revisão ativa. Alguns conceitos avançados estão marcados como OPCIONAIS para não sobrecarregar iniciantes.
-
 ## ⚠️ Pré-requisito
 
 Você precisa ter concluído o módulo [P5: Avaliação](../p5_evaluation/MATERIAL.md). Especificamente, precisa saber:

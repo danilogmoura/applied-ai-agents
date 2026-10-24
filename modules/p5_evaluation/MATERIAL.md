@@ -1,7 +1,5 @@
 # Módulo P5 — Avaliação e Testes
 
-> ⚠️ **Revisão:** Este material está em revisão ativa. Alguns conceitos avançados estão marcados como OPCIONAIS para não sobrecarregar iniciantes.
-
 ## ⚠️ Pré-requisito
 
 Você precisa ter concluído o módulo [P4: Produção](../p4_production/MATERIAL.md). Especificamente, precisa saber:

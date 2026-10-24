@@ -1,7 +1,5 @@
 # Módulo P10 — Design e Composição de Skills
 
-> ⚠️ **Revisão:** Este material está em revisão ativa. Alguns conceitos avançados estão marcados como OPCIONAIS para não sobrecarregar iniciantes.
-
 ## ⚠️ Pré-requisito
 
 Você precisa ter concluído o módulo [P9: Cache e Otimização](../p9_caching/MATERIAL.md). Especificamente, precisa saber:

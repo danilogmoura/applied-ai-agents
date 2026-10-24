@@ -1,7 +1,5 @@
 # Módulo P8 — Streaming e Tempo Real
 
-> ⚠️ **Revisão:** Este material está em revisão ativa. Alguns conceitos avançados estão marcados como OPCIONAIS para não sobrecarregar iniciantes.
-
 ## ⚠️ Pré-requisito
 
 Você precisa ter concluído o módulo [P7: Memória e Contexto](../p7_memory/MATERIAL.md). Especificamente, precisa saber:

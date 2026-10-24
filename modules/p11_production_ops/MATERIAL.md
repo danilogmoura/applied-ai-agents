@@ -1,7 +1,5 @@
 # Módulo P11 — Operations de Produção (CI/CD + Monitoramento)
 
-> ⚠️ **Revisão:** Este material está em revisão ativa. Alguns conceitos avançados estão marcados como OPCIONAIS para não sobrecarregar iniciantes.
-
 ## ⚠️ Pré-requisito
 
 Você precisa ter concluído o módulo [P10: Design e Composição de Skills](../p10_skills/MATERIAL.md). Especificamente, precisa saber:

@@ -1,7 +1,5 @@
 # Módulo P9 — Cache e Otimização de Custo
 
-> ⚠️ **Revisão:** Este material está em revisão ativa. Alguns conceitos avançados estão marcados como OPCIONAIS para não sobrecarregar iniciantes.
-
 ## ⚠️ Pré-requisito
 
 Você precisa ter concluído o módulo [P8: Streaming e Tempo Real](../p8_streaming/MATERIAL.md). Especificamente, precisa saber:

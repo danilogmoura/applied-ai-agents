@@ -1,7 +1,5 @@
 # Material Didático — P4: Produção (API REST com FastAPI)
 
-> ⚠️ **Revisão:** Este material está em revisão ativa. Alguns conceitos avançados estão marcados como OPCIONAIS para não sobrecarregar iniciantes.
-
 ## ⚠️ Pré-requisito
 
 Você precisa ter concluído o módulo [P3b: Multiagente](../p3b_multi_agent/MATERIAL.md). Especificamente, precisa saber:
