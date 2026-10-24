@@ -1,7 +1,5 @@
 # Material Didático — P0: Primeiro Fluxo com LLM
 
-> 📌 **Nota:** Este material foi revisado para focar nos conceitos essenciais. Seções marcadas como **🔬 Avançado — OPCIONAL** podem ser puladas na primeira leitura.
-
 ## ⚙️ Setup Obrigatório
 
 **Antes de começar, leia [SETUP.md](SETUP.md)** para instalar dependências, obter API key e configurar seu ambiente.

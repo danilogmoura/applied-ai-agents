@@ -1,7 +1,5 @@
 # Material Didático — P3a-1: Autoavaliação e Reflexão
 
-> 📌 **Nota:** Este material foi revisado para focar nos conceitos essenciais. Seções marcadas como **🔬 Avançado — OPCIONAL** podem ser puladas na primeira leitura.
-
 ## ⚠️ Pré-requisito
 
 Você precisa ter concluído o módulo [P2-RAG](../p2_rag/MATERIAL.md). Especificamente, precisa saber:

@@ -1,7 +1,5 @@
 # Material Didático — P3b: Sistema Multiagente
 
-> 📌 **Nota:** Este material foi revisado para focar nos conceitos essenciais. Seções marcadas como **🔬 Avançado — OPCIONAL** podem ser puladas na primeira leitura.
-
 ## ⚠️ Pré-requisito
 
 Você precisa ter concluído o módulo [P3a-3: Planejamento](../p3a3_planning/MATERIAL.md). Especificamente, precisa saber:

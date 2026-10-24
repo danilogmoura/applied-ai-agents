@@ -1,7 +1,5 @@
 # Material Didático — P3a-2: Tool Calling (Uso Autônomo de Ferramentas)
 
-> 📌 **Nota:** Este material foi revisado para focar nos conceitos essenciais. Seções marcadas como **🔬 Avançado — OPCIONAL** podem ser puladas na primeira leitura.
-
 ## ⚠️ Pré-requisito
 
 Você precisa ter concluído o módulo [P3a-1: Autoavaliação](../p3a1_self_eval/MATERIAL.md). Especificamente, precisa saber:

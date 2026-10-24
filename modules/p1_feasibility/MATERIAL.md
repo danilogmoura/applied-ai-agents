@@ -2,8 +2,6 @@
 
 > ⚠️ **MÓDULO OPCIONAL / BÔNUS** — Este módulo pode ser estudado DEPOIS de construir seu primeiro agente funcional (p0_first_llm) ou até após o módulo multiagente (p3b). Ele não bloqueia os próximos módulos.
 
-> 📌 **Nota:** Este material foi revisado para focar nos conceitos essenciais. Seções marcadas como **🔬 Avançado — OPCIONAL** podem ser puladas na primeira leitura.
-
 Este módulo ensina a tomar decisões entre IA e regras heurísticas usando dados reais de benchmark.
 
 ---

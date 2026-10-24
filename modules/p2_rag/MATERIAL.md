@@ -1,7 +1,5 @@
 # Material Didático — P2: Pipeline RAG (Recuperação de Contexto)
 
-> 📌 **Nota:** Este material foi revisado para focar nos conceitos essenciais. Seções marcadas como **🔬 Avançado — OPCIONAL** podem ser puladas na primeira leitura.
-
 Este módulo implementa o padrão mais usado em produção para dar conhecimento interno ao LLM.
 
 ---

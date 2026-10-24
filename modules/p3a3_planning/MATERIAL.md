@@ -1,7 +1,5 @@
 # Material Didático — P3a-3: Planejamento e Retomada
 
-> 📌 **Nota:** Este material foi revisado para focar nos conceitos essenciais. Seções marcadas como **🔬 Avançado — OPCIONAL** podem ser puladas na primeira leitura.
-
 ## ⚠️ Pré-requisito
 
 Você precisa ter concluído o módulo [P3a-2: Tool Calling](../p3a2_tool_calling/MATERIAL.md). Especificamente, precisa saber:
