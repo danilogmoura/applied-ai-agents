@@ -328,6 +328,19 @@ Execute `python modules/12-memoria/run.py` e observe:
 2. Se você tivesse 1000 interações, quantas memórias de longo prazo seriam razoáveis?
 3. Como evitar que memórias incorretas ou enviesadas persistam?
 
+## Glossário
+
+| Termo | Definição | Analogia |
+| ------- | ----------- | ---------- |
+| **Short-Term Memory** | Histórico da conversa atual, limitado pela janela de contexto | Memória de trabalho, some ao virar a página |
+| **Long-Term Memory** | Conhecimento persistente recuperável entre sessões (ex.: vetor/embedding) | Agenda guardada na gaveta para consultar depois |
+| **Summarization** | Comprimir o histórico antigo em resumo para caber no contexto | Ata resumida da reunião longa |
+| **Conversation History** | Sequência de mensagens trocadas que dá coerência ao diálogo | Fio da conversa até agora |
+| **Importância / Forgetting** | Política que reforça memórias relevantes e descarta as esquecidas | Você lembra mais o que usa todo dia |
+| **Janela de Contexto** | Quantos tokens o modelo considera de uma vez | Área visível da tela, o resto rola fora |
+
+---
+
 ## 📌 Resumo do Módulo
 
 Memória é o que diferencia agentes conversacionais de ferramentas stateless:

@@ -410,6 +410,19 @@ Execute `python modules/15-skills/run.py` e observe:
 
 ---
 
+## Glossário
+
+| Termo | Definição | Analogia |
+| ------- | ----------- | ---------- |
+| **Skill** | Unidade modular de capacidade com interface padrão, versionada e plugável num agente | Peça Lego que encaixa em qualquer conjunto |
+| **Interface Padrão** | Contrato comum (entrada/saída) que torna skills intercambiáveis | Tomada universal: qualquer plugue encaixa |
+| **Versionamento Semântico** | Esquema MAJOR.MINOR.PATCH para comunicar compatibilidade entre versões | Etiqueta que avisa se a peça mudou de formato |
+| **Pipeline Composition** | Encadear várias skills em sequência para formar um fluxo maior | Linha de montagem passando de estação a estação |
+| **Registry de Skills** | Catálogo central que lista skills disponíveis e suas versões | Almoxarifado com inventário de peças |
+| **Filtro de Pipeline** | Estágio que seleciona/transforma/pass adiante itens no fluxo | Peneira que só deixa grãos do tamanho certo |
+
+---
+
 ## 📌 Resumo do Módulo
 
 Skills são blocos de construção reutilizáveis de agentes:

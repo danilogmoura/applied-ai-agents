@@ -392,6 +392,19 @@ Erros comuns que iniciantes encontram neste módulo:
 
 ---
 
+## Glossário
+
+| Termo | Definição | Analogia |
+| ------- | ----------- | ---------- |
+| **Sistema Multiagente** | Arquitetura com vários agentes especializados coordenados para uma tarefa | Time com médico, enfermeiro e farmácia |
+| **Supervisor-Especialista** | Padrão onde um agente roteia tarefas para especialistas e agrega resultados | Coordenador distribuindo tickets para técnicos |
+| **Roteamento** | Decidir qual agente trata cada entrada (via LLM ou heurística) | Recepcionista que transfere a ligação |
+| **Heurística de Roteamento** | Regra determinística (palavra-chave, regex) para escolher o agente, mais barata que LLM | Etiqueta de cor que já diz o setor |
+| **Degradação Elegante** | Continuar entregando resultado parcial quando um agente falha | Turno reduzido mantendo o serviço essencial |
+| **Custo em Multiagente** | Somatório de tokens/chamadas de todos os agentes; cresce multiplicativamente | Várias corridas de táxi em vez de uma |
+
+---
+
 ## 📌 Resumo do Módulo
 
 Multi-agent supervisor é a arquitetura mais usada para tarefas complexas:

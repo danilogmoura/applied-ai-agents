@@ -340,6 +340,19 @@ Execute `python modules/14-cache/run.py` e observe:
 
 ---
 
+## Glossário
+
+| Termo | Definição | Analogia |
+| ------- | ----------- | ---------- |
+| **Cache de Respostas** | Guardar saídas passadas para reusar em perguntas idênticas e cortar custo | Gabarito colado na parede para não recalcular |
+| **Eviction Policy** | Regra de quais itens remover quando a cache está cheia | Estante lotada: tirar o menos usado |
+| **LRU** | Least Recently Used: remove o item há mais tempo não acessado | Quem pega por último fica na frente |
+| **LFU** | Least Frequently Used: remove o item menos acessado no total | Livro que ninguém folheia sai primeiro |
+| **Model Routing** | Escolher modelo diferente conforme dificuldade/custo da requisição | Casos simples pro estagiário, complexos pro sênior |
+| **Prompt Compression** | Reduzir o tamanho do prompt preservando sentido, cortando tokens/custo | Resumir o e-mail longo em duas linhas |
+
+---
+
 ## 📌 Resumo do Módulo
 
 Caching é a otimização de custo mais impactante em produção:

@@ -2,10 +2,19 @@
 
 ## ⚠️ Pré-requisito
 
-Você precisa ter concluído o módulo [Módulo 08 — Sistema Multiagente](../08-multiagente/MATERIAL.md). Especificamente, precisa saber:
+**Conceitual:** você precisa ter concluído o módulo [Módulo 08 — Sistema Multiagente](../08-multiagente/MATERIAL.md). Especificamente, precisa saber:
 
 - Como construir sistemas multiagente coordenados
 - Quando usar arquitetura single-agent vs. multi-agent
+
+**Operacional (novo neste arco):** a partir daqui o curso usa **git, Docker e um servidor web**. Se
+você nunca mexeu com isso, pare e faça primeiro o **[Setup de Produção](../../SETUP-PRODUCAO.md)**
+(guia de transição dos Módulos 01–08 para o Arco 4). Ele garante que você tenha as ferramentas
+instaladas e verificadas antes do primeiro código deste módulo.
+
+> ⚙️ **Checklist rápido antes de começar:** `docker run hello-world` funciona? `git --version`
+> responde? Você sabe que `uvicorn` sobe um servidor que fica rodando? Se qualquer resposta for "não",
+> abra o [SETUP-PRODUCAO.md](../../SETUP-PRODUCAO.md) agora.
 
 ---
 
@@ -326,6 +335,21 @@ docker-compose up --build
 1. Por que usar async/await na API? Quando isso faz diferença vs quando não faz?
 2. Se você tivesse 1000 requisições por segundo, que mudanças seriam necessárias?
 3. Como você implementaria autenticação (API keys, JWT) nesta API?
+
+---
+
+## Glossário
+
+| Termo | Definição | Analogia |
+| ------- | ----------- | ---------- |
+| **API REST** | Interface que expõe funcionalidade via HTTP e JSON, separando cliente de servidor | Cardápio fixo de um restaurante |
+| **FastAPI** | Framework web Python moderno para criar APIs com validação automática | Cozinha pronta com fichas de pedido |
+| **Pydantic Model** | Classe que define o contrato (campos/tipos) de entrada e saída da API | Formulário com campos obrigatórios |
+| **Endpoint / Rota** | Endereço (ex.: POST /chat) que recebe e devolve JSON | Balcão específico para cada tipo de pedido |
+| **Middleware** | Camada que processa toda requisição antes/depois da rota (log, auth) | Segurança que carimba cada crachá na entrada |
+| **Docker / Container** | Empacota app + dependências numa imagem reproduzível; container é a instância rodando | Casa pré-fabricada: mesma planta em qualquer terreno |
+| **docker-compose** | Arquivo YAML que sobe vários containers juntos em ordem | Capataz erguendo várias casas em sequência |
+| **uvicorn** | Servidor ASGI que executa a aplicação FastAPI e fica escutando | Caixa que abre e atende até fechar a loja |
 
 ---
 

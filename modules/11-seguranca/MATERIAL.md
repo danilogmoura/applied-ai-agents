@@ -237,6 +237,19 @@ Execute `python modules/11-seguranca/run.py` e observe:
 2. Que técnicas adversariais existem além das listadas aqui?
 3. Como balancear segurança vs usabilidade (muitos guardrails = UX ruim)?
 
+## Glossário
+
+| Termo | Definição | Analogia |
+| ------- | ----------- | ---------- |
+| **Prompt Injection** | Ataque que embute instruções maliciosas na entrada para sequestrar o comportamento do modelo | Golpista que cola ordens falsas no memorando interno |
+| **Jailbreak** | Tentativa de contornar as restrições/alinhamento do modelo via prompt elaborado | Chave-mestra falsa para abrir área restrita |
+| **Content Filtering** | Inspeção de entrada/saída para bloquear conteúdo proibido | Filtro que revira a bagagem na alfândega |
+| **Data Leakage** | Exposição acidental de dados sensíveis na saída do modelo | Recibo impresso com dado de cartão |
+| **Principle of Least Privilege** | Dar a cada componente apenas as permissões mínimas necessárias | Crachá que abre só o seu andar |
+| **Defesa em Camadas** | Múltiplos controles independentes (input, modelo, output) somados | Porta, trava e alarme ao mesmo tempo |
+
+---
+
 ## 📌 Resumo do Módulo
 
 Segurança em IA é diferente de segurança tradicional:

@@ -300,6 +300,20 @@ Execute `python modules/10-avaliacao/run.py` e observe:
 2. Se o LLM-as-a-judge também pode errar, como garantir que ele é justo?
 3. Qual tamanho mínimo de dataset para resultados estatisticamente significativos?
 
+## Glossário
+
+| Termo | Definição | Analogia |
+| ------- | ----------- | ---------- |
+| **Golden Dataset** | Conjunto de entradas com respostas esperadas usadas como gabarito de referência | Prova com gabarito oficial |
+| **LLM-as-a-Judge** | Usar um LLM para pontuar a qualidade da saída de outro LLM | Corretor automatizado lendo as redações |
+| **Fuzzy Match** | Similaridade aproximada entre texto esperado e obtido (não exige igualdade exata) | Nota por proximidade, não cópia literal |
+| **Métrica de Avaliação** | Número que quantifica qualidade (precisão, similaridade, taxa de sucesso) | Régua graduada para medir acerto |
+| **Significância Estatística** | Grau de confiança de que a diferença de score não foi por acaso | Repetir o experimento para confirmar |
+| **Teste A/B** | Comparar duas variantes medindo qual performa melhor | Duas embalagens, ver qual vende mais |
+| **Benchmarking Regressivo** | Rodar a avaliação a cada mudança para detectar perda de qualidade | Teste de regressão antes do deploy |
+
+---
+
 ## 📌 Resumo do Módulo
 
 Avaliação sistemática é o que separa produção de experimentação:

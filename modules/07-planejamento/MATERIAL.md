@@ -320,6 +320,19 @@ Erros comuns que iniciantes encontram neste módulo:
 
 ---
 
+## Glossário
+
+| Termo | Definição | Analogia |
+| ------- | ----------- | ---------- |
+| **Planejador (Planner)** | Componente que decompõe um objetivo em passos executáveis e decide a ordem das ações | GPS que traça a rota antes de você ligar o carro |
+| **Circuit Breaker** | Padrão que interrompe chamadas a um serviço após N falhas seguidas, evitando efeito cascata | Disjuntor que desarma antes de pegar fogo na instalação |
+| **Checkpoint** | Ponto onde o progresso do plano é salvo para retomar sem recomeçar do zero | Salvar o jogo antes do chefe |
+| **Resiliência** | Capacidade do planejador de continuar diante de erros parciais dos serviços | Rota alternativa quando uma ponte cai |
+| **Degradação Elegante** | Reduzir escopo/qualidade em vez de falhar tudo quando uma parte quebra | Servir o prato principal mesmo sem a sobremesa |
+| **Simulação de Serviço** | Stand-in falso de uma tool/API para testar o planner sem depender do serviço real | Manequim de teste antes do voo real |
+
+---
+
 ## 📌 Resumo do Módulo
 
 Resilience patterns são o que separam protótipos de produção:

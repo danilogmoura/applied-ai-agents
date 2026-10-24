@@ -341,6 +341,20 @@ Execute `python modules/16-operacoes/run.py` e observe:
 
 ---
 
+## Glossário
+
+| Termo | Definição | Analogia |
+| ------- | ----------- | ---------- |
+| **Observabilidade** | Capacidade de inferir o estado interno do sistema por suas saídas (logs/métricas/traces) | Painel do carro mostrando temperatura e RPM |
+| **Métricas Essenciais** | Indicadores de produção: latência, erro, custo, throughput | Velocímetro, conta-giros e tanque juntos |
+| **Rollback Automático** | Reverter para a última versão boa quando uma nova degrada | Botão de desfazer após um deploy ruim |
+| **Logging Estruturado** | Registros em campos chave-valor (JSON) pesquisáveis, não texto solto | Planilha de ocorrências em vez de bilhetes |
+| **Exponential Backoff** | Aumentar o tempo de espera entre tentativas após falha | Esperar 1s, 2s, 4s... antes de ligar de novo |
+| **Jitter** | Variação aleatória somada ao backoff para evitar sincronia de retries | Escalonar horários para não formarem fila |
+| **Prompt Testing (A/B)** | Validar mudanças de prompt em produção comparando variantes | Trocar o aviso da vitrine e medir cliques |
+
+---
+
 ## 📌 Resumo do Módulo
 
 Production Ops é o que separa protótipos de sistemas em produção:

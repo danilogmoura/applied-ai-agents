@@ -312,6 +312,19 @@ Execute `python modules/13-streaming/run.py` e observe:
 
 ---
 
+## Glossário
+
+| Termo | Definição | Analogia |
+| ------- | ----------- | ---------- |
+| **Streaming** | Enviar a resposta em pedaços conforme é gerada, em vez de esperar o fim | Narração ao vivo em vez de gravação editada |
+| **SSE (Server-Sent Events)** | Protocolo HTTP unidirecional servidor→cliente para enviar eventos contínuos | Rádio transmitindo em fluxo |
+| **TTFT** | Time To First Token: latência até o primeiro caractere aparecer | Tempo até a voz do narrador começar |
+| **Abort / Cancel** | Interromper a geração em andamento quando o cliente fecha ou pede stop | Desligar o microfone no meio da frase |
+| **Latência Percebida vs Real** | Sensação de rapidez (fluxo imediato) pode ser melhor que o tempo total | Fila que anda parece mais curta |
+| **Wire Format SSE** | Mensagem 'data: ...' enviada pelo canal de eventos | Telegrama em blocos padronizados |
+
+---
+
 ## 📌 Resumo do Módulo
 
 Streaming é sobre percepção do usuário, não velocidade real:
