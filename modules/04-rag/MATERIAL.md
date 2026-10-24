@@ -1,4 +1,4 @@
-# Capítulo 04 — Pipeline RAG
+# Módulo 04 — Pipeline RAG
 
 Este módulo implementa o padrão mais usado em produção para dar conhecimento interno ao LLM.
 
@@ -6,7 +6,7 @@ Este módulo implementa o padrão mais usado em produção para dar conhecimento
 
 ## ⚠️ Pré-requisito
 
-Você precisa ter concluído o módulo [Capítulo 02 — Primeiro Fluxo com LLM](../02-primeiro-llm/MATERIAL.md). Especificamente, precisa saber:
+Você precisa ter concluído o módulo [Módulo 02 — Primeiro Fluxo com LLM](../02-primeiro-llm/MATERIAL.md). Especificamente, precisa saber:
 
 - Como construir um agente simples com OpenAI API
 - O que é tokenização e por que tokens custam dinheiro
@@ -475,7 +475,7 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 
 Com RAG, seu agente pode responder perguntas com base em documentos. Mas no mundo real, agentes precisam ir além de responder — eles precisam **executar ações**.
 
-→ Leia o módulo [Capítulo 05 — Autoavaliacao: Autoavaliação](../05-autoavaliacao/MATERIAL.md) para aprender a verificar qualidade antes de entregar respostas.
+→ Leia o módulo [Módulo 05 — Autoavaliação e Reflexão](../05-autoavaliacao/MATERIAL.md) para aprender a verificar qualidade antes de entregar respostas.
 
 ---
 
@@ -517,4 +517,4 @@ Com RAG, seu agente pode responder perguntas com base em documentos. Mas no mund
 
 | ← Anterior | Índice | Próximo → |
 | --- | --- | --- |
-| [← P1: Análise de Viabilidade](../03-viabilidade/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Capítulo 05 — Autoavaliacao: Autoavaliação →](../05-autoavaliacao/MATERIAL.md) |
+| [← Módulo 03 — Análise de Viabilidade](../03-viabilidade/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Módulo 05 — Autoavaliação e Reflexão →](../05-autoavaliacao/MATERIAL.md) |

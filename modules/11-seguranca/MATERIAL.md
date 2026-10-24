@@ -1,8 +1,8 @@
-# Capítulo 11 — Segurança e Guardrails
+# Módulo 11 — Segurança e Guardrails
 
 ## ⚠️ Pré-requisito
 
-Você precisa ter concluído o módulo [Capítulo 10 — Avaliacao: Avaliação](../10-avaliacao/MATERIAL.md). Especificamente, precisa saber:
+Você precisa ter concluído o módulo [Módulo 10 — Avaliação e Testes](../10-avaliacao/MATERIAL.md). Especificamente, precisa saber:
 
 - Como construir golden datasets e métricas de avaliação
 - Como realizar testes A/B e calcular significância estatística
@@ -322,7 +322,7 @@ Erros comuns que iniciantes encontram neste módulo:
 
 Com guardrails implementados, seus agentes estão protegidos contra ataques. Mas como lidar com conversas longas que excedem o context window?
 
-→ Leia o módulo [Capítulo 12 — Memoria: Memória](../12-memoria/MATERIAL.md) para aprender gestão de contexto e sumarização.
+→ Leia o módulo [Módulo 12 — Memória e Contexto](../12-memoria/MATERIAL.md) para aprender gestão de contexto e sumarização.
 
 ---
 
@@ -336,4 +336,4 @@ Com guardrails implementados, seus agentes estão protegidos contra ataques. Mas
 
 | ← Anterior | Índice | Próximo → |
 | --- | --- | --- |
-| [← P5: Avaliação e Testes](../10-avaliacao/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Capítulo 12 — Memoria: Memória e Contexto →](../12-memoria/MATERIAL.md) |
+| [← Módulo 10 — Avaliação e Testes](../10-avaliacao/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Módulo 12 — Memória e Contexto →](../12-memoria/MATERIAL.md) |

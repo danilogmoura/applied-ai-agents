@@ -1,4 +1,4 @@
-# Capítulo 03 — Análise de Viabilidade
+# Módulo 03 — Análise de Viabilidade
 
 > ⚠️ **MÓDULO OPCIONAL / BÔNUS** — Este módulo pode ser estudado DEPOIS de construir seu primeiro agente funcional (02-primeiro-llm) ou até após o módulo multiagente (p3b). Ele não bloqueia os próximos módulos.
 
@@ -8,7 +8,7 @@ Este módulo ensina a tomar decisões entre IA e regras heurísticas usando dado
 
 ## ⚠️ Pré-requisito
 
-**Opcional:** Você pode pular este módulo e voltar depois de construir um agente funcional (02-primeiro-llm ou p3b). Se quiser estudar agora, precisa ter concluído o módulo [Capítulo 01 — Fundamentos](../01-fundamentos/MATERIAL.md). Especificamente, precisa entender:
+**Opcional:** Você pode pular este módulo e voltar depois de construir um agente funcional (02-primeiro-llm ou p3b). Se quiser estudar agora, precisa ter concluído o módulo [Módulo 01 — Fundamentos: O que é IA e LLM?](../01-fundamentos/MATERIAL.md). Especificamente, precisa entender:
 
 - O que é um LLM e como ele prediz tokens
 - Por que tokens custam dinheiro
@@ -88,7 +88,7 @@ Ao final deste módulo, você será capaz de:
 
 Antes de investir em IA, toda empresa precisa responder: **vale a pena?** A resposta não vem de slides ou vendas — vem de dados reais.
 
-> 💡 **Referência:** Os conceitos de LLM, tokens e custo já foram explicados em [01-fundamentos](../01-fundamentos/MATERIAL.md). Aqui vamos direto à comparação prática.
+> 💡 **Referência:** Os conceitos de LLM, tokens e custo já foram explicados em [Módulo 01 — Fundamentos: O que é IA e LLM?](../01-fundamentos/MATERIAL.md). Aqui vamos direto à comparação prática.
 
 Este módulo ensina a comparar duas abordagens lado a lado:
 
@@ -279,7 +279,7 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 
 Com a viabilidade estabelecida, o próximo passo é resolver o problema mais comum em produção: **como fazer o agente responder perguntas usando documentos internos sem enviar tudo para o LLM**.
 
-→ Leia o módulo [Capítulo 04 — Pipeline RAG: Pipeline RAG](../04-rag/MATERIAL.md) para aprender recuperação de contexto com embeddings.
+→ Leia o módulo [Módulo 04 — Pipeline RAG](../04-rag/MATERIAL.md) para aprender recuperação de contexto com embeddings.
 
 ---
 
@@ -293,4 +293,4 @@ Com a viabilidade estabelecida, o próximo passo é resolver o problema mais com
 
 | ← Anterior | Índice | Próximo → |
 | --- | --- | --- |
-| [← P0: Primeiro Fluxo com LLM](../02-primeiro-llm/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Capítulo 04 — Pipeline RAG: Pipeline RAG →](../04-rag/MATERIAL.md) |
+| [← Módulo 02 — Primeiro Fluxo com LLM](../02-primeiro-llm/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Módulo 04 — Pipeline RAG →](../04-rag/MATERIAL.md) |

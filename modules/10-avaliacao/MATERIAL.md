@@ -1,8 +1,8 @@
-# Capítulo 10 — Avaliação e Testes
+# Módulo 10 — Avaliação e Testes
 
 ## ⚠️ Pré-requisito
 
-Você precisa ter concluído o módulo [Capítulo 09 — Producao: Produção](../09-producao-api/MATERIAL.md). Especificamente, precisa saber:
+Você precisa ter concluído o módulo [Módulo 09 — Produção (API REST com FastAPI)](../09-producao-api/MATERIAL.md). Especificamente, precisa saber:
 
 - Como construir uma API REST com FastAPI para expor seu agente
 - Como Dockerizar aplicações para deploy consistente
@@ -385,7 +385,7 @@ Erros comuns que iniciantes encontram neste módulo:
 
 Com avaliação em produção, seus agentes entregam respostas consistentes. Mas como garantir que essas respostas são seguras contra ataques?
 
-→ Leia o módulo [Capítulo 11 — Seguranca: Segurança e Guardrails](../11-seguranca/MATERIAL.md) para aprender defesa contra prompt injection.
+→ Leia o módulo [Módulo 11 — Segurança e Guardrails](../11-seguranca/MATERIAL.md) para aprender defesa contra prompt injection.
 
 ---
 
@@ -404,4 +404,4 @@ Com avaliação em produção, seus agentes entregam respostas consistentes. Mas
 
 | ← Anterior | Índice | Próximo → |
 | --- | --- | --- |
-| [← P4: Produção (FastAPI)](../09-producao-api/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Capítulo 11 — Seguranca: Segurança e Guardrails →](../11-seguranca/MATERIAL.md) |
+| [← Módulo 09 — Produção (API REST com FastAPI)](../09-producao-api/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Módulo 11 — Segurança e Guardrails →](../11-seguranca/MATERIAL.md) |

@@ -1,8 +1,8 @@
-# Capítulo 14 — Cache e Otimização de Custo
+# Módulo 14 — Cache e Otimização de Custo
 
 ## ⚠️ Pré-requisito
 
-Você precisa ter concluído o módulo [Capítulo 13 — Streaming: Streaming e Tempo Real](../13-streaming/MATERIAL.md). Especificamente, precisa saber:
+Você precisa ter concluído o módulo [Módulo 13 — Streaming e Tempo Real](../13-streaming/MATERIAL.md). Especificamente, precisa saber:
 
 - Como implementar streaming de respostas em tempo real
 - Padrões de SSE (Server-Sent Events) e WebSockets
@@ -374,7 +374,7 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 
 Com caching, seus agentes são econômicos. Mas como organizar código em componentes reutilizáveis e versionados?
 
-→ Leia o módulo [Capítulo 15 — Skills: Skills](../15-skills/MATERIAL.md) para aprender design e versionamento de skills.
+→ Leia o módulo [Módulo 15 — Design e Composição de Skills](../15-skills/MATERIAL.md) para aprender design e versionamento de skills.
 
 ---
 
@@ -388,4 +388,4 @@ Com caching, seus agentes são econômicos. Mas como organizar código em compon
 
 | ← Anterior | Índice | Próximo → |
 | --- | --- | --- |
-| [← P8: Streaming e Tempo Real](../13-streaming/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Capítulo 15 — Skills: Design de Skills →](../15-skills/MATERIAL.md) |
+| [← Módulo 13 — Streaming e Tempo Real](../13-streaming/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Módulo 15 — Design e Composição de Skills →](../15-skills/MATERIAL.md) |

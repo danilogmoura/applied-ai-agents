@@ -1,8 +1,8 @@
-# Capítulo 12 — Memória e Contexto
+# Módulo 12 — Memória e Contexto
 
 ## ⚠️ Pré-requisito
 
-Você precisa ter concluído o módulo [Capítulo 11 — Seguranca: Segurança e Guardrails](../11-seguranca/MATERIAL.md). Especificamente, precisa saber:
+Você precisa ter concluído o módulo [Módulo 11 — Segurança e Guardrails](../11-seguranca/MATERIAL.md). Especificamente, precisa saber:
 
 - Como implementar validação de inputs e outputs
 - Patterns de guardrails para prevenir comportamentos indesejados
@@ -414,7 +414,7 @@ Erros comuns que iniciantes encontram neste módulo:
 
 Com memória implementada, seus agentes mantêm contexto entre conversas. Mas respostas longas podem parecer lentas para o usuário — streaming resolve isso.
 
-→ Leia o módulo [Capítulo 13 — Streaming: Streaming](../13-streaming/MATERIAL.md) para aprender SSE e latência percebida.
+→ Leia o módulo [Módulo 13 — Streaming e Tempo Real](../13-streaming/MATERIAL.md) para aprender SSE e latência percebida.
 
 ---
 
@@ -428,4 +428,4 @@ Com memória implementada, seus agentes mantêm contexto entre conversas. Mas re
 
 | ← Anterior | Índice | Próximo → |
 | --- | --- | --- |
-| [← P6: Segurança e Guardrails](../11-seguranca/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Capítulo 13 — Streaming: Streaming e Tempo Real →](../13-streaming/MATERIAL.md) |
+| [← Módulo 11 — Segurança e Guardrails](../11-seguranca/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Módulo 13 — Streaming e Tempo Real →](../13-streaming/MATERIAL.md) |

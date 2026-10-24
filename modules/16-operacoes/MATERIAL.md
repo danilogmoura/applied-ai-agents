@@ -1,8 +1,8 @@
-# Capítulo 16 — Operations de Produção (CI/CD + Monitoramento)
+# Módulo 16 — Operations de Produção (CI/CD + Monitoramento)
 
 ## ⚠️ Pré-requisito
 
-Você precisa ter concluído o módulo [Capítulo 15 — Skills: Design e Composição de Skills](../15-skills/MATERIAL.md). Especificamente, precisa saber:
+Você precisa ter concluído o módulo [Módulo 15 — Design e Composição de Skills](../15-skills/MATERIAL.md). Especificamente, precisa saber:
 
 - Como projetar skills reutilizáveis e composáveis
 - Patterns de composição de skills para agentes complexos
@@ -404,4 +404,4 @@ Você chegou ao final do curso! Aqui estão sugestões de como continuar:
 
 | ← Anterior | Índice | Próximo → |
 | --- | --- | --- |
-| [← P10: Design de Skills](../15-skills/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | — |
+| [← Módulo 15 — Design e Composição de Skills](../15-skills/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | — |

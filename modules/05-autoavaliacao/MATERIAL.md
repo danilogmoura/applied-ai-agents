@@ -1,8 +1,8 @@
-# Capítulo 05 — Autoavaliação e Reflexão
+# Módulo 05 — Autoavaliação e Reflexão
 
 ## ⚠️ Pré-requisito
 
-Você precisa ter concluído o módulo [Capítulo 04 — Pipeline RAG](../04-rag/MATERIAL.md). Especificamente, precisa saber:
+Você precisa ter concluído o módulo [Módulo 04 — Pipeline RAG](../04-rag/MATERIAL.md). Especificamente, precisa saber:
 
 - Como um agente gera respostas usando LLMs e por que a autoavaliação é necessária antes de entregar
 
@@ -377,7 +377,7 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 
 Com autoavaliação, seu agente verifica a qualidade antes de entregar. Mas ainda só gera texto — não executa ações no mundo real.
 
-→ Leia o módulo [Capítulo 06 — Tool Calling: Tool Calling](../06-tool-calling/MATERIAL.md) para aprender como agentes usam ferramentas externas.
+→ Leia o módulo [Módulo 06 — Tool Calling (Uso Autônomo de Ferramentas)](../06-tool-calling/MATERIAL.md) para aprender como agentes usam ferramentas externas.
 
 ---
 
@@ -385,4 +385,4 @@ Com autoavaliação, seu agente verifica a qualidade antes de entregar. Mas aind
 
 | ← Anterior | Índice | Próximo → |
 | --- | --- | --- |
-| [← P2: Pipeline RAG](../04-rag/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Capítulo 06 — Tool Calling: Tool Calling →](../06-tool-calling/MATERIAL.md) |
+| [← Módulo 04 — Pipeline RAG](../04-rag/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Módulo 06 — Tool Calling (Uso Autônomo de Ferramentas) →](../06-tool-calling/MATERIAL.md) |

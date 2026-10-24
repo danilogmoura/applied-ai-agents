@@ -1,8 +1,8 @@
-# Capítulo 08 — Sistema Multiagente
+# Módulo 08 — Sistema Multiagente
 
 ## ⚠️ Pré-requisito
 
-Você precisa ter concluído o módulo [Capítulo 07 — Planejamento: Planejamento](../07-planejamento/MATERIAL.md). Especificamente, precisa saber:
+Você precisa ter concluído o módulo [Módulo 07 — Planejamento e Retomada](../07-planejamento/MATERIAL.md). Especificamente, precisa saber:
 
 - Como planejar sequências de ações para agentes autônomos
 - Quando um agente deve agir sozinho vs. coordenar com outros
@@ -426,7 +426,7 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 
 Com multi-agentes, você tem um sistema inteligente mas ainda local. Para usar em produção, precisa de uma interface acessível — uma API REST.
 
-→ Leia o módulo [Capítulo 09 — Producao: Deploy em Produção](../09-producao-api/MATERIAL.md) para aprender FastAPI e Docker.
+→ Leia o módulo [Módulo 09 — Produção (API REST com FastAPI)](../09-producao-api/MATERIAL.md) para aprender FastAPI e Docker.
 
 ---
 
@@ -440,4 +440,4 @@ Com multi-agentes, você tem um sistema inteligente mas ainda local. Para usar e
 
 | ← Anterior | Índice | Próximo → |
 | --- | --- | --- |
-| [← P3a-3: Planejamento e Retomada](../07-planejamento/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Capítulo 09 — Producao: Produção (FastAPI) →](../09-producao-api/MATERIAL.md) |
+| [← Módulo 07 — Planejamento e Retomada](../07-planejamento/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Módulo 09 — Produção (API REST com FastAPI) →](../09-producao-api/MATERIAL.md) |

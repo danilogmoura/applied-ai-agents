@@ -1,4 +1,4 @@
-# Capítulo 02 — Primeiro Fluxo com LLM
+# Módulo 02 — Primeiro Fluxo com LLM
 
 ## ⚙️ Setup Obrigatório
 
@@ -8,7 +8,7 @@
 
 ## ⚠️ Pré-requisito: Leia os Fundamentos Primeiro
 
-Se você **não sabe nada sobre IA ou LLM**, leia primeiro o módulo [01-fundamentos/MATERIAL.md](../01-fundamentos/MATERIAL.md). Ele cobre:
+Se você **não sabe nada sobre IA ou LLM**, leia primeiro o módulo [Módulo 01 — Fundamentos: O que é IA e LLM?](../01-fundamentos/MATERIAL.md). Ele cobre:
 
 - O que é um LLM (e por que ele não "pensa")
 - Tokenização e custo
@@ -633,7 +633,7 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 
 Agora que você construiu seu primeiro agente, o próximo passo é aprender a **decidir quando usar IA**. Nem toda tarefa precisa de um LLM — às vezes regras heurísticas são melhores (mais rápidas, mais baratas, mais previsíveis).
 
-→ Leia o módulo [Capítulo 03 — Analise de Viabilidade: Análise de Viabilidade](../03-viabilidade/MATERIAL.md) para aprender a fazer benchmarks comparativos.
+→ Leia o módulo [Módulo 03 — Análise de Viabilidade](../03-viabilidade/MATERIAL.md) para aprender a fazer benchmarks comparativos.
 
 ---
 
@@ -662,4 +662,4 @@ Agora que você construiu seu primeiro agente, o próximo passo é aprender a **
 
 | ← Anterior | Índice | Próximo → |
 | --- | --- | --- |
-| [← P0-F: Fundamentos](../01-fundamentos/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Capítulo 03 — Analise de Viabilidade: Análise de Viabilidade →](../03-viabilidade/MATERIAL.md) |
+| [← Módulo 01 — Fundamentos: O que é IA e LLM?](../01-fundamentos/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Módulo 03 — Análise de Viabilidade →](../03-viabilidade/MATERIAL.md) |

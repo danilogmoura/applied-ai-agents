@@ -1,8 +1,8 @@
-# Capítulo 15 — Design e Composição de Skills
+# Módulo 15 — Design e Composição de Skills
 
 ## ⚠️ Pré-requisito
 
-Você precisa ter concluído o módulo [Capítulo 14 — Cache: Cache e Otimização](../14-cache/MATERIAL.md). Especificamente, precisa saber:
+Você precisa ter concluído o módulo [Módulo 14 — Cache e Otimização de Custo](../14-cache/MATERIAL.md). Especificamente, precisa saber:
 
 - Como implementar cache para reduzir custo e latência
 - Estratégias de invalidation e TTL para caches de LLM
@@ -444,7 +444,7 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 
 Com skills versionadas e pipelines compostos, seu sistema está organizado. Mas como fazer deploy automático com monitoramento e rollback?
 
-→ Leia o módulo [Capítulo 16 — Operations: Production Ops](../16-operacoes/MATERIAL.md) para aprender CI/CD, monitoring e métricas.
+→ Leia o módulo [Módulo 16 — Operations de Produção (CI/CD + Monitoramento)](../16-operacoes/MATERIAL.md) para aprender CI/CD, monitoring e métricas.
 
 ---
 
@@ -458,4 +458,4 @@ Com skills versionadas e pipelines compostos, seu sistema está organizado. Mas 
 
 | ← Anterior | Índice | Próximo → |
 | --- | --- | --- |
-| [← P9: Cache e Otimização de Custo](../14-cache/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Capítulo 16 — Operations: Operations de Produção →](../16-operacoes/MATERIAL.md) |
+| [← Módulo 14 — Cache e Otimização de Custo](../14-cache/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Módulo 16 — Operations de Produção (CI/CD + Monitoramento) →](../16-operacoes/MATERIAL.md) |

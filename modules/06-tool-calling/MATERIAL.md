@@ -1,8 +1,8 @@
-# Capítulo 06 — Tool Calling (Uso Autônomo de Ferramentas)
+# Módulo 06 — Tool Calling (Uso Autônomo de Ferramentas)
 
 ## ⚠️ Pré-requisito
 
-Você precisa ter concluído o módulo [Capítulo 05 — Autoavaliacao: Autoavaliação](../05-autoavaliacao/MATERIAL.md). Especificamente, precisa saber:
+Você precisa ter concluído o módulo [Módulo 05 — Autoavaliação e Reflexão](../05-autoavaliacao/MATERIAL.md). Especificamente, precisa saber:
 
 - Por que avaliar a resposta antes de entregá-la ao usuário
 - Como configurar limites seguros de iteração (max_iterations)
@@ -425,7 +425,7 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 
 Com tool calling, seu agente pode executar ações. Mas o mundo real é caótico — APIs falham, timeouts acontecem, serviços ficam indisponíveis.
 
-→ Leia o módulo [Capítulo 07 — Planejamento: Resilience Patterns](../07-planejamento/MATERIAL.md) para aprender circuit breakers, checkpoints e retry strategies.
+→ Leia o módulo [Módulo 07 — Planejamento e Retomada](../07-planejamento/MATERIAL.md) para aprender circuit breakers, checkpoints e retry strategies.
 
 ---
 
@@ -433,4 +433,4 @@ Com tool calling, seu agente pode executar ações. Mas o mundo real é caótico
 
 | ← Anterior | Índice | Próximo → |
 | --- | --- | --- |
-| [← P3a-1: Autoavaliação](../05-autoavaliacao/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Capítulo 07 — Planejamento: Planejamento e Retomada →](../07-planejamento/MATERIAL.md) |
+| [← Módulo 05 — Autoavaliação e Reflexão](../05-autoavaliacao/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Módulo 07 — Planejamento e Retomada →](../07-planejamento/MATERIAL.md) |

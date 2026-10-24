@@ -1,8 +1,8 @@
-# Capítulo 07 — Planejamento e Retomada
+# Módulo 07 — Planejamento e Retomada
 
 ## ⚠️ Pré-requisito
 
-Você precisa ter concluído o módulo [Capítulo 06 — Tool Calling: Tool Calling](../06-tool-calling/MATERIAL.md). Especificamente, precisa saber:
+Você precisa ter concluído o módulo [Módulo 06 — Tool Calling (Uso Autônomo de Ferramentas)](../06-tool-calling/MATERIAL.md). Especificamente, precisa saber:
 
 - Como definir schemas JSON para ferramentas com descrições claras
 - O pattern de tool calling (decide → executa → retorna resultado)
@@ -354,7 +354,7 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 
 Com resilience patterns, seu agente individual sobrevive a falhas. Mas tarefas complexas exigem especialização — ninguém espera que um único agente faça tudo bem.
 
-→ Leia o módulo [Capítulo 08 — Sistema Multiagente: Multi-Agent Supervisor](../08-multiagente/MATERIAL.md) para aprender arquitetura multiagente.
+→ Leia o módulo [Módulo 08 — Sistema Multiagente](../08-multiagente/MATERIAL.md) para aprender arquitetura multiagente.
 
 ---
 
@@ -368,4 +368,4 @@ Com resilience patterns, seu agente individual sobrevive a falhas. Mas tarefas c
 
 | ← Anterior | Índice | Próximo → |
 | --- | --- | --- |
-| [← P3a-2: Tool Calling](../06-tool-calling/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Capítulo 08 — Sistema Multiagente: Sistema Multiagente →](../08-multiagente/MATERIAL.md) |
+| [← Módulo 06 — Tool Calling (Uso Autônomo de Ferramentas)](../06-tool-calling/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Módulo 08 — Sistema Multiagente →](../08-multiagente/MATERIAL.md) |

@@ -1,4 +1,4 @@
-# Capítulo 01 — Fundamentos: O que é IA e LLM?
+# Módulo 01 — Fundamentos: O que é IA e LLM?
 
 Este módulo é o **ponto de partida obrigatório** para quem nunca estudou IA ou LLM. Ele responde às perguntas fundamentais que todo agente de IA pressupõe.
 
@@ -460,7 +460,7 @@ Antes de começar a programar, saiba quanto custa brincar com IA:
 
 Agora que você entende o que é um LLM e como ele funciona por dentro, está pronto para construir seu primeiro agente de IA.
 
-→ Leia o módulo [Capítulo 02 — Primeiro Fluxo com LLM](../02-primeiro-llm/MATERIAL.md) para implementar um classificador de tickets com esqueleto mínimo.
+→ Leia o módulo [Módulo 02 — Primeiro Fluxo com LLM](../02-primeiro-llm/MATERIAL.md) para implementar um classificador de tickets com esqueleto mínimo.
 
 ---
 
@@ -523,4 +523,4 @@ Escolha UM dos prompts que você reescreveu na Parte A. Envie-o para um LLM (pod
 
 | ← Anterior | Índice | Próximo → |
 | --- | --- | --- |
-| — | [📖 Sumário do curso](../../README.md) | [Capítulo 02 — Primeiro Fluxo com LLM: Primeiro Fluxo com LLM →](../02-primeiro-llm/MATERIAL.md) |
+| — | [📖 Sumário do curso](../../README.md) | [Módulo 02 — Primeiro Fluxo com LLM →](../02-primeiro-llm/MATERIAL.md) |

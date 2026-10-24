@@ -1,8 +1,8 @@
-# Capítulo 13 — Streaming e Tempo Real
+# Módulo 13 — Streaming e Tempo Real
 
 ## ⚠️ Pré-requisito
 
-Você precisa ter concluído o módulo [Capítulo 12 — Memoria: Memória e Contexto](../12-memoria/MATERIAL.md). Especificamente, precisa saber:
+Você precisa ter concluído o módulo [Módulo 12 — Memória e Contexto](../12-memoria/MATERIAL.md). Especificamente, precisa saber:
 
 - Como gerenciar contexto em agentes de longo prazo
 - Patterns de memória de curto e longo prazo
@@ -346,7 +346,7 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 
 Com streaming, seus agentes respondem rapidamente. Mas respostas repetidas gastam tokens desnecessariamente — cache resolve isso.
 
-→ Leia o módulo [Capítulo 14 — Cache: Caching](../14-cache/MATERIAL.md) para aprender estratégias de cache e políticas de evicção.
+→ Leia o módulo [Módulo 14 — Cache e Otimização de Custo](../14-cache/MATERIAL.md) para aprender estratégias de cache e políticas de evicção.
 
 ---
 
@@ -360,4 +360,4 @@ Com streaming, seus agentes respondem rapidamente. Mas respostas repetidas gasta
 
 | ← Anterior | Índice | Próximo → |
 | --- | --- | --- |
-| [← P7: Memória e Contexto](../12-memoria/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Capítulo 14 — Cache: Cache e Otimização de Custo →](../14-cache/MATERIAL.md) |
+| [← Módulo 12 — Memória e Contexto](../12-memoria/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Módulo 14 — Cache e Otimização de Custo →](../14-cache/MATERIAL.md) |

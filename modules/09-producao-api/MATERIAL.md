@@ -1,8 +1,8 @@
-# Capítulo 09 — Produção (API REST com FastAPI)
+# Módulo 09 — Produção (API REST com FastAPI)
 
 ## ⚠️ Pré-requisito
 
-Você precisa ter concluído o módulo [Capítulo 08 — Sistema Multiagente: Multiagente](../08-multiagente/MATERIAL.md). Especificamente, precisa saber:
+Você precisa ter concluído o módulo [Módulo 08 — Sistema Multiagente](../08-multiagente/MATERIAL.md). Especificamente, precisa saber:
 
 - Como construir sistemas multiagente coordenados
 - Quando usar arquitetura single-agent vs. multi-agent
@@ -419,7 +419,7 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 
 Com sua API em produção, seus agentes estão respondendo perguntas. Mas como saber se as respostas estão boas? Precisamos de avaliação sistemática.
 
-→ Leia o módulo [Capítulo 10 — Avaliacao: Avaliação de Qualidade](../10-avaliacao/MATERIAL.md) para aprender golden datasets e testes A/B.
+→ Leia o módulo [Módulo 10 — Avaliação e Testes](../10-avaliacao/MATERIAL.md) para aprender golden datasets e testes A/B.
 
 ---
 
@@ -433,4 +433,4 @@ Com sua API em produção, seus agentes estão respondendo perguntas. Mas como s
 
 | ← Anterior | Índice | Próximo → |
 | --- | --- | --- |
-| [← P3b: Sistema Multiagente](../08-multiagente/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Capítulo 10 — Avaliacao: Avaliação e Testes →](../10-avaliacao/MATERIAL.md) |
+| [← Módulo 08 — Sistema Multiagente](../08-multiagente/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [Módulo 10 — Avaliação e Testes →](../10-avaliacao/MATERIAL.md) |
