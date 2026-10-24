@@ -20,12 +20,12 @@ _Conceitos analisados: 12 · limiar sim ≥ 0.50_
   > Avoiding Common Pitfalls in Idea Generation Ideas die long before a backtest ever sees them; they wither in quiet corners, assumptions left unspoken, data quietly poisoned, incentives that favor flash over…
 
 ## O prefixo beta. na API
+- ✅ sim=0.55 [EN] — `Changes · `fastapi-docs-en/docs/release-notes.md``
+  > PR [#9816]( github.com/tiangolo/fastapi/pull/9816) by [@tiangolo]( github.com/tiangolo), included all the work done (in multiple PRs) on the beta branch (`main-pv2`)
 - ✅ sim=0.55 [EN] — `Path · `fastapi-docs-en/docs/tutorial/first-steps.md``
   > Path "Path" here refers to the last part of the URL starting from the first `/`. So, in a URL like: ``` example.com/items/foo ``` ...the path would be: ``` /items/foo ``` /// note A "path" is also commonly called an…
 - ✅ sim=0.54 [EN] — `API "schema" · `fastapi-docs-en/docs/tutorial/first-steps.md``
   > API "schema" In this case, [OpenAPI]( github.com/OAI/OpenAPI-Specification) is a specification that dictates how to define a schema of your API. This schema definition includes your API paths, the possible parameters…
-- ✅ sim=0.53 [EN] — `Metadata for API · `fastapi-docs-en/docs/tutorial/metadata.md``
-  > Metadata for API You can set the following fields that are used in the OpenAPI specification and the automatic API docs UIs
 
 ## Fallback se beta.parse falhar
 - ✅ sim=0.53 [EN] — `Disable Fallback · `fastapi-docs-en/docs/tutorial/frontend.md``

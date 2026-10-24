@@ -136,9 +136,12 @@ _Conceitos analisados: 19 · limiar sim ≥ 0.50_
   > Read the Tutorial first The next sections assume you already read the main [Tutorial - User Guide: Security](../../tutorial/security/index.md). They are all based on the same concepts, but allow some extra…
 
 ## Livros
-- ⚪ **Sem cobertura clara nas fontes** (melhor sim=0.47).
+- ✅ sim=0.53 [EN] · _ponte: “Text Corpus”_ — `LLM Design Patterns · Ken Huang · 2025 · OEBPS/B31249_05`
+  > Here’s how you might use this in a training script: # Usage in training script dataset_info = load_dataset_info("dataset_info.json") dataset = load_dataset() # Your dataset loading function model = initialize_model() #…
+- ✅ sim=0.51 [EN] · _ponte: “Text Corpus”_ — `LLM Design Patterns · Ken Huang · 2025 · OEBPS/B31249_04`
+  > To better understand the context in which large datasets are used, it is helpful to explore a specific example. One such dataset used in the preceding code snippet is the Colossal Clean Crawled Corpus (C4) dataset,…
 
 
 ---
 
-**Resumo:** 18/19 conceitos com suporte (1 sem cobertura).
+**Resumo:** 19/19 conceitos com suporte (0 sem cobertura).

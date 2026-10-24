@@ -6,7 +6,10 @@
 _Conceitos analisados: 23 · limiar sim ≥ 0.50_
 
 ## Terminal básico
-- ⚪ **Sem cobertura clara nas fontes** (melhor sim=0.49).
+- ✅ sim=0.56 [EN] · _ponte: “Command Line Interface”_ — `Typer, the FastAPI of CLIs · `fastapi-docs-en/docs/index.md``
+  > Typer**, the FastAPI of CLIs <a href=" typer.tiangolo.com"><img src=" typer.tiangolo.com/img/logo-margin/logo-margin-vector.svg" style="width: 20%;"></a> If you are building a <abbr title="Command Line…
+- ✅ sim=0.51 [EN] · _ponte: “Command Line Interface”_ — `FastAPI CLI · `fastapi-docs-en/docs/fastapi-cli.md``
+  > FastAPI CLI **FastAPI <abbr title="command line interface">CLI</abbr>** is a command line program that you can use to serve your FastAPI app, manage your FastAPI project, and more. When you add FastAPI to your project…
 
 ## Dependências Necessárias
 - ✅ sim=0.70 [EN] — `Dependencies - Depends() and Security() · `fastapi-docs-en/docs/reference/dependencies.md``
@@ -54,7 +57,10 @@ _Conceitos analisados: 23 · limiar sim ≥ 0.50_
 - ⚪ **Sem cobertura clara nas fontes** (melhor sim=0.44).
 
 ## Mitigações práticas
-- ⚪ **Sem cobertura clara nas fontes** (melhor sim=0.45).
+- ✅ sim=0.52 [EN] · _ponte: “Practical Risk Mitigation”_ — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c0`
+  > Risk management is taxonomy and control system braided into a single muscle: name the threats, measure their scale, and automate the corrective reflex. Think in five languages at once , market moves, liquidity and…
+- ✅ sim=0.52 [EN] · _ponte: “Practical Risk Mitigation”_ — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c0`
+  > Operational rigor is where theory earns its keep. Instrumentation must stream live P&L attribution, realized versus expected slippage, rolling information coefficients for signals, position limits, and concentration…
 
 ## Prompt
 - ✅ sim=0.68 [EN] — `Building LLMs for Production · Peters, Louie & Bouchard, Louis-François · 2024 · OEBPS/c198`
@@ -107,7 +113,12 @@ _Conceitos analisados: 23 · limiar sim ≥ 0.50_
   > Due to this trade-off, focusing on an inference service based solely on its throughput and cost can lead to a bad user experience. Instead, some teams focus on goodput, a metric adapted from networking for LLM…
 
 ## Alucinação
-- ⚪ **Sem cobertura clara nas fontes** (melhor sim=0.46).
+- ✅ sim=0.58 [EN] · _ponte: “Hallucination”_ — `AI Engineering · Chip Huyen · 2024 · OEBPS/ch02`
+  > While hallucination became a prominent issue with the rise of LLMs, hallucination was a common phenomenon for generative models even before the term foundation model and the transformer architecture were introduced.…
+- ✅ sim=0.55 [EN] · _ponte: “Hallucination”_ — `AI Engineering · Chip Huyen · 2024 · OEBPS/ch02`
+  > The first hypothesis, originally expressed by Ortega et al. at DeepMind in 2021, is that a language model hallucinates because it can’t differentiate between the data it’s given and the data it generates. Let’s go…
+- ✅ sim=0.55 [EN] · _ponte: “Hallucination”_ — `AI Engineering · Chip Huyen · 2024 · OEBPS/ch02`
+  > Figure 2-26. Hallucination is worse for the model that uses both RLHF and SFT (InstructGPT) compared to the same model that uses only SFT (Ouyang et al., 2022). Based on the assumption that a foundation model knows what…
 
 ## Fine-tuning
 - ✅ sim=0.69 [EN] — `Building LLMs for Production · Peters, Louie & Bouchard, Louis-François · 2024 · OEBPS/c4KH`
@@ -150,9 +161,10 @@ _Conceitos analisados: 23 · limiar sim ≥ 0.50_
   > Cost metrics: how much it costs per inference request. Other metrics such as interpretability and fairness. If you’re not yet sure what metrics you want to use, don’t worry. The rest of the book will cover many of these…
 
 ## Livros em Inglês
-- ⚪ **Sem cobertura clara nas fontes** (melhor sim=0.46).
+- ✅ sim=0.50 [EN] · _ponte: “English monolingual corpus”_ — `LLM Design Patterns · Ken Huang · 2025 · OEBPS/B31249_04`
+  > To better understand the context in which large datasets are used, it is helpful to explore a specific example. One such dataset used in the preceding code snippet is the Colossal Clean Crawled Corpus (C4) dataset,…
 
 
 ---
 
-**Resumo:** 18/23 conceitos com suporte (5 sem cobertura).
+**Resumo:** 22/23 conceitos com suporte (1 sem cobertura).

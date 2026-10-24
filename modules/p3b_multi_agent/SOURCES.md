@@ -20,7 +20,12 @@ _Conceitos analisados: 7 · limiar sim ≥ 0.50_
   > Zhang, W., Wang, Z., Li, Y., Chen, Z., Zhang, Z., Liu, S., ... & Liu, B. (2025). AgentOrchestra: A Hierarchical Multi-Agent Framework for General-Purpose Task Solving. : A Hierarchical Multi-Agent Framework for…
 
 ## Arquitetura Supervisor-Especialista
-- ⚪ **Sem cobertura clara nas fontes** (melhor sim=0.46).
+- ✅ sim=0.65 [EN] · _ponte: “Mixture of Experts”_ — `AI Engineering · Chip Huyen · 2024 · OEBPS/ch02`
+  > A type of sparse model that has gained popularity in recent years is mixture-of-experts (MoE) (Shazeer et al., 2017). An MoE model is divided into different groups of parameters, and each group is an expert. Only a…
+- ✅ sim=0.60 [EN] · _ponte: “Mixture of Experts”_ — `AI Engineering · Chip Huyen · 2024 · OEBPS/ch07`
+  > Layer stacking In this approach, you take different layers from one or more models and stack them on top of each other. For example, you might take the first layer from model 1 and the second layer from model 2. This…
+- ✅ sim=0.59 [EN] · _ponte: “Mixture of Experts”_ — `LLM Design Patterns · Ken Huang · 2025 · OEBPS/B31249_30`
+  > MoE architectures are a type of neural network architecture where, instead of a single large network, there are multiple smaller “expert” networks. During inference, a “routing network” dynamically selects and activates…
 
 ## Roteamento: LLM vs Heurísticas
 - ✅ sim=0.62 [EN] — `Systems Design for the LLM Era · Sampriti Mitra · OEBPS/Text/Index`
@@ -55,4 +60,4 @@ _Conceitos analisados: 7 · limiar sim ≥ 0.50_
 
 ---
 
-**Resumo:** 6/7 conceitos com suporte (1 sem cobertura).
+**Resumo:** 7/7 conceitos com suporte (0 sem cobertura).
