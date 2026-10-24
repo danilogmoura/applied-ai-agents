@@ -52,7 +52,8 @@ _Conceitos analisados: 11 · limiar sim ≥ 0.50_
   > It’s also important to clarify the role of humans in the application. Will AI provide background support to humans, make decisions directly, or both? For example, for a customer support chatbot, AI responses can be used…
 
 ## Whitelist
-- ⚪ **Sem cobertura clara nas fontes** (melhor sim=0.49).
+- ✅ sim=0.55 [EN] · _ponte: “allowlist”_ — `Wildcards · `fastapi-docs-en/docs/tutorial/cors.md``
+  > Wildcards It's also possible to declare the list as `"*"` (a "wildcard") to say that all are allowed. But that will only allow certain types of communication, excluding everything that involves credentials: Cookies,…
 
 ## Risk Level
 - ✅ sim=0.50 [EN] · _ponte: “风险等级”_ — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c0`
@@ -77,4 +78,4 @@ _Conceitos analisados: 11 · limiar sim ≥ 0.50_
 
 ---
 
-**Resumo:** 10/11 conceitos com suporte (1 sem cobertura).
+**Resumo:** 11/11 conceitos com suporte (0 sem cobertura).

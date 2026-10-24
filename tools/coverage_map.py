@@ -56,7 +56,12 @@ def translate_term(term: str, descriptor: str) -> list[str]:
     ctx = f" Contexto: {descriptor}" if descriptor else ""
     prompt = (
         "Responda APENAS com termos técnicos, uma linha cada, sem numeração nem explicação.\n"
-        f"Dê o equivalente em INGLÊS e, se houver termo consolidado, em CHINÊS (simplificado) "
+        "Use o TERMO TÉCNICO CANÔNICO do domínio de IA/engenharia de software em inglês — "
+        "NÃO uma tradução literal. Exemplos de correção de viés de tradução:\n"
+        "  'Whitelist' → 'allowlist' (não 'white list'); 'Blacklist' → 'denylist';\n"
+        "  'Memorando técnico' → 'decision memo' / 'architecture decision record' (não 'memorandum');\n"
+        "  'Ponto de equilíbrio' → 'break-even point'; 'Causa raiz' → 'root cause'.\n"
+        "Dê o equivalente canônico em INGLÊS e, se houver termo consolidado, em CHINÊS (simplificado) "
         f"deste conceito de IA:{ctx}\nConceito: {term}"
     )
     try:

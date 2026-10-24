@@ -22,7 +22,12 @@ _Conceitos analisados: 10 · limiar sim ≥ 0.50_
   > o pen w eights (Llama 3, Mistral) : We have full control of the data. This is required for strict air-gapped environments or for compliance. This trades operational complexity (GPU management) for compliance safety.…
 
 ## Memorando Técnico
-- ⚪ **Sem cobertura clara nas fontes** (melhor sim=0.45).
+- ✅ sim=0.57 [EN] · _ponte: “Architecture Decision Record”_ — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3H7`
+  > Technical choices matter only when married to plumbing that guarantees safe iteration. Architectures that separate ingestion, feature materialization, model inference, and execution orchestration reduce blast radius and…
+- ✅ sim=0.54 [EN] · _ponte: “Architecture Decision Record”_ — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3HZ`
+  > Archive with purpose. When you kill an idea, document exactly why and what would resurrect it, a new data source, cheaper execution, or lower engineering cost, so future teams don’t reanimate dead work without new…
+- ✅ sim=0.52 [EN] · _ponte: “Architecture Decision Record”_ — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3H3`
+  > Logs aren’t enough; traces must tell causality and context. Each decision record should include the optimization objective used, data provenance flags, any overrides or human notes, and the conflict_score that…
 
 ## Trade-offs na Prática
 - ✅ sim=0.52 [EN] — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3H3`
@@ -45,10 +50,16 @@ _Conceitos analisados: 10 · limiar sim ≥ 0.50_
   > It’s more helpful to look at latency in percentiles, as they tell you something about a certain percentage of your requests. The most common percentile is the 50th percentile, abbreviated as p50 (median). If the median…
 
 ## Threshold
-- ⚪ **Sem cobertura clara nas fontes** (melhor sim=0.46).
+- ✅ sim=0.53 [EN] · _ponte: “decision threshold”_ — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3HV`
+  > from scipy.stats import norm def z_score(live_series, backtest_series): mu_bt = backtest_series.mean() sigma_bt = backtest_series.std(ddof=1) + 1e-9 return (live_series.mean() - mu_bt) / sigma_bt def breach_prob(z):…
 
 ## Memorando
-- ⚪ **Sem cobertura clara nas fontes** (melhor sim=0.47).
+- ✅ sim=0.57 [EN] · _ponte: “Architecture Decision Record”_ — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3H7`
+  > Technical choices matter only when married to plumbing that guarantees safe iteration. Architectures that separate ingestion, feature materialization, model inference, and execution orchestration reduce blast radius and…
+- ✅ sim=0.54 [EN] · _ponte: “Architecture Decision Record”_ — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3HZ`
+  > Archive with purpose. When you kill an idea, document exactly why and what would resurrect it, a new data source, cheaper execution, or lower engineering cost, so future teams don’t reanimate dead work without new…
+- ✅ sim=0.52 [EN] · _ponte: “Architecture Decision Record”_ — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3H3`
+  > Logs aren’t enough; traces must tell causality and context. Each decision record should include the optimization objective used, data provenance flags, any overrides or human notes, and the conflict_score that…
 
 ## Break-even
 - ⚪ **Sem cobertura clara nas fontes** (melhor sim=0.40).
@@ -59,4 +70,4 @@ _Conceitos analisados: 10 · limiar sim ≥ 0.50_
 
 ---
 
-**Resumo:** 5/10 conceitos com suporte (5 sem cobertura).
+**Resumo:** 8/10 conceitos com suporte (2 sem cobertura).

@@ -6,10 +6,12 @@
 _Conceitos analisados: 23 · limiar sim ≥ 0.50_
 
 ## Terminal básico
-- ✅ sim=0.56 [EN] · _ponte: “Command Line Interface”_ — `Typer, the FastAPI of CLIs · `fastapi-docs-en/docs/index.md``
+- ✅ sim=0.57 [EN] · _ponte: “Command-Line Interface”_ — `Typer, the FastAPI of CLIs · `fastapi-docs-en/docs/index.md``
   > Typer**, the FastAPI of CLIs <a href=" typer.tiangolo.com"><img src=" typer.tiangolo.com/img/logo-margin/logo-margin-vector.svg" style="width: 20%;"></a> If you are building a <abbr title="Command Line…
-- ✅ sim=0.51 [EN] · _ponte: “Command Line Interface”_ — `FastAPI CLI · `fastapi-docs-en/docs/fastapi-cli.md``
+- ✅ sim=0.51 [EN] · _ponte: “Command-Line Interface”_ — `FastAPI CLI · `fastapi-docs-en/docs/fastapi-cli.md``
   > FastAPI CLI **FastAPI <abbr title="command line interface">CLI</abbr>** is a command line program that you can use to serve your FastAPI app, manage your FastAPI project, and more. When you add FastAPI to your project…
+- ✅ sim=0.51 [EN] · _ponte: “Command-Line Interface”_ — `AI Engineering · Chip Huyen · 2024 · OEBPS/ch01`
+  > It’s possible to get a model to do amazing things with just prompts. The right instructions can get a model to perform the task you want, in the format of your choice. Prompt engineering is not just about telling a…
 
 ## Dependências Necessárias
 - ✅ sim=0.70 [EN] — `Dependencies - Depends() and Security() · `fastapi-docs-en/docs/reference/dependencies.md``
@@ -57,10 +59,12 @@ _Conceitos analisados: 23 · limiar sim ≥ 0.50_
 - ⚪ **Sem cobertura clara nas fontes** (melhor sim=0.44).
 
 ## Mitigações práticas
-- ✅ sim=0.52 [EN] · _ponte: “Practical Risk Mitigation”_ — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c0`
+- ✅ sim=0.52 [EN] · _ponte: “Risk Mitigation Strategies”_ — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3HR`
+  > Risk Management in Strategy Deployment A visualization is the last human-readable contract you sign with a complex system before you commit capital. Charts on trading desks do brutal work: they translate microstructure…
+- ✅ sim=0.51 [EN] · _ponte: “Risk Mitigation Strategies”_ — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c0`
   > Risk management is taxonomy and control system braided into a single muscle: name the threats, measure their scale, and automate the corrective reflex. Think in five languages at once , market moves, liquidity and…
-- ✅ sim=0.52 [EN] · _ponte: “Practical Risk Mitigation”_ — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c0`
-  > Operational rigor is where theory earns its keep. Instrumentation must stream live P&L attribution, realized versus expected slippage, rolling information coefficients for signals, position limits, and concentration…
+- ✅ sim=0.50 [EN] · _ponte: “Risk Mitigation Strategies”_ — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3H3`
+  > df['pred'] = df[score_col] > threshold def group_stats(g): tp = ((g['pred']) & (g[true_col] == 1)).sum() fp = ((g['pred']) & (g[true_col] == 0)).sum() fn = ((~g['pred']) & (g[true_col] == 1)).sum() tn = ((~g['pred']) &…
 
 ## Prompt
 - ✅ sim=0.68 [EN] — `Building LLMs for Production · Peters, Louie & Bouchard, Louis-François · 2024 · OEBPS/c198`
