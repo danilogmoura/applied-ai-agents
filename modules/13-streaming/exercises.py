@@ -16,6 +16,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from rich.console import Console
 from rich.panel import Panel
 
+from shared.hints import format_hint
+
 console = Console()
 
 
@@ -28,6 +30,9 @@ def test_01_streaming_chunks():
     TODO: Implemente geração de chunks de streaming.
     
     Regra: Cada chunk deve ter max_size bytes e manter integridade UTF-8.
+
+    HINT: fatie o texto em pedaços de até max_chunk_size caracteres usando slicing, dando
+    yield de cada um; a concatenação dos chunks deve reproduzir o texto original.
     """
     def stream_chunks(text: str, max_chunk_size: int = 50) -> Generator[str, None, None]:
         """TODO: Gere chunks de tamanho limitado mantendo integridade UTF-8."""
@@ -59,6 +64,9 @@ def test_02_sse_format():
     TODO: Formate chunks como SSE (Server-Sent Events).
     
     Formato SSE: "data: {json}\n\n"
+
+    HINT: serialise data com json.dumps() e envolva no prefixo 'data: ' seguido de dois
+    quebras de linha ('\n\n') ao final.
     """
     def to_sse(data: dict) -> str:
         """TODO: Converta dict para formato SSE válido: data: {json}\n\n"""
@@ -87,6 +95,9 @@ def test_02_sse_format():
 def test_03_token_latency():
     """
     TODO: Meça latência entre tokens consecutivos (TTFT - Time To First Token).
+
+    HINT: ttft é measured[0]; avg_latency = soma / quantidade; p95 = o valor no índice ~
+    95% da lista ordenada (garanta p95 >= média).
     """
     import time
     
@@ -126,6 +137,9 @@ def test_04_streaming_vs_blocking():
     
     Streaming: usuário vê progresso desde o primeiro token.
     Blocking: usuário espera tudo antes de ver qualquer coisa.
+
+    HINT: perceived_blocking é o tempo total (blocking_time×1000); perceived_streaming é
+    streaming_first_token_ms — a melhoria relativa sai da fórmula já pronta.
     """
     total_tokens = 100
     tokens_per_second = 30
@@ -160,6 +174,9 @@ def test_05_error_recovery():
     TODO: Implemente recuperação de erro durante streaming.
     
     Se conexão cai, deve reconectar e continuar do último chunk.
+
+    HINT: se text for None, retorne False sem avançar; senão registre o chunk e atualize
+    last_index = index — get_resume_point() usa esse valor para retomar.
     """
     class StreamRecovery:
         def __init__(self):
@@ -215,9 +232,13 @@ def run_all():
             passed += 1
         except AssertionError as e:
             console.print(f"[red]✗ {test_fn.__name__}: {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
         except Exception as e:
             console.print(f"[red]✗ {test_fn.__name__}: Erro — {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
     
     console.print(f"\nResultado: [bold green]{passed}/{passed+failed}[/bold green] passaram")

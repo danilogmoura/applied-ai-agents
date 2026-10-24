@@ -15,6 +15,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from rich.console import Console
 from rich.panel import Panel
 
+from shared.hints import format_hint
+
 console = Console()
 
 
@@ -28,6 +30,9 @@ def test_01_self_evaluation_score():
     
     Critérios: accuracy, completeness, clarity (cada um 0-10).
     Respostas curtas (<50 chars) devem ter score baixo.
+
+    HINT: em evaluate_response(), derive cada score do tamanho/conteúdo da resposta e
+    retorne o dict com as chaves accuracy, completeness e clarity, todas entre 0 e 10.
     """
     response = "O reembolso deve ser solicitado em até 30 dias após a compra."
     
@@ -56,6 +61,9 @@ def test_02_iteration_loop():
     TODO: Implemente o loop de refinamento iterativo.
     
     Regra: max 3 iterações, para quando score >= threshold.
+
+    HINT: no laço, avalie a resposta atual; se o score superar best_score guarde-o, e
+    pare com break ao atingir threshold — caso contrário gere a próxima iteração.
     """
     def generate_response(iteration: int) -> str:
         responses = [
@@ -105,6 +113,9 @@ def test_02_iteration_loop():
 def test_03_max_iterations_guard():
     """
     TODO: Verifique que o loop para mesmo sem atingir threshold.
+
+    HINT: use um contador e interrompa o laço quando ele chegar a max_iterations, mesmo
+    que o resultado nunca atinja o threshold — o guard limita o gasto.
     """
     max_iterations = 5
     
@@ -142,6 +153,9 @@ def test_03_max_iterations_guard():
 def test_04_cost_accumulation():
     """
     TODO: Calcule custo total das múltiplas iterações usando shared.cost.
+
+    HINT: some os custos de cada iteração com sum() e divida pela quantidade para obter
+    a média; estimate_cost() já retorna o custo de cada par input/output.
     """
     from shared.cost import estimate_cost, format_cost
     
@@ -172,6 +186,9 @@ def test_05_response_improvement():
     """
     TODO: Verifique que respostas melhoram ao longo das iterações.
     Cada iteração subsequente deve ter score >= anterior.
+
+    HINT: compare cada elemento com o seguinte (scores_history[i] <= scores_history[i+1])
+    e confirme que todos crescem; a melhoria é (último - primeiro) / primeiro.
     """
     scores_history = [3.0, 6.5, 8.2, 9.0]
     
@@ -208,9 +225,13 @@ def run_all():
             passed += 1
         except AssertionError as e:
             console.print(f"[red]✗ {test_fn.__name__}: {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
         except Exception as e:
             console.print(f"[red]✗ {test_fn.__name__}: Erro — {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
     console.print(f"\nResultado: [bold green]{passed}/{passed+failed}[/bold green] passaram")
     if not failed:

@@ -15,6 +15,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from rich.console import Console
 from rich.panel import Panel
 
+from shared.hints import format_hint
+
 console = Console()
 
 
@@ -42,6 +44,9 @@ def test_01_api_endpoint_validation():
     Testa validação de endpoints da API.
     
     Simula uma API FastAPI com endpoints de saúde e processamento.
+
+    HINT: valide que mock_get_health() traz status='healthy' e uptime > 0, e que
+    mock_post_classify({'text': ...}) devolve classification e confidence em [0,1].
     """
     def mock_get_health() -> dict:
         return {"status": "healthy", "uptime_seconds": 3600}
@@ -76,6 +81,9 @@ def test_01_api_endpoint_validation():
 def test_02_input_validation():
     """
     Testa validação de inputs com regras Pydantic-like.
+
+    HINT: em validate(), acrescente mensagens à lista quando text estiver vazio ou quando
+    len(text) passar de 4000; entrada válida retorna lista vazia.
     """
     class RequestValidator:
         def __init__(self, text: str, model: str = "gpt-4o-mini"):
@@ -127,6 +135,9 @@ def test_03_middleware_timing():
     
     O middleware deve registrar timing para cada request,
     permitindo identificar gargalos no sistema.
+
+    HINT: em measure_middleware(), registre um instante antes e outro depois de chamar
+    func(*args); converta a diferença para ms e gere um request_id único.
     """
     import time
     
@@ -161,6 +172,9 @@ def test_04_docker_configuration():
       - Healthcheck configurado (monitoramento contínuo)
     
     Em produção, usaríamos docker-compose ou K8s manifests.
+
+    HINT: confira que image começa com 'python:', que a porta 8000 está mapeada, que
+    OPENAI_API_KEY existe em env e que há uma chave healthcheck.
     """
     docker_config = {
         "image": "python:3.12-slim",
@@ -201,6 +215,9 @@ def test_05_response_format():
     
     Meta inclui metadados comuns (timestamp, version).
     Consistência facilita parsing pelo cliente frontend.
+
+    HINT: monte {'status': 'success', 'data': ..., 'meta': ...} quando success for True,
+    e {'status': 'error', 'error': ..., 'meta': ...} caso contrário.
     """
     def format_response(success: bool, data=None, error=None) -> dict:
         """TODO: Formate resposta no padrão consistente."""
@@ -242,9 +259,13 @@ def run_all():
             passed += 1
         except AssertionError as e:
             console.print(f"[red]✗ {test_fn.__name__}: {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
         except Exception as e:
             console.print(f"[red]✗ {test_fn.__name__}: Erro — {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
     
     console.print(f"\nResultado: [bold green]{passed}/{passed+failed}[/bold green] passaram")

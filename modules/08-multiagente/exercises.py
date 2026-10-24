@@ -16,6 +16,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from rich.console import Console
 from rich.panel import Panel
 
+from shared.hints import format_hint
+
 console = Console()
 
 
@@ -54,6 +56,9 @@ def test_01_supervisor_routing():
     - "preço", "cobrança", "fatura" → "billing"
     - "como funciona", "tutorial" → "support"
     - demais → "generalist"
+
+    HINT: minúsculize a tarefa e procure qual especialista tem alguma keyword presente no
+    texto; sem nenhuma correspondência, retorne 'generalist'.
     """
     specialists = [
         {"name": "engineer", "keywords": ["bug", "erro", "crash", "falha"]},
@@ -94,6 +99,9 @@ def test_02_specialist_failure():
     Cenário: Engineer indisponível (servidor down).
     Fallback: redistribuir para outro especialista disponível.
     Prioridade: billing → support → generalist.
+
+    HINT: no bloco except, percorra os especialistas restantes na ordem de prioridade e
+    tente execute_task com cada um até algum não lançar exceção.
     """
     specialists = ["engineer", "billing", "support", "generalist"]
     
@@ -136,6 +144,9 @@ def test_03_agent_coordination():
     - researcher: coleta dados e insights
     - writer: produz relatório baseado nos findings
     Contexto compartilhado garante consistência entre etapas.
+
+    HINT: em share_context(), chame other.receive_context(self.name, self.context) para
+    repassar seus dados — receive_context já prefixa as chaves com o nome do autor.
     """
     class Agent:
         def __init__(self, name: str):
@@ -184,6 +195,9 @@ def test_04_multi_agent_cost():
       - support: resposta genérica (~$0.003)
     
     Objetivo: calcular métricas de custo para otimização.
+
+    HINT: total_cost = soma dos valores do dict; most_expensive = a chave de maior valor;
+    cost_per_agent = total dividido pelo número de agentes.
     """
     agent_costs = {
         "supervisor": 0.002,
@@ -217,6 +231,9 @@ def test_05_hierarchical_scaling():
     TODO: Simule escala hierárquica (supervisor → sub-supervisores → especialistas).
     
     Regra: Cada nível adiciona ~20% de overhead.
+
+    HINT: multiplique base_cost pelo fator (1 + overhead_pct/100) de cada nível; mais
+    níveis implicam custo maior, mas ainda abaixo de 3x o flat.
     """
     base_cost = 0.01  # Custo sem hierarquia
     
@@ -267,9 +284,13 @@ def run_all():
             passed += 1
         except AssertionError as e:
             console.print(f"[red]✗ {test_fn.__name__}: {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
         except Exception as e:
             console.print(f"[red]✗ {test_fn.__name__}: Erro — {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
     
     console.print(f"\nResultado: [bold green]{passed}/{passed+failed}[/bold green] passaram")

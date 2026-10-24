@@ -16,6 +16,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from rich.console import Console
 from rich.panel import Panel
 
+from shared.hints import format_hint
+
 console = Console()
 
 
@@ -29,6 +31,9 @@ def test_01_cache_hit_miss():
     
     Regra: Se mesma query já foi feita → HIT (retorna cache).
             Se query nova → MISS (calcula e armazena).
+
+    HINT: em get(), retorne self.store[key] se existir (incrementando hits) ou None no miss
+    (incrementando misses); put() grava o valor no store.
     """
     class SimpleCache:
         def __init__(self):
@@ -88,6 +93,9 @@ def test_02_ttl_expiry():
     TODO: Implemente TTL (tempo de vida) para cache entries.
     
     Regra: Entry expira após N segundos.
+
+    HINT: em put(), guarde (value, time.now + ttl) como tupla; em get(), confira se o
+    timestamp de expiração já passou antes de devolver o valor.
     """
     import time
     
@@ -147,6 +155,9 @@ def test_03_cache_invalidation():
     Estratégias:
     - Eviction: LRU (Least Recently Used), FIFO, Random
     - Manual: delete(key), invalidate(pattern)
+
+    HINT: mantenha self.order como fila de uso recente; ao inserir além de capacity, remova
+    o item mais antigo (LRU). get() deve atualizar a posição de uso.
     """
     class LRUCache:
         def __init__(self, capacity: int = 3):
@@ -205,6 +216,9 @@ def test_03_cache_invalidation():
 def test_04_cost_savings():
     """
     TODO: Calcule economia de tokens/custo ao usar cache.
+
+    HINT: record_hit() incrementa cache_hits e soma tokens a total_tokens_saved;
+    savings_percentage() relaciona os tokens salvos com o custo total evitado.
     """
     def estimate_cost(tokens: int, cost_per_1k_tokens: float = 0.002) -> float:
         return (tokens / 1000) * cost_per_1k_tokens
@@ -272,9 +286,13 @@ def run_all():
             passed += 1
         except AssertionError as e:
             console.print(f"[red]✗ {test_fn.__name__}: {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
         except Exception as e:
             console.print(f"[red]✗ {test_fn.__name__}: Erro — {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
     
     console.print(f"\nResultado: [bold green]{passed}/{passed+failed}[/bold green] passaram")

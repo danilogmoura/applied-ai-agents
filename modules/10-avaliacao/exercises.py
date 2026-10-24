@@ -15,6 +15,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from rich.console import Console
 from rich.panel import Panel
 
+from shared.hints import format_hint
+
 console = Console()
 
 
@@ -53,6 +55,9 @@ def test_01_golden_dataset():
     Testa construção de golden dataset.
     
     Regra: Mínimo 5 exemplos cobrindo casos edge.
+
+    HINT: preencha golden_dataset com pelo menos 5 dicts, cada um trazendo as chaves
+    'input' e 'expected' não vazias, cobrindo casos normais e de borda.
     """
     # Construa o golden dataset aqui
     golden_dataset = []  # Placeholder vazio
@@ -77,6 +82,9 @@ def test_01_golden_dataset():
 def test_02_exact_match():
     """
     Testa métrica de exact match.
+
+    HINT: percorra predictions e ground_truth em paralelo, incremente correct quando os
+    itens forem iguais, e defina accuracy = correct / total.
     """
     predictions = ["URGENTE", "ALTA", "MEDIA", "BAIXA", "NORMAL"]
     ground_truth = ["URGENTE", "ALTA", "ERRADO", "BAIXA", "NORMAL"]
@@ -105,6 +113,9 @@ def test_02_exact_match():
 def test_03_fuzzy_match():
     """
     Testa fuzzy match (tolera pequenas diferenças).
+
+    HINT: implemente levenshtein_distance() via programação dinâmica (tabela de edições);
+    fuzzy_match() retorna True quando a distância é <= threshold.
     """
     dist1 = levenshtein_distance("URGENTE", "URGENTE")
     dist2 = levenshtein_distance("URGENTE", "URGENTEE")
@@ -135,6 +146,9 @@ def test_04_ab_testing():
     TODO: Compare duas versões usando teste Z.
     
     Versão A: 85/100 acertos | Versão B: 92/100 acertos
+
+    HINT: p_a e p_b são success/total de cada versão; difference = p_b - p_a; o z-score usa
+    a diferença dividida pelo erro padrão sqrt(p̄(1-p̄)(1/n_a + 1/n_b)).
     """
     version_a = {"success": 85, "total": 100}
     version_b = {"success": 92, "total": 100}
@@ -164,6 +178,9 @@ def test_05_regression_benchmarking():
     TODO: Detecte degradação de performance entre releases.
     
     Regra: Se accuracy cai > 2%, alertar regressão.
+
+    HINT: delta = baseline_accuracy - current_accuracy; has_regression é True quando delta
+    ultrapassa regression_threshold.
     """
     baseline_accuracy = 0.92
     current_accuracy = 0.88
@@ -201,9 +218,13 @@ def run_all():
             passed += 1
         except AssertionError as e:
             console.print(f"[red]✗ {test_fn.__name__}: {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
         except Exception as e:
             console.print(f"[red]✗ {test_fn.__name__}: Erro — {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
     
     console.print(f"\nResultado: [bold green]{passed}/{passed+failed}[/bold green] passaram")

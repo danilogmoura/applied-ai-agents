@@ -16,6 +16,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from rich.console import Console
 from rich.panel import Panel
 
+from shared.hints import format_hint
+
 console = Console()
 
 
@@ -36,6 +38,9 @@ def test_01_cicd_pipeline():
     
     Estágios: lint → test → build → deploy
     Se um estágio falha, pipeline para e marca falha.
+
+    HINT: execute() roda cada handler na ordem dos estágios acumulando o contexto; se um
+    lançar exceção, pare. Inclua 'stages_executed' com os nomes concluídos no resultado.
     """
     class CICDPipeline:
         def __init__(self):
@@ -111,6 +116,9 @@ def test_02_health_check():
     
     Status: healthy (tudo OK), degraded (algum warning),
     unhealthy (algum critical).
+
+    HINT: guarde os check_fn por nome; run_all() chama todos, monta a lista 'checks' e
+    deriva 'overall'/'status' do pior status visto (healthy < warning < critical).
     """
     class HealthCheckService:
         def __init__(self):
@@ -169,6 +177,9 @@ def test_03_monitoring_dashboard():
       - cost_per_hour: custo estimado por hora
     
     SLA: p95 < 200ms, error_rate < 0.01.
+
+    HINT: recorde_request() acumula latências, erros e total; get_percentiles() ordena as
+    latências e pega os índices ~50/95/99%; error_rate = errors / total_requests.
     """
     class MetricsCollector:
         def __init__(self):
@@ -230,6 +241,9 @@ def test_04_rollback_decision():
         Error rate > 10% -> rollback imediato
         Latency p95 > 2x baseline -> warning
         Accuracy drop > 5% vs baseline -> rollback
+
+    HINT: compare current vs self.baseline seguindo as regras; retorne action='rollback'
+    quando error_rate > 0.10 ou accuracy cair mais de 5%, senão 'keep'.
     """
     class RollbackDecider:
         def __init__(self, baseline: dict):
@@ -277,6 +291,9 @@ def test_05_ab_testing():
     TODO: Implemente framework de A/B testing para modelos.
     
     Compara performance de múltiplos modelos em produção.
+
+    HINT: record_result() acumula metric_value por variante; get_winner() compara a média de
+    cada variante e retorna o nome com maior média.
     """
     class ABTestManager:
         def __init__(self, test_id: str):
@@ -351,6 +368,9 @@ def test_06_health_check_monitoring():
     - Se success após falhas → reseta contador
     
     Isso permite detecção precoce de incidentes antes de afetar usuários.
+
+    HINT: em record_result(), incremente self.failures quando healthy=False e zere quando
+    True; ao atingir threshold, adicione um alerta CRITICAL em self.alerts.
     """
     class HealthMonitor:
         def __init__(self, threshold: int = 3):
@@ -411,9 +431,13 @@ def run_all():
             passed += 1
         except AssertionError as e:
             console.print(f"[red]✗ {test_fn.__name__}: {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
         except Exception as e:
             console.print(f"[red]✗ {test_fn.__name__}: Erro — {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
     
     console.print(f"\nResultado: [bold green]{passed}/{passed+failed}[/bold green] passaram")

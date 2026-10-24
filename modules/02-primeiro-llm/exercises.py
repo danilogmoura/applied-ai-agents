@@ -17,6 +17,8 @@ from rich.panel import Panel
 
 from shared.cost import count_tokens, estimate_cost, format_cost
 
+from shared.hints import format_hint
+
 console = Console()
 
 
@@ -31,6 +33,9 @@ def test_01_token_counting():
     TODO: Use count_tokens() de shared.cost para contar tokens do texto abaixo.
     Dica: importado automaticamente acima como 'from shared.cost import count_tokens'
     Cada ~4 caracteres em inglês ≈ 1 token.
+
+    HINT: chame count_tokens(text) e atribua o resultado a token_count; a função
+    já está importada no topo do arquivo.
     """
     text = "Não consigo acessar minha conta. Recebo erro 403."
     
@@ -55,6 +60,9 @@ def test_02_cost_estimation():
     
     TODO: Calcule o custo estimado usando estimate_cost() de shared.cost.
     Dica: importado automaticamente acima como 'from shared.cost import estimate_cost'
+
+    HINT: passe prompt_tokens e completion_tokens para estimate_cost(), escolhendo
+    o parâmetro model="gpt-4o-mini"; o retorno é o custo em dólares.
     """
     prompt_tokens = 50
     completion_tokens = 10
@@ -84,6 +92,9 @@ def test_03_ticket_classification():
     - "feedback", "sugestão", "pergunta geral" → "BAIXA"
     
     Dica: use ticket_text.lower() para comparar sem diferenciar maiúsculas/minúsculas.
+
+    HINT: converta o texto para minúsculas e verifique quais palavras-chave de cada
+    regra aparecem nele (operador in); retorne a categoria da primeira que casar.
     """
     def classify_ticket_manual(ticket_text: str) -> str:
         """TODO: Implemente esta função com base nas regras acima."""
@@ -114,6 +125,9 @@ def test_04_batch_processing():
     TODO: Processe múltiplos tickets e calcule custo total.
     
     Dica: use count_tokens() e estimate_cost() de shared.cost.
+
+    HINT: dentro do laço, conte os tokens de cada ticket com count_tokens() e some
+    estimate_cost(tokens, ~20) ao custo acumulado.
     """
     tickets = [
         {"id": 1, "text": "Erro 500 na API"},
@@ -150,6 +164,9 @@ def test_05_error_handling():
     TODO: Verifique se o código lida com erros gracefully.
     
     Teste casos extremos: string vazia, texto muito longo, caracteres especiais.
+
+    HINT: chame count_tokens() para os três casos (vazio, especial, longo) e garanta
+    que ele não lança exceção — string vazia deve retornar 0.
     """
     # String vazia
     empty_tokens = count_tokens("")
@@ -191,9 +208,13 @@ def run_all():
             passed += 1
         except AssertionError as e:
             console.print(f"[red]✗ {test_fn.__name__}: {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
         except Exception as e:
             console.print(f"[red]✗ {test_fn.__name__}: Erro — {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
     console.print(f"\nResultado: [bold green]{passed}/{passed+failed}[/bold green] passaram")
     if not failed:

@@ -16,6 +16,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from rich.console import Console
 from rich.panel import Panel
 
+from shared.hints import format_hint
+
 console = Console()
 
 
@@ -28,6 +30,9 @@ def test_01_circuit_breaker_states():
     TODO: Implemente o state machine do circuit breaker.
     
     Estados: CLOSED (normal) → OPEN (falhou) → HALF_OPEN (teste) → CLOSED/OPEN
+
+    HINT: em record_failure() incremente self.failures e passe para OPEN ao atingir o
+    threshold; em record_success() zere as falhas e volte para CLOSED.
     """
     class CircuitBreaker:
         def __init__(self, failure_threshold: int = 3):
@@ -83,6 +88,9 @@ def test_02_task_decomposition():
         {"id": 2, "task": "criar API de busca", "depends_on": [1]},
         {"id": 3, "task": "integrar frontend", "depends_on": [2]},
     ]
+
+    HINT: retorne uma lista de dicts com id, task e depends_on; a primeira subtarefa deve
+    ter depends_on vazio e cada dependência precisa apontar para um id já existente.
     """
     def decompose_task(task: str) -> list:
         """TODO: Retorne lista de dicts {'id': int, 'task': str, 'depends_on': list[int]}."""
@@ -121,6 +129,9 @@ def test_02_task_decomposition():
 def test_03_checkpoint_save_restore():
     """
     TODO: Implemente salvar e restaurar checkpoint.
+
+    HINT: save_checkpoint() devolve um dict com steps_completed, current_step e results;
+    restore_checkpoint() copia esses campos de volta para self.
     """
     class PlannerState:
         def __init__(self):
@@ -185,6 +196,9 @@ def test_03_checkpoint_save_restore():
 def test_04_step_validation():
     """
     Valide cada passo do plano antes de executar.
+
+    HINT: no laço, se step['action'] não estiver em valid_actions, adicione-o a
+    invalid_steps; todos os passos válidos mantêm a lista vazia.
     """
     plan = [
         {"action": "search_docs", "params": {"query": "reembolso"}},
@@ -218,6 +232,9 @@ def test_04_step_validation():
 def test_05_fallback_logic():
     """
     Implemente lógica de fallback quando passo principal falha.
+
+    HINT: chame execute_primary dentro de try/except; no except, marque used_fallback e
+    atribua a execute_fallback(action) ao result.
     """
     def execute_primary(action: str) -> str:
         if action == "api_call":
@@ -247,6 +264,9 @@ def test_05_fallback_logic():
 def test_06_plan_execution_metrics():
     """
     Colete métricas de execução do plano.
+
+    HINT: conte successes e failures por status; success_rate = successes / total_steps e
+    avg_latency = soma das latências / total_steps.
     """
     execution_log = [
         {"step": 1, "status": "success", "latency_ms": 150},
@@ -293,9 +313,13 @@ def run_all():
             passed += 1
         except AssertionError as e:
             console.print(f"[red]✗ {test_fn.__name__}: {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
         except Exception as e:
             console.print(f"[red]✗ {test_fn.__name__}: Erro — {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
     console.print(f"\nResultado: [bold green]{passed}/{passed+failed}[/bold green] passaram")
     if not failed:

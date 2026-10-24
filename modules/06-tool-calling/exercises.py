@@ -16,6 +16,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from rich.console import Console
 from rich.panel import Panel
 
+from shared.hints import format_hint
+
 console = Console()
 
 
@@ -28,6 +30,9 @@ def test_01_tool_schema():
     TODO: Implemente a geração de schema JSON para ferramentas.
     
     OpenAI espera: {"type": "function", "function": {...}}
+
+    HINT: retorne um dict com 'type' = 'function' e 'function' contendo name,
+    description e parameters (os três argumentos recebidos).
     """
     def create_tool_schema(name: str, description: str, parameters: dict) -> dict:
         """TODO: Retorne o schema no formato OpenAI function calling."""
@@ -63,6 +68,9 @@ def test_01_tool_schema():
 def test_02_tool_routing():
     """
     TODO: Implemente roteamento de pergunta → ferramenta.
+
+    HINT: compare cada keyword da lista tools com query.lower(); retorne o nome da tool
+    cuja keyword aparecer no texto, ou 'unknown' se nenhuma casar.
     """
     tools = [
         {"name": "search_web", "keywords": ["pesquisar", "buscar", "encontrar"]},
@@ -103,6 +111,9 @@ def test_03_risk_classification():
     LOW: read_file, search_web
     MEDIUM: write_file, delete_temp
     HIGH: execute_shell, delete_user_data
+
+    HINT: mapeie cada nome de tool para LOW/MEDIUM/HIGH conforme as listas; operações
+    destrutivas ou de shell devem cair em HIGH.
     """
     def classify_risk(tool_name: str) -> str:
         """TODO: Retorne 'LOW', 'MEDIUM' ou 'HIGH' baseado no nome da tool."""
@@ -137,6 +148,9 @@ def test_04_hitl_approval():
     TODO: Implemente verificação de aprovação humana (Human-In-The-Loop).
     
     Ferramentas HIGH risk SEMPRE precisam aprovação.
+
+    HINT: retorne True apenas quando risk_level estiver entre os níveis perigosos
+    (HIGH ou CRITICAL); LOW e MEDIUM não exigem aprovação.
     """
     def requires_approval(tool_name: str, risk_level: str) -> bool:
         """TODO: Retorne True se precisa aprovação humana (HIGH ou CRITICAL)."""
@@ -168,6 +182,9 @@ def test_04_hitl_approval():
 def test_05_tool_error_handling():
     """
     TODO: Implemente tratamento de erros nas ferramentas com retry.
+
+    HINT: envolva func(*args) num try/except dentro de um laço até max_retries; conte as
+    tentativas e, ao dar certo, retorne success=True com o número de attempts.
     """
     import time
     
@@ -223,9 +240,13 @@ def run_all():
             passed += 1
         except AssertionError as e:
             console.print(f"[red]✗ {test_fn.__name__}: {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
         except Exception as e:
             console.print(f"[red]✗ {test_fn.__name__}: Erro — {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
     console.print(f"\nResultado: [bold green]{passed}/{passed+failed}[/bold green] passaram")
     if not failed:

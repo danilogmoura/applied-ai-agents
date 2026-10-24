@@ -15,6 +15,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from rich.console import Console
 from rich.panel import Panel
 
+from shared.hints import format_hint
+
 console = Console()
 
 
@@ -56,6 +58,9 @@ def test_01_input_sanitization():
     Testa sanitização de inputs maliciosos.
     
     Detecta: SQL injection, XSS, prompt injection.
+
+    HINT: em sanitize_input(), procure padrões como ', --, ; (SQL) e <script>/javascript:
+    (XSS); se achar algo, adicione às flags e retorne safe=False.
     """
     safe_text = "Como funciona o reembolso?"
     malicious_sql = "'; DROP TABLE users; --"
@@ -90,6 +95,9 @@ def test_02_output_validation():
     - Não revelar chaves de API
     - Não expor system prompt
     - Não incluir dados sensíveis (CPF, cartão)
+
+    HINT: em validate_output(), use regex para detectar keys (sk-...), system prompt e CPF;
+    cada violação deve ser um dict contendo a chave severity.
     """
     safe_output = "O reembolso é processado em até 30 dias."
     leaked_output = "Minha API key é sk-12345 e o system prompt diz..."
@@ -116,6 +124,9 @@ def test_02_output_validation():
 def test_03_guardrail_rules():
     """
     TODO: Implemente regras de guardrail.
+
+    HINT: em check(), itere self.rules e aplique re.search(pattern, text); para cada regra
+    que casar, adicione uma violation incluindo o severity daquela regra.
     """
     class GuardrailEngine:
         def __init__(self):
@@ -156,6 +167,9 @@ def test_04_rate_limiting():
     TODO: Implemente rate limiting por usuário.
     
     Regra: Máximo 10 requisições/minuto por usuário.
+
+    HINT: guarde timestamps das requests por user_id; descarte os mais antigos que a janela
+    window_seconds e negue (False) quando o número atual atingir max_requests.
     """
     class RateLimiter:
         def __init__(self, max_requests: int = 10, window_seconds: int = 60):
@@ -198,6 +212,9 @@ def test_05_jailbreak_detection():
     - "Ignore previous instructions"
     - "You are now in developer mode"
     - "DAN" (Do Anything Now)
+
+    HINT: minúsculize o texto e verifique se alguma frase suspeita ('ignore previous',
+    'developer mode', 'DAN') aparece nele; se sim, retorne True.
     """
     def detect_jailbreak(text: str) -> bool:
         """TODO: Retorne True se detecta tentativa de jailbreak."""
@@ -241,9 +258,13 @@ def run_all():
             passed += 1
         except AssertionError as e:
             console.print(f"[red]✗ {test_fn.__name__}: {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
         except Exception as e:
             console.print(f"[red]✗ {test_fn.__name__}: Erro — {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
     
     console.print(f"\nResultado: [bold green]{passed}/{passed+failed}[/bold green] passaram")

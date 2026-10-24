@@ -16,6 +16,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from rich.console import Console
 from rich.panel import Panel
 
+from shared.hints import format_hint
+
 console = Console()
 
 
@@ -43,6 +45,9 @@ def test_01_short_term_memory():
     Testa memória de curto prazo (context window).
     
     Regra: Últimas N mensagens mantidas no contexto.
+
+    HINT: em add(), acrescente {'role', 'content'} e corte a lista para manter só as
+    últimas max_messages; get_context() devolve essa janela deslizante.
     """
     class ShortTermMemory:
         def __init__(self, max_messages: int = 10):
@@ -85,6 +90,9 @@ def test_01_short_term_memory():
 def test_02_long_term_memory():
     """
     Testa memória de longo prazo (persistente).
+
+    HINT: use uma chave composta por session_id + key no self.storage; retrieve() só
+    encontra o valor na mesma sessão, garantindo isolamento entre sessões.
     """
     class LongTermMemory:
         def __init__(self):
@@ -133,6 +141,9 @@ def test_03_context_window_management():
     Testa gerenciamento do context window do LLM.
     
     Regra: Se tokens > max_tokens, resumir ou truncar.
+
+    HINT: acumule tokens com estimate_tokens() e vá inserindo mensagens do fim até o topo,
+    parando quando current_tokens + msg_tokens passar de max_tokens.
     """
     messages = [
         {"role": "user", "content": "Olá"},
@@ -186,6 +197,9 @@ def test_04_memory_consolidation():
     TODO: Implemente consolidação de memórias similares.
     
     Múltiplas menções → uma memória consolidada.
+
+    HINT: agrupe memórias parecidas numa categoria e some as ocorrências em
+    self.consolidated; o total das contagens deve bater com o número de menções.
     """
     class MemoryConsolidator:
         def __init__(self):
@@ -237,6 +251,9 @@ def test_05_memory_decay():
     TODO: Implemente decay (esquecimento) de memórias antigas.
     
     Regra: Memorias sem uso por > 7 dias são removidas.
+
+    HINT: registre datetime.now() em add()/access(); em cleanup(), remova as chaves cujo
+    timestamp ficar mais velho que ttl_days e conte-as como expiradas.
     """
     from datetime import datetime, timedelta
     
@@ -313,9 +330,13 @@ def run_all():
             passed += 1
         except AssertionError as e:
             console.print(f"[red]✗ {test_fn.__name__}: {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
         except Exception as e:
             console.print(f"[red]✗ {test_fn.__name__}: Erro — {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
     
     console.print(f"\nResultado: [bold green]{passed}/{passed+failed}[/bold green] passaram")

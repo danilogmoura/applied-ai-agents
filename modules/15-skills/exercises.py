@@ -16,6 +16,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from rich.console import Console
 from rich.panel import Panel
 
+from shared.hints import format_hint
+
 console = Console()
 
 
@@ -48,7 +50,11 @@ class SkillRegistry:
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def test_01_skill_registry():
-    """Testa registro básico de skills."""
+    """Testa registro básico de skills.
+
+    HINT: registre cada skill em self.skills[name] como um dict guardando name,
+    description e handler — assim list_all() e get() passam a funcionar.
+    """
     registry = SkillRegistry()
     
     # Registra skills
@@ -85,6 +91,9 @@ def test_02_skill_composition():
     TODO: Compose múltiplas skills em pipeline.
     
     Input → [skill1] → intermediate → [skill2] → final output.
+
+    HINT: add_step() append o nome em self.pipeline; execute() roda cada skill na ordem,
+    passando a saída de uma como entrada da próxima (registry.get(name)['handler']).
     """
     class SkillComposer:
         def __init__(self, registry: SkillRegistry):
@@ -133,6 +142,9 @@ def test_03_pipeline_execution():
     TODO: Execute pipeline com error handling por step.
     
     Se um step falha, pipeline pode: abortar, pular, ou usar fallback.
+
+    HINT: rode cada step do self.steps sequencialmente alimentando a saída no próximo;
+    envolva em try/except respeitando self.error_policy ('abort'/'skip'/'fallback').
     """
     class PipelineExecutor:
         def __init__(self, registry: SkillRegistry):
@@ -182,6 +194,9 @@ def test_04_skill_discovery():
     TODO: Descubra skills relevantes para uma tarefa.
     
     Busca por keywords no description + tags.
+
+    HINT: para cada skill, conte quantas palavras da task_description aparecem na
+    description; ordene decrescente e retorne as top_k (garanta que 'sentiment' entre).
     """
     class SkillDiscoverer:
         def __init__(self, registry: SkillRegistry):
@@ -240,9 +255,13 @@ def run_all():
             passed += 1
         except AssertionError as e:
             console.print(f"[red]✗ {test_fn.__name__}: {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
         except Exception as e:
             console.print(f"[red]✗ {test_fn.__name__}: Erro — {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
     
     console.print(f"\nResultado: [bold green]{passed}/{passed+failed}[/bold green] passaram")
