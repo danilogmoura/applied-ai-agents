@@ -271,7 +271,7 @@ applied-ai-agents/
 │   ├── 14-cache/
 │   │   ├── run.py          ← Executa response cache + model router
 │   │   └── exercises.py       ← Exercícios práticos (IMPLEMENTE os TODOs!)
-├── shared/                  ← Módulos reutilizáveis em TODOS os módulos
+├── shared/                  ← Módulos compartilhados (reutilizados em todos os módulos)
 │   ├── cost.py              ← count_tokens(), estimate_cost()
 │   └── logging_config.py    ← setup_logging(), measure_latency()
 └── ...
@@ -279,11 +279,10 @@ applied-ai-agents/
 
 **Dependências necessárias:** nenhuma extra além dos módulos anteriores.
 
-### Analogia: sys.path.insert(0, ...)
+### Analogia: `sys.path.insert(0, ...)`
 
-Quando você vê `sys.path.insert(0, str(Path(__file__).parent.parent))` no início de cada arquivo Python, pense assim:
-
-> 📚 **Analogia dos Livros na Estante:** Imagine que o Python é uma pessoa procurando livros numa biblioteca. Normalmente ela só procura nas estantes próximas (diretório atual). O `sys.path.insert(0, ...)` é como dizer: "Antes de procurar aqui, também olhe naquela estante específica!" — neste caso, a estante `shared/` que está dois níveis acima. É como dar um atalho para o Python encontrar os módulos compartilhados sem precisar copiá-los para cada pasta.
+> Explicação completa no **Módulo 01** — seção [Por que `sys.path.insert(0, ...)` no código?](../01-fundamentos/MATERIAL.md#por-que-syspathinsert0--no-código).
+> Resumo: é um atalho que diz ao Python para procurar também na raiz, onde está `shared/`, em vez de só na pasta do módulo.
 
 ### Módulos `shared/` Usados Neste Módulo
 

@@ -84,7 +84,7 @@ applied-ai-agents/
 │       ├── run.py         ← Código executável (supervisor + especialistas)
 │       ├── architecture.md ← Diagramas detalhados da arquitetura
 │       └── exercises.py    ← Exercícios práticos (IMPLEMENTE os TODOs!)
-├── shared/             ← MÓDULOS COMPARTILHADOS (usados em TODOS os módulos)
+├── shared/             ← Módulos compartilhados (reutilizados em todos os módulos)
 │   ├── cost.py          ← Funções de custo (count_tokens, estimate_cost)
 │   ├── security.py      ← Gerenciamento de API keys
 │   ├── governance.py    ← ActionRequest, RiskLevel, require_approval()
@@ -94,17 +94,8 @@ applied-ai-agents/
 
 ### Por que `sys.path.insert(0, ...)` no código?
 
-Quando você roda `python modules/08-multiagente/run.py`, o Python procura imports **só na pasta atual** (`modules/08-multiagente/`). Mas o `shared/` fica na raiz (`applied-ai-agents/shared/`).
-
-A linha:
-
-```python
-sys.path.insert(0, str(Path(__file__).parent.parent))
-```
-
-Diz ao Python: "Além da pasta atual, também procure na pasta **dois níveis acima**" — que é onde o `shared/` está.
-
-> 💡 **Analogia:** É como dizer ao Python para procurar livros não só na estante atual, mas também na prateleira de cima. Sem isso, `from shared.cost import count_tokens` falha com `ModuleNotFoundError`.
+> A explicação completa está no **Módulo 01** — seção [Por que `sys.path.insert(0, ...)` no código?](../01-fundamentos/MATERIAL.md#por-que-syspathinsert0--no-código).
+> Em resumo: cada `run.py` roda a partir da própria pasta, mas o `shared/` fica na raiz; a linha adiciona a raiz ao caminho de busca do Python. Sem isso, os imports de `shared/` falham com `ModuleNotFoundError`.
 
 ### O que cada módulo `shared/` faz?
 

@@ -70,11 +70,8 @@ applied-ai-agents/
 
 ### Por que `sys.path.insert(0, ...)` no código?
 
-Quando roda `python modules/04-rag/run.py`, o Python procura imports **só na pasta atual**. Mas o `shared/` fica na raiz do projeto.
-
-A linha `sys.path.insert(0, str(Path(__file__).parent.parent))` diz ao Python para também procurar **dois níveis acima** — onde o `shared/` está.
-
-> 💡 **Analogia:** É como dizer ao Python para procurar livros não só na estante atual, mas também na prateleira de cima.
+> A explicação completa está no **Módulo 01** — seção [Por que `sys.path.insert(0, ...)` no código?](../01-fundamentos/MATERIAL.md#por-que-syspathinsert0--no-código).
+> Em resumo: cada `run.py` roda a partir da própria pasta, mas o `shared/` fica na raiz; a linha adiciona a raiz ao caminho de busca do Python. Sem isso, os imports de `shared/` falham com `ModuleNotFoundError`.
 
 ### Dependências Necessárias
 

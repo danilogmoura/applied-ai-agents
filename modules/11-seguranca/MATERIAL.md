@@ -378,8 +378,7 @@ applied-ai-agents/
 | `shared/governance.py` | Controla acesso por risco (RiskLevel) e aprovações humanas | "Porteiro com lista de permissão" — decide quem pode entrar |
 | `shared/security.py` | Valida variáveis de ambiente (.env) e gerencia segredos | "Cofre digital" que guarda chaves API fora do código |
 
-**sys.path explicado:**
-O comando `sys.path.insert(0, str(Path(__file__).parent.parent))` diz ao Python para procurar módulos dois níveis acima. Imagine que `run.py` é um livro na estante `modules/11-seguranca/` e `shared/` é outro livro na mesma estante principal — o `sys.path` é como abrir a porta entre as estantes.
+**sys.path:** a explicação completa está no **Módulo 01** — seção [Por que `sys.path.insert(0, ...)` no código?](../01-fundamentos/MATERIAL.md#por-que-syspathinsert0--no-código). Em resumo: `run.py` roda da própria pasta, mas `shared/` fica na raiz; a linha adiciona a raiz ao caminho de busca do Python.
 
 ---
 

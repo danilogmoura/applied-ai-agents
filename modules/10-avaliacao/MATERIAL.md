@@ -397,8 +397,7 @@ pip install openai rapidfuzz scipy  # rapidfuzz para fuzzy match, scipy para tes
 | `shared/cost.py` | Conta tokens e estima custo em USD | "Medidor de consumo" que diz quanto cada avaliação custa |
 | `shared/logging_config.py` | Configura logs estruturados em JSON | "Câmera de segurança" que grava tudo que acontece |
 
-**sys.path explicado:**
-O comando `sys.path.insert(0, str(Path(__file__).parent.parent))` diz ao Python para procurar módulos dois níveis acima. Imagine que `run.py` é um livro na estante `modules/10-avaliacao/` e `shared/` é outro livro na mesma estante principal — o `sys.path` é como abrir a porta entre as estantes.
+**sys.path:** a explicação completa está no **Módulo 01** — seção [Por que `sys.path.insert(0, ...)` no código?](../01-fundamentos/MATERIAL.md#por-que-syspathinsert0--no-código). Em resumo: `run.py` roda da própria pasta, mas `shared/` fica na raiz; a linha adiciona a raiz ao caminho de busca do Python.
 
 ---
 

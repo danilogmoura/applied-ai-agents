@@ -104,7 +104,7 @@ applied-ai-agents/
 │       ├── MATERIAL.md    ← Este arquivo
 │       ├── run.py         ← Código executável (4 demos)
 │       └── exercises.py   ← Exercícios práticos (IMPLEMENTE os TODOs!)
-├── shared/             ← MÓDULOS COMPARTILHADOS (usados em TODOS os módulos)
+├── shared/             ← Módulos compartilhados (reutilizados em todos os módulos)
 │   ├── cost.py          ← Funções de custo (count_tokens, estimate_cost)
 │   ├── security.py      ← Gerenciamento de API keys
 │   └── logging_config.py ← Configuração de logging
