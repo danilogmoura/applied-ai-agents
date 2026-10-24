@@ -38,15 +38,6 @@ Você precisa ter concluído o módulo [P10: Design e Composição de Skills](..
 
 ---
 
-## ⚠️ Pré-requisito
-
-Você precisa ter concluído o módulo [P10: Design e Composição de Skills](../p10_skills/MATERIAL.md). Especificamente, precisa saber:
-
-- Como projetar skills reutilizáveis e composáveis
-- Patterns de composição de skills para agentes complexos
-
----
-
 ## 🎯 Objetivos de Aprendizagem
 
 Ao final deste módulo, você será capaz de:

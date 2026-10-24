@@ -167,6 +167,12 @@ graph LR
 
 Em avaliação de agentes, cada ponto de percentual representa dezenas de exemplos no dataset. Um salto de 0.85 para 0.90 pode ser a diferença entre "pronto para produção" e "precisa melhorar mais".
 
+**Limitações do fuzzy match:**
+
+- Não entende sinônimos: "urgente" vs "crítico" → similaridade baixa
+- Sensível a ordem: "resposta longa" vs "longa resposta" → penaliza
+- Por isso LLM-as-a-Judge existe: entende significado, não só texto
+
 ### Significância Estatística: Quando um Score é Real?
 
 > 🔬 **AVANÇADO — OPCIONAL**: Esta seção explica quando uma diferença de score é real ou apenas ruído estatístico. **Não precisa entender a fórmula agora** — foque na ideia de "dataset maior = resultado mais confiável".
@@ -224,12 +230,6 @@ Se Z < 1.96 → diferença pode ser ruído
 ```
 
 Na prática: **nunha faça deploy baseado em menos de 50 exemplos**. Se seu golden dataset tem 10 exemplos, o resultado é uma dica, não uma decisão.
-
-**Limitações do fuzzy match:**
-
-- Não entende sinônimos: "urgente" vs "crítico" → similaridade baixa
-- Sensível a ordem: "resposta longa" vs "longa resposta" → penaliza
-- Por isso LLM-as-a-Judge existe: entende significado, não só texto
 
 ### Testes A/B
 
@@ -380,20 +380,6 @@ Erros comuns que iniciantes encontram neste módulo:
 | LLM-as-judge muito lento | Cada exemplo faz chamada extra ao LLM | Usar batch requests ou reduzir tamanho do golden dataset |
 | Score sempre 0.0 com exact match | Respostas têm diferenças de maiúsculas/espaços | Usar fuzzy match ou normalizar texto (lowercase, strip) |
 | Resultados inconsistentes entre runs | LLM gera respostas diferentes a cada chamada | Fixar seed (`temperature=0`) ou usar modelo determinístico |
-
----
-
-## ✅ Checklist: Como Saber Se Você Atingiu o Objetivo
-
-Marque cada item **só se conseguir fazer sem olhar o material**:
-
-- [ ] Explico o que é golden dataset e por que é necessário
-- [ ] Descrevo a diferença entre score exact e fuzzy
-- [ ] Explico como funciona teste A/B entre heurística vs agente
-- [ ] Rodo `run.py` e interpreto o relatório estatístico
-- [ ] Digo 2 limitações do LLM-as-Judge
-
-> ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
 
 ---
 

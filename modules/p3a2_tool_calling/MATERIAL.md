@@ -26,14 +26,14 @@ Você precisa ter concluído o módulo [P3a-1: Autoavaliação](../p3a1_self_eva
 ### 🔬 Avançado (opcional na primeira leitura)
 
 7. [Como o Modelo Decide Chamar uma Tool](#como-o-modelo-decide-chamar-uma-tool)
-2. [Arquitetura do Loop Tool-Calling](#arquitetura-do-loop-tool-calling)
+8. [Arquitetura do Loop Tool-Calling](#arquitetura-do-loop-tool-calling)
 
 ### Prático
 
 9. [O que você vai ver](#o-que-você-vai-ver)
-2. [Exercício Prático](#exercício-prático)
-3. [Troubleshooting](#troubleshooting)
-4. [Glossário](#glossário)
+10. [Exercício Prático](#exercício-prático)
+11. [Troubleshooting](#troubleshooting)
+12. [Glossário](#glossário)
 
 ---
 
@@ -194,6 +194,18 @@ Cada ferramenta tem um schema que define seus parâmetros:
 ```
 
 Este schema é enviado ao LLM junto com o prompt. O modelo responde com JSON estruturado que pode ser validado e executado programaticamente.
+
+**Contraste: o mesmo contrato, vago vs. claro.** A `description` é o único indício que o
+modelo tem para decidir *quando* chamar a tool — veja o efeito de escrevê-la mal:
+
+| ❌ Vaga (modelo erra o gatilho) | ✅ Clara (modelo acerta) |
+| -------------------------------- | ----------------------- |
+| `"description": "faz coisas com arquivo"` | `"description": "Lê o conteúdo de um arquivo de texto a partir de um caminho"` |
+
+Diante de "Leia /etc/hosts", a versão vaga não ancora a intenção em nenhuma ação concreta,
+e o modelo pode nem chamar a tool (ou chamar a errada). A clara casa "ler" + "caminho" com
+`file_path`, e o gatilho dispara. É por isso que a tabela de erros lá em cima trata
+"schema sem `description`" como falha, não como detalhe estético.
 
 > 💡 **Regra de ouro:** Quanto melhor a `description` da tool, melhor o modelo decide quando usá-la. Nunca deixe descriptions vazias ou vagas.
 

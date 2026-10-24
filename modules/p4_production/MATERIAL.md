@@ -398,26 +398,10 @@ Erros comuns que iniciantes encontram neste módulo:
 | `ImportError: cannot import name 'FastAPI'` | FastAPI não instalado | Execute `pip install fastapi uvicorn pydantic` |
 | Port 8000 já em uso | Outra API rodando na mesma porta | Matar processo ou mudar porta no `uvicorn` command |
 | `docker: command not found` | Docker não instalado | Instalar Docker Desktop (macOS/Windows) ou Docker Engine (Linux) |
-| Container não sobe (`docker-compose up`) | Dockerfile incorreto ou dependências faltando | Verificar `docker-compose up --build 2>&1 | tail -50` para erros |
+| Container não sobe (`docker-compose up`) | Dockerfile incorreto ou dependências faltando | Verificar `docker-compose up --build 2>&1 &#124; tail -50` para erros |
 | Swagger UI mostra 404 | API não iniciou corretamente | Verificar logs do terminal — erro geralmente é chave API ausente |
 
 ---
-
-## 📌 Resumo do Módulo
-
-Deploy em produção é onde protótipos viram produtos:
-
-1. **FastAPI = padrão para APIs de IA** — validação automática com Pydantic, async nativo, documentação Swagger/OpenAPI gerada automaticamente.
-
-2. **Pydantic models = contrato** — cada endpoint tem input/output definido. Se o cliente enviar formato errado, FastAPI rejeita antes de chamar seu código.
-
-3. **Middleware = observabilidade** — logging estruturado (JSON) permite monitorar latência, tokens usados e erros em tempo real. Sem logging, você está cego.
-
-4. **Docker = portabilidade** — containeriza sua API para rodar em qualquer lugar (local, cloud, edge). Docker Compose orquestra múltiplos containers.
-
-5. **Internals do Docker** — imagens são imutáveis, containers são efêmeros. Volume mount para dados, network para comunicação entre containers.
-
-> ✅ **Você está pronto para:** Agora que sua API está em produção, precisa saber como avaliar a qualidade das respostas.
 
 ## ✅ Checklist: Como Saber Se Você Atingiu o Objetivo
 

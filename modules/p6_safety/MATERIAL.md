@@ -40,15 +40,6 @@ Você precisa ter concluído o módulo [P5: Avaliação](../p5_evaluation/MATERI
 
 ---
 
-## ⚠️ Pré-requisito
-
-Você precisa ter concluído o módulo [P5: Avaliação](../p5_evaluation/MATERIAL.md). Especificamente, precisa saber:
-
-- Como construir golden datasets e métricas de avaliação
-- Como realizar testes A/B e calcular significância estatística
-
----
-
 ## 🎯 Objetivos de Aprendizagem
 
 Ao final deste módulo, você será capaz de:
@@ -71,6 +62,8 @@ Sistemas tradicionais têm firewalls, autenticação e validação de input. Age
 
 - **Prompt injection**: Usuário manipula o prompt do sistema
 - **Jailbreak**: Usuário contorna restrições de conteúdo
+- **Data leakage**: Agente vaza dados sensíveis em respostas
+- **Tool abuse**: Agente executa ferramentas de forma perigosa
 
 ### Por que isso existe?
 
@@ -96,9 +89,6 @@ O modelo processa AMBOS como texto normal — não há separação entre "comand
 | Não filtrar output | Agente vaza dados sensíveis (CPF, tokens) | Output validator + content filter |
 | Permitir tool calling sem whitelist | Agente executa qualquer comando | Whitelist estrito + risk levels |
 | Testar segurança só manualmente | Vulnerabilidade aparece só em produção | Golden dataset de segurança + testes automatizados |
-
-- **Data leakage**: Agente vaza dados sensíveis em respostas
-- **Tool abuse**: Agente executa ferramentas de forma perigosa
 
 ### Fluxo de Defesa em Camadas
 

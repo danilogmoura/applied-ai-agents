@@ -245,6 +245,18 @@ Resultado típico:
 "Senha" vs "Preço do produto" → 0.31 (sem relação)
 ```
 
+**Onde fica a linha entre "recupera" e "é ruído"?** Olhe os três números acima: os pares
+relevantes ficam em **0.92–0.94**, o par sem relação cai para **0.31**. Existe um salto
+grande entre eles — e é aí que um *threshold* de corte atua na prática: abaixo dele, o
+chunk é descartado como ruído; acima, vira contexto. (Não há um valor universal: cada
+base calibra o seu, tipicamente entre ~0.3 e ~0.7.)
+
+> ⚠️ **Cuidado com duas escalas que apontam para lados opostos.** Acima usamos **similaridade
+> cosseno**: **maior = melhor** (0.94 ganha de 0.31). Mas o `run.py` mostra o documento mais
+> relevante com **score 0.15** — porque ChromaDB devolve **distância**, onde **menor = melhor**.
+> São a mesma ideia medida ao contrário: `distância ≈ 1 − similaridade`. Logo, um cosseno de
+> ~0.85 vira distância ~0.15. Nunca compare um número de uma escala com o da outra.
+
 O modelo aprendeu durante o treino que textos com significado similar produzem vetores próximos no espaço multidimensional. Não é busca por palavra-chave — é busca por **significado**.
 
 ---

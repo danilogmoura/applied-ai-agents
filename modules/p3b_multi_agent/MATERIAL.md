@@ -426,8 +426,6 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 
 ## 🔗 Próximos Passos
 
-## 🔗 Próximos Passos
-
 Com multi-agentes, você tem um sistema inteligente mas ainda local. Para usar em produção, precisa de uma interface acessível — uma API REST.
 
 → Leia o módulo [P4: Deploy em Produção](../p4_production/MATERIAL.md) para aprender FastAPI e Docker.

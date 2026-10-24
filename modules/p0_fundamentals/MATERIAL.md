@@ -273,6 +273,22 @@ IDs: [15496, 11, 995, 0]
 | Português | "Olá, mundo! Como vai você?" | ~8 tokens |
 | Chinês | "你好，世界！你好吗？" | ~6 tokens |
 
+#### Do token ao centavo (exemplo com os números acima)
+
+A tabela compara frases isoladas; na prática você manda **milhares** delas por chamada.
+Usando os custos da seção "Estimativa de Custo Real" mais abaixo:
+
+| Situação | Tokens (aprox.) | Modelo | Custo |
+| ---------- | ----------------- | -------- | ------- |
+| Prompt curto (frase em português acima) | ~8 | gpt-4o-mini | ~$0,003 |
+| Prompt longo | 5.000 | gpt-4o | ~$0,05 |
+| 100 chamadas curtas de teste | 100 × ~8 | gpt-4o-mini | ~$0,30 |
+
+> 💡 Repare no padrão: **mesma frase, idioma diferente → contagem de tokens diferente →
+> conta diferente**. Por isso o português (~8) sai um pouco mais caro que o inglês (~7)
+> para o mesmo texto, e por que o curso recomenda `gpt-4o-mini` (~10× mais barato) enquanto
+> você aprende.
+
 ---
 
 ## 4. Prompt Engineering: A arte de falar com LLMs
@@ -296,6 +312,10 @@ Prioridade: ALTA
 ```
 
 ### Técnicas básicas de prompt engineering
+
+As cinco técnicas abaixo formam uma **escada**: cada degrau adiciona controle sobre a
+resposta, do mais simples (só escrever direito) ao mais avançado (mudar como o modelo
+raciocina). Você não precisa usar todas — suba degraus conforme a tarefa exige.
 
 > 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch05 —
 > "Now that we’ve discussed what a prompt is and why prompting works, let’s discuss the best practices for writing effective prompts."

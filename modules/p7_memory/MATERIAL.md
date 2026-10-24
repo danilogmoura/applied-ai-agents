@@ -41,15 +41,6 @@ Você precisa ter concluído o módulo [P6: Segurança e Guardrails](../p6_safet
 
 ---
 
-## ⚠️ Pré-requisito
-
-Você precisa ter concluído o módulo [P6: Segurança e Guardrails](../p6_safety/MATERIAL.md). Especificamente, precisa saber:
-
-- Como implementar validação de inputs e outputs
-- Patterns de guardrails para prevenir comportamentos indesejados
-
----
-
 ## 🎯 Objetivos de Aprendizagem
 
 Ao final deste módulo, você será capaz de:
@@ -208,6 +199,7 @@ Resumido: "Nome: João, 30 anos, SP" → PRESERVOU DADOS
 Resumido: "João, 30, SP, gosta de café" → IDEAL
 
 A qualidade do resumo depende do prompt de sumarização.
+```
 
 ### 🏗️ Arquitetura do Sistema de Memória
 

@@ -128,6 +128,17 @@ Sem resiliência: tudo perdido. Você teria que recomeçar do passo 1. Se cada p
 
 Com resiliência: salva checkpoint a cada 2 passos, retry com backoff no passo 9, e continua do passo 10 se o retry falhar.
 
+**Quanto isso economiza?** Percorrendo o mesmo cenário (checkpoint a cada 2 passos):
+
+| Estratégia | Ao falhar no passo 9, você refaz | Retoma de |
+| ------------ | -------------------------------- | ---------- |
+| Sem checkpoint | passos 1–9 inteiros | passo 1 |
+| Checkpoint a cada 2 | só o passo 9 (último snapshot = passo 8) | passo 9 |
+
+> 💡 Cada passo consome tokens (o checkpoint ao lado registra `tokens_consumed: 15420`
+> já no passo 3). Refazer 8 passos vs. refazer 1 é a diferença entre pagar de novo quase
+> tudo ou quase nada — por isso o `run.py` fecha a corrida inteira por ~\$0,012.
+
 ### Erros Comuns de Iniciantes
 
 | Erro | Consequência | Correção |
@@ -147,7 +158,7 @@ Inspirado em disjuntores elétricos: se muitos erros acontecem, o circuito "abre
 ```mermaid
 stateDiagram-v2
     [*] --> CLOSED
-    CLOSED --> OPEN: Falhas >= threshold
+    CLOSED --> OPEN: "Falhas >= threshold"
     OPEN --> HALF_OPEN: recovery_timeout
     HALF_OPEN --> CLOSED: Sucesso
     HALF_OPEN --> OPEN: Falha
@@ -343,8 +354,6 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 
 ## 🔗 Próximos Passos
 
-## 🔗 Próximos Passos
-
 Com resilience patterns, seu agente individual sobrevive a falhas. Mas tarefas complexas exigem especialização — ninguém espera que um único agente faça tudo bem.
 
 → Leia o módulo [P3b: Multi-Agent Supervisor](../p3b_multi_agent/MATERIAL.md) para aprender arquitetura multiagente.
@@ -354,8 +363,6 @@ Com resilience patterns, seu agente individual sobrevive a falhas. Mas tarefas c
 ## Material Complementar
 
 (empty)
-
-→ Leia o módulo [P3b: Multi-Agent Supervisor](../p3b_multi_agent/MATERIAL.md) para aprender arquitetura multiagente.
 
 ---
 

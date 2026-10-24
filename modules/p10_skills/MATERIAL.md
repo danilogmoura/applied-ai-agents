@@ -39,15 +39,6 @@ Você precisa ter concluído o módulo [P9: Cache e Otimização](../p9_caching/
 
 ---
 
-## ⚠️ Pré-requisito
-
-Você precisa ter concluído o módulo [P9: Cache e Otimização](../p9_caching/MATERIAL.md). Especificamente, precisa saber:
-
-- Como implementar cache para reduzir custo e latência
-- Estratégias de invalidation e TTL para caches de LLM
-
----
-
 ## 🎯 Objetivos de Aprendizagem
 
 Ao final deste módulo, você será capaz de:
@@ -218,7 +209,7 @@ O sistema de skills é composto por 4 componentes principais:
 
 **Trade-off chave:** pipeline com muitas skills = mais modular mas mais latência; pipeline curto = rápido mas menos flexível.
 
-#### Por que versionar skills?
+#### Implementação do Pipeline Engine
 
 ```python
 class SkillPipeline:

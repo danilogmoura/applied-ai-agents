@@ -214,6 +214,18 @@ Cada chamada à API tem um custo baseado no número de tokens. Tokens são peda�
 
 Para um ticket de 200 tokens, o custo é ~$0.00003 — quase nada, mas importante rastrear em escala.
 
+**Escada do mesmo cálculo** (só multiplicar, com os preços da tabela acima):
+
+| Escala | Cálculo (input gpt-4o-mini) | Custo |
+| -------- | ------------------------------- | ------- |
+| 1 ticket | 200 ÷ 1.000.000 × $0,15 | ~$0,00003 |
+| 100 tickets | 100 × $0,00003 | ~$0,003 |
+| 10.000 tickets | 10.000 × $0,00003 | ~$0,30 |
+
+> 💡 Repare: um ticket isolado parece grátis, mas a conta **cresce linearmente** com o
+> volume. É por isso que o objetivo do módulo pede pra você *calcular* custo por chamada
+> — e por que o checkpoint pergunta quanto custariam 100 tickets.
+
 ### Como o LLM Gera Texto
 
 O LLM **não pensa**. Ele faz uma coisa muito específica: prevê o próximo token.
@@ -645,8 +657,6 @@ Agora que você construiu seu primeiro agente, o próximo passo é aprender a **
 - [OpenAI Cookbook Examples](https://github.com/openai/openai-cookbook) — Exemplos práticos da OpenAI
 - [Python OpenAI SDK Tutorial](https://platform.openai.com/docs/quickstart) — Guia de início rápido
 - [Prompt Engineering Guide](https://www.promptingguide.tech/) — Técnicas avançadas de prompt
-
-## 🔗 Próximos Passos
 
 ---
 

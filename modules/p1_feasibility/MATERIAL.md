@@ -144,6 +144,22 @@ graph LR
 Para 100 tickets/mês → regras podem bastar.
 Para 100.000 tickets/mês → IA se paga pela escalabilidade.
 
+**De onde vem esse threshold?** Percorrendo os números do próprio benchmark acima:
+
+| Volume/mês | Custo IA (input) | Custo regras (manutenção*) | Quem vence |
+| ------------ | ------------------ | ---------------------------- | ------------ |
+| 100 | ~$0,15 | 8h × seu R$/h | Regras |
+| 10.000 | $15,00 | 8h × seu R$/h | Depende do valor-hora |
+| 100.000 | $150,00 | 8h × seu R$/h | IA |
+
+> \* A manutenção das regras foi medida em **horas** (8h/mês no diagrama), não em dinheiro.
+> Para comparar, converta: se suas 8h custam mais que o preço da IA naquele volume, a IA
+> passou a valer a pena. Esse cruzamento é o **break-even** do glossário — e ele desce
+> conforme o volume sobe, porque o custo das regras é quase **fixo** (ajustar keywords) e o
+> da IA é **linear** por chamada.
+
+---
+
 ### Memorando Técnico
 
 Um memorando técnico é um documento de decisão baseado em dados. Ele deve conter:

@@ -24,13 +24,13 @@ Você precisa ter concluído o módulo [P2-RAG](../p2_rag/MATERIAL.md). Especifi
 ### 🔬 Avançado (opcional na primeira leitura)
 
 7. [beta.chat.completions.parse()](#betachatcompletionsparse)
-2. [O que você vai ver](#o-que-você-vai-ver)
+8. [O que você vai ver](#o-que-você-vai-ver)
 
 ### Prático
 
 9. [Exercício Prático](#exercício-prático)
-2. [Troubleshooting](#troubleshooting)
-3. [Glossário](#glossário)
+10. [Troubleshooting](#troubleshooting)
+11. [Glossário](#glossário)
 
 ---
 
@@ -118,11 +118,13 @@ Como saber se a resposta está boa **antes** de entregá-la ao usuário?
 
 ### Por que isso existe?
 
-Nos primeiros módulos, o agente gerava uma resposta e pronto. Mas em produção, você **não pode entregar respostas sem verificar**. Imagine um agente que:
+Nos primeiros módulos, o agente gerava uma resposta e pronto. Mas em produção, você **não pode entregar respostas sem verificar**. Veja o custo de pular a verificação:
 
-- Classifica um ticket como "BAIXA" quando na verdade é "URGENTE" → cliente frustrado
-- Extrai dados errados de um formulário → processo administrativo travado
-- Gera código com bug silencioso → vulnerabilidade de segurança
+| O agente entrega sem checar | Consequência no mundo real | Como o loop pega |
+| --------------------------- | -------------------------- | ---------------- |
+| Classifica um ticket como "BAIXA" quando era "URGENTE" | Cliente frustrado, SLA estourado | `accuracy` baixo → refina |
+| Extrai dados errados de um formulário | Processo administrativo travado | `completeness`/`issues` apontam o gap |
+| Gera código com bug silencioso | Vulnerabilidade de segurança | Feedback específico → reescrita |
 
 A autoavaliação resolve isso criando um **loop de qualidade** antes da entrega.
 
@@ -138,8 +140,6 @@ A autoavaliação resolve isso criando um **loop de qualidade** antes da entrega
 ---
 
 ## 🔑 Pydantic — O Validador de Formulários
-
-> 💡 **Novo conceito:** Pydantic é a ferramenta que garante que o JSON retornado pelo LLM tenha exatamente o formato esperado.
 
 ### Analogia: Formulário de Cadastro
 
@@ -171,6 +171,17 @@ Se o LLM retorna `{"accuracy": "alta", "completeness": 15}` → **Pydantic rejei
 
 - `"alta"` não é `int` → ValidationError
 - `15` > `le=10` → ValidationError
+
+#### Escada: do caso simples ao realista
+
+| Nível | Entrada do LLM | O que o Pydantic faz | Por que importa |
+| ------- | ---------------- | ---------------------- | ------------------ |
+| **Simples** | `{"accuracy": 9, ...}` todos os campos no formato | ✅ Aceita e tipa | Caminho feliz: decisão programática direta |
+| **Tipo errado** | `"accuracy": "alta"` | ❌ ValidationError (não é `int`) | Texto livre vira erro na fronteira, não bug silencioso depois |
+| **Fora de faixa** | `"completeness": 15` | ❌ ValidationError (`15 > le=10`) | Captura score impossível mesmo com tipo certo |
+| **Campo faltando** | omissão de `issues` | ❌ ValidationError (obrigatório) | Garante que o agente nunca "esqueça" de listar problemas |
+
+> 💡 A linha **"Simples"** é o único caso que você *quer* que aconteça; as três abaixo são exatamente os erros que a tabela "Erros Comuns" lista — agora nomeados um a um.
 
 ### Por que usar Pydantic em vez de texto livre?
 
@@ -206,9 +217,9 @@ Isso garante que a avaliação seja **consistente** e **programática** — pode
 stateDiagram-v2
     [*] --> GeraResposta
     GeraResposta --> Avalia
-    Avalia --> ScoreOK: Score >= MIN_SCORE?
+    Avalia --> ScoreOK: "Score >= MIN_SCORE?"
     ScoreOK --> Entrega
-    Avalia --> Refina: Não
+    Avalia --> Refina: "Não"
     Refina --> Avalia
     Entrega --> [*]
 ```

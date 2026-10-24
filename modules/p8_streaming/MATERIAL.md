@@ -39,15 +39,6 @@ Você precisa ter concluído o módulo [P7: Memória e Contexto](../p7_memory/MA
 
 ---
 
-## ⚠️ Pré-requisito
-
-Você precisa ter concluído o módulo [P7: Memória e Contexto](../p7_memory/MATERIAL.md). Especificamente, precisa saber:
-
-- Como gerenciar contexto em agentes de longo prazo
-- Patterns de memória de curto e longo prazo
-
----
-
 ## 🎯 Objetivos de Aprendizagem
 
 Ao final deste módulo, você será capaz de:
@@ -217,7 +208,7 @@ O pipeline streaming é composto por 5 componentes:
 
 **Trade-off chave:** buffer maior = menos chunks mas mais delay inicial; buffer menor = mais responsivo mas mais overhead de rede.
 
-## 🎬 O que você vai ver
+### ⚡ Por que streaming é mais rápido na percepção?
 
 **Regra crítica**: cada evento deve terminar com **duas quebras de linha** (`\n\n`). O cliente lê até encontrar `\n\n` e então processa o evento.
 
