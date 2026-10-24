@@ -137,22 +137,22 @@ applied-ai-agents/
 │   ├── security.py         # Leitura segura de secrets
 │   └── governance.py       # Human-in-the-loop
 ├── modules/                ← Cada módulo do curso
-│   ├── p0_fundamentals/    # Fundamentos (IA, LLM, tokens)
-│   ├── p0_first_llm/       # Primeiro fluxo com LLM
-│   ├── p1_feasibility/     # Análise de viabilidade
-│   ├── p2_rag/             # Pipeline RAG com ChromaDB
-│   ├── p3a1_self_eval/     # Autoavaliação
-│   ├── p3a2_tool_calling/  # Tool Calling
-│   ├── p3a3_planning/      # Planejamento e circuit breaker
-│   ├── p3b_multi_agent/    # Multiagente
-│   ├── p4_production/      # Deploy FastAPI + Docker
-│   ├── p5_evaluation/      # Avaliação e AB testing
-│   ├── p6_safety/          # Segurança e guardrails
-│   ├── p7_memory/          # Memória de curto/longo prazo
-│   ├── p8_streaming/       # Streaming token-by-token
-│   ├── p9_caching/         # Cache e otimização
-│   ├── p10_skills/         # Design de skills
-│   └── p11_production_ops/ # Ops: CI/CD, métricas, rollback
+│   ├── 01-fundamentos/    # Fundamentos (IA, LLM, tokens)
+│   ├── 02-primeiro-llm/       # Primeiro fluxo com LLM
+│   ├── 03-viabilidade/     # Análise de viabilidade
+│   ├── 04-rag/             # Pipeline RAG com ChromaDB
+│   ├── 05-autoavaliacao/     # Autoavaliação
+│   ├── 06-tool-calling/  # Tool Calling
+│   ├── 07-planejamento/      # Planejamento e circuit breaker
+│   ├── 08-multiagente/    # Multiagente
+│   ├── 09-producao-api/      # Deploy FastAPI + Docker
+│   ├── 10-avaliacao/      # Avaliação e AB testing
+│   ├── 11-seguranca/          # Segurança e guardrails
+│   ├── 12-memoria/          # Memória de curto/longo prazo
+│   ├── 13-streaming/       # Streaming token-by-token
+│   ├── 14-cache/         # Cache e otimização
+│   ├── 15-skills/         # Design de skills
+│   └── 16-operacoes/ # Ops: CI/CD, métricas, rollback
 ├── data/                   ← Dados de exemplo
 ├── tests/                  ← Testes globais
 └── docker-compose.yml      ← Infraestrutura P4
@@ -165,22 +165,22 @@ applied-ai-agents/
 Cada módulo tem um script `run.py`. Execute assim (com o `.venv` ativado):
 
 ```bash
-python modules/p0_fundamentals/run.py
-python modules/p0_first_llm/run.py
-python modules/p1_feasibility/run.py
-python modules/p2_rag/run.py
-python modules/p3a1_self_eval/run.py
-python modules/p3a2_tool_calling/run.py
-python modules/p3a3_planning/run.py
-python modules/p3b_multi_agent/run.py
-python modules/p4_production/run.py
-python modules/p5_evaluation/run.py
-python modules/p6_safety/run.py
-python modules/p7_memory/run.py
-python modules/p8_streaming/run.py
-python modules/p9_caching/run.py
-python modules/p10_skills/run.py
-python modules/p11_production_ops/run.py
+python modules/01-fundamentos/run.py
+python modules/02-primeiro-llm/run.py
+python modules/03-viabilidade/run.py
+python modules/04-rag/run.py
+python modules/05-autoavaliacao/run.py
+python modules/06-tool-calling/run.py
+python modules/07-planejamento/run.py
+python modules/08-multiagente/run.py
+python modules/09-producao-api/run.py
+python modules/10-avaliacao/run.py
+python modules/11-seguranca/run.py
+python modules/12-memoria/run.py
+python modules/13-streaming/run.py
+python modules/14-cache/run.py
+python modules/15-skills/run.py
+python modules/16-operacoes/run.py
 ```
 
 > 💡 Use `Tab` no terminal para autocomplete: digite `python modules/p0_` + `Tab` para completar automaticamente.
@@ -194,7 +194,7 @@ python modules/p11_production_ops/run.py
 pytest
 
 # Testes de um módulo específico
-pytest modules/p2_rag/exercises.py
+pytest modules/04-rag/exercises.py
 
 # Com cobertura
 pytest --cov=modules --cov-report=term-missing
@@ -324,6 +324,6 @@ Antes de começar o primeiro módulo, confirme:
 - [ ] Dependências instaladas (`pip install -e ".[dev]"`)
 - [ ] `.env` criado com chave válida (`cp .env.example .env`)
 - [ ] Teste de conexão passou (`python -c "import openai; print('OK')"` )
-- [ ] Um módulo executou sem erro (`python modules/p0_first_llm/run.py`)
+- [ ] Um módulo executou sem erro (`python modules/02-primeiro-llm/run.py`)
 
 Se marcou todos ✅ — você está pronto para começar! 🚀

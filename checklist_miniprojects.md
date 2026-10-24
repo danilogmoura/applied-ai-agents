@@ -13,22 +13,22 @@
 
 | # | Módulo | Descrição | Passos Guiados | Output Esperado | Critérios Sucesso | Status |
 | --- | -------- | ----------- | ---------------- | ----------------- | ------------------- | -------- |
-| 1 | p0_fundamentals | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 2 | p0_first_llm | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 3 | p1_feasibility | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 4 | p2_rag | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 5 | p3a1_self_eval | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 6 | p3a2_tool_calling | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 7 | p3a3_planning | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 8 | p3b_multi_agent | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 9 | p4_production | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 10 | p5_evaluation | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 11 | p6_safety | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 12 | p7_memory | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 13 | p8_streaming | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 14 | p9_caching | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 15 | p10_skills | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 16 | p11_production_ops | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 1 | 01-fundamentos | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 2 | 02-primeiro-llm | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 3 | 03-viabilidade | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 4 | 04-rag | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 5 | 05-autoavaliacao | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 6 | 06-tool-calling | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 7 | 07-planejamento | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 8 | 08-multiagente | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 9 | 09-producao-api | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 10 | 10-avaliacao | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 11 | 11-seguranca | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 12 | 12-memoria | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 13 | 13-streaming | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 14 | 14-cache | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 15 | 15-skills | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 16 | 16-operacoes | ✅ | ✅ | ✅ | ✅ | ✅ |
 
 ---
 
@@ -46,7 +46,7 @@ Cada arquivo agora contém os 4 elementos obrigatórios da rubrica VALIDA-IA:
 | ✅ **Critérios de sucesso** | Checklist verificável ("só se conseguir fazer sem olhar") |
 
 **Status:** 16/16 módulos ✅ (100%)
-| 16 | p11_production_ops | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 16 | 16-operacoes | ✅ | ✅ | ✅ | ✅ | ✅ |
 
 ---
 
@@ -61,20 +61,20 @@ Cada arquivo agora contém os 4 elementos obrigatórios da rubrica VALIDA-IA:
 
 ## Progresso
 
-- [ ] **Módulo 3/16:** p1_feasibility — faltam passos guiados + critérios
-- [ ] **Módulo 4/16:** p2_rag — faltam passos guiados + critérios
-- [ ] **Módulo 5/16:** p3a1_self_eval — faltam passos guiados + critérios
-- [ ] **Módulo 6/16:** p3a2_tool_calling — faltam passos guiados + critérios
-- [ ] **Módulo 7/16:** p3a3_planning — faltam passos guiados + critérios
-- [ ] **Módulo 8/16:** p3b_multi_agent — faltam passos guiados + critérios
-- [ ] **Módulo 9/16:** p4_production — faltam passos guiados + critérios
-- [ ] **Módulo 10/16:** p5_evaluation — faltam passos guiados + critérios
-- [ ] **Módulo 11/16:** p6_safety — faltam passos guiados + critérios
-- [ ] **Módulo 12/16:** p7_memory — faltam passos guiados + critérios
-- [ ] **Módulo 13/16:** p8_streaming — faltam passos guiados + critérios
-- [ ] **Módulo 14/16:** p9_caching — faltam passos guiados + critérios
-- [ ] **Módulo 15/16:** p10_skills — faltam passos guiados + critérios
-- [ ] **Módulo 16/16:** p11_production_ops — faltam passos guiados + critérios
+- [ ] **Módulo 3/16:** 03-viabilidade — faltam passos guiados + critérios
+- [ ] **Módulo 4/16:** 04-rag — faltam passos guiados + critérios
+- [ ] **Módulo 5/16:** 05-autoavaliacao — faltam passos guiados + critérios
+- [ ] **Módulo 6/16:** 06-tool-calling — faltam passos guiados + critérios
+- [ ] **Módulo 7/16:** 07-planejamento — faltam passos guiados + critérios
+- [ ] **Módulo 8/16:** 08-multiagente — faltam passos guiados + critérios
+- [ ] **Módulo 9/16:** 09-producao-api — faltam passos guiados + critérios
+- [ ] **Módulo 10/16:** 10-avaliacao — faltam passos guiados + critérios
+- [ ] **Módulo 11/16:** 11-seguranca — faltam passos guiados + critérios
+- [ ] **Módulo 12/16:** 12-memoria — faltam passos guiados + critérios
+- [ ] **Módulo 13/16:** 13-streaming — faltam passos guiados + critérios
+- [ ] **Módulo 14/16:** 14-cache — faltam passos guiados + critérios
+- [ ] **Módulo 15/16:** 15-skills — faltam passos guiados + critérios
+- [ ] **Módulo 16/16:** 16-operacoes — faltam passos guiados + critérios
 
 ---
 

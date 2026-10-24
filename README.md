@@ -10,10 +10,10 @@ Um curso técnico construído sobre **Aprendizagem Baseada em Problemas (PBL)**:
 
 **Como está organizado.** Os 16 capítulos seguem uma progressão deliberada em quatro arcos:
 
-- **Fundamentos (P0-F → P1):** o que é IA/LLM, tokens, custo e como decidir se um problema merece IA.
-- **Contexto e Qualidade (P2 → P3a-1):** dar conhecimento ao modelo (RAG) e fazê-lo avaliar o próprio trabalho.
-- **Autonomia e Resiliência (P3a-2 → P3b):** agentes que usam ferramentas, planejam tarefas multi-etapas e sobrevivem a falhas — inclusive trabalhando em equipe.
-- **Produção e Operações (P4 → P11):** tirar do script local e levar para o mundo real: API, avaliação, segurança, memória, streaming, cache, skills reutilizáveis e operações contínuas.
+- **Fundamentos (Capítulos 01–03):** o que é IA/LLM, tokens, custo e como decidir se um problema merece IA.
+- **Contexto e Qualidade (Capítulos 04–05):** dar conhecimento ao modelo (RAG) e fazê-lo avaliar o próprio trabalho.
+- **Autonomia e Resiliência (Capítulos 06–08):** agentes que usam ferramentas, planejam tarefas multi-etapas e sobrevivem a falhas — inclusive trabalhando em equipe.
+- **Produção e Operações (Capítulos 09–16):** tirar do script local e levar para o mundo real: API, avaliação, segurança, memória, streaming, cache, skills reutilizáveis e operações contínuas.
 
 **Como usar cada capítulo.** Em cada módulo você tem três artefatos que conversam entre si:
 
@@ -23,7 +23,7 @@ Um curso técnico construído sobre **Aprendizagem Baseada em Problemas (PBL)**:
 
 Siga a ordem dos capítulos usando a navegação **← Anterior · Índice · Próximo →** no fim de cada material.
 
-**Pré-requisitos.** Python 3.11+, uma conta na OpenAI (ou compatível) e Docker (necessário só a partir de P4).
+**Pré-requisitos.** Python 3.11+, uma conta na OpenAI (ou compatível) e Docker (necessário só a partir do Capítulo 09).
 
 ---
 
@@ -31,47 +31,47 @@ Siga a ordem dos capítulos usando a navegação **← Anterior · Índice · Pr
 
 ### Fase 1 — Fundamentos
 
-1. [P0-F: Fundamentos — O que é IA e LLM?](modules/p0_fundamentals/MATERIAL.md) — IA, LLMs, tokenização e prompt engineering.
-   ↳ [`run.py`](modules/p0_fundamentals/run.py)
-2. [P0: Primeiro Fluxo com LLM](modules/p0_first_llm/MATERIAL.md) — sua primeira chamada HTTP a um modelo.
-   ↳ [`run.py`](modules/p0_first_llm/run.py) · [Miniprojeto](modules/p0_first_llm/miniproject.md)
-3. [P1: Análise de Viabilidade](modules/p1_feasibility/MATERIAL.md) — benchmark IA vs. regras; quando IA vale a pena.
-   ↳ [`run.py`](modules/p1_feasibility/run.py) · [Miniprojeto](modules/p1_feasibility/miniproject.md)
+1. [Capítulo 01 — Fundamentos: O que é IA e LLM?](modules/01-fundamentos/MATERIAL.md) — IA, LLMs, tokenização e prompt engineering.
+   ↳ [`run.py`](modules/01-fundamentos/run.py)
+2. [Capítulo 02 — Primeiro Fluxo com LLM](modules/02-primeiro-llm/MATERIAL.md) — sua primeira chamada HTTP a um modelo.
+   ↳ [`run.py`](modules/02-primeiro-llm/run.py) · [Miniprojeto](modules/02-primeiro-llm/miniproject.md)
+3. [Capítulo 03 — Análise de Viabilidade](modules/03-viabilidade/MATERIAL.md) — benchmark IA vs. regras; quando IA vale a pena.
+   ↳ [`run.py`](modules/03-viabilidade/run.py) · [Miniprojeto](modules/03-viabilidade/miniproject.md)
 
 ### Fase 2 — Contexto e Qualidade
 
-4. [P2: Pipeline RAG](modules/p2_rag/MATERIAL.md) — recuperação de contexto para dar conhecimento interno ao LLM.
-   ↳ [`run.py`](modules/p2_rag/run.py) · [Miniprojeto](modules/p2_rag/miniproject.md)
-5. [P3a-1: Autoavaliação e Reflexão](modules/p3a1_self_eval/MATERIAL.md) — loop de crítica estruturada.
-   ↳ [`run.py`](modules/p3a1_self_eval/run.py) · [Miniprojeto](modules/p3a1_self_eval/miniproject.md)
+1. [Capítulo 04 — Pipeline RAG](modules/04-rag/MATERIAL.md) — recuperação de contexto para dar conhecimento interno ao LLM.
+   ↳ [`run.py`](modules/04-rag/run.py) · [Miniprojeto](modules/04-rag/miniproject.md)
+2. [Capítulo 05 — Autoavaliação e Reflexão](modules/05-autoavaliacao/MATERIAL.md) — loop de crítica estruturada.
+   ↳ [`run.py`](modules/05-autoavaliacao/run.py) · [Miniprojeto](modules/05-autoavaliacao/miniproject.md)
 
 ### Fase 3 — Autonomia e Resiliência
 
-6. [P3a-2: Tool Calling](modules/p3a2_tool_calling/MATERIAL.md) — agente com funções reais + human-in-the-loop.
-   ↳ [`run.py`](modules/p3a2_tool_calling/run.py) · [Miniprojeto](modules/p3a2_tool_calling/miniproject.md)
-7. [P3a-3: Planejamento e Retomada](modules/p3a3_planning/MATERIAL.md) — circuit breaker, checkpoints e retry.
-   ↳ [`run.py`](modules/p3a3_planning/run.py) · [Miniprojeto](modules/p3a3_planning/miniproject.md)
-8. [P3b: Sistema Multiagente](modules/p3b_multi_agent/MATERIAL.md) — supervisor + especialistas cooperando.
-   ↳ [`run.py`](modules/p3b_multi_agent/run.py) · [Miniprojeto](modules/p3b_multi_agent/miniproject.md)
+1. [Capítulo 06 — Tool Calling](modules/06-tool-calling/MATERIAL.md) — agente com funções reais + human-in-the-loop.
+   ↳ [`run.py`](modules/06-tool-calling/run.py) · [Miniprojeto](modules/06-tool-calling/miniproject.md)
+2. [Capítulo 07 — Planejamento e Retomada](modules/07-planejamento/MATERIAL.md) — circuit breaker, checkpoints e retry.
+   ↳ [`run.py`](modules/07-planejamento/run.py) · [Miniprojeto](modules/07-planejamento/miniproject.md)
+3. [Capítulo 08 — Sistema Multiagente](modules/08-multiagente/MATERIAL.md) — supervisor + especialistas cooperando.
+   ↳ [`run.py`](modules/08-multiagente/run.py) · [Miniprojeto](modules/08-multiagente/miniproject.md)
 
 ### Fase 4 — Produção e Operações
 
-9. [P4: Produção (API REST com FastAPI)](modules/p4_production/MATERIAL.md) — do script local ao serviço com Docker.
-   ↳ [`run.py`](modules/p4_production/run.py) · [Miniprojeto](modules/p4_production/miniproject.md)
-10. [P5: Avaliação e Testes](modules/p5_evaluation/MATERIAL.md) — golden dataset + A/B testing.
-    ↳ [`run.py`](modules/p5_evaluation/run.py) · [Miniprojeto](modules/p5_evaluation/miniproject.md)
-11. [P6: Segurança e Guardrails](modules/p6_safety/MATERIAL.md) — prompt injection e defesas.
-    ↳ [`run.py`](modules/p6_safety/run.py) · [Miniprojeto](modules/p6_safety/miniproject.md)
-12. [P7: Memória e Contexto](modules/p7_memory/MATERIAL.md) — short/long-term memory.
-    ↳ [`run.py`](modules/p7_memory/run.py) · [Miniprojeto](modules/p7_memory/miniproject.md)
-13. [P8: Streaming e Tempo Real](modules/p8_streaming/MATERIAL.md) — SSE token-by-token.
-    ↳ [`run.py`](modules/p8_streaming/run.py) · [Miniprojeto](modules/p8_streaming/miniproject.md)
-14. [P9: Cache e Otimização de Custo](modules/p9_caching/MATERIAL.md) — response cache + model routing.
-    ↳ [`run.py`](modules/p9_caching/run.py) · [Miniprojeto](modules/p9_caching/miniproject.md)
-15. [P10: Design e Composição de Skills](modules/p10_skills/MATERIAL.md) — skill registry + pipelines.
-    ↳ [`run.py`](modules/p10_skills/run.py) · [Miniprojeto](modules/p10_skills/miniproject.md)
-16. [P11: Operations de Produção](modules/p11_production_ops/MATERIAL.md) — CI/CD, monitoramento e rollback.
-    ↳ [`run.py`](modules/p11_production_ops/run.py) · [Miniprojeto](modules/p11_production_ops/miniproject.md)
+1. [Capítulo 09 — Produção (API REST com FastAPI)](modules/09-producao-api/MATERIAL.md) — do script local ao serviço com Docker.
+   ↳ [`run.py`](modules/09-producao-api/run.py) · [Miniprojeto](modules/09-producao-api/miniproject.md)
+2. [Capítulo 10 — Avaliação e Testes](modules/10-avaliacao/MATERIAL.md) — golden dataset + A/B testing.
+    ↳ [`run.py`](modules/10-avaliacao/run.py) · [Miniprojeto](modules/10-avaliacao/miniproject.md)
+3. [Capítulo 11 — Segurança e Guardrails](modules/11-seguranca/MATERIAL.md) — prompt injection e defesas.
+    ↳ [`run.py`](modules/11-seguranca/run.py) · [Miniprojeto](modules/11-seguranca/miniproject.md)
+4. [Capítulo 12 — Memória e Contexto](modules/12-memoria/MATERIAL.md) — short/long-term memory.
+    ↳ [`run.py`](modules/12-memoria/run.py) · [Miniprojeto](modules/12-memoria/miniproject.md)
+5. [Capítulo 13 — Streaming e Tempo Real](modules/13-streaming/MATERIAL.md) — SSE token-by-token.
+    ↳ [`run.py`](modules/13-streaming/run.py) · [Miniprojeto](modules/13-streaming/miniproject.md)
+6. [Capítulo 14 — Cache e Otimização de Custo](modules/14-cache/MATERIAL.md) — response cache + model routing.
+    ↳ [`run.py`](modules/14-cache/run.py) · [Miniprojeto](modules/14-cache/miniproject.md)
+7. [Capítulo 15 — Design e Composição de Skills](modules/15-skills/MATERIAL.md) — skill registry + pipelines.
+    ↳ [`run.py`](modules/15-skills/run.py) · [Miniprojeto](modules/15-skills/miniproject.md)
+8. [Capítulo 16 — Operations de Produção](modules/16-operacoes/MATERIAL.md) — CI/CD, monitoramento e rollback.
+    ↳ [`run.py`](modules/16-operacoes/run.py) · [Miniprojeto](modules/16-operacoes/miniproject.md)
 
 ---
 
@@ -90,7 +90,7 @@ Siga a ordem dos capítulos usando a navegação **← Anterior · Índice · Pr
 
 - Python 3.11+
 - Conta na OpenAI (ou compatível)
-- Docker (módulo P4)
+- Docker (Capítulo 09)
 
 ### Instalação
 
@@ -105,9 +105,9 @@ cp .env.example .env       # Configure suas chaves
 
 ```bash
 # Cada módulo tem seu script principal
-python modules/p0_first_llm/run.py
-python modules/p1_feasibility/run.py
-python modules/p2_rag/run.py
+python modules/02-primeiro-llm/run.py
+python modules/03-viabilidade/run.py
+python modules/04-rag/run.py
 # ... etc
 ```
 
@@ -121,22 +121,22 @@ ai-agents-course/
 │   ├── security.py         # Gestão de secrets (.env)
 │   └── governance.py       # Human-in-the-loop
 ├── modules/                # Módulos do curso (capítulos)
-│   ├── p0_fundamentals/    # Fundamentos (IA, LLM, tokens)
-│   ├── p0_first_llm/       # Primeiro fluxo com LLM
-│   ├── p1_feasibility/     # Análise de viabilidade
-│   ├── p2_rag/             # Pipeline RAG
-│   ├── p3a1_self_eval/     # Autoavaliação
-│   ├── p3a2_tool_calling/  # Tool Calling
-│   ├── p3a3_planning/      # Planejamento e retomada
-│   ├── p3b_multi_agent/    # Multiagente
-│   ├── p4_production/      # Deploy em produção
-│   ├── p5_evaluation/      # Avaliação e testes
-│   ├── p6_safety/          # Segurança e guardrails
-│   ├── p7_memory/          # Memória e contexto
-│   ├── p8_streaming/       # Streaming e tempo real
-│   ├── p9_caching/         # Cache e otimização de custo
-│   ├── p10_skills/         # Design de skills
-│   └── p11_production_ops/ # Ops de produção (CI/CD + monitoring)
+│   ├── 01-fundamentos/    # Fundamentos (IA, LLM, tokens)
+│   ├── 02-primeiro-llm/       # Primeiro fluxo com LLM
+│   ├── 03-viabilidade/     # Análise de viabilidade
+│   ├── 04-rag/             # Pipeline RAG
+│   ├── 05-autoavaliacao/     # Autoavaliação
+│   ├── 06-tool-calling/  # Tool Calling
+│   ├── 07-planejamento/      # Planejamento e retomada
+│   ├── 08-multiagente/    # Multiagente
+│   ├── 09-producao-api/      # Deploy em produção
+│   ├── 10-avaliacao/      # Avaliação e testes
+│   ├── 11-seguranca/          # Segurança e guardrails
+│   ├── 12-memoria/          # Memória e contexto
+│   ├── 13-streaming/       # Streaming e tempo real
+│   ├── 14-cache/         # Cache e otimização de custo
+│   ├── 15-skills/         # Design de skills
+│   └── 16-operacoes/ # Ops de produção (CI/CD + monitoring)
 ├── tests/                  # Testes por módulo
 ├── data/                   # Dados de exemplo
 ├── docs/                   # Documentação

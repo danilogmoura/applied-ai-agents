@@ -10,7 +10,7 @@ fonte. O quote exibido vem cru do chunk (nunca traduzido); marcamos [EN]/[ZH].
 
 Execução:
     python -m tools.coverage_map                       # todos os módulos
-    python -m tools.coverage_map --module p2_rag       # um só
+    python -m tools.coverage_map --module 04-rag       # um só
     python -m tools.coverage_map --dry-run             # extrai conceitos, SEM API
     python -m tools.coverage_map --k 3 --min-sim 0.50
 """
@@ -446,7 +446,7 @@ def process_module(module_dir: Path, k: int, index_dir: Path, min_sim: float, dr
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="Mapa de cobertura RAG (modo A).")
-    ap.add_argument("--module", help="Nome de um módulo (ex: p2_rag). Senão, todos.")
+    ap.add_argument("--module", help="Nome de um módulo (ex: 04-rag). Senão, todos.")
     ap.add_argument("--k", type=int, default=3, help="Resultados por conceito.")
     ap.add_argument("--min-sim", type=float, default=0.50, help="Similaridade mínima p/ contar como cobertura.")
     ap.add_argument("--index-dir", type=Path, default=DEFAULT_INDEX_DIR)

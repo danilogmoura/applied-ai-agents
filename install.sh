@@ -58,5 +58,5 @@ print('✓ Utilitários compartilhados funcionando')
 echo "\n✅ Instalação concluída!"
 echo "\n📖 Próximos passos:"
 echo "   1. Edite .env com sua OPENAI_API_KEY"
-echo "   2. Execute: python modules/p0_first_llm/run.py"
+echo "   2. Execute: python modules/02-primeiro-llm/run.py"
 echo "   3. Consulte docs/curriculum.md para o guia completo"

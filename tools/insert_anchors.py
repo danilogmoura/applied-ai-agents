@@ -16,8 +16,8 @@ Regras cross-linguais (plano §3):
 Idempotente: um heading que já tem âncora (marcador ANCHOR) não ganha outra.
 
 Execução:
-    python -m tools.insert_anchors --module p2_rag --dry-run   # mostra, não escreve
-    python -m tools.insert_anchors --module p2_rag             # escreve MATERIAL.md
+    python -m tools.insert_anchors --module 04-rag --dry-run   # mostra, não escreve
+    python -m tools.insert_anchors --module 04-rag             # escreve MATERIAL.md
     python -m tools.insert_anchors                             # todos os módulos
 """
 
@@ -261,7 +261,7 @@ def _norm(s: str) -> str:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="Âncoras de citação no MATERIAL (modo B).")
-    ap.add_argument("--module", help="Nome de um módulo (ex: p2_rag). Senão, todos.")
+    ap.add_argument("--module", help="Nome de um módulo (ex: 04-rag). Senão, todos.")
     ap.add_argument("--min-sim", type=float, default=0.55,
                     help="Similaridade mínima p/ promover (mais alto que o modo A: só o melhor vira âncora).")
     ap.add_argument("--index-dir", type=Path, default=DEFAULT_INDEX_DIR)

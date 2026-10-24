@@ -20,25 +20,25 @@ Definida a partir do índice atual do README. Esta é a sequência usada nos lin
 
 | # | Código | Título (para o índice) | Pasta |
 | --- | -------- | ------------------------ | ------- |
-| 1 | P0-F | Fundamentos: O que é IA e LLM? | `p0_fundamentals` |
-| 2 | P0 | Primeiro fluxo: chamada HTTP a um LLM | `p0_first_llm` |
-| 3 | P1 | Viabilidade: IA vs regras | `p1_feasibility` |
-| 4 | P2 | RAG: recuperação de contexto | `p2_rag` |
-| 5 | P3a-1 | Autoavaliação | `p3a1_self_eval` |
-| 6 | P3a-2 | Tool calling | `p3a2_tool_calling` |
-| 7 | P3a-3 | Planejamento resiliente | `p3a3_planning` |
-| 8 | P3b | Multiagente | `p3b_multi_agent` |
-| 9 | P4 | Produção (API + Docker) | `p4_production` |
-| 10 | P5 | Avaliação | `p5_evaluation` |
-| 11 | P6 | Segurança | `p6_safety` |
-| 12 | P7 | Memória | `p7_memory` |
-| 13 | P8 | Streaming | `p8_streaming` |
-| 14 | P9 | Cache | `p9_caching` |
-| 15 | P10 | Skills | `p10_skills` |
-| 16 | P11 | Operações de produção | `p11_production_ops` |
+| 1 | P0-F | Fundamentos: O que é IA e LLM? | `01-fundamentos` |
+| 2 | P0 | Primeiro fluxo: chamada HTTP a um LLM | `02-primeiro-llm` |
+| 3 | P1 | Viabilidade: IA vs regras | `03-viabilidade` |
+| 4 | P2 | RAG: recuperação de contexto | `04-rag` |
+| 5 | P3a-1 | Autoavaliação | `05-autoavaliacao` |
+| 6 | P3a-2 | Tool calling | `06-tool-calling` |
+| 7 | P3a-3 | Planejamento resiliente | `07-planejamento` |
+| 8 | P3b | Multiagente | `08-multiagente` |
+| 9 | P4 | Produção (API + Docker) | `09-producao-api` |
+| 10 | P5 | Avaliação | `10-avaliacao` |
+| 11 | P6 | Segurança | `11-seguranca` |
+| 12 | P7 | Memória | `12-memoria` |
+| 13 | P8 | Streaming | `13-streaming` |
+| 14 | P9 | Cache | `14-cache` |
+| 15 | P10 | Skills | `15-skills` |
+| 16 | P11 | Operações de produção | `16-operacoes` |
 
-- **Primeiro capítulo** (`p0_fundamentals`): sem "Anterior".
-- **Último capítulo** (`p11_production_ops`): sem "Próximo".
+- **Primeiro capítulo** (`01-fundamentos`): sem "Anterior".
+- **Último capítulo** (`16-operacoes`): sem "Próximo".
 - Todos os demais: ambos.
 
 ---
@@ -91,7 +91,7 @@ Inserido **no fim** de cada arquivo:
 
 | ← Anterior | Índice | Próximo → |
 | ------------ | -------- | ----------- |
-| [P3a-2: Tool Calling](../p3a2_tool_calling/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [P3a-3: Planejamento](../p3a3_planning/MATERIAL.md) |
+| [P3a-2: Tool Calling](../06-tool-calling/MATERIAL.md) | [📖 Sumário do curso](../../README.md) | [P3a-3: Planejamento](../07-planejamento/MATERIAL.md) |
 ```
 
 - Primeiro capítulo: célula "Anterior" = `—`.

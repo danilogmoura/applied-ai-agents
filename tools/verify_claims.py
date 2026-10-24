@@ -19,7 +19,7 @@ Classificação por claim:
 
 Execução:
     python -m tools.verify_claims                       # todos os módulos
-    python -m tools.verify_claims --module p2_rag       # só um módulo
+    python -m tools.verify_claims --module 04-rag       # só um módulo
     python -m tools.verify_claims --dry-run             # só extrai, SEM API
     python -m tools.verify_claims --limit 10            # primeiras N claims
 """
@@ -267,7 +267,7 @@ def _iter_modules(modules_dir: Path, only: str | None) -> list[Path]:
 def main() -> None:
     ap = argparse.ArgumentParser(description="Verifica claims do MATERIAL.md contra o corpus.")
     ap.add_argument("--modules-dir", type=Path, default=DEFAULT_MODULES_DIR)
-    ap.add_argument("--module", help="nome da pasta, ex.: p2_rag (default: todos)")
+    ap.add_argument("--module", help="nome da pasta, ex.: 04-rag (default: todos)")
     ap.add_argument("--k", type=int, default=5)
     ap.add_argument("--limit", type=int, help="máx. de claims por módulo")
     ap.add_argument("--support-sim", type=float, default=SUPPORT_SIM)

@@ -6,7 +6,7 @@ latência e erros em agentes de IA.
 
 Uso:
     >>> from shared.logging_config import setup_logging
-    >>> logger = setup_logging("p0_first_llm")
+    >>> logger = setup_logging("02-primeiro-llm")
     >>> logger.info("llm_call", cost=0.001, tokens=500, latency_ms=1200)
 """
 

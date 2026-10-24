@@ -1,0 +1,63 @@
+# 🗺️ Mapa de Cobertura — 08-multiagente
+
+> Gerado por `tools/coverage_map.py` (modo A). Ponteiros verificáveis para as
+> fontes do corpus — **não** é texto autoral nem tradução. Quotes vêm crus da fonte.
+
+_Conceitos analisados: 7 · limiar sim ≥ 0.50_
+
+## Erros Comuns de Iniciantes
+- ✅ sim=0.54 [EN] — `We Make Mistakes · `fastapi-docs-en/docs/deployment/concepts.md``
+  > We Make Mistakes We, as humans, make **mistakes**, all the time. Software almost *always* has **bugs** hidden in different places. 🐛 And we as developers keep improving the code as we find those bugs and as we implement…
+- ✅ sim=0.52 [EN] — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3HZ`
+  > Avoiding Common Pitfalls in Idea Generation Ideas die long before a backtest ever sees them; they wither in quiet corners, assumptions left unspoken, data quietly poisoned, incentives that favor flash over…
+
+## Arquitetura Multiagente
+- ✅ sim=0.69 [EN] — `Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c37D`
+  > 13.1 What a Multi-Agent System Actually Is A multi-agent system is an architecture in which multiple agents participate in the same workflow, each with a defined responsibility, and collaborate toward a shared goal. A…
+- ✅ sim=0.65 [EN] — `Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c4FV`
+  > This is where multi-agent design becomes useful. A multi-agent system divides responsibility across specialized components. One agent may focus on retrieval. Another may analyze evidence. Another may make a decision or…
+- ✅ sim=0.64 [EN] — `Context Engineering for Multi-Agent Systems · Denis Rothman · 2025 · EPUB/Chapter_5`
+  > Zhang, W., Wang, Z., Li, Y., Chen, Z., Zhang, Z., Liu, S., ... & Liu, B. (2025). AgentOrchestra: A Hierarchical Multi-Agent Framework for General-Purpose Task Solving. : A Hierarchical Multi-Agent Framework for…
+
+## Arquitetura Supervisor-Especialista
+- ✅ sim=0.51 [EN] · _ponte: “监督者-专家架构”_ — `Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c410`
+  > The central rule is simple: The model can reason about the code, but the system must control the review process. 16.3 High-Level Architecture The system is built from cooperating components, not from one large model…
+- ✅ sim=0.51 [EN] · _ponte: “监督者-专家架构”_ — `LLM Design Patterns · Ken Huang · 2025 · OEBPS/B31249_30`
+  > MoE architectures are a type of neural network architecture where, instead of a single large network, there are multiple smaller “expert” networks. During inference, a “routing network” dynamically selects and activates…
+- ✅ sim=0.50 [EN] · _ponte: “监督者-专家架构”_ — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3HR`
+  > Think of the deployment stack as four interoperable layers: artifact truth, immutable models, feature slices, and configuration hashes; telemetry and trace collection, high-cardinality, low-latency signals; a policy…
+
+## Roteamento: LLM vs Heurísticas
+- ✅ sim=0.62 [EN] — `Systems Design for the LLM Era · Sampriti Mitra · OEBPS/Text/Index`
+  > 48 instant lesson delivery active user flow 117 – 119 intelligent router 62 intent 189 routing 197 inverted index 160 inverted partitioning 174 K keyword search 144 , 153 – 155 knowledge cut off 27 knowledge graph (KG)…
+- ✅ sim=0.62 [EN] — `Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c355`
+  > Model routing addresses that problem. The system can choose different models for different tasks. Simple classification, extraction, and formatting tasks may use smaller or cheaper models. Complex reasoning, high-risk…
+- ✅ sim=0.60 [EN] — `Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c31H`
+  > 12.7 Task-Based Model Routing Not every task in an agent system requires the same model. A common source of unnecessary cost is using the most capable model for every step in the workflow. This can be simple to…
+
+## Degradation Elegante
+- ✅ sim=0.56 [EN] — `Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c2N0`
+  > Resilience must be designed into the runtime from the beginning. A resilient system does not assume that every step will succeed. It defines in advance how the workflow should respond when a step fails, when it should…
+- ✅ sim=0.54 [EN] — `Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c2V0`
+  > 11.11 Retries, Timeouts, and Safe Degradation Production failures are normal, and agent systems add even more ways to fail. A tool may time out, a model can return invalid structure, a retrieval query can produce poor…
+
+## Pipeline na Prática
+- ✅ sim=0.55 [ZH] — `Agent Skills橙皮书 · 2026 · EPUB/Text/page_1_split_71`
+  > 模式3：多阶段流水线型（Pipeline Pattern） 这是所有模式中最复杂的一种，也是处理端到端工作流的唯一靠谱方式。 核心结构很直白：把大任务拆成多个阶段，每个阶段有明确的输入和输出，阶段之间用检查点分隔。用户确认后才进入下一阶段。 我的huashu-book-pdf（书籍级PDF制作Skill）是这个模式的极端案例。你现在正在读的这本橙皮书，就是用它做的。整个流水线分5个阶段：…
+- ✅ sim=0.53 [EN] — `Context Engineering for Multi-Agent Systems · Denis Rothman · 2025 · EPUB/toc`
+  > Data ingestion pipeline Pipeline steps • Ingesting the context library • Execution and operation Engine room • Control deck • Production safeguards: moderation, sanitization, and policy Input sanitization (prompt…
+- ✅ sim=0.53 [EN] — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3HK`
+  > pipeline: cross_asset_momentum version: "2026-01-03 nodes: - id: ingest.prices type: dataset source: altprice.v2 - id: feat.rolling_mom type: transform script: transforms/rolling_mom.py inputs: [ingest.prices] - id:…
+
+## Custos em Multiagente
+- ✅ sim=0.60 [EN] — `Context Engineering for Multi-Agent Systems · Denis Rothman · 2025 · EPUB/Other_books_you_may_enjoy`
+  > Implement industry-specific agents for e-commerce, customer support, and more Design robust memory architectures for agents with short- and long-term recall Apply responsible AI practices with monitoring, guardrails,…
+- ✅ sim=0.55 [EN] — `Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c4FV`
+  > This is where multi-agent design becomes useful. A multi-agent system divides responsibility across specialized components. One agent may focus on retrieval. Another may analyze evidence. Another may make a decision or…
+- ✅ sim=0.55 [EN] — `Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c37D`
+  > 13.1 What a Multi-Agent System Actually Is A multi-agent system is an architecture in which multiple agents participate in the same workflow, each with a defined responsibility, and collaborate toward a shared goal. A…
+
+
+---
+
+**Resumo:** 7/7 conceitos com suporte (0 sem cobertura).
