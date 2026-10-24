@@ -153,6 +153,13 @@ Detecta e mascara automaticamente:
 - Números de cartão de crédito
 - Senhas, tokens, chaves API
 
+> 🛑 **Checkpoint:** Pause aqui. Tente responder sem rolar para cima:
+>
+> - Por que segurança de IA é diferente de segurança de software tradicional?
+> - O que é prompt injection e por que ele engana o modelo em vez de 'invadir'?
+> - Qual camada defende contra vazamento de CPF/cartão: filtro de conteúdo ou detecção de jailbreak?
+> - Se você bloqueou um prompt injection, ainda precisa de least privilege? Por quê?
+
 ### Principle of Least Privilege
 
 > 📖 Fonte: **[EN]** Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3HF —

@@ -89,7 +89,7 @@ Você vai usar 3 comandos no terminal:
 
 **Por que importa?** Todos os exercícios rodam no terminal. Se não sabe navegar pastas, vai travar nos exercícios.
 
-> 💡 **Teste rápido:** Abra o terminal e digite `python --version`. Se mostrar a versão do Python, você está pronto. Se não, siga o SETUP.md antes de continuar.
+> 💡 **Teste rápido:** Abra o terminal e digite `python --version`. Se mostrar a versão do Python, você está pronto. Se não, siga o [SETUP_COMPLETE.md](../../SETUP_COMPLETE.md) antes de continuar.
 
 ---
 

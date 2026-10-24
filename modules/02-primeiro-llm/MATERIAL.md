@@ -2,7 +2,7 @@
 
 ## ⚙️ Setup Obrigatório
 
-**Antes de começar, leia [SETUP.md](SETUP.md)** para instalar dependências, obter API key e configurar seu ambiente.
+**Antes de começar, leia [SETUP_COMPLETE.md](../../SETUP_COMPLETE.md)** para instalar dependências, obter API key e configurar seu ambiente.
 
 ---
 

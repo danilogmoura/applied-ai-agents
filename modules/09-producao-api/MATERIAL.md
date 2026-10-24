@@ -198,6 +198,13 @@ Isso garante que:
 - Clients sabem exatamente o formato esperado
 - Docs Swagger são gerados automaticamente
 
+> 🛑 **Checkpoint:** Pause aqui. Tente responder sem rolar para cima:
+>
+> - Que problema um script 'solto' tem que uma API com FastAPI resolve?
+> - Por que um modelo Pydantic funciona como 'contrato' entre cliente e servidor?
+> - O que acontece com um request inválido antes de chegar à lógica de negócio?
+> - Para que serve o Docker se o código já roda localmente?
+
 ### Middleware de Monitoramento
 
 > 📖 Fonte: **[EN]** Systems Design for the LLM Era · Sampriti Mitra · OEBPS/Text/Chapter_6 —

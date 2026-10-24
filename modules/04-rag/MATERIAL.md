@@ -268,6 +268,13 @@ O modelo aprendeu durante o treino que textos com significado similar produzem v
 > distâncias por documento → a resposta final com tokens e custo. Se faltar chromadb, o
 > script avisa e cai no fallback em memória — siga o aviso.
 
+> 🛑 **Checkpoint:** Pause aqui. Tente responder sem rolar para cima:
+>
+> - Por que um LLM sozinho não responde sobre seus documentos internos?
+> - O que é um embedding e por que busca semântica vence a busca por palavra-chave?
+> - Qual a diferença entre chunking fixo e chunking com overlap? O que o overlap evita?
+> - Num pipeline RAG, onde nascem os tokens extras: na busca ou na geração?
+
 ## 🔬 Técnicas Avançadas de Produção (OPCIONAL)
 
 > ⚠️ **Esta seção é para produção.** Pode ser pulada na primeira leitura.
