@@ -320,6 +320,91 @@ O sistema tool-calling é um loop fechado com 5 componentes:
 
 ---
 
+### Demo: O Núcleo do Loop, Sem Chamar a API
+
+Antes de ligar um modelo de verdade, vale isolar a mecânica que o `run.py` usa: o LLM devolve **uma lista de `tool_calls`** (nome + argumentos em JSON), e o seu código faz *dispatch* — executa a função certa e devolve o resultado. Abaixo está esse núcleo rodando com as ferramentas reais do módulo (`calculate_tool`, `list_directory_tool`) e um `tool_calls` **simulado**, exatamente no formato que o modelo retornaria. Copie, cole num arquivo e rode — não precisa de chave de API.
+
+```python
+import json
+from pathlib import Path
+
+# As ferramentas REAIS do modulo (mesmas funcoes de run.py)
+def calculate_tool(expression: str) -> str:
+    import re
+    if re.search(r"[a-z_]|__|import|eval|exec|open|lambda", expression, re.IGNORECASE):
+        return "ERRO: Expressao contem caracteres nao permitidos."
+    allowed = set("0123456789+-*/().% ")
+    if not all(c in allowed for c in expression):
+        return "ERRO: Caracteres nao permitidos na expressao."
+    try:
+        return f"Resultado: {eval(expression, {'__builtins__': {}}, {})}"
+    except Exception as e:
+        return f"ERRO no calculo: {e}"
+
+def list_directory_tool(path: str = ".") -> str:
+    dir_path = Path(path)
+    if not dir_path.is_dir():
+        return f"ERRO: Diretorio nao encontrado: {path}"
+    items = [f"{'DIR' if i.is_dir() else 'FILE'} {i.name}" for i in sorted(dir_path.iterdir())]
+    return "\n".join(items) if items else "(vazio)"
+
+# O "registry": nome da ferramenta -> funcao executavel
+REGISTRY = {"calculate": calculate_tool, "list_directory": list_directory_tool}
+
+def dispatch(tool_calls):
+    """Nucleo do loop: recebe os tool_calls do modelo e devolve os resultados."""
+    results = []
+    for call in tool_calls:
+        name = call["function"]["name"]
+        args = json.loads(call["function"]["arguments"])  # o modelo manda JSON como string
+        print(f"[usando ferramenta] {name}({args})")
+        out = REGISTRY[name](**args)                       # executa a funcao real
+        print(f"[resultado] {out}")
+        results.append({"tool_call_id": call["id"], "name": name, "content": out})
+    return results
+
+# Isto e EXATAMENTE o que um LLM devolveria em assistant_message.tool_calls
+# para a pergunta "quanto e 27 * 143? liste os arquivos de ./shared"
+fake_tool_calls = [
+    {"id": "call_1", "function": {"name": "calculate", "arguments": '{"expression": "27 * 143"}'}},
+    {"id": "call_2", "function": {"name": "list_directory", "arguments": '{"path": "./shared"}'}},
+]
+
+out = dispatch(fake_tool_calls)
+print(json.dumps(out, ensure_ascii=False, indent=2))
+```
+
+Saída real ao rodar (reproduzível, sem custo de API):
+
+```text
+[usando ferramenta] calculate({'expression': '27 * 143'})
+[resultado] Resultado: 3861
+[usando ferramenta] list_directory({'path': './shared'})
+[resultado] FILE __init__.py
+DIR __pycache__
+FILE cost.py
+FILE governance.py
+FILE hints.py
+FILE logging_config.py
+FILE security.py
+[
+  {
+    "tool_call_id": "call_1",
+    "name": "calculate",
+    "content": "Resultado: 3861"
+  },
+  {
+    "tool_call_id": "call_2",
+    "name": "list_directory",
+    "content": "FILE __init__.py\nDIR __pycache__\nFILE cost.py\nFILE governance.py\nFILE hints.py\nFILE logging_config.py\nFILE security.py"
+  }
+]
+```
+
+> Repare nos três pontos que o `run.py` repete em escala real: **(1)** os argumentos chegam como **string JSON** e precisam de `json.loads`; **(2)** o `name` vira uma **busca no registry** — se a tool não estiver lá, é recusado (whitelist); **(3)** cada resultado volta rotulado com o `tool_call_id`, que é como o modelo depois amarra a resposta à chamada. Quando você rodar `python run.py`, é este mesmo esqueleto — só que quem produz os `tool_calls` passa a ser o modelo de verdade.
+
+---
+
 ## O que você vai ver
 
 Antes de rodar o código, aqui está uma prévia do que o programa vai fazer:

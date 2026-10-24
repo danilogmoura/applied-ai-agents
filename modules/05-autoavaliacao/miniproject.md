@@ -223,6 +223,42 @@ python self_eval_generator.py --question "Explique transformers" --max-iters 3
 python self_eval_generator.py --batch questions.json --output results.json
 ```
 
+## 🪨 Travei? Pistas em camadas
+
+Funciona igualzinho às pistas dos exercícios: quando um requisito travar, abra **só o próximo nível** que você precisar — nunca todos de uma vez. O objetivo é destravar o raciocínio, não entregar a resposta mastigada.
+
+> **Nível 1 — Direção.** Cada requisito mapeia para um `Passo` do guia acima. Antes de descer de nível, releia o Passo correspondente; na maioria das vezes ele já tem o esqueleto da função.
+
+<details>
+<summary><b>Nível 2 — A ideia por requisito</b> (clique para abrir)</summary>
+
+- **`generate_response()`:** produza uma resposta inicial (real via LLM ou simulada) e retorne um dict com o texto. É o ponto de partida do loop, não precisa ser boa — só precisa existir para ser avaliada.
+- **`evaluate()`:** pontue a resposta por critérios (claridade, precisão...). Se usar LLM, peça JSON com nota por critério e um score agregado; senão, heurísticas (comprimento, presença de palavras-chave).
+- **`refine()`:** receba o `feedback` e reescreva mirando os pontos fracos apontados — tipicamente chamando o LLM com a resposta anterior + críticas no prompt.
+- **`run_iteration_loop()`:** é o coração: `for i in range(max_iterations)` → generate/evaluate → se score >= threshold pare, senão refine e repita. Guarde o histórico de scores.
+- **threshold & parada:** a condição de saída é dupla — atingiu `threshold` (sucesso) OU esgotou `max_iterations` (melhor esforço). Sempre retorne a melhor resposta vista, não só a última.
+
+</details>
+
+<details>
+<summary><b>Nível 3 — Quase solução</b> (abra só se o nível 2 não bastou)</summary>
+
+```python
+def run_iteration_loop(self, question, max_iterations=5, threshold=0.8):
+    resp = self.generate_response(question)["text"]
+    best = resp
+    for _ in range(max_iterations):
+        ev = self.evaluate(resp)
+        if ev["score"] >= threshold:
+            return {"answer": resp, "score": ev["score"]}
+        resp = self.refine(resp, ev)
+    return {"answer": resp, "score": self.evaluate(resp)["score"], "stopped": "max_iter"}
+```
+
+`generate` → `evaluate` → `refine` são três engrenagens que o loop apenas gira: cada iteração realimenta a saída de uma na entrada da outra até o threshold.
+
+</details>
+
 ## Desafios extras
 
 - [ ] Critérios configuráveis por domínio

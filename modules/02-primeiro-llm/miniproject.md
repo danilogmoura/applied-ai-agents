@@ -215,6 +215,40 @@ python modules/02-primeiro-llm/ticket_classifier_skeleton.py
 
 ---
 
+## 🪨 Travei? Pistas em camadas
+
+Funciona igualzinho às pistas dos exercícios: quando um requisito travar, abra **só o próximo nível** que você precisar — nunca todos de uma vez. O objetivo é destravar o raciocínio, não entregar a resposta mastigada.
+
+> **Nível 1 — Direção.** Cada requisito mapeia para um `Passo` do guia acima. Antes de descer de nível, releia o Passo correspondente; na maioria das vezes ele já tem o esqueleto da função.
+
+<details>
+<summary><b>Nível 2 — A ideia por requisito</b> (clique para abrir)</summary>
+
+- **`classify()`:** monte um prompt que exija APENAS JSON com as chaves `category`/`confidence`/`suggested_action`, chame `self.client.chat.completions.create(..., temperature=0)` e faça `json.loads(response.choices[0].message.content)`.
+- **`temperature=0`:** passe no `create()` sempre. Classificação precisa ser determinística; qualquer valor maior faz o mesmo ticket voltar com categoria diferente entre runs.
+- **Custo por chamada:** reutilize `shared.cost` (`count_tokens` + `estimate_cost`) em vez de reimplementar. Passe os tokens de entrada e uma estimativa de saída (~50/ticket).
+- **`estimate_batch_cost()`:** some `count_tokens(t)` sobre todos os tickets, multiplique a saída por `len(tickets)*50`, e devolva o dict com `total_cost_usd` e `cost_per_ticket_usd`.
+- **`dry_run()`:** não toque na API — classifique por regras (ex.: se contém 'erro 500'/'produção' → URGENTE). Serve para validar a estrutura de retorno sem gastar tokens.
+
+</details>
+
+<details>
+<summary><b>Nível 3 — Quase solução</b> (abra só se o nível 2 não bastou)</summary>
+
+```python
+def classify(self, ticket_text):
+    prompt = f"Classifique e retorne APENAS JSON: {{category, confidence, suggested_action}}\nTicket: {ticket_text}"
+    resp = self.client.chat.completions.create(
+        model=self.model, temperature=0, max_tokens=100,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return json.loads(resp.choices[0].message.content.strip())
+```
+
+Trocar o corpo de `classify()` por regras fixas é exatamente o que `dry_run()` faz: mesma assinatura, mesmo dict de saída, só sem a chamada real — por isso teste com dry run antes de gastar tokens.
+
+</details>
+
 ## Dicas
 
 1. **Sempre teste com dry run primeiro** — evita gastar tokens enquanto debuga.

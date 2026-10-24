@@ -235,6 +235,42 @@ python tool_caller.py --input "Verificar saldo da conta" --tools banking.json
 python tool_caller.py --batch requests.json --output execution_log.json
 ```
 
+## 🪨 Travei? Pistas em camadas
+
+Funciona igualzinho às pistas dos exercícios: quando um requisito travar, abra **só o próximo nível** que você precisar — nunca todos de uma vez. O objetivo é destravar o raciocínio, não entregar a resposta mastigada.
+
+> **Nível 1 — Direção.** Cada requisito mapeia para um `Passo` do guia acima. Antes de descer de nível, releia o Passo correspondente; na maioria das vezes ele já tem o esqueleto da função.
+
+<details>
+<summary><b>Nível 2 — A ideia por requisito</b> (clique para abrir)</summary>
+
+- **Registry de ferramentas:** um `dict[str, Tool]` onde a chave é o nome. Registrar = inserir; executar = buscar pelo nome e chamar `tool.func(**args)`. Se o nome não está no dict, é recusado (é assim que a whitelist funciona).
+- **`route_request()`:** não precisa de LLM aqui — procure no texto da request as *keywords* declaradas em cada `Tool.description` e escolha a tool com mais coincidências. Retorne `(nome_da_tool, argumentos)`.
+- **`classify_risk()`:** compare o nome/args da tool contra uma tabela `{critico: [...], alto: [...]}`. Deletar/enviar dinheiro → `critical`; escrever arquivo → `high`; ler/listar/calcul → `low`.
+- **`execute_with_hitl()`:** se `risk in (HIGH, CRITICAL)`, imprima a `ActionRequest` e leia `input("Aprovar? [y/N] ")`. Só chame `tool.func` se responder `y`. Rejeição retorna string de erro, não exceção.
+- **`execute_with_retry()`:** laço `for tentativa in range(max_retries)` com `sleep(base_delay * (2 ** tentativa))` entre falhas — esse é o backoff exponencial (1s, 2s, 4s…). Interrompa no primeiro sucesso.
+
+</details>
+
+<details>
+<summary><b>Nível 3 — Quase solução</b> (abra só se o nível 2 não bastou)</summary>
+
+```python
+def execute_with_retry(self, name, args, max_retries=3, base_delay=1.0):
+    for attempt in range(max_retries):
+        try:
+            return self.registry[name].func(**args)          # sucesso -> sai na hora
+        except Exception as e:
+            wait = base_delay * (2 ** attempt)               # 1, 2, 4...
+            print(f"falha {attempt+1}/{max_retries}: {e}; aguardando {wait}s")
+            time.sleep(wait)
+    raise RuntimeError(f"{name} falhou após {max_retries} tentativas")
+```
+
+O mesmo padrão (`registry[name].func(**json.loads(args_json))`) resolve `route_request` + execução: roteie para achar o `name`, depois reutilize esta chamada.
+
+</details>
+
 ## Desafios extras
 
 - [ ] Registry dinâmico de ferramentas

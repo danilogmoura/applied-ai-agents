@@ -224,6 +224,42 @@ docker-compose up --build
 curl http://localhost:8000/health
 ```
 
+## 🪨 Travei? Pistas em camadas
+
+Funciona igualzinho às pistas dos exercícios: quando um requisito travar, abra **só o próximo nível** que você precisar — nunca todos de uma vez. O objetivo é destravar o raciocínio, não entregar a resposta mastigada.
+
+> **Nível 1 — Direção.** Cada requisito mapeia para um `Passo` do guia acima. Antes de descer de nível, releia o Passo correspondente; na maioria das vezes ele já tem o esqueleto da função.
+
+<details>
+<summary><b>Nível 2 — A ideia por requisito</b> (clique para abrir)</summary>
+
+- **`validate_input()`:** cheque campos obrigatórios e tipos manualmente (sem Pydantic real): retorne `{valid, errors}` acumulando faltas. É a primeira linha de defesa antes de processar.
+- **`add_middleware_timing()`:** envolva o handler: registre `time.perf_counter()` antes/depois, gravem `duration_ms` e anexe em `self.request_log`. Middleware decorativo, não altera o payload.
+- **`ensure_response_format()`:** normalize toda saída para o envelope `{status, data, metadata}`. Se vier fora do formato, encaixe; garanta que `metadata` traz timing/request_id.
+- **`generate_docker_config()`:** devolva uma string com Dockerfile + docker-compose (FROM python, COPY, EXPOSE, CMD uvicorn). É geração de texto, não execução — basta montar as linhas certas.
+- **fluxo do request:** a ordem canônica é validate → process → ensure_format, tudo cronometrado pelo middleware. Pense na API como uma esteira com essas 4 estações.
+
+</details>
+
+<details>
+<summary><b>Nível 3 — Quase solução</b> (abra só se o nível 2 não bastou)</summary>
+
+```python
+def ensure_response_format(self, response):
+    return {
+        "status": response.get("status", "ok"),
+        "data": response.get("data", response),
+        "metadata": {
+            "timestamp": datetime.now().isoformat(),
+            "duration_ms": response.get("duration_ms", 0),
+        },
+    }
+```
+
+Encaixe `ensure_response_format()` como último estagio: o middleware mede o tempo, `validate_input()` barra o ruim na entrada, e esse método garante que toda saída sai com o mesmo envelope.
+
+</details>
+
 ## Desafios extras
 
 - [ ] Authentication com JWT

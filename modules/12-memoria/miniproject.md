@@ -357,6 +357,38 @@ python memory_system.py --session user_123 --messages conversation.json
 python memory_system.py --consolidate memories_dump.json --output summary.json
 ```
 
+## 🪨 Travei? Pistas em camadas
+
+Funciona igualzinho às pistas dos exercícios: quando um requisito travar, abra **só o próximo nível** que você precisar — nunca todos de uma vez. O objetivo é destravar o raciocínio, não entregar a resposta mastigada.
+
+> **Nível 1 — Direção.** Cada requisito mapeia para um `Passo` do guia acima. Antes de descer de nível, releia o Passo correspondente; na maioria das vezes ele já tem o esqueleto da função.
+
+<details>
+<summary><b>Nível 2 — A ideia por requisito</b> (clique para abrir)</summary>
+
+- **`add_to_short_term()`:** append `{'role','content'}` em `self.short_term` e corte o excesso com fatia `[-max_messages:]`. É uma sliding window — o mais antigo sai primeiro.
+- **`save_to_long_term()`:** estruture `self.long_term[session_id][key] = {'value', 'last_accessed'}`. O `session_id` isola contextos; `last_accessed` alimenta o decay depois.
+- **`retrieve_long_term()`:** busque `self.long_term[session_id].get(key)` e atualize `last_accessed` ao ler (memória usada = memória viva). Retorne o value ou None.
+- **`consolidate_memories()`:** agrupe memórias similares por categoria (keyword/embedding) e gere um resumo por grupo. Reduz redundância antes de persistir.
+- **`cleanup_expired()`:** varra `long_term` removendo entradas com `last_accessed` mais velho que `ttl_days`; retorne quantas foram apagadas. É o esquecimento programado.
+
+</details>
+
+<details>
+<summary><b>Nível 3 — Quase solução</b> (abra só se o nível 2 não bastou)</summary>
+
+```python
+def add_to_short_term(self, role, content, max_messages=10):
+    self.short_term.append({"role": role, "content": content})
+    if len(self.short_term) > max_messages:
+        self.short_term = self.short_term[-max_messages:]   # descartar antigos
+    return self.short_term
+```
+
+A janela curta é volátil e a longa é persistente: use `save_to_long_term()` para o que deve sobreviver e `cleanup_expired()` para deixar a longa envelhecer como a curta, só que em dias, não mensagens.
+
+</details>
+
 ## Desafios extras
 
 - [ ] Vector store para busca semântica na memória

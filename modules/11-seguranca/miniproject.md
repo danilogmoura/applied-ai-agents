@@ -411,6 +411,41 @@ python safety_system.py --input malicious_prompt.txt --rules guardrails.json
 python safety_system.py --batch test_cases.json --output report.json
 ```
 
+## 🪨 Travei? Pistas em camadas
+
+Funciona igualzinho às pistas dos exercícios: quando um requisito travar, abra **só o próximo nível** que você precisar — nunca todos de uma vez. O objetivo é destravar o raciocínio, não entregar a resposta mastigada.
+
+> **Nível 1 — Direção.** Cada requisito mapeia para um `Passo` do guia acima. Antes de descer de nível, releia o Passo correspondente; na maioria das vezes ele já tem o esqueleto da função.
+
+<details>
+<summary><b>Nível 2 — A ideia por requisito</b> (clique para abrir)</summary>
+
+- **`sanitize_input()`:** teste o texto contra `self.sql_patterns`, `xss_patterns` e `prompt_injection_patterns` (regex). Retorne `{safe, detections:[...]}` somando todas as famílias de padrão.
+- **`validate_output()`:** procure vazamentos na saída: API keys (padrão tipo `sk-...`), PII (email/CPF) e trechos do system prompt. Liste as violações encontradas.
+- **`check_guardrails()`:** itere sobre `rules` (cada uma com pattern/ação) e reporte quais dispararam. É o motor genérico que `sanitize`/`validate` poderiam usar se quiser refatorar.
+- **`enforce_rate_limit()`:** mantenha `self.request_log[user_id]` como lista de timestamps; descarte os antigos fora da `window_seconds` e bloqueie se `len >= max_requests`.
+- **`detect_jailbreak()`:** vá além das keywords: procure frases de role-play/instrução oculta ('ignore as regras', 'aja como'). Combine com `sanitize_input()` para decisão final.
+
+</details>
+
+<details>
+<summary><b>Nível 3 — Quase solução</b> (abra só se o nível 2 não bastou)</summary>
+
+```python
+def enforce_rate_limit(self, user_id, max_requests=10, window_seconds=60):
+    now = time.time()
+    log = self.request_log[user_id]
+    self.request_log[user_id] = [t for t in log if now - t < window_seconds]
+    if len(self.request_log[user_id]) >= max_requests:
+        return False                      # limite atingido -> bloqueia
+    self.request_log[user_id].append(now)
+    return True
+```
+
+Os demais guardrails seguem o mesmo molde 'lista de padrões + scan + verdict': `sanitize_input()` e `detect_jailbreak()` trocam a janela temporal por regex, mas a estrutura detectar → reportar é idêntica.
+
+</details>
+
 ## Desafios extras
 
 - [ ] Web UI para testar guardrails

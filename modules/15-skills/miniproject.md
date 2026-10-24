@@ -390,6 +390,41 @@ python skill_system.py --pipeline summarize+translate --input text.txt
 python skill_system.py --discover "analyze sentiment" --top-k 3
 ```
 
+## 🪨 Travei? Pistas em camadas
+
+Funciona igualzinho às pistas dos exercícios: quando um requisito travar, abra **só o próximo nível** que você precisar — nunca todos de uma vez. O objetivo é destravar o raciocínio, não entregar a resposta mastigada.
+
+> **Nível 1 — Direção.** Cada requisito mapeia para um `Passo` do guia acima. Antes de descer de nível, releia o Passo correspondente; na maioria das vezes ele já tem o esqueleto da função.
+
+<details>
+<summary><b>Nível 2 — A ideia por requisito</b> (clique para abrir)</summary>
+
+- **`register_skill()` / `get_skill()`:** grave em `self.skills[name] = {description, handlers, versions}`. Registrar é inserir no dict; buscar é `.get(name)` — assim o registry funciona.
+- **`version_skill()`:** adicione `handlers[version]` e controle a ativa com `set_active_version()`. `get_active_handler()` resolve qual versão rodar — permite v1/v2 coexistirem.
+- **`compose_pipeline()`:** monte um `Pipeline(name, steps=skill_names)` apenas guardando a sequência. Não execute ainda — compor é declarar ordem.
+- **`execute_pipeline()`:** percorra `pipeline.steps` passando a saída de uma skill como entrada da seguinte, com try/except por step e log em `self.pipeline_log`.
+- **`discover_skills()`:** compare a `task_description` com a `description` de cada skill (keywords/similaridade) e retorne as `top_k` mais relevantes.
+
+</details>
+
+<details>
+<summary><b>Nível 3 — Quase solução</b> (abra só se o nível 2 não bastou)</summary>
+
+```python
+def execute_pipeline(self, pipeline, input_data):
+    data = input_data
+    for step in pipeline.steps:
+        handler = self.get_active_handler(step)
+        if handler is None:
+            return {"error": f"skill '{step}' desconhecida"}
+        data = handler(data)          # saida vira entrada do proximo step
+    return {"result": data, "steps": pipeline.steps}
+```
+
+`compose_pipeline()` só declara os nomes; é `execute_pipeline()` que resolve cada nome via `get_active_handler()` e encadeia. Mantenha composição e execução separadas para poder versionar no meio do caminho.
+
+</details>
+
 ## Desafios extras
 
 - [ ] Marketplace de skills compartilháveis

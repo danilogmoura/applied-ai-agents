@@ -176,6 +176,40 @@ python feasibility_analyzer.py --scenario fraud_detection --output report.md
 - [ ] Comparar múltiplos modelos lado a lado
 - [ ] Calculadora ROI (return on investment)
 
+## 🪨 Travei? Pistas em camadas
+
+Funciona igualzinho às pistas dos exercícios: quando um requisito travar, abra **só o próximo nível** que você precisar — nunca todos de uma vez. O objetivo é destravar o raciocínio, não entregar a resposta mastigada.
+
+> **Nível 1 — Direção.** Cada requisito mapeia para um `Passo` do guia acima. Antes de descer de nível, releia o Passo correspondente; na maioria das vezes ele já tem o esqueleto da função.
+
+<details>
+<summary><b>Nível 2 — A ideia por requisito</b> (clique para abrir)</summary>
+
+- **`measure_latency()`:** sem APIs reais, simule com listas de tempos (`random.uniform`) para baseline e LLM, e derive média e p95 ordenando a lista (`sorted(times)[int(n*0.95)]`). Retorne um dict com `_avg_ms` e `_p95_ms` de cada lado.
+- **`compare_costs()`:** converta tokens → dólar com `(llm_tokens/1000)*price_per_1k` e calcule o `ratio = rule_cost/llm_cost`. Um `break_even_volume` é opcional: em quantos requests o LLM empata com a regra.
+- **`evaluate_accuracy_threshold()`:** compare `model_accuracy >= min_acceptable` e devolva `{meets_threshold, gap_pct, recommendation}` — recommendation vira 'APROVADO'/'REPROVADO'. É a trava central da análise de viabilidade.
+- **`generate_memorandum()`:** não recalcule nada — receba o `analysis` dict já montado e formate linhas com f-strings (problema, latências, custos, accuracy) terminando com a recomendação VIÁVEL/NÃO VIÁVEL.
+- **CLI (`--problem`):** guarde cenários num dict `SCENARIOS` e, no `__main__`, chame as três métricas em sequência e passe o resultado agregado para `generate_memorandum()`.
+
+</details>
+
+<details>
+<summary><b>Nível 3 — Quase solução</b> (abra só se o nível 2 não bastou)</summary>
+
+```python
+def evaluate_accuracy_threshold(self, model_accuracy, min_acceptable):
+    meets = model_accuracy >= min_acceptable
+    return {
+        "meets_threshold": meets,
+        "gap_pct": round((model_accuracy - min_acceptable) * 100, 2),
+        "recommendation": "APROVADO" if meets else "REPROVADO",
+    }
+```
+
+`generate_memorandum()` consome exatamente esses dicts: chame as três métricas, empacote em `{latency, costs, accuracy}` e deixe o memorando apenas formatar o que já foi calculado.
+
+</details>
+
 ## ✅ Critérios de Sucesso
 
 Marque cada item **só se conseguir fazer sem olhar o material**:

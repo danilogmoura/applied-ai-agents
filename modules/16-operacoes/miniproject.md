@@ -526,6 +526,40 @@ python ops_system.py --cicd --stages lint,test,build
 python ops_system.py --ab-test variant_a.json variant_b.json
 ```
 
+## 🪨 Travei? Pistas em camadas
+
+Funciona igualzinho às pistas dos exercícios: quando um requisito travar, abra **só o próximo nível** que você precisar — nunca todos de uma vez. O objetivo é destravar o raciocínio, não entregar a resposta mastigada.
+
+> **Nível 1 — Direção.** Cada requisito mapeia para um `Passo` do guia acima. Antes de descer de nível, releia o Passo correspondente; na maioria das vezes ele já tem o esqueleto da função.
+
+<details>
+<summary><b>Nível 2 — A ideia por requisito</b> (clique para abrir)</summary>
+
+- **`run_cicd_pipeline()`:** rode as stages em ordem (lint → test → build → deploy) via `_execute_stage()`; se uma falha, pare e registre em `self.cicd_log`. É sequencial com short-circuit.
+- **`run_health_checks()`:** agregue `_check_llm_api`, `_check_rate_limit`, `_check_memory`, `_check_disk` num dict `{nome: {status, detail}}`. Cada check é independente e retorna healthy/unhealthy.
+- **`record_request()` / `get_percentiles()`:** acumule latências/sucessos em `self.metrics`; nos percentis ordene e pegue posições p50/p95/p99 (`sorted(lat)[int(n*p)]`).
+- **`evaluate_rollback()`:** compare `current_metrics` vs `baseline` contra thresholds (error_rate > 10%, queda de accuracy > 5%). Devolva `{rollback: bool, reasons}`.
+- **A/B (`add_ab_variant`/`get_ab_winner`):** registre variantes com `traffic_pct` em `self.ab_variants`, some wins/losses via `record_ab_result()` e escolha o vencedor pela taxa de vitória.
+
+</details>
+
+<details>
+<summary><b>Nível 3 — Quase solução</b> (abra só se o nível 2 não bastou)</summary>
+
+```python
+def get_percentiles(self):
+    lat = sorted(self.metrics["latencies"])
+    n = len(lat)
+    def pct(p):
+        return lat[min(int(n * p), n - 1)] if n else 0
+    return {"p50": pct(0.50), "p95": pct(0.95), "p99": pct(0.99),
+            "error_rate": self.metrics["errors"] / max(1, self.metrics["total"])}
+```
+
+`evaluate_rollback()` consome exatamente esse dict: compare `error_rate` e accuracy atuais com o baseline e dispare rollback quando cruzarem os thresholds — os percentis alimentam a decisão.
+
+</details>
+
 ## Desafios extras
 
 - [ ] Grafana dashboard integration

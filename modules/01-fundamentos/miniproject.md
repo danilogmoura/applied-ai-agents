@@ -145,6 +145,42 @@ python prompt_analyzer.py --text "Como funciona o reembolso?" --language pt
 python prompt_analyzer.py --prompt-file example.json --model gpt-4o
 ```
 
+## 🪨 Travei? Pistas em camadas
+
+Funciona igualzinho às pistas dos exercícios: quando um requisito travar, abra **só o próximo nível** que você precisar — nunca todos de uma vez. O objetivo é destravar o raciocínio, não entregar a resposta mastigada.
+
+> **Nível 1 — Direção.** Cada requisito mapeia para um `Passo` do guia acima. Antes de descer de nível, releia o Passo correspondente; na maioria das vezes ele já tem o esqueleto da função.
+
+<details>
+<summary><b>Nível 2 — A ideia por requisito</b> (clique para abrir)</summary>
+
+- **`estimate_tokens()`:** não precisa de tokenizer real — use regex. Para PT conte palavras com `re.findall(r'\w+', text)`; para EN aplique a regra ~4 chars/token (`len(text)//4`). A moeda aqui é estimativa, não precisão.
+- **`calculate_cost()`:** os preços vivem em `self.prices[model]` como `{input, output}` por 1K tokens. Converta com `(tokens / 1000) * preco`; escolha `input` ou `output` conforme o lado que está medindo.
+- **`validate_prompt()`:** acumule erros numa lista e retorne `{valid: len(errors)==0, errors}`. As duas checagens mínimas são: lista não vazia e `messages[0]['role'] in ('system','user')`, além de `content` preenchido.
+- **`analyze()`:** é só orquestrar os três anteriores — chame `estimate_tokens`, `calculate_cost` e `validate_prompt` sobre o mesmo prompt e monte um dict único com `tokens`, `custo`, `valido` e `warnings`.
+- **CLI (argparse):** declare `--text`/`--prompt-file`, `--language` e `--model` (default `gpt-4o`) no bloco `if __name__ == '__main__'`. Converta o texto numa mensagem `[{'role':'user','content':...}]` antes de chamar `analyze()`.
+
+</details>
+
+<details>
+<summary><b>Nível 3 — Quase solução</b> (abra só se o nível 2 não bastou)</summary>
+
+```python
+def analyze(self, prompt, model="gpt-4o"):
+    texto = " ".join(m["content"] for m in prompt)
+    tokens = self.estimate_tokens(texto)
+    custo = self.calculate_cost(tokens, model)
+    valid = self.validate_prompt(prompt)
+    warnings = []
+    if tokens > 4000:
+        warnings.append("prompt muito longo")
+    return {"tokens": tokens, "custo": custo, "valido": valid["valid"], "warnings": warnings}
+```
+
+O mesmo encadeamento (tokenizar → precificar → validar → agregar) resolve `analyze()`: cada sub-método devolve uma peça e `analyze()` apenas junta tudo num dict final.
+
+</details>
+
 ## Desafios extras (opcionais)
 
 - [ ] Suporte a múltiplos arquivos JSON

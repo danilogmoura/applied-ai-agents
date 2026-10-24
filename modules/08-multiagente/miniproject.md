@@ -286,6 +286,43 @@ python multi_agent_system.py --hierarchy org_chart.json --batch tasks.json
 - [ ] Load balancing entre workers
 - [ ] Simulation dashboard com visualização de interações
 
+## 🪨 Travei? Pistas em camadas
+
+Funciona igualzinho às pistas dos exercícios: quando um requisito travar, abra **só o próximo nível** que você precisar — nunca todos de uma vez. O objetivo é destravar o raciocínio, não entregar a resposta mastigada.
+
+> **Nível 1 — Direção.** Cada requisito mapeia para um `Passo` do guia acima. Antes de descer de nível, releia o Passo correspondente; na maioria das vezes ele já tem o esqueleto da função.
+
+<details>
+<summary><b>Nível 2 — A ideia por requisito</b> (clique para abrir)</summary>
+
+- **`Agent.execute()` / `get_status()`:** cada especialista tem `name`/`role`/`model` e acumula suas chamadas/tokens/custo; `get_status()` devolve esse placar. Pode falhar de propósito para exercitar o fallback.
+- **`route_to_specialist()`:** compare a request com o domínio de cada especialista (keywords/descrição) e escolha o melhor. Retorne `{specialist, reason, confidence}` — não execute ainda, só decida.
+- **`handle_specialist_failure()`:** se um especialista falha, tente outro candidato do routing ou responda genericamente. É o plano B depois de `route_to_specialist()` dar errado.
+- **`share_context()`:** merge as saídas dos agentes em `self.context_shared` (dict acumulado), para que um veja o trabalho do anterior. Sem isso, os especialistas ficam isolados.
+- **`calculate_multi_agent_cost()`:** some os custos individuais e acrescente um overhead de coordenação (número de handoffs). Separe `agents_total` de `coordination_overhead` no dict.
+- **`execute_hierarchical()`:** gerencie manager → workers: o manager decompõe a tarefa, delega a cada worker via `execute()`, e agrega. Reuse routing + share_context dentro do loop.
+
+</details>
+
+<details>
+<summary><b>Nível 3 — Quase solução</b> (abra só se o nível 2 não bastou)</summary>
+
+```python
+def route_to_specialist(self, request, specialists=None):
+    specialists = specialists or list(self.specialists)
+    req = request.lower()
+    best, hits = None, 0
+    for name, sp in self.specialists.items():
+        n = sum(k in req for k in sp["keywords"])   # aderencia do dominio
+        if n > hits:
+            best, hits = name, n
+    return {"specialist": best, "confidence": hits / max(1, len(req.split()))}
+```
+
+`execute_hierarchical()` reaproveita essa mesma rotação: para cada subtarefa, chame `route_to_specialist()`, execute o escolhido e passe o resultado por `share_context()` antes da próxima etapa.
+
+</details>
+
 ## ✅ Critérios de Sucesso
 
 Marque cada item **só se conseguir fazer sem olhar o material**:

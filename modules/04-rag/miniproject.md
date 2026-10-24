@@ -230,6 +230,40 @@ python mini_rag.py --docs policy.pdf --query "política de reembolso"
 python mini_rag.py --index my_index.json --query "como solicitar estorno?"
 ```
 
+## 🪨 Travei? Pistas em camadas
+
+Funciona igualzinho às pistas dos exercícios: quando um requisito travar, abra **só o próximo nível** que você precisar — nunca todos de uma vez. O objetivo é destravar o raciocínio, não entregar a resposta mastigada.
+
+> **Nível 1 — Direção.** Cada requisito mapeia para um `Passo` do guia acima. Antes de descer de nível, releia o Passo correspondente; na maioria das vezes ele já tem o esqueleto da função.
+
+<details>
+<summary><b>Nível 2 — A ideia por requisito</b> (clique para abrir)</summary>
+
+- **`chunk_document()`:** varra o texto com janela deslizante — passo `chunk_size - overlap` — e retorne uma lista de fatias. O `overlap` evita cortar uma frase no ponto exato entre dois chunks.
+- **`embed_text()`:** embedding *simulado*: faça um hash determinístico do texto (ex.: `hashlib`) e expanda para um vetor de 8 dimensões. Mesma entrada → mesmo vetor, sempre.
+- **`index_documents()`:** para cada doc, chunk → embed → grave em `self.index[chunk_id] = {text, embedding, metadata}`. O `chunk_id` (“doc_i_chunk_j”) é a chave que `retrieve()` vai devolver.
+- **`retrieve()`:** embed a query, compare com cada embedding indexado via `cosine_similarity`, ordene desc e corte em `top_k`. Retorna os chunks mais parecidos, não a resposta ainda.
+- **`generate_response()`:** injete os chunks recuperados no prompt de contexto e chame o LLM (ou simule). É a única etapa que usa linguagem natural de verdade.
+- **`evaluate_retrieval()`:** verifique se `expected_chunk_id` aparece nos top-k → hit@k; MRR = `1/posição` do primeiro acerto (0 se ausente).
+
+</details>
+
+<details>
+<summary><b>Nível 3 — Quase solução</b> (abra só se o nível 2 não bastou)</summary>
+
+```python
+def retrieve(self, query, top_k=3):
+    qv = self.embed_text(query)
+    scored = [(cid, self.cosine_similarity(qv, c["embedding"]))
+              for cid, c in self.index.items()]
+    scored.sort(key=lambda x: x[1], reverse=True)
+    return [self.index[cid] for cid, _ in scored[:top_k]]
+```
+
+Todo o pipeline RAG depende dessa ordem: `index_documents()` alimenta `self.index`, `retrieve()` lê esse índice, e `generate_response()` consome justamente o que `retrieve()` devolveu.
+
+</details>
+
 ## Desafios extras
 
 - [ ] Suporte a múltiplos formatos (PDF, TXT, Markdown)

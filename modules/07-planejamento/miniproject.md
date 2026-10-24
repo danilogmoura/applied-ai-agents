@@ -303,6 +303,46 @@ python planner.py --plan ci_cd.json --checkpoint-dir ./checkpoints
 - [ ] Metrics dashboard (tempo por step, taxa de sucesso)
 - [ ] Exportar plano como workflow YAML
 
+## 🪨 Travei? Pistas em camadas
+
+Funciona igualzinho às pistas dos exercícios: quando um requisito travar, abra **só o próximo nível** que você precisar — nunca todos de uma vez. O objetivo é destravar o raciocínio, não entregar a resposta mastigada.
+
+> **Nível 1 — Direção.** Cada requisito mapeia para um `Passo` do guia acima. Antes de descer de nível, releia o Passo correspondente; na maioria das vezes ele já tem o esqueleto da função.
+
+<details>
+<summary><b>Nível 2 — A ideia por requisito</b> (clique para abrir)</summary>
+
+- **`execute_with_circuit_breaker()`:** mantenha `self.circuits[step_name]` com estado closed/open/half-open. Em open, pule a execução e conte falhas; em half-open, tente uma vez para decidir fechar ou reabrir.
+- **`save_checkpoint()`:** serialise `{step_index, state, results}` (JSON em `self.checkpoint_dir` ou no dict `self.checkpoints`) e devolva um `checkpoint_id` — pode ser um uuid ou `índice`.
+- **`restore_checkpoint()`:** leia pelo `checkpoint_id` e rehydrate `self.results`/estado. É o espelho inverso do save: o que gravou inteiro deve voltar inteiro.
+- **`validate_step()`:** confira `preconditions` e `postconditions` do step contra o `context`. Retorna bool; se falsa, o breaker conta como falha desse step.
+- **`execute_with_fallback()`:** rode o `plan`; se algum step quebrar (ou o circuito abrir), execute o `fallback_plan` no lugar. Resetando `self.results` antes de trocar de plano.
+
+</details>
+
+<details>
+<summary><b>Nível 3 — Quase solução</b> (abra só se o nível 2 não bastou)</summary>
+
+```python
+def execute_with_circuit_breaker(self, plan):
+    out = []
+    for step in plan:
+        st = self._get_circuit_state(step["name"])
+        if st == CircuitState.OPEN:
+            out.append({"step": step["name"], "status": "skipped"})
+            continue
+        try:
+            out.append(self._execute_step(step))     # sucesso -> fecha circuito
+        except Exception as e:
+            self._trip(step["name"])                 # falha -> abre circuito
+            out.append({"step": step["name"], "status": "failed", "err": str(e)})
+    return {"results": out}
+```
+
+Checkpoints entram aqui como segurança: antes de cada step chame `save_checkpoint(len(self.results), {...})`, e ao restaurar use `restore_checkpoint()` para retomar exatamente do `step_index` salvo.
+
+</details>
+
 ## ✅ Critérios de Sucesso
 
 Marque cada item **só se conseguir fazer sem olhar o material**:

@@ -148,6 +148,20 @@ pip install -e ".[dev]"
 cp .env.example .env       # Configure suas chaves
 ```
 
+> 🔌 **Preso à OpenAI? Não está.** Todo `run.py` lê o provedor do `.env`, nunca do código.
+> Trocar de fornecedor é editar duas linhas — sem tocar em nenhum módulo:
+>
+> ```bash
+> LLM_PROVIDER=qwen          # ou: openai (outros compatíveis via OPENAI_BASE_URL)
+> MODEL=qwen3.8-flash        # nome do modelo no seu plano
+> ```
+>
+> O curso ensina os **conceitos** (tokens, RAG, tool calling, cache…) que são os mesmos
+> em qualquer API *OpenAI-compatible* — Anthropic, Gemini, Qwen/DashScope ou um modelo
+> local via [Ollama](https://ollama.com) apontando `OPENAI_BASE_URL` para `http://localhost:11434/v1`.
+> Se um modelo mudar de nome ou preço, você ajusta o `.env` e segue o jogo: nada no
+> material depende de uma versão específica. Ver `shared/security.py` (registry de providers).
+
 ### Executar módulos
 
 ```bash

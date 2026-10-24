@@ -322,6 +322,39 @@ python streaming_system.py --text long_response.txt --format sse
 python streaming_system.py --simulate --delays delay_profile.json
 ```
 
+## 🪨 Travei? Pistas em camadas
+
+Funciona igualzinho às pistas dos exercícios: quando um requisito travar, abra **só o próximo nível** que você precisar — nunca todos de uma vez. O objetivo é destravar o raciocínio, não entregar a resposta mastigada.
+
+> **Nível 1 — Direção.** Cada requisito mapeia para um `Passo` do guia acima. Antes de descer de nível, releia o Passo correspondente; na maioria das vezes ele já tem o esqueleto da função.
+
+<details>
+<summary><b>Nível 2 — A ideia por requisito</b> (clique para abrir)</summary>
+
+- **`stream_chunks()`:** faça uma generator com `yield` que fatia o texto em pedaços de até `max_chunk_size`. Não retorne lista — o `yield` é o que torna o fluxo incremental.
+- **`to_sse()`:** formate como Server-Sent Events: `'data: ' + json.dumps(payload) + '\n\n'`. O duplo \n é o delimitador de evento — esquecer isso quebra o cliente.
+- **`measure_token_latency()`:** receba `token_delays_ms` e calcule TTFT (primeiro token), média e p95 (`sorted(...)[int(n*0.95)]`). São as métricas que definem 'percepção de velocidade'.
+- **`compare_streaming_vs_blocking()`:** no blocking o usuário espera `total_tokens/tokens_per_second`; no streaming espera só o TTFT. Mostre a diferença de latência percebida.
+- **`recover_from_error()`:** dado o `last_valid_index`, devolva o ponto de resume (o próximo chunk válido) para retomar sem reenviar o que já chegou.
+
+</details>
+
+<details>
+<summary><b>Nível 3 — Quase solução</b> (abra só se o nível 2 não bastou)</summary>
+
+```python
+def stream_chunks(self, text, max_chunk_size=50):
+    for i in range(0, len(text), max_chunk_size):
+        yield text[i:i + max_chunk_size]      # incremental, nao acumula
+
+def to_sse(self, data):
+    return f"data: {json.dumps(data)}\n\n"
+```
+
+Encadeie as duas: `sse_stream()` chama `stream_chunks()` e passa cada pedaço por `to_sse()`. O `yield` preserva o streaming ponta a ponta — não transforme em lista no meio.
+
+</details>
+
 ## Desafios extras
 
 - [ ] WebSocket server para streaming real-time

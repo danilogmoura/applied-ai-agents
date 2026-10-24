@@ -284,6 +284,38 @@ python eval_framework.py --golden golden.json --predictions predictions.json
 python eval_framework.py --ab-test variant_a.json variant_b.json
 ```
 
+## 🪨 Travei? Pistas em camadas
+
+Funciona igualzinho às pistas dos exercícios: quando um requisito travar, abra **só o próximo nível** que você precisar — nunca todos de uma vez. O objetivo é destravar o raciocínio, não entregar a resposta mastigada.
+
+> **Nível 1 — Direção.** Cada requisito mapeia para um `Passo` do guia acima. Antes de descer de nível, releia o Passo correspondente; na maioria das vezes ele já tem o esqueleto da função.
+
+<details>
+<summary><b>Nível 2 — A ideia por requisito</b> (clique para abrir)</summary>
+
+- **`build_golden_dataset()`:** zip perguntas e respostas esperadas em `[{'question','expected'}...]` e grave em `self.golden_dataset`. É a base de verdade contra a qual tudo é comparado.
+- **`exact_match()`:** normalizze antes de comparar (strip, lower, colapsar espaços) e devolva bool. Simples, mas rigoroso — qualquer diferença conta como erro.
+- **`fuzzy_match()`:** implemente `levenshtein_distance(s1,s2)` (programação dinâmica, matriz de edições) e converta em similaridade `1 - dist/max_len`; compare com `threshold`.
+- **`ab_test()`:** calcule média e desvio de cada variante e um Z-score da diferença. Devolva `{z_score, significant, winner}` — significativo quando |z| supera o crítico (~1.96).
+- **`regression_benchmark()`:** compare média atual vs baseline; se cair além de um tolerance, marque regressão. Retorne delta percentual e flag `regressed`.
+
+</details>
+
+<details>
+<summary><b>Nível 3 — Quase solução</b> (abra só se o nível 2 não bastou)</summary>
+
+```python
+def fuzzy_match(self, predicted, expected, threshold=0.8):
+    p, e = predicted.lower().strip(), expected.lower().strip()
+    dist = self.levenshtein_distance(p, e)
+    similarity = 1 - dist / max(len(p), len(e), 1)
+    return similarity >= threshold
+```
+
+A Levenshtein é o tijolo que sustenta `fuzzy_match`; reutilize a mesma normalização de `exact_match` aqui, só trocando a comparação rígida pela similaridade com threshold.
+
+</details>
+
 ## Desafios extras
 
 - [ ] Suporte a múltiplas métricas (BLEU, ROUGE, BERTScore)

@@ -363,6 +363,42 @@ python cache_system.py --simulate --queries queries.json --output stats.json
 python cache_system.py --lru-cache --capacity 100 --test load_test.json
 ```
 
+## 🪨 Travei? Pistas em camadas
+
+Funciona igualzinho às pistas dos exercícios: quando um requisito travar, abra **só o próximo nível** que você precisar — nunca todos de uma vez. O objetivo é destravar o raciocínio, não entregar a resposta mastigada.
+
+> **Nível 1 — Direção.** Cada requisito mapeia para um `Passo` do guia acima. Antes de descer de nível, releia o Passo correspondente; na maioria das vezes ele já tem o esqueleto da função.
+
+<details>
+<summary><b>Nível 2 — A ideia por requisito</b> (clique para abrir)</summary>
+
+- **`get()` / `put()`:** `store[key] = {value, expires_at, accessed_at}`. No get, incremente `hits`/`misses` e `total_requests`; se `is_expired()`, trate como miss e remova.
+- **`is_expired()`:** compare `expires_at` com `time.time()`. Entrada sem TTL nunca expira; entrada vencida deve contar como miss, não retornar valor velho.
+- **`hit_rate()`:** é simplesmente `hits / total_requests` (cuide da divisão por zero). `savings_percentage()` multiplica isso pelo custo evitado por request.
+- **`invalidate_pattern()`:** varra `self.store` removendo keys que contêm `pattern` (substring) e retorne quantas caíram. Utíil para invalidar por prefixo de modelo.
+- **`generate_cache_key()`:** hash determinístico (md5/sha) da tupla `(query, model, temperature)`. Temperatura diferente → chave diferente — senão você serve resposta errada.
+
+</details>
+
+<details>
+<summary><b>Nível 3 — Quase solução</b> (abra só se o nível 2 não bastou)</summary>
+
+```python
+def get(self, key):
+    self.total_requests += 1
+    entry = self.store.get(key)
+    if entry and not self.is_expired(key):
+        self.hits += 1
+        entry["accessed_at"] = time.time()
+        return entry["value"]
+    self.misses += 1
+    return None
+```
+
+TTL e LRU são a mesma ideia em duas direções: `is_expired()` remove por tempo, `invalidate_lru()` remove por `accessed_at` antigo. Ambos se apoiam no campo que `put()` grava.
+
+</details>
+
 ## Desafios extras
 
 - [ ] Multi-level cache (L1 memory + L2 Redis)
