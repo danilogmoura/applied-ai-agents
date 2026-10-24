@@ -4,27 +4,32 @@
 > `agents/valida_ia.md`. Público-alvo: **programador iniciante + iniciante absoluto em IA**.
 > Data: 2026-10-24 · Escopo: todos os `MATERIAL.md`, `run.py` e `miniproject.md`.
 > Postura: avaliador crítico, não gerador. Toda nota tem evidência citada (`path:linha`).
+>
+> **⚡ Reavaliado em 2026-10-24** após aplicar as 3 correções prioritárias (commit `63e68db`):
+> terminologia "Módulo" na superfície, onboarding de produção e glossários 07–16. As notas abaixo
+> mostram **antes → depois**. A avaliação original (notas "antes") é preservada como histórico.
 
 ---
 
 ## Nota global do curso
 
-**3,9 / 5 — sólido, com lacunas pontuais de pré-requisito na virada para Produção.**
+**Antes das correções: 3,9 / 5 · Depois: ~4,4 / 5 — de "sólido com lacunas de pré-requisito na
+virada para Produção" para "produção-ready didaticamente".**
 
-O curso é notavelmente bem construído para o "duplo iniciantismo" nos arcos 1–3
-(Fundamentos, Contexto, Autonomia). O risco se concentra no **Arco 4 (Produção/Operações,
-módulos 09–16)**, que introduz FastAPI, Docker, SSE, CI/CD e observabilidade — temas que
-extrapolam o perfil declarado de "iniciante em programação".
+O curso já era notavelmente bem construído para o "duplo iniciantismo" nos arcos 1–3
+(Fundamentos, Contexto, Autonomia). O risco estava concentrado no **Arco 4 (Produção/Operações,
+módulos 09–16)**, que introduz FastAPI, Docker, SSE, CI/CD e observabilidade. As 3 correções
+fecharam exatamente essa barreira operacional e as inconsistências de superfície.
 
-| Dimensão | Nota | Leitura rápida |
-| --- | :---: | --- |
-| T1 Pré-requisitos ocultos / dupla iniciação | **3,5** | Excelente nos módulos 01–08; frágil na entrada de Produção (09+). |
-| T2 Progressão e carga cognitiva | **4** | PBL real, teoria sob demanda, blocos "Avançado OPCIONAL". |
-| T3 Teoria vs prática / scaffolding | **4,5** | run.py guiado + esqueleto + solução + checklist em todos. |
-| T4 Alinhamento com a promessa | **3,5** | Conteúdo entrega; mas metáfora "livro/capítulo" e códigos P0–P11 contradizem "Módulo". |
-| T5 Clareza, jargão e erros | **4** | Troubleshooting universal; jargão definido na 1ª ocorrência; glossário só até 06. |
-| T6 Lacunas críticas | **3,5** | Setup/custo/segurança cobertos; falta onboarding de terminal/Docker/git antes do 09. |
-| T7 Atualidade e dependência | **4,5** | Modelos atuais + alternativas explícitas (não preso à OpenAI). |
+| Dimensão | Antes | Depois | O que mudou |
+| --- | :---: | :---: | --- |
+| T1 Pré-requisitos ocultos / dupla iniciação | 3,5 | **4,0–4,5** | `SETUP-PRODUCAO.md` criado + pré-requisito operacional declarado no Módulo 09. |
+| T2 Progressão e carga cognitiva | 4 | **4** | Inalterado — micro-checkpoints em módulos longos ainda pendentes. |
+| T3 Teoria vs prática / scaffolding | 4,5 | **4,5+** | Ressalva (testes só até 08) **não se confirmou**: cobertura 16/16. |
+| T4 Alinhamento com a promessa | 3,5 | **4,5** | README 0× "capítulo/livro"; FINAL_PROJECT 0× P-codes + tabela de correspondência. |
+| T5 Clareza, jargão e erros | 4 | **4,5** | Glossário agora em **16/16** módulos (antes só 01–06). |
+| T6 Lacunas críticas | 3,5 | **4,0–4,5** | Onboarding terminal/Docker/git publicado e linkado no 09. |
+| T7 Atualidade e dependência | 4,5 | **4,5** | Inalterado — callout "modelo é exemplo" ainda opcional. |
 
 ---
 
@@ -212,6 +217,25 @@ extrapolam o perfil declarado de "iniciante em programação".
 **Feedback acionável:**
 
 - Adicionar callout recorrente "modelo é exemplo, não requisito" nos módulos que fixam nome de modelo.
+
+---
+
+## Registro pós-correção (commit `63e68db`)
+
+As 3 prioridades urgentes foram aplicadas e verificadas no disco:
+
+1. **Terminologia "Módulo" (era T4).** `README.md` não contém mais "capítulo/livro" (grep = 0);
+   `FINAL_PROJECT.md` foi recodificado de P0–P11 → Módulos 01–16 (grep de P-codes = 0) e ganhou uma
+   tabela de correspondência Módulo ↔ Componente. Elo promessa↔percurso restaurado.
+2. **Onboarding de Produção (era T1 + T6).** Novo `SETUP-PRODUCAO.md` na raiz cobre git básico,
+   Docker (`hello-world`) e uvicorn/FastAPI do zero, com checklist de transição. O Módulo 09 passou a
+   declarar pré-requisito **operacional** (não só conceitual) e linka o guia.
+3. **Glossários 07–16 (era T5).** Seção `## Glossário` (padrão Termo | Definição | Analogia) adicionada
+   aos 10 módulos que faltavam; cobertura agora 16/16.
+
+**Pendências de baixa prioridade (não bloqueiam):** inserir micro-checkpoints "⏸️ rode agora" nos
+módulos longos (T2); callout recorrente "modelo é exemplo, não requisito" (T7); padronizar o emoji do
+título dos glossários (novos usam `## Glossário`, alguns antigos `## 📖 Glossário`).
 
 ---
 
