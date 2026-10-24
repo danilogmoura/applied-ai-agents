@@ -23,7 +23,7 @@ from rich.table import Table
 
 from shared.logging_config import setup_logging
 from shared.cost import count_tokens, estimate_cost, format_cost
-from shared.security import get_model, validate_secrets
+from shared.security import get_llm_config, get_model, get_provider
 
 console = Console()
 logger = setup_logging("08-multiagente")
@@ -266,8 +266,8 @@ def main():
     
     # Valida ambiente
     try:
-        validate_secrets(["OPENAI_API_KEY"])
-        console.print("[green]✓ Ambiente validado[/]")
+        get_llm_config()
+        console.print(f"[green]✓ Ambiente validado ({get_provider()})[/]")
     except EnvironmentError as e:
         console.print(f"[red]✗ {e}[/]")
         sys.exit(1)

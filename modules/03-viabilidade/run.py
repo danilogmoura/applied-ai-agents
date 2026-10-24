@@ -26,7 +26,7 @@ from rich.table import Table
 
 from shared.logging_config import setup_logging, measure_latency
 from shared.cost import count_tokens, estimate_cost, format_cost
-from shared.security import get_required_secret
+from shared.security import get_llm_config
 
 console = Console()
 logger = setup_logging("03-viabilidade")
@@ -141,8 +141,8 @@ def run_benchmarks_real(n_samples: int = 5, model: str = "gpt-4o-mini") -> dict[
     """
     from openai import OpenAI
     
-    api_key = get_required_secret("OPENAI_API_KEY")
-    client = OpenAI(api_key=api_key)
+    api_key, base_url, _ = get_llm_config()
+    client = OpenAI(api_key=api_key, base_url=base_url)
     
     test_prompts = [
         "Não consigo acessar minha conta, erro 403",

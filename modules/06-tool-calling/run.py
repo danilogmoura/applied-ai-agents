@@ -27,7 +27,7 @@ from rich.table import Table
 from shared.logging_config import setup_logging
 from shared.cost import count_tokens, estimate_cost, format_cost
 from shared.governance import ActionRequest, RiskLevel, require_approval, safe_execute
-from shared.security import get_model, get_required_secret, validate_secrets
+from shared.security import get_llm_config, get_model, get_provider
 
 console = Console()
 logger = setup_logging("06-tool-calling")
@@ -212,8 +212,8 @@ class ToolCallingAgent:
         """Chamada real à API OpenAI."""
         from openai import OpenAI
         
-        api_key = get_required_secret("OPENAI_API_KEY")
-        client = OpenAI(api_key=api_key)
+        api_key, base_url, _ = get_llm_config()
+        client = OpenAI(api_key=api_key, base_url=base_url)
         
         kwargs: dict = {
             "model": self.model,
@@ -380,8 +380,8 @@ def main():
     
     # Valida ambiente
     try:
-        validate_secrets(["OPENAI_API_KEY"])
-        console.print("[green]✓ Ambiente validado[/]")
+        get_llm_config()
+        console.print(f"[green]✓ Ambiente validado ({get_provider()})[/]")
     except EnvironmentError as e:
         console.print(f"[red]✗ {e}[/]")
         sys.exit(1)

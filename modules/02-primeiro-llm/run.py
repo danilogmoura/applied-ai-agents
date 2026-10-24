@@ -27,7 +27,7 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from shared.logging_config import setup_logging, measure_latency
 from shared.cost import count_tokens, estimate_cost, format_cost, summarize_usage
-from shared.security import get_required_secret, validate_secrets
+from shared.security import get_llm_config, get_provider
 
 console = Console()
 logger = setup_logging("02-primeiro-llm")
@@ -80,9 +80,9 @@ def classify_ticket(ticket: dict, model: str = "gpt-4o-mini") -> dict:
     from openai import OpenAI
     
     # Valida secret obrigatória
-    api_key = get_required_secret("OPENAI_API_KEY")
+    api_key, base_url, _ = get_llm_config()
     
-    client = OpenAI(api_key=api_key)
+    client = OpenAI(api_key=api_key, base_url=base_url)
     
     prompt = f"""Classifique a prioridade deste ticket de suporte em uma única palavra:
 - URGENTE: problemas de produção, falhas críticas, dados em risco
@@ -224,8 +224,8 @@ def main():
     
     # Valida ambiente
     try:
-        validate_secrets(["OPENAI_API_KEY"])
-        console.print("[green]✓ Chaves de API validadas[/]")
+        get_llm_config()
+        console.print(f"[green]✓ Chaves de API validadas ({get_provider()})[/]")
     except EnvironmentError as e:
         console.print(f"[red]✗ {e}[/]")
         console.print("[yellow]Crie um arquivo .env com OPENAI_API_KEY=[/]")

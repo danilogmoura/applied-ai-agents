@@ -131,6 +131,69 @@ def validate_secrets(required_keys: list[str]) -> bool:
     return True
 
 
+# ---------------------------------------------------------------------------
+# Switch de fornecedor/modelo (OpenAI-compatible)
+# ---------------------------------------------------------------------------
+# Escolha no .env com LLM_PROVIDER + MODEL. Cada provider aponta para a sua
+# variavel de chave e base URL, sem tocar nos run.py. Ex.:
+#     LLM_PROVIDER=qwen
+#     QWEN_PLAN_API_KEY=sk-sp-...
+#     QWEN_BASE_URL=https://.../compatible-mode/v1
+#     MODEL=qwen-plus
+# Para OpenAI (default): basta OPENAI_API_KEY.
+PROVIDERS: dict[str, dict[str, str]] = {
+    "openai": {"key_var": "OPENAI_API_KEY", "base_url": ""},
+    "qwen": {
+        "key_var": "QWEN_PLAN_API_KEY",
+        "base_url": "https://maas.qwencloudapi.com/compatible-mode/v1",
+    },
+}
+
+
+def get_provider() -> str:
+    """Nome do provider ativo (LLM_PROVIDER), default 'openai'."""
+    return os.getenv("LLM_PROVIDER", "openai").strip().lower()
+
+
+def get_llm_config() -> tuple[str, Optional[str], str]:
+    """
+    Resolve (api_key, base_url, model) do provider escolhido no .env.
+
+    Ordem de resolucao da chave/base:
+      - LLM_PROVIDER escolhe o preset em PROVIDERS (default openai).
+      - OPENAI_API_KEY / OPENAI_BASE_URL fazem override se definidas.
+      - QWEN_PLAN_API_KEY / QWEN_BASE_URL idem para o provider qwen.
+      - MODEL > DEFAULT_MODEL > nome padrao do provider.
+
+    Returns:
+        (api_key, base_url, model). base_url e None quando usar o endpoint
+        padrao da OpenAI (SDK ja assume api.openai.com).
+
+    Raises:
+        EnvironmentError: se a chave obrigatoria do provider nao estiver definida.
+    """
+    provider = get_provider()
+    preset = PROVIDERS.get(provider, PROVIDERS["openai"])
+
+    if provider == "qwen":
+        api_key = os.getenv("QWEN_PLAN_API_KEY") or os.getenv("OPENAI_API_KEY")
+        base_url = os.getenv("QWEN_BASE_URL") or preset["base_url"]
+        default_model = "qwen-plus"
+    else:
+        api_key = os.getenv("OPENAI_API_KEY")
+        base_url = os.getenv("OPENAI_BASE_URL") or None
+        default_model = DEFAULT_MODEL_NAME
+
+    if not api_key:
+        raise EnvironmentError(
+            f"Provider '{provider}' exige uma chave. Defina "
+            f"{preset['key_var']} (ou OPENAI_API_KEY) no .env."
+        )
+
+    model = os.getenv("MODEL") or os.getenv("DEFAULT_MODEL") or default_model
+    return api_key, base_url, model
+
+
 def mask_secret(secret: str, visible_chars: int = 4) -> str:
     """
     Mascara uma secret para exibição segura em logs.

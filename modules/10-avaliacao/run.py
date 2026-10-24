@@ -29,7 +29,7 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from shared.logging_config import setup_logging, measure_latency
 from shared.cost import count_tokens, estimate_cost, format_cost
-from shared.security import get_required_secret
+from shared.security import get_llm_config
 
 console = Console()
 logger = setup_logging("10-avaliacao")
@@ -189,8 +189,8 @@ class Evaluator:
         try:
             from openai import OpenAI
             
-            api_key = get_required_secret("OPENAI_API_KEY")
-            client = OpenAI(api_key=api_key)
+            api_key, base_url, _ = get_llm_config()
+            client = OpenAI(api_key=api_key, base_url=base_url)
             
             prompt = f"""Você é um juiz imparcial avaliando respostas.
 
@@ -293,7 +293,7 @@ NÃO explique, apenas retorne o número."""
             for example in GOLDEN_DATASET:
                 answer = answers_fn(example.question)
                 
-                with measure_latency(f"evaluate_{example.id}"):
+                with measure_latency(logger, f"evaluate_{example.id}"):
                     result = self.evaluate_single(
                         example, answer, use_llm_judge
                     )
@@ -461,8 +461,8 @@ def main():
     
     # Valida ambiente
     try:
-        get_required_secret("OPENAI_API_KEY")
-    except ValueError as e:
+        get_llm_config()
+    except (ValueError, EnvironmentError) as e:
         console.print(f"[red]⚠ {e}[/]")
         console.print("\n[dim]Configurando .env com OPENAI_API_KEY necessário para LLM judge.[/]")
         return

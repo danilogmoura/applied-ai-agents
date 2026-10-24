@@ -14,8 +14,16 @@ import time
 
 
 # Modelo LLM configuravel via ambiente (EXEMPLO, nao requisito).
-# Troque por Claude/Gemini/Qwen/Ollama exportando MODEL no .env.
-MODEL = os.getenv("MODEL", "gpt-4o-mini")
+# Troque de fornecedor/modelo no .env: LLM_PROVIDER=openai|qwen e MODEL=...
+from shared.security import get_llm_config, get_model
+
+try:
+    _API_KEY, _BASE_URL, MODEL = get_llm_config()
+except EnvironmentError:
+    # Sem chave definida: mantem o modelo por env e deixa as chamadas reais
+    # falharem sozinhas (comportamento identico ao OpenAI() anterior).
+    _API_KEY, _BASE_URL = None, None
+    MODEL = get_model()
 
 try:
     from openai import OpenAI
@@ -79,7 +87,7 @@ def demo_temperature() -> None:
     print("   → Esperamos SEMPRE a mesma resposta\n")
 
     try:
-        client = OpenAI()
+        client = OpenAI(api_key=_API_KEY, base_url=_BASE_URL)
         resp1 = client.chat.completions.create(
             model=MODEL,
             messages=[{"role": "user", "content": prompt_classificacao}],
@@ -161,7 +169,7 @@ Retorne APENAS a palavra: BAIXA, MEDIA ou ALTA""",
     print("\n" + "-" * 50)
 
     try:
-        client = OpenAI()
+        client = OpenAI(api_key=_API_KEY, base_url=_BASE_URL)
         for i, ticket in enumerate(textos, 1):
             print(f"\n--- Ticket {i}: {ticket['assunto']} ---")
             for nome_prompt, template in prompts.items():
