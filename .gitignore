@@ -55,9 +55,10 @@ htmlcov/
 # Evaluations (internal notes, not for repo)
 .evaluations/
 
-# Docs — interna apenas (armazena planos); manter só alignment_plan.md rastreado
+# Docs — interna apenas (armazena planos); manter só alinhamento e relatorio de qualidade rastreados
 docs/*
 !docs/alignment_plan.md
+!docs/relatorio_qualidade_valida_ia.md
 
 # Logs
 logs/
