@@ -238,16 +238,18 @@ async def demonstrate_abort(agent: StreamingAgent) -> None:
     """Demonstra cancelamento de geração em andamento."""
     console.print(f"\n[bold yellow]⏱️  Demonstrando abort/cancel...[/]\n")
     
-    # Inicia streaming em background
-    stream_task = asyncio.create_task(
-        agent.generate_stream("Tell me about Python programming in detail", chunk_size=2)
+    # Inicia streaming em background. generate_stream e um async generator
+    # (usa yield), entao NAO pode ir dentro de asyncio.create_task() -- esse
+    # espera uma coroutine. Iteramos direto no gerador com "async for" abaixo.
+    stream = agent.generate_stream(
+        "Tell me about Python programming in detail", chunk_size=2
     )
     
     chunks_received = []
     start = time.time()
     
     # Recebe alguns chunks
-    async for chunk in stream_task:
+    async for chunk in stream:
         chunks_received.append(chunk)
         console.print(f"  [green]←[/] {chunk}")
         
