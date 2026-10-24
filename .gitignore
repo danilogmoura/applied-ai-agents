@@ -63,6 +63,31 @@ docs/*
 !docs/alignment_plan.md
 !docs/relatorio_qualidade_valida_ia.md
 
+# ---------------------------------------------------------------------------
+# NÃO-ALUNO: este repo publica SOMENTE material do aluno.
+# Tudo abaixo é infraestrutura de autor / editorial local e não deve ser
+# versionado nem existir no remoto. (Removido do índice em commit dedicado.)
+# ---------------------------------------------------------------------------
+
+# Ferramentas internas do autor (pipeline RAG, verificação, cobertura)
+tools/
+
+# Script que alimenta as tools/ acima (índice do corpus)
+setup_corpus_index.sh
+
+# Testes da suíte compartilhada (validação interna do autor)
+tests/
+
+# Guia avançado de produção (subsumido por SETUP_COMPLETE.md + Módulo 09)
+SETUP-PRODUCAO.md
+
+# Workspace local do editor
+ai-agents-course.code-workspace
+
+# Planejamento/rastreamento editorial (antes excepcionados; agora locais)
+docs/alignment_plan.md
+docs/relatorio_qualidade_valida_ia.md
+
 # Logs
 logs/
 *.cover
