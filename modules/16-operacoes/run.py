@@ -1,5 +1,5 @@
 """
-Módulo 16 — Operations de Produção: CI/CD e Monitoramento
+Módulo P11 — Operations de Produção: CI/CD e Monitoramento
 
 Sistema completo de observabilidade para agentes em produção:
 - Prompt testing com A/B comparison
@@ -546,7 +546,7 @@ class PromptManager:
 async def main():
     """Executa demonstração completa de production ops."""
     console.print(Panel.fit(
-        "[bold yellow]MÓDULO 16 — Production Ops: CI/CD + Monitoring[/]\n\n"
+        "[bold yellow]MÓDULO P11 — Production Ops: CI/CD + Monitoring[/]\n\n"
         "Prompt testing A/B, métricas em tempo real,\n"
         "alertas, dashboard e rollback automático.",
         title="🏭 AI Agents Course",
@@ -626,7 +626,8 @@ Email: {text}""",
     table.add_row("Latência P95", f"{dashboard['latency_p95']:.0f}ms")
     table.add_row("Latência P99", f"{dashboard['latency_p99']:.0f}ms")
     table.add_row("Taxa de erro", f"{dashboard['error_rate']}%")
-    table.add_row("Custo/request", dashboard['cost_per_request'])
+    # cost_per_request e float -> rich exige string/renderable, entao formata.
+    table.add_row("Custo/request", f"${dashboard['cost_per_request']:.8f}")
     table.add_row("Alerts ativos", str(dashboard['active_alerts']))
     
     console.print(table)
