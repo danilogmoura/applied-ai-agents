@@ -139,6 +139,9 @@ Com resiliência: salva checkpoint a cada 2 passos, retry com backoff no passo 9
 
 ### Circuit Breaker Pattern
 
+> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c31H —
+> "If the dependency is unavailable, the system should fall back, return a partial result, escalate to a human, or stop safely."
+
 Inspirado em disjuntores elétricos: se muitos erros acontecem, o circuito "abre" e para de tentar por um tempo.
 
 ```mermaid
@@ -197,6 +200,9 @@ Se o sistema crashar ou precisar ser reiniciado, carregamos o checkpoint e conti
 
 ### Simulação de Serviço
 
+> 📖 Fonte: **[EN]** Use cases: external service · `fastapi-docs-en/docs/advanced/testing-dependencies.md` —
+> "In this case, you can override the dependency that calls that provider, and use a custom dependency that returns a mock user, only for your tests."
+
 O módulo usa `SimulatedService` para testar circuit breakers sem depender de API real:
 
 ```python
@@ -217,6 +223,9 @@ class SimulatedService:
 Isso permite testar estados do circuit breaker de forma determinística.
 
 ### 🏗️ Arquitetura do Planner Resiliente
+
+> 📖 Fonte: **[EN]** Context Engineering for Multi-Agent Systems · Denis Rothman · 2025 · EPUB/Chapter_9 —
+> "To achieve this, the engine's Planner designed a more advanced four-agent workflow."
 
 > Referência completa: [architecture.md](architecture.md)
 

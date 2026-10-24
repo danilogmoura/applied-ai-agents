@@ -80,6 +80,9 @@ A linha `sys.path.insert(0, str(Path(__file__).parent.parent))` diz ao Python pa
 
 ### Dependências Necessárias
 
+> 📖 Fonte: **[EN]** First dependency "dependable" · `fastapi-docs-en/docs/tutorial/dependencies/sub-dependencies.md` —
+> "This is quite simple (not very useful), but will help us focus on how the sub-dependencies work."
+
 ```bash
 pip install chromadb rich python-dotenv
 ```
@@ -117,6 +120,9 @@ Ao final deste módulo, você será capaz de:
 ## Conceitos Fundamentais
 
 ### O Problema do Contexto Limitado
+
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch05 —
+> "Clear instructions, such as “answer using only the provided context”, along with examples of questions it shouldn’t be able to answer, can help."
 
 LLMs têm um limite de tokens que podem processar por vez. Imagine que você tem 50 documentos internos e quer que um agente responda perguntas baseadas neles. Enviar TODOS os documentos para cada chamada seria:
 
@@ -161,6 +167,9 @@ ChromaDB é um banco de dados vetorial open-source que:
 - Persiste dados em disco automaticamente
 
 ### 🏗️ Arquitetura do Pipeline RAG
+
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch06 —
+> "In today’s RAG systems, these two components are often trained separately, and many teams build their RAG systems using off-the-shelf retrievers and models."
 
 > 🔬 **AVANÇADO — OPCIONAL** — Esta seção pode ser pulada na primeira leitura. Para referência completa, veja [architecture.md](architecture.md).
 

@@ -100,6 +100,9 @@ Sem monitoramento, você descobre problemas quando o cliente reclama — não an
 
 ### Métricas Essenciais
 
+> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c3NZ —
+> "A dashboard full of numbers can still be useless if the numbers do not help the team act."
+
 | Métrica | O que mede | Threshold típico |
 | --------- | ----------- | ----------------- |
 | **Latência P50** | Tempo médio | < 1s |
@@ -109,6 +112,9 @@ Sem monitoramento, você descobre problemas quando o cliente reclama — não an
 | **Requests/min** | Throughput | Variável |
 
 ### Prompt Testing (A/B)
+
+> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c160 —
+> "If changing it can change the output, then it deserves the same discipline as code: versioning, review, testing, rollback, and evaluation."
 
 > 🔬 **AVANÇADO — OPCIONAL**: Antes de deploy, teste novas versões contra dataset golden. Pense como "prova piloto" antes de lançar matéria nova.
 
@@ -124,6 +130,9 @@ results = await tester.run_test("prompt_v2")
 
 ### Rollback Automático
 
+> 📖 Fonte: **[EN]** Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3HR —
+> "Treat each deployment as a hypothesis test with clear acceptance criteria, observable outcomes, and an agreed fallback plan."
+
 > 🔬 **AVANÇADO — OPCIONAL**: Se métricas degradarem após deploy, rollback automático volta para versão anterior. Pense como "botão de voltar" inteligente.
 
 Se métricas degradarem após deploy, rollback automático:
@@ -134,6 +143,9 @@ if dashboard["error_rate"] > 10:
 ```
 
 ### Logging Estruturado
+
+> 📖 Fonte: **[EN]** Context Engineering for Multi-Agent Systems · Denis Rothman · 2025 · EPUB/Chapter_10 —
+> "Log forwarders such as Fluentd are deployed alongside application containers to collect and ship the structured logs to these aggregation systems."
 
 > 🔬 **AVANÇADO — OPCIONAL**: Logs em JSON permitem análise programática automática. Pense como "planilha automática" que cada ação do agente gera uma linha com campos padronizados.
 

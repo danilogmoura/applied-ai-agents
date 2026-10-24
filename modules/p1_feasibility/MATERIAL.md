@@ -101,6 +101,9 @@ Este módulo ensina a comparar duas abordagens lado a lado:
 
 ### Métricas que Importam
 
+> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c3NZ —
+> "They should not exist only because dashboards look more professional when they contain more charts."
+
 Ao avaliar uma solução de IA, você deve medir:
 
 1. **Latência** — Quanto tempo leva para processar?
@@ -116,6 +119,9 @@ Ao avaliar uma solução de IA, você deve medir:
    - IA precisa de monitoramento de qualidade + ajuste de prompts
 
 ### Exemplo de Benchmark: IA vs Regras
+
+> 📖 Fonte: **[ZH]** Agent Skills橙皮书 · 2026 · EPUB/Text/page_1_split_62 —
+> "它的做法是优化Skill的description字段。具体来说，它会生成各种触发场景的查询语句，测试Skill是否在该触发的时候触发、不该触发的时候保持沉默。通过反复调整description的措辞，提升触发的精准度。"
 
 ```mermaid
 graph LR

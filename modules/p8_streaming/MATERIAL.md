@@ -104,6 +104,9 @@ Além da UX, streaming permite:
 
 ### Server-Sent Events (SSE)
 
+> 📖 Fonte: **[EN]** What are Server-Sent Events? · `fastapi-docs-en/docs/tutorial/server-sent-events.md` —
+> "Each event is a small text block with 'fields' like `data`, `event`, `id`, and `retry`, separated by blank lines."
+
 > 🔬 **AVANÇADO — OPCIONAL**: SSE é um protocolo simples para enviar dados do servidor ao cliente em tempo real. Entenda como "canal de notícias unidirecional" — servidor envia, cliente recebe.
 
 Protocolo simples para enviar dados do servidor ao cliente em tempo real:
@@ -125,6 +128,9 @@ Vantagens sobre WebSocket:
 
 ### Abort/Cancel
 
+> 📖 Fonte: **[EN]** StreamingResponse · `fastapi-docs-en/docs/advanced/custom-response.md` —
+> "Since this small example does not need any `await` statements, we add an `await anyio.sleep(0)` to give the event loop a chance to handle cancellation."
+
 > 🔬 **AVANÇADO — OPCIONAL**: Usuários podem querer cancelar geração. Implementar sinal de abort + verificar no loop.
 
 Usuários podem querer cancelar geração:
@@ -140,6 +146,9 @@ if agent._abort_event.is_set():
 ```
 
 ### Latência Percebida vs Real
+
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch09 —
+> "Would your users prefer instant first tokens with a longer wait between tokens, or would they rather wait slightly longer for the first tokens but enjoy faster token generation afterward?"
 
 | Métrica | Sem Streaming | Com Streaming |
 | --------- | -------------- | --------------- |
@@ -176,6 +185,9 @@ data: {"total_tokens": 15, "cost": 0.001}
 ```
 
 ### 🏗️ Arquitetura do Pipeline Streaming
+
+> 📖 Fonte: **[EN]** What is a Stream? · `fastapi-docs-en/docs/tutorial/stream-json-lines.md` —
+> "So, it will send the first item, the client will receive and start processing it, and you might still be producing the next item."
 
 > 🔬 **AVANÇADO — OPCIONAL**: Esta seção detalha a arquitetura interna do pipeline streaming (SSE Server, Buffer Manager, Token Counter, Abort Handler).
 

@@ -106,6 +106,9 @@ Skills resolvem isso criando **módulos independentes** com contrato claro:
 
 ### Interface Padrão de uma Skill
 
+> 📖 Fonte: **[ZH]** Agent Skills橙皮书 · 2026 · EPUB/Text/page_1_split_29 —
+> "开放标准的意义在于：你写的一个SKILL.md，可以在Claude Code、Cursor、Codex、Gemini CLI等20多个产品上运行。学一次，到处用。这和MCP的思路一样——不是让每个产品自己造轮子，而是大家用同一套规范。"
+
 Toda skill segue o mesmo contrato:
 
 ```python
@@ -128,6 +131,9 @@ class BaseSkill:
 **Por que schemas?** Porque skills trocam dados entre si. Se a skill A produz `{"sentiment": "positive"}` e a skill B espera `{"label": "pos"}`, o pipeline quebra. Schemas garantem compatibilidade.
 
 ### Versionamento Semântico
+
+> 📖 Fonte: **[EN]** About FastAPI versions · `fastapi-docs-en/docs/deployment/versions.md` —
+> "That's why the current versions are still `0.x.x`, this reflects that each version could potentially have breaking changes."
 
 > 🔬 **AVANÇADO — OPCIONAL**: Versionamento SemVer (Major.Minor.Patch) permite evoluir skills sem quebrar consumidores. Pense como atualizações de app mobile: patch = correção bug, minor = nova feature, major = mudança que quebra compatibilidade.
 
@@ -159,6 +165,9 @@ flowchart LR
 
 ### Pipeline Composition
 
+> 📖 Fonte: **[ZH]** Agent Skills橙皮书 · 2026 · EPUB/Text/page_1_split_58 —
+> "后来拆成了5个独立Skill，反而灵活得多。需要哪个用哪个，也可以串联起来用。就像Unix的管道哲学：每个工具做好一件事，通过组合实现复杂功能。"
+
 > 🔬 **AVANÇADO — OPCIONAL**: Encadear skills como corrente de montagem — cada step recebe o output do anterior.
 
 Encadeia skills como corrente de montagem:
@@ -174,6 +183,9 @@ flowchart LR
 Cada step recebe o output do anterior.
 
 ### 🏗️ Arquitetura do Sistema de Skills
+
+> 📖 Fonte: **[ZH]** Agent Skills橙皮书 · 2026 · EPUB/Text/page_1_split_80 —
+> "市场」的演进。两年前大家分享Prompt，但Prompt太碎片化了，没有结构，没有版本管理，换个模型可能就不好使了。Skill解决了这些问题，它有标准格式、有元数据、有触发条件、可以渐进式加载。Skill就是Prompt的升级版，有了固定格式、有了版本管理、有了标准。"
 
 > 🔬 **AVANÇADO — OPCIONAL**: Esta seção detalha a arquitetura interna (Skill Registry, Version Manager, Pipeline Engine, Filter Chain).
 
@@ -270,6 +282,9 @@ Se confiança < 0.7, pipeline aborta.
 
 ### Error Handling em Pipelines
 
+> 📖 Fonte: **[ZH]** Agent Skills橙皮书 · 2026 · EPUB/Text/page_1_split_71 —
+> "这里面有一个关键设计：每个阶段的产出都必须写入文件。第7章讲过「边做边存」的教训，流水线型Skill把这个原则发挥到了极致。每一步都写入文件，即使会话中断了，你随时可以说「上次做到第3阶段了，从那里继续」，AI读取文件就能恢复上下文。"
+
 Quando uma skill falha, você tem 3 opções:
 
 ```
@@ -292,6 +307,9 @@ Opção 3: Partial success (tolerância)
 ```
 
 ### Registry de Skills
+
+> 📖 Fonte: **[ZH]** Agent Skills橙皮书 · 2026 · EPUB/Text/page_1_split_28 —
+> "在写这章之前，我花了一个下午把市面上所有Skills平台都逛了一遍。结论是：Skills的数量已经不是问题了，质量才是。全网加起来超过100万个Skills，但真正好用的可能不到1%。"
 
 O registry é um dicionário que mapeia nomes para implementações:
 

@@ -118,6 +118,9 @@ Mas se tiver 10.000 usuários? $600/mês só em API calls!
 
 ### Cache de Respostas
 
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch09 —
+> "Anthropic offers prompt caching that promises up to 90% cost savings (the longer the cached context, the higher the savings) and up to 75% latency reduction."
+
 Mesmo prompt + mesmo modelo = mesma resposta. Por que chamar a API de novo?
 
 ```python
@@ -132,6 +135,9 @@ response = cache.get("capital+frança")  # $0.000 ✅
 Em produção: Redis com TTL (Time To Live).
 
 ### 🏗️ Arquitetura da Cache Layer
+
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch10 —
+> "For example, if a user asks a model to summarize a product, the system checks the cache to see if a summary of this exact product exists."
 
 > 🔬 **AVANÇADO — OPCIONAL**: Esta seção detalha a arquitetura interna da cache layer (Cache Proxy, Key Generator, Lookup, Fill, Store, Eviction).
 
@@ -168,6 +174,9 @@ A cache layer é um proxy que intercepta todas as chamadas ao LLM:
 **Trade-off chave:** cache em memória (RAM) = mais rápido mas perde ao reiniciar; Redis = persistente mas adiciona latência de rede.
 
 ### Algoritmo: LRU vs LFU (Eviction Policy)
+
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch10 —
+> "However, since in-memory storage is limited, a cache can also be implemented using databases like PostgreSQL, Redis, or tiered storage to balance speed and storage capacity."
 
 > 🔬 **AVANÇADO — OPCIONAL**: Quando o cache enche, precisa decidir o que remover. LRU = "último a usar, primeiro a sair"; LFU = "menos usado, primeiro a sair".
 
@@ -224,6 +233,9 @@ Redis implementa LRU aproximado (`maxmemory-policy allkeys-lru`) e LFU (`allkeys
 
 ### Model Routing
 
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch10 —
+> "The most basic functionality of a model gateway is to provide a unified interface to different models, including self-hosted models and models behind commercial APIs."
+
 Nem toda tarefa precisa do modelo mais caro. O princípio é simples: **use o menor modelo que resolve a tarefa**.
 
 | Tarefa | Modelo Recomendado | Custo Relativo | Por quê? |
@@ -248,6 +260,9 @@ else:
 Isso pode reduzir o custo médio em 40-60% sem perder qualidade perceptível.
 
 ### Prompt Compression
+
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch09 —
+> "If your system prompt is 1,000 tokens, and your application generates one million model API calls daily, a prompt cache will save you from processing approximately one billion repetitive input tokens a day!"
 
 Remover whitespace, duplicatas e informações redundantes antes de enviar ao LLM.
 

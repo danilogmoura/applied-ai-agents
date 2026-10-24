@@ -71,6 +71,9 @@ applied-ai-agents/
 
 ### Dependências Necessárias
 
+> 📖 Fonte: **[EN]** First dependency "dependable" · `fastapi-docs-en/docs/tutorial/dependencies/sub-dependencies.md` —
+> "This is quite simple (not very useful), but will help us focus on how the sub-dependencies work."
+
 ```bash
 pip install pydantic openai rich python-dotenv
 ```
@@ -106,6 +109,9 @@ A linha `sys.path.insert(0, str(Path(__file__).parent.parent))` diz ao Python pa
 ## Conceitos Fundamentais
 
 ### Do Texto à Ação
+
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch06 —
+> "Given a text request, the agent’s AI planner decides whether to invoke text generation, image generation, or both."
 
 Até agora, nossos agentes só **geravam texto**. Mas no mundo real, agentes precisam:
 

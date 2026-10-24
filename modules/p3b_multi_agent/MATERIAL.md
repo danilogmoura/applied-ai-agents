@@ -138,6 +138,9 @@ Com múltiplos agentes especializados:
 
 ### 🏗️ Arquitetura Multiagente
 
+> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c4FV —
+> "If one agent says a finding is critical and another says it is harmless, the system needs a deterministic policy for what happens next."
+
 > Referência completa: [architecture.md](architecture.md)
 
 A topologia supervisor-especialista é composta por 4 camadas:
@@ -186,6 +189,9 @@ O supervisor:
 
 ### Roteamento: LLM vs Heurísticas
 
+> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c355 —
+> "As usage grows, prompts change, models evolve, prices shift, traffic patterns change, and new features are added."
+
 Dois approaches para decidir qual especialista chamar:
 
 **LLM-based routing** (produção):
@@ -211,6 +217,9 @@ elif "traduz" in task.lower():
 Heurísticas são mais rápidas e baratas, mas menos flexíveis. LLM routing adapta-se a novas tarefas sem código novo.
 
 ### Degradation Elegante
+
+> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c2N0 —
+> "Graceful degradation allows the system to continue in a reduced but controlled mode instead of failing completely."
 
 Quando um especialista falha, o sistema não para — ele tenta alternativas:
 
@@ -303,6 +312,9 @@ print(response)
 > 💡 **Checkpoint:** Se você entendeu o fluxo acima, está pronto para entender por que multiagente custa mais que agente único. Cada seta no diagrama = uma chamada ao LLM = tokens = dinheiro.
 
 ### Custos em Multiagente
+
+> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c4FV —
+> "If one agent says a finding is critical and another says it is harmless, the system needs a deterministic policy for what happens next."
 
 Cada chamada ao LLM custa tokens. Em multiagente, temos custos adicionais porque o supervisor faz uma chamada extra para rotear antes dos especialistas:
 

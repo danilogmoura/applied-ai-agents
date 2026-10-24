@@ -140,6 +140,9 @@ Classificação é uma das tarefas mais comuns em automação com IA:
 
 ### System vs. User Messages
 
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch05 —
+> "Typically, the instructions provided by application developers are put into the system prompt, while the instructions provided by users are put into the user prompt."
+
 O LLM recebe mensagens organizadas por "papel":
 
 | Papel | Quem fala | Analogia |
@@ -164,6 +167,9 @@ O **system message** define o comportamento do modelo — como ele deve agir. O 
 
 ### A API da OpenAI
 
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch04 —
+> "There might be slight differences in the performance of the same model provided through different APIs, as different APIs might use different techniques to optimize this model, so make sure to run thorough tests when you switch between"
+
 A OpenAI oferece uma API RESTful para acessar seus modelos. O fluxo básico é:
 
 ```python
@@ -179,6 +185,9 @@ print(response.choices[0].message.content)
 
 ### Alternativas à OpenAI
 
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch04 —
+> "There might be slight differences in the performance of the same model provided through different APIs, as different APIs might use different techniques to optimize this model, so make sure to run thorough tests when you switch between"
+
 Este curso usa OpenAI porque é a mais documentada, mas os conceitos aplicam-se a qualquer LLM:
 
 | Serviço | Modelo exemplo | Custo relativo |
@@ -192,6 +201,9 @@ Este curso usa OpenAI porque é a mais documentada, mas os conceitos aplicam-se 
 Para rodar localmente sem custo, explore [Ollama](https://ollama.ai). Para APIs cloud acessíveis, [Alibaba Cloud DashScope](https://dashscope.aliyun.com/) oferece acesso aos modelos Qwen com preços competitivos.
 
 ### Estimativa de Custos
+
+> 📖 Fonte: **[EN]** Building LLMs for Production · Peters, Louie & Bouchard, Louis-François · 2024 · OEBPS/c591 —
+> "Pricing is typically calculated based on the number of tokens processed, both for input and output."
 
 Cada chamada à API tem um custo baseado no número de tokens. Tokens são pedaços de texto (palavras, partes de palavras, pontuação). A OpenAI cobra por milhão de tokens:
 
@@ -232,6 +244,9 @@ flowchart TD
 ---
 
 ### 🐛 Depuração: Erros Comuns de API
+
+> 📖 Fonte: **[EN]** Handling Errors · `fastapi-docs-en/docs/tutorial/handling-errors.md` —
+> "In these cases, you would normally return an **HTTP status code** in the range of **400** (from 400 to 499)."
 
 Antes de prosseguir, saiba o que fazer quando a API falha. Estes são os 3 erros mais comuns:
 
@@ -277,6 +292,9 @@ Se este teste não funcionar, **não continue** até resolver. Nenhum módulo se
 ---
 
 ### O Problema da Alucinação
+
+> 📖 Fonte: **[EN]** Building LLMs for Production · Peters, Louie & Bouchard, Louis-François · 2024 · OEBPS/c13B —
+> "However, “most probable” does not mean “true.” Hallucinations can also arise from this discrepancy because the primary aim of a language model is to learn a language’s word distribution patterns, not to differentiate between true and false"
 
 LLMs **inventam fatos** com confiança. Não é um bug — é consequência direta de como funcionam:
 
@@ -375,6 +393,9 @@ Tokenização de entrada:
 ```
 
 ### Temperature e Sampling: Controle de Criatividade
+
+> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/cVZ —
+> "This helps reduce the chance of selecting very unlikely tokens that may lead to noisy or strange output."
 
 O LLM não retorna sempre a mesma resposta para o mesmo prompt. Ele **amostra** do distribution de probabilidades — e você controla isso com `temperature`:
 

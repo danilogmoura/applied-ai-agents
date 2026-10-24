@@ -61,6 +61,9 @@ Ao final deste módulo, você será capaz de:
 
 ### O Problema da Qualidade Invisível
 
+> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c3GH —
+> "If quality improves but latency doubles, the team needs to decide whether the trade-off fits the product."
+
 Sem avaliação, você está cego. Mudou o prompt? Trocou de modelo? Adicionou uma feature? Sem métricas, não sabe se melhorou ou piorou.
 
 **Avaliação é o que separa desenvolvimento amador de produção profissional.**
@@ -90,6 +93,9 @@ Além disso, sem testes automatizados, qualquer mudança pode quebrar algo silen
 
 ### Pipeline de Avaliação
 
+> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c3DA —
+> "A basic evaluation pipeline starts with a dataset, runs the real system against that dataset, captures the output and intermediate steps, evaluates the result, and feeds the findings back into development."
+
 ```mermaid
 flowchart LR
     Golden["📚 Golden Dataset"] --> Modelo["🧪 Modelo sendo testado"]
@@ -115,6 +121,9 @@ Funciona como um "banco de questões" para testar o agente. Cada execução gera
 
 ### Métricas de Avaliação
 
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch04 —
+> "While an emphasis on stickiness and engagement metrics can lead to higher revenues, it may also cause a product to prioritize addictive features or extreme content, which can be detrimental to users."
+
 | Métrica | O que mede | Quando usar |
 | --------- | ------------ | ------------- |
 | **Exact Match** | Correspondência exata | Classificações discretas |
@@ -123,6 +132,9 @@ Funciona como um "banco de questões" para testar o agente. Cada execução gera
 | **Embedding Similarity** | Similaridade semântica vetorial | Paraphrase detection |
 
 ### LLM-as-a-Judge
+
+> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c3GH —
+> "That sounds efficient, but it can become a feedback loop of one probabilistic system grading another probabilistic system with too little outside evidence."
 
 Usa um LLM mais poderoso (ex: gpt-4o) para julgar a qualidade de respostas de um modelo menor (ex: gpt-4o-mini):
 
@@ -220,6 +232,9 @@ Na prática: **nunha faça deploy baseado em menos de 50 exemplos**. Se seu gold
 - Por isso LLM-as-a-Judge existe: entende significado, não só texto
 
 ### Testes A/B
+
+> 📖 Fonte: **[EN]** Systems Design for the LLM Era · Sampriti Mitra · OEBPS/Text/Chapter_5 —
+> "Only changes that show a statistically significant improvement are gradually rolled out to all users."
 
 > 🔬 **AVANÇADO — OPCIONAL**: Testes A/B comparam duas versões lado a lado. Útil para decidir qual abordagem usar antes de deploy.
 

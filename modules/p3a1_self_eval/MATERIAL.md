@@ -66,6 +66,9 @@ applied-ai-agents/
 
 ### Dependências Necessárias
 
+> 📖 Fonte: **[EN]** First dependency "dependable" · `fastapi-docs-en/docs/tutorial/dependencies/sub-dependencies.md` —
+> "This is quite simple (not very useful), but will help us focus on how the sub-dependencies work."
+
 ```bash
 pip install pydantic openai rich python-dotenv
 ```
@@ -100,6 +103,9 @@ A linha `sys.path.insert(0, str(Path(__file__).parent.parent))` diz ao Python pa
 ## Conceitos Fundamentais
 
 ### O Problema da Confiança
+
+> 📖 Fonte: **[EN]** Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3J7 —
+> "Confidence turned a small parse error into a P&L event, and that gap between fluency and fidelity became a courtroom-worthy lesson."
 
 LLMs são poderosos mas não são perfeitos. Eles podem:
 
