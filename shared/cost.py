@@ -104,11 +104,13 @@ def estimate_cost(
 
 
 def format_cost(cost: float) -> str:
-    """Formata custo para exibição amigável."""
+    """Formata custo para exibição amigável.
+
+    Regra: sempre no mínimo 4 casas decimais; ganha precisão extra apenas
+    quando o valor é tão pequeno que 4 casas o arredondariam para $0.0000.
+    """
     if cost < 0.0001:
         return f"${cost:.8f}"
-    elif cost < 0.01:
-        return f"${cost:.6f}"
     else:
         return f"${cost:.4f}"
 

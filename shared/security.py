@@ -160,10 +160,12 @@ def sanitize_for_log(value: str) -> str:
     """
     import re
     
-    # Padrões comuns de chaves
+    # Padrões comuns de chaves.
+    # Ordem importa: sk-ant- antes de sk- para não mascarar só o prefixo 'sk'.
+    # Quantifier {8,} (antes {20,}) evita vazar chaves curtas em logs.
     patterns = [
-        (r'sk-[a-zA-Z0-9]{20,}', 'sk-****'),
-        (r'sk-ant-[a-zA-Z0-9]{20,}', 'sk-ant-****'),
+        (r'sk-ant-[a-zA-Z0-9_\-]{8,}', 'sk-ant-****'),
+        (r'sk-[a-zA-Z0-9_\-]{8,}', 'sk-****'),
         (r'Bearer\s+[a-zA-Z0-9\-_.~+/]+=*', 'Bearer ****'),
     ]
     
