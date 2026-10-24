@@ -17,8 +17,7 @@ import uuid
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
-from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, HTTPException, Request, Response
 
 from app.models import AgentRequest, AgentResponse, HealthResponse, MetricsResponse
 from app.services.agent_service import AgentService
@@ -70,7 +69,7 @@ app = FastAPI(
     summary="Enviar mensagem para o agente",
     description="Envia uma mensagem/tarefa para o agente de IA processar.",
 )
-async def chat(request: AgentRequest) -> AgentResponse:
+async def chat(request: AgentRequest, response: Response) -> AgentResponse:
     """
     Endpoint principal de chat com o agente.
     
@@ -86,6 +85,13 @@ async def chat(request: AgentRequest) -> AgentResponse:
             max_iterations=request.max_iterations,
         )
         
+        # Mock de demonstração: nenhuma ferramenta é executada de verdade,
+        # então tools_used fica vazio (default do Pydantic). Os parâmetros
+        # efetivamente aplicados são ecoados em X-Tools-Enabled /
+        # X-Max-Iterations para manter o contrato da API explícito.
+        response.headers["X-Tools-Enabled"] = str(result["tools_enabled"])
+        response.headers["X-Max-Iterations"] = str(result["max_iterations"])
+
         return AgentResponse(
             answer=result["answer"],
             model=result["model"],

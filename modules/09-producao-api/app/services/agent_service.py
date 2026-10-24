@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import logging
 import time
-from typing import Optional
 
 from shared.cost import count_tokens, estimate_cost, format_cost
 from shared.logging_config import setup_logging, measure_latency
@@ -38,11 +37,21 @@ class AgentService:
         
         Args:
             message: Mensagem do usuário.
-            use_tools: Se deve usar ferramentas.
-            max_iterations: Máximo de iterações de autoavaliação.
+            use_tools: Se deve usar ferramentas. Neste mock de demonstração o
+                valor é aceito mas não altera o processamento (não há chamadas
+                reais de ferramenta); ele apenas ecoa no retorno via
+                ``tools_enabled``. Num serviço real seria este o ponto onde
+                entraríamos no loop de tool calling dos Módulos 03–05.
+            max_iterations: Máximo de iterações de autoavaliação. Assim como
+                ``use_tools``, é aceito pela assinatura mas ignorado na
+                simulação; ecoa em ``max_iterations`` para manter o contrato
+                explícito.
         
         Returns:
-            Dicionário com resposta e métricas.
+            Dicionário com a resposta, tokens/custo desta chamada e os
+            parâmetros efetivamente aplicados (``tools_enabled``,
+            ``max_iterations``). Métricas agregadas do serviço ficam em
+            :meth:`get_metrics`, não neste retorno.
         """
         self.total_requests += 1
         
@@ -74,7 +83,11 @@ class AgentService:
             "tokens_input": input_tokens,
             "tokens_output": output_tokens,
             "cost_usd": cost,
-            "tools_used": [],
+            # Mock de demonstração: nenhuma ferramenta é executada de verdade.
+            # Ecoamos os parâmetros recebidos para que o contrato da API seja
+            # honesto — o cliente vê exatamente o que foi aplicado.
+            "tools_enabled": use_tools,
+            "max_iterations": max_iterations,
         }
     
     def _generate_response(self, message: str) -> str:
