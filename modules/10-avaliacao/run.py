@@ -29,6 +29,7 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from shared.logging_config import setup_logging, measure_latency
 from shared.cost import count_tokens, estimate_cost, format_cost
+from shared.security import get_required_secret
 
 console = Console()
 logger = setup_logging("10-avaliacao")
@@ -187,7 +188,6 @@ class Evaluator:
         """
         try:
             from openai import OpenAI
-            from shared.security import get_required_secret
             
             api_key = get_required_secret("OPENAI_API_KEY")
             client = OpenAI(api_key=api_key)
@@ -461,7 +461,6 @@ def main():
     
     # Valida ambiente
     try:
-        from shared.security import get_required_secret
         get_required_secret("OPENAI_API_KEY")
     except ValueError as e:
         console.print(f"[red]⚠ {e}[/]")
