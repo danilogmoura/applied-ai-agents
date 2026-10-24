@@ -364,6 +364,7 @@ docker-compose up --build
 | **Pydantic Model** | Classe que define o contrato (campos/tipos) de entrada e saída da API | Formulário com campos obrigatórios |
 | **Endpoint / Rota** | Endereço (ex.: POST /chat) que recebe e devolve JSON | Balcão específico para cada tipo de pedido |
 | **Middleware** | Camada que processa toda requisição antes/depois da rota (log, auth) | Segurança que carimba cada crachá na entrada |
+| **Observabilidade** (*observability*) | Capacidade de entender o estado interno do sistema a partir das suas saídas (logs, métricas, traces) | Painel do carro: temperatura e RPM revelam o que acontece sob o capô |
 | **Docker / Container** | Empacota app + dependências numa imagem reproduzível; container é a instância rodando | Casa pré-fabricada: mesma planta em qualquer terreno |
 | **docker-compose** | Arquivo YAML que sobe vários containers juntos em ordem | Capataz erguendo várias casas em sequência |
 | **uvicorn** | Servidor ASGI que executa a aplicação FastAPI e fica escutando | Caixa que abre e atende até fechar a loja |
