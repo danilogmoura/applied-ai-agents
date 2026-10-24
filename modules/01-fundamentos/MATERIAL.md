@@ -390,6 +390,8 @@ flowchart TD
 
 ## 6. 📖 Glossário
 
+> 📚 Este é o glossário local do módulo. Todos os termos e siglas dos 16 módulos estão consolidados no **[Glossário Unificado](../../GLOSSARIO.md)**.
+
 Termos que aparecerão repetidamente ao longo do curso:
 
 | Termo | Definição | Analogia |

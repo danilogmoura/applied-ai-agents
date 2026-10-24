@@ -134,6 +134,10 @@ módulos num agente IA completo, com rubrica de aprovação e cronograma de 6 se
 > `@dataclass`, `[x for x in ...]` ou `Optional[...]`, comece pelo
 > **[Ponte Python — do imperativo ao idiomático](PYTHON_BRIDGE.md)**. É um apêndice de tradução,
 > não um curso de Python: cada padrão usado aqui tem exemplo ❌→✅ e indica onde aparece no curso.
+>
+> 📚 **Não lembra o que significa uma sigla (RAG, SSE, HITL, TTFT)?** Consulte o
+> **[Glossário Unificado](GLOSSARIO.md)** — todas as siglas e os 100+ termos dos
+> 16 módulos num só lugar, com link para o módulo onde cada um é aprofundado.
 
 ### Instalação
 
@@ -184,6 +188,7 @@ ai-agents-course/
 ├── data/                   # Dados de exemplo
 ├── docs/                   # Documentação
 ├── PYTHON_BRIDGE.md        # 🐵 Apêndice: ponte Python (padrões idiomáticos)
+├── GLOSSARIO.md            # 📚 Apêndice: glossário unificado (siglas + termos)
 └── docker-compose.yml      # Infraestrutura P4
 ```
 

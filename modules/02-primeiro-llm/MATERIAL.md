@@ -463,6 +463,8 @@ temperature = 0.7 (criativo):
 
 ## 📖 Glossário
 
+> 📚 Este é o glossário local do módulo. Todos os termos e siglas dos 16 módulos estão consolidados no **[Glossário Unificado](../../GLOSSARIO.md)**.
+
 | Termo | Definição | Analogia |
 |-------|-----------|----------|
 | **Token** | Pedaço de texto (palavra, parte de palavra) | Sílabas na leitura |

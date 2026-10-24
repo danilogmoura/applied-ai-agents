@@ -355,6 +355,8 @@ Execute `python modules/16-operacoes/run.py` e observe:
 
 ## 📖 Glossário
 
+> 📚 Este é o glossário local do módulo. Todos os termos e siglas dos 16 módulos estão consolidados no **[Glossário Unificado](../../GLOSSARIO.md)**.
+
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |
 | **Observabilidade** | Capacidade de inferir o estado interno do sistema por suas saídas (logs/métricas/traces) | Painel do carro mostrando temperatura e RPM |

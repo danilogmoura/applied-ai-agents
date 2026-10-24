@@ -510,6 +510,8 @@ Com RAG, seu agente pode responder perguntas com base em documentos. Mas no mund
 
 ## 📖 Glossário
 
+> 📚 Este é o glossário local do módulo. Todos os termos e siglas dos 16 módulos estão consolidados no **[Glossário Unificado](../../GLOSSARIO.md)**.
+
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |
 | **RAG** | Retrieval-Augmented Generation — busca docs relevantes antes de responder | "Abrir o livro certo antes de responder a pergunta" |

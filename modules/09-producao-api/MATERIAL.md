@@ -357,6 +357,8 @@ docker-compose up --build
 
 ## 📖 Glossário
 
+> 📚 Este é o glossário local do módulo. Todos os termos e siglas dos 16 módulos estão consolidados no **[Glossário Unificado](../../GLOSSARIO.md)**.
+
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |
 | **API REST** | Interface que expõe funcionalidade via HTTP e JSON, separando cliente de servidor | Cardápio fixo de um restaurante |

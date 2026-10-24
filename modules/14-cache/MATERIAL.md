@@ -360,6 +360,8 @@ Execute `python modules/14-cache/run.py` e observe:
 
 ## 📖 Glossário
 
+> 📚 Este é o glossário local do módulo. Todos os termos e siglas dos 16 módulos estão consolidados no **[Glossário Unificado](../../GLOSSARIO.md)**.
+
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |
 | **Cache de Respostas** | Guardar saídas passadas para reusar em perguntas idênticas e cortar custo | Gabarito colado na parede para não recalcular |

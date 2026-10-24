@@ -415,6 +415,8 @@ Erros comuns que iniciantes encontram neste módulo:
 
 ## 📖 Glossário
 
+> 📚 Este é o glossário local do módulo. Todos os termos e siglas dos 16 módulos estão consolidados no **[Glossário Unificado](../../GLOSSARIO.md)**.
+
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |
 | **Sistema Multiagente** | Arquitetura com vários agentes especializados coordenados para uma tarefa | Time com médico, enfermeiro e farmácia |

@@ -320,6 +320,8 @@ Execute `python modules/10-avaliacao/run.py` e observe:
 
 ## 📖 Glossário
 
+> 📚 Este é o glossário local do módulo. Todos os termos e siglas dos 16 módulos estão consolidados no **[Glossário Unificado](../../GLOSSARIO.md)**.
+
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |
 | **Golden Dataset** | Conjunto de entradas com respostas esperadas usadas como gabarito de referência | Prova com gabarito oficial |

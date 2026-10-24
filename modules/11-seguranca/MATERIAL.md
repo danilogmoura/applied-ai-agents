@@ -251,6 +251,8 @@ Execute `python modules/11-seguranca/run.py` e observe:
 
 ## 📖 Glossário
 
+> 📚 Este é o glossário local do módulo. Todos os termos e siglas dos 16 módulos estão consolidados no **[Glossário Unificado](../../GLOSSARIO.md)**.
+
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |
 | **Prompt Injection** | Ataque que embute instruções maliciosas na entrada para sequestrar o comportamento do modelo | Golpista que cola ordens falsas no memorando interno |

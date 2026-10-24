@@ -426,6 +426,8 @@ Execute `python modules/15-skills/run.py` e observe:
 
 ## 📖 Glossário
 
+> 📚 Este é o glossário local do módulo. Todos os termos e siglas dos 16 módulos estão consolidados no **[Glossário Unificado](../../GLOSSARIO.md)**.
+
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |
 | **Skill** | Unidade modular de capacidade com interface padrão, versionada e plugável num agente | Peça Lego que encaixa em qualquer conjunto |

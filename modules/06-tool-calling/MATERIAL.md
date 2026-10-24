@@ -391,6 +391,8 @@ Execute `python modules/06-tool-calling/run.py` e observe:
 
 ## 📖 Glossário
 
+> 📚 Este é o glossário local do módulo. Todos os termos e siglas dos 16 módulos estão consolidados no **[Glossário Unificado](../../GLOSSARIO.md)**.
+
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |
 | **Tool Calling** | Padrão onde LLM decide qual função externa chamar | Motorista escolhendo rota no GPS |

@@ -342,6 +342,8 @@ Execute `python modules/12-memoria/run.py` e observe:
 
 ## 📖 Glossário
 
+> 📚 Este é o glossário local do módulo. Todos os termos e siglas dos 16 módulos estão consolidados no **[Glossário Unificado](../../GLOSSARIO.md)**.
+
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |
 | **Short-Term Memory** | Histórico da conversa atual, limitado pela janela de contexto | Memória de trabalho, some ao virar a página |

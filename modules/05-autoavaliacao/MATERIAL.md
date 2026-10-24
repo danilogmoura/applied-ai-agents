@@ -343,6 +343,8 @@ Execute `python modules/05-autoavaliacao/run.py` e observe:
 
 ## 📖 Glossário
 
+> 📚 Este é o glossário local do módulo. Todos os termos e siglas dos 16 módulos estão consolidados no **[Glossário Unificado](../../GLOSSARIO.md)**.
+
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |
 | **Pydantic** | Biblioteca para validação estruturada de dados | Formulário com campos obrigatórios |

@@ -326,6 +326,8 @@ Execute `python modules/13-streaming/run.py` e observe:
 
 ## 📖 Glossário
 
+> 📚 Este é o glossário local do módulo. Todos os termos e siglas dos 16 módulos estão consolidados no **[Glossário Unificado](../../GLOSSARIO.md)**.
+
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |
 | **Streaming** | Enviar a resposta em pedaços conforme é gerada, em vez de esperar o fim | Narração ao vivo em vez de gravação editada |

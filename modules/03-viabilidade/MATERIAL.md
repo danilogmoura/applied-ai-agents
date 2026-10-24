@@ -276,6 +276,8 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 
 ## 📖 Glossário
 
+> 📚 Este é o glossário local do módulo. Todos os termos e siglas dos 16 módulos estão consolidados no **[Glossário Unificado](../../GLOSSARIO.md)**.
+
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |
 | **Benchmark** | Teste comparativo entre soluções | Corrida para ver quem é mais rápido |

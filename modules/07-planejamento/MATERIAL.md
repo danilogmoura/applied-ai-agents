@@ -334,6 +334,8 @@ Erros comuns que iniciantes encontram neste módulo:
 
 ## 📖 Glossário
 
+> 📚 Este é o glossário local do módulo. Todos os termos e siglas dos 16 módulos estão consolidados no **[Glossário Unificado](../../GLOSSARIO.md)**.
+
 | Termo | Definição | Analogia |
 | ------- | ----------- | ---------- |
 | **Planejador (Planner)** | Componente que decompõe um objetivo em passos executáveis e decide a ordem das ações | GPS que traça a rota antes de você ligar o carro |
