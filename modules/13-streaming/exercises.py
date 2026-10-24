@@ -1,4 +1,4 @@
-"""Módulo P8 — Exercícios Práticos
+"""Módulo 13 — Exercícios Práticos
 
 Execute com: python modules/13-streaming/exercises.py
 
@@ -205,7 +205,7 @@ def run_all():
              test_05_error_recovery]
     
     console.print(Panel("🧪 Exercícios Práticos — IMPLEMENTE os TODOs!",
-                        title="[bold cyan]P8: Streaming e Tempo Real[/bold cyan]",
+                        title="[bold cyan]Módulo 13 — Streaming e Tempo Real[/bold cyan]",
                         border_style="cyan"))
     
     passed = failed = 0

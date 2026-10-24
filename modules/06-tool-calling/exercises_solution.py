@@ -1,4 +1,4 @@
-"""Módulo P3a-2 — SOLUÇÃO COMENTADA
+"""Módulo 06 — SOLUÇÃO COMENTADA
 
 Execute com: python modules/06-tool-calling/exercises.py
 
@@ -309,7 +309,7 @@ def run_all():
              test_05_tool_error_handling]
     
     console.print(Panel("🧪 Exercícios Práticos — IMPLEMENTE os TODOs!",
-                        title="[bold cyan]P3a-2: Tool Calling[/bold cyan]",
+                        title="[bold cyan]Módulo 06 — Tool Calling[/bold cyan]",
                         border_style="cyan"))
     
     passed = failed = 0

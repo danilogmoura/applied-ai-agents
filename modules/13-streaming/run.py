@@ -1,5 +1,5 @@
 """
-Módulo P8 — Streaming e Respostas em Tempo Real
+Módulo 13 — Streaming e Respostas em Tempo Real
 
 Implementação de streaming token-by-token com Server-Sent Events (SSE).
 Usuário vê a resposta sendo gerada ao invés de esperar tudo de uma vez.
@@ -269,7 +269,7 @@ async def demonstrate_abort(agent: StreamingAgent) -> None:
 async def main():
     """Executa demonstração completa de streaming."""
     console.print(Panel.fit(
-        "[bold yellow]MÓDULO P8 — Streaming e Tempo Real[/]\n\n"
+        "[bold yellow]MÓDULO 13 — Streaming e Tempo Real[/]\n\n"
         "Token-by-token streaming, Server-Sent Events (SSE),\n"
         "Live display e abort/cancel de geração.",
         title="📡 AI Agents Course",

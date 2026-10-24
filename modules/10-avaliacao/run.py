@@ -1,5 +1,5 @@
 """
-Módulo P5 — Avaliação e Testes
+Módulo 10 — Avaliação e Testes
 
 Framework completo para avaliar qualidade de saída de agentes de IA.
 Golden datasets, LLM-as-a-judge, embedding similarity, testes A/B
@@ -452,7 +452,7 @@ def classify_ticket_heuristic(text: str) -> str:
 def main():
     """Executa demonstração completa de avaliação."""
     console.print(Panel.fit(
-        "[bold yellow]MÓDULO P5 — Avaliação e Testes[/]\n\n"
+        "[bold yellow]MÓDULO 10 — Avaliação e Testes[/]\n\n"
         "Golden datasets, LLM-as-a-judge, embedding similarity,\n"
         "testes A/B e benchmarking regressivo.",
         title="📊 AI Agents Course",

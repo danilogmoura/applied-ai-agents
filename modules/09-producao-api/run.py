@@ -1,5 +1,5 @@
 """
-Módulo P4 — Produto em Produção (execução)
+Módulo 09 — Produto em Produção (execução)
 
 Inicia a API FastAPI com Uvicorn e demonstra o fluxo completo.
 
@@ -28,7 +28,7 @@ logger = setup_logging("09-producao-api.run")
 def print_usage_guide():
     """Exibe guia de uso da API."""
     console.print(Panel.fit(
-        "[bold yellow]MÓDULO P4 — Produto em Produção[/]\n\n"
+        "[bold yellow]MÓDULO 09 — Produto em Produção[/]\n\n"
         "API FastAPI + Docker + Swagger.\n"
         "Monitoramento e métricas integrados.",
         title="🏭 AI Agents Course",
@@ -68,14 +68,14 @@ def print_usage_guide():
     console.print("[bold magenta]🐳 Com Docker:[/]\n")
     console.print("  [yellow]docker-compose up --build[/]\n")
     
-    console.print("[dim]💡 Este módulo completa a trilha P0→P4![/]")
+    console.print("[dim]💡 Este módulo completa a trilha Módulo 02 → 09![/]")
 
 
 def main():
     """Executa ou inicia a API."""
     import argparse
     
-    parser = argparse.ArgumentParser(description="AI Agents API — Módulo P4")
+    parser = argparse.ArgumentParser(description="AI Agents API — Módulo 09")
     parser.add_argument(
         "--serve",
         action="store_true",

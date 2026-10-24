@@ -1,5 +1,5 @@
 """
-Módulo P3a-1 — Autoavaliação e Reflexão
+Módulo 05 — Autoavaliação e Reflexão
 
 Loop de auto-crítica onde o agente avalia e corrige sua própria saída
 usando Structured Outputs (Pydantic) antes de entregar ao usuário.
@@ -236,7 +236,7 @@ FORMATO OBRIGATÓRIO (JSON apenas):
 def main():
     """Executa demonstração do agente com autoavaliação."""
     console.print(Panel.fit(
-        "[bold yellow]MÓDULO P3a-1 — Autoavaliação e Reflexão[/]\n\n"
+        "[bold yellow]MÓDULO 05 — Autoavaliação e Reflexão[/]\n\n"
         "Agente que critica e corrige sua própria saída.\n"
         "Structured Outputs (Pydantic) + limite de iterações.",
         title="🔄 AI Agents Course",
@@ -284,7 +284,7 @@ def main():
         console.print(f"\n[dim]Iterações: {result.iterations} | "
                       f"Custo acumulado: {format_cost(estimate_cost(agent.total_input_tokens, agent.total_output_tokens, model))}[/]")
     
-    console.print("\n[dim]💡 Próximo passo: Módulo P3a-2 — Tool Calling[/]")
+    console.print("\n[dim]💡 Próximo passo: Módulo 06 — Tool Calling[/]")
 
 
 if __name__ == "__main__":

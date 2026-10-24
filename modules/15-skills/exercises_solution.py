@@ -1,4 +1,4 @@
-"""Módulo P10 — SOLUÇÃO COMENTADA
+"""Módulo 15 — SOLUÇÃO COMENTADA
 
 Execute com: python modules/15-skills/exercises_solution.py
 
@@ -319,7 +319,7 @@ def run_all():
              test_03_pipeline_execution, test_04_skill_discovery]
     
     console.print(Panel("🧪 Exercícios Práticos — IMPLEMENTE os TODOs!",
-                        title="[bold cyan]P10: Skills[/bold cyan]",
+                        title="[bold cyan]Módulo 15 — Skills[/bold cyan]",
                         border_style="cyan"))
     
     passed = failed = 0

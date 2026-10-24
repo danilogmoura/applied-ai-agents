@@ -1,4 +1,4 @@
-"""Módulo P3a-1 — Exercícios Práticos
+"""Módulo 05 — Exercícios Práticos
 
 Execute com: python modules/05-autoavaliacao/exercises.py
 
@@ -198,7 +198,7 @@ def run_all():
              test_05_response_improvement]
     
     console.print(Panel("🧪 Exercícios Práticos — IMPLEMENTE os TODOs!",
-                        title="[bold cyan]P3a-1: Autoavaliação[/bold cyan]",
+                        title="[bold cyan]Módulo 05 — Autoavaliação[/bold cyan]",
                         border_style="cyan"))
     
     passed = failed = 0

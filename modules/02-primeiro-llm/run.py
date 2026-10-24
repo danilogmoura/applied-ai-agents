@@ -1,5 +1,5 @@
 """
-Módulo P0 — Primeiro Fluxo com LLM
+Módulo 02 — Primeiro Fluxo com LLM
 
 Automação de tarefa repetitiva via API OpenAI.
 Foco: chamadas HTTP/SDK, proteção de chaves, tratamento de exceções, cálculo de custos.
@@ -182,14 +182,14 @@ def classify_batch(tickets: list[dict], model: str = None) -> list[dict]:
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# VERSÃO SEM IA — Regras simples (para comparação no P1)
+# VERSÃO SEM IA — Regras simples (para comparação no Módulo 03)
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def classify_with_rules(ticket: dict) -> str:
     """
     Classificação baseada em regras simples (sem IA).
     
-    Esta função será comparada com a versão LLM no módulo P1.
+    Esta função será comparada com a versão LLM no módulo 03.
     """
     text = f"{ticket['subject']} {ticket['description']}".lower()
     
@@ -215,7 +215,7 @@ def classify_with_rules(ticket: dict) -> str:
 def main():
     """Executa o fluxo completo de classificação de tickets."""
     console.print(Panel.fit(
-        "[bold yellow]MÓDULO P0 — Primeiro Fluxo com LLM[/]\n\n"
+        "[bold yellow]MÓDULO 02 — Primeiro Fluxo com LLM[/]\n\n"
         "Automação de classificação de tickets de suporte.\n"
         "Comparação: IA vs Regras simples.",
         title="🚀 AI Agents Course",
@@ -254,7 +254,7 @@ def main():
         console.print(f"  Match  : {match}")
     
     console.print("\n" + "=" * 60)
-    console.print("[dim]💡 Próximo passo: Módulo P1 — Análise de viabilidade[/]")
+    console.print("[dim]💡 Próximo passo: Módulo 03 — Análise de viabilidade[/]")
     console.print("[dim]   Compare custo vs latência entre IA e regras.[/]")
     console.print("=" * 60)
 

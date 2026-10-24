@@ -1,4 +1,4 @@
-"""Módulo P3a-3 — Exercícios Práticos
+"""Módulo 07 — Exercícios Práticos
 
 Execute com: python modules/07-planejamento/exercises.py
 
@@ -283,7 +283,7 @@ def run_all():
              test_05_fallback_logic, test_06_plan_execution_metrics]
     
     console.print(Panel("🧪 Exercícios Práticos — IMPLEMENTE os TODOs!",
-                        title="[bold cyan]P3a-3: Planejamento e Retomada[/bold cyan]",
+                        title="[bold cyan]Módulo 07 — Planejamento e Retomada[/bold cyan]",
                         border_style="cyan"))
     
     passed = failed = 0

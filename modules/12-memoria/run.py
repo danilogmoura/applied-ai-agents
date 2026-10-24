@@ -1,5 +1,5 @@
 """
-Módulo P7 — Memória e Gerenciamento de Contexto
+Módulo 12 — Memória e Gerenciamento de Contexto
 
 Sistema completo de memória para agentes: curto prazo (conversation history),
 longo prazo (vector store), summarization automática e gestão do context window.
@@ -505,7 +505,7 @@ class AgentWithMemory:
 def main():
     """Executa demonstração completa de memória."""
     console.print(Panel.fit(
-        "[bold yellow]MÓDULO P7 — Memória e Contexto[/]\n\n"
+        "[bold yellow]MÓDULO 12 — Memória e Contexto[/]\n\n"
         "Short-term (histórico), long-term (vector store),\n"
         "summarization automática e gestão do context window.",
         title="🧠 AI Agents Course",

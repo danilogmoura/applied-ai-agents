@@ -1,4 +1,4 @@
-"""Módulo P11 — Exercícios Práticos
+"""Módulo 16 — Exercícios Práticos
 
 Execute com: python modules/16-operacoes/exercises.py
 
@@ -401,7 +401,7 @@ def run_all():
              test_05_ab_testing, test_06_health_check_monitoring]
     
     console.print(Panel("🧪 Exercícios Práticos — IMPLEMENTE os TODOs!",
-                        title="[bold cyan]P11: Produção e Operações[/bold cyan]",
+                        title="[bold cyan]Módulo 16 — Produção e Operações[/bold cyan]",
                         border_style="cyan"))
     
     passed = failed = 0

@@ -1,4 +1,4 @@
-"""Módulo P4 — SOLUÇÃO COMENTADA
+"""Módulo 09 — SOLUÇÃO COMENTADA
 
 Execute com: python modules/09-producao-api/exercises.py
 
@@ -291,7 +291,7 @@ def run_all():
              test_05_response_format]
     
     console.print(Panel("🧪 Exercícios Práticos — IMPLEMENTE os TODOs!",
-                        title="[bold cyan]P4: Produção (FastAPI + Docker)[/bold cyan]",
+                        title="[bold cyan]Módulo 09 — Produção (FastAPI + Docker)[/bold cyan]",
                         border_style="cyan"))
     
     passed = failed = 0

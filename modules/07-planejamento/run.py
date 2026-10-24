@@ -1,5 +1,5 @@
 """
-Módulo P3a-3 — Planejamento e Retomada
+Módulo 07 — Planejamento e Retomada
 
 Sistema resiliente com circuit breakers e checkpoints de estado.
 Se uma API externa cair, o agente recalcula rotas automaticamente.
@@ -357,7 +357,7 @@ class SimulatedService:
 def main():
     """Executa demonstração de planejamento resiliente."""
     console.print(Panel.fit(
-        "[bold yellow]MÓDULO P3a-3 — Planejamento e Retomada[/]\n\n"
+        "[bold yellow]MÓDULO 07 — Planejamento e Retomada[/]\n\n"
         "Circuit breakers + checkpoints de estado.\n"
         "Resiliência contra falhas de APIs externas.",
         title="🔄 AI Agents Course",
@@ -430,7 +430,7 @@ def main():
     if restored:
         console.print(f"[green]✓ Checkpoint restaurado no passo {restored.step_index}[/]")
     
-    console.print("\n[dim]💡 Próximo passo: Módulo P3b — Sistema Multiagente[/]")
+    console.print("\n[dim]💡 Próximo passo: Módulo 08 — Sistema Multiagente[/]")
 
 
 if __name__ == "__main__":

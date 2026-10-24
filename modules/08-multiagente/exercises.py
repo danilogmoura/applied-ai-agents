@@ -1,4 +1,4 @@
-"""Módulo P3b — Exercícios Práticos
+"""Módulo 08 — Exercícios Práticos
 
 Execute com: python modules/08-multiagente/exercises.py
 
@@ -257,7 +257,7 @@ def run_all():
              test_05_hierarchical_scaling]
     
     console.print(Panel("🧪 Exercícios Práticos — IMPLEMENTE os TODOs!",
-                        title="[bold cyan]P3b: Sistema Multiagente[/bold cyan]",
+                        title="[bold cyan]Módulo 08 — Sistema Multiagente[/bold cyan]",
                         border_style="cyan"))
     
     passed = failed = 0

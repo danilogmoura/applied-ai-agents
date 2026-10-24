@@ -1,5 +1,5 @@
 """
-P0-Fundamentos: Demonstração interativa dos conceitos básicos de LLM.
+Módulo 02-Fundamentos: Demonstração interativa dos conceitos básicos de LLM.
 
 Este script mostra na prática:
 - Como texto é tokenizado
@@ -234,7 +234,7 @@ def main() -> None:
     print("✅ Temperature: 0 = preciso, >0 = criativo")
     print("✅ Prompt quality: específico > vago")
     print("✅ Custo: conte sempre seus tokens")
-    print("\nPróximo passo: P0 — Primeiro fluxo com LLM")
+    print("\nPróximo passo: Módulo 02 — Primeiro fluxo com LLM")
 
 
 if __name__ == "__main__":

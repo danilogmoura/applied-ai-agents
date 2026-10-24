@@ -1,5 +1,5 @@
 """
-Módulo P1 — Análise de Viabilidade
+Módulo 03 — Análise de Viabilidade
 
 Criação de memorando técnico que compara IA com regras simples.
 Decisão baseada em latência e custo reais medidos.
@@ -321,7 +321,7 @@ RISCOS MITIGADOS
 
 PRÓXIMOS PASSOS
 ---------------
-1. Se recomendado: Implementar fluxo P0 e evoluir para P2 (RAG)
+1. Se recomendado: Implementar fluxo Módulo 02 e evoluir para Módulo 04 (RAG)
 2. Se condicional: Adicionar cache de respostas e medir melhoria
 3. Se não recomendado: Implementar regras + monitorar crescimento de volume
 
@@ -338,7 +338,7 @@ PRÓXIMOS PASSOS
 def main():
     """Executa análise de viabilidade completa."""
     console.print(Panel.fit(
-        "[bold yellow]MÓDULO P1 — Análise de Viabilidade[/]\n\n"
+        "[bold yellow]MÓDULO 03 — Análise de Viabilidade[/]\n\n"
         "Memorando técnico comparando IA vs Regras.\n"
         "Decisão baseada em benchmarks simulados.",
         title="📊 AI Agents Course",
@@ -379,7 +379,7 @@ def main():
     memo_path.write_text(memo)
     console.print(f"\n[dim]💾 Memorando salvo em: {memo_path}[/]")
     
-    console.print("\n[dim]💡 Próximo passo: Módulo P2 — Pipeline RAG[/]")
+    console.print("\n[dim]💡 Próximo passo: Módulo 04 — Pipeline RAG[/]")
 
 
 if __name__ == "__main__":

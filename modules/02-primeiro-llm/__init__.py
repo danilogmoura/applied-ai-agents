@@ -1,1 +1,1 @@
-"""Módulo P0 — Primeiro Fluxo com LLM."""
+"""Módulo 02 — Primeiro Fluxo com LLM."""

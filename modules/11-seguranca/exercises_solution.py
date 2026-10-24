@@ -1,4 +1,4 @@
-"""Módulo P6 — SOLUÇÃO COMENTADA
+"""Módulo 11 — SOLUÇÃO COMENTADA
 
 Execute com: python modules/11-seguranca/exercises.py
 
@@ -345,7 +345,7 @@ def run_all():
              test_05_jailbreak_detection]
     
     console.print(Panel("🧪 Exercícios Práticos — IMPLEMENTE os TODOs!",
-                        title="[bold cyan]P6: Segurança e Guardrails[/bold cyan]",
+                        title="[bold cyan]Módulo 11 — Segurança e Guardrails[/bold cyan]",
                         border_style="cyan"))
     
     passed = failed = 0

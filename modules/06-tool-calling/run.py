@@ -1,5 +1,5 @@
 """
-Módulo P3a-2 — Tool Calling (Uso Autônomo de Ferramentas)
+Módulo 06 — Tool Calling (Uso Autônomo de Ferramentas)
 
 Agente Python capaz de executar funções reais: consultar APIs, ler arquivos,
 executar comandos. Implementação do princípio do menor privilégio e travas
@@ -371,7 +371,7 @@ class ToolCallingAgent:
 def main():
     """Executa demonstração do agente com tool calling."""
     console.print(Panel.fit(
-        "[bold yellow]MÓDULO P3a-2 — Tool Calling[/]\n\n"
+        "[bold yellow]MÓDULO 06 — Tool Calling[/]\n\n"
         "Agente com ferramentas reais + governança HITL.\n"
         "Princípio do menor privilégio.",
         title="🛠️ AI Agents Course",
@@ -479,7 +479,7 @@ def main():
         agent.chat(query)
         console.print("-" * 60)
     
-    console.print("\n[dim]💡 Próximo passo: Módulo P3a-3 — Planejamento e Retomada[/]")
+    console.print("\n[dim]💡 Próximo passo: Módulo 07 — Planejamento e Retomada[/]")
 
 
 if __name__ == "__main__":

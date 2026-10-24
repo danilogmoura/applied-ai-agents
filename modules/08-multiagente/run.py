@@ -1,5 +1,5 @@
 """
-Módulo P3b — Sistema Multiagente
+Módulo 08 — Sistema Multiagente
 
 Arquitetura onde um agente supervisor (router) delega tarefas para
 agentes especialistas, garantindo degradação elegante.
@@ -257,7 +257,7 @@ class SupervisorAgent:
 def main():
     """Executa demonstração do sistema multiagente."""
     console.print(Panel.fit(
-        "[bold yellow]MÓDULO P3b — Sistema Multiagente[/]\n\n"
+        "[bold yellow]MÓDULO 08 — Sistema Multiagente[/]\n\n"
         "Supervisor + Especialistas com degradação elegante.\n"
         "Roteamento inteligente + fallback automático.",
         title="🤖 AI Agents Course",
@@ -339,7 +339,7 @@ def main():
     
     console.print(supervisor.get_team_status())
     
-    console.print("\n[dim]💡 Próximo passo: Módulo P4 — Produto em Produção[/]")
+    console.print("\n[dim]💡 Próximo passo: Módulo 09 — Produto em Produção[/]")
 
 
 if __name__ == "__main__":

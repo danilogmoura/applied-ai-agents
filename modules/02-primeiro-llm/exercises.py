@@ -1,4 +1,4 @@
-"""Módulo P0 — Exercícios Práticos
+"""Módulo 02 — Exercícios Práticos
 
 Execute com: python modules/02-primeiro-llm/exercises.py
 
@@ -181,7 +181,7 @@ def run_all():
              test_05_error_handling]
     
     console.print(Panel("🧪 Exercícios Práticos — IMPLEMENTE os TODOs!",
-                        title="[bold cyan]P0: Primeiro LLM[/bold cyan]",
+                        title="[bold cyan]Módulo 02 — Primeiro LLM[/bold cyan]",
                         border_style="cyan"))
     
     passed = failed = 0

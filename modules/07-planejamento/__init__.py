@@ -1,1 +1,1 @@
-"""Módulo P3a-3 — Planejamento e Retomada."""
+"""Módulo 07 — Planejamento e Retomada."""

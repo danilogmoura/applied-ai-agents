@@ -46,7 +46,7 @@ app = FastAPI(
     title="AI Agents API",
     description=(
         "API para agentes de inteligência artificial construídos em Python.\n\n"
-        "**Trilha de Curso:** P0 → P1 → P2 → P3a-1 → P3a-2 → P3a-3 → P3b → P4\n\n"
+        "**Trilha de Curso:** Módulo 02 → 03 → 04 → 05 → 06 → 07 → 08 → 09\n\n"
         "**Recursos:**\n"
         "- Classificação de tickets com LLM\n"
         "- Pipeline RAG com ChromaDB\n"

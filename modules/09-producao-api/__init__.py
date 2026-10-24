@@ -1,4 +1,4 @@
-"""Módulo P4 — Produto em Produção
+"""Módulo 09 — Produto em Produção
 
 Implantação da solução como API REST com FastAPI + Uvicorn,
 empacotada em Docker, com documentação Swagger e monitoramento.

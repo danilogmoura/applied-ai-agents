@@ -1,1 +1,1 @@
-"""Módulo P2 — Pipeline RAG."""
+"""Módulo 04 — Pipeline RAG."""

@@ -1,5 +1,5 @@
 """
-Módulo P6 — Segurança e Guardrails
+Módulo 11 — Segurança e Guardrails
 
 Proteção contra prompt injection, jailbreak detection, content filtering,
 output validation e principle of least privilege para agentes de IA.
@@ -412,7 +412,7 @@ class SafetyGuardrails:
 def main():
     """Executa demonstração completa de segurança."""
     console.print(Panel.fit(
-        "[bold yellow]MÓDULO P6 — Segurança e Guardrails[/]\n\n"
+        "[bold yellow]MÓDULO 11 — Segurança e Guardrails[/]\n\n"
         "Prompt injection defense, jailbreak detection,\n"
         "content filtering, data leakage protection.",
         title="🛡️ AI Agents Course",

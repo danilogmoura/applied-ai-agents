@@ -1,4 +1,4 @@
-"""Módulo P0 — Exercícios Práticos (Fundamentos)
+"""Módulo 02 — Exercícios Práticos (Fundamentos)
 
 Execute com: python modules/01-fundamentos/exercises.py
 
@@ -230,7 +230,7 @@ def run_all():
              test_05_system_prompt_injection]
     
     console.print(Panel("🧪 Exercícios Práticos — IMPLEMENTE os TODOs!",
-                        title="[bold cyan]P0: Fundamentos[/bold cyan]",
+                        title="[bold cyan]Módulo 02 — Fundamentos[/bold cyan]",
                         border_style="cyan"))
     
     passed = failed = 0

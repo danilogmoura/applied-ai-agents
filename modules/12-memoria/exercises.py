@@ -1,4 +1,4 @@
-"""Módulo P7 — Exercícios Práticos
+"""Módulo 12 — Exercícios Práticos
 
 Execute com: python modules/12-memoria/exercises.py
 
@@ -303,7 +303,7 @@ def run_all():
              test_05_memory_decay]
     
     console.print(Panel("🧪 Exercícios Práticos — IMPLEMENTE os TODOs!",
-                        title="[bold cyan]P7: Memória[/bold cyan]",
+                        title="[bold cyan]Módulo 12 — Memória[/bold cyan]",
                         border_style="cyan"))
     
     passed = failed = 0

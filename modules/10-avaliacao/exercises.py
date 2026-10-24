@@ -1,4 +1,4 @@
-"""Módulo P5 — Exercícios Práticos
+"""Módulo 10 — Exercícios Práticos
 
 Execute com: python modules/10-avaliacao/exercises.py
 
@@ -191,7 +191,7 @@ def run_all():
              test_05_regression_benchmarking]
     
     console.print(Panel("🧪 Exercícios Práticos — IMPLEMENTE os TODOs!",
-                        title="[bold cyan]P5: Avaliação e Testes[/bold cyan]",
+                        title="[bold cyan]Módulo 10 — Avaliação e Testes[/bold cyan]",
                         border_style="cyan"))
     
     passed = failed = 0

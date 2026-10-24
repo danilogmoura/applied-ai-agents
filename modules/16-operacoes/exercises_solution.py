@@ -1,4 +1,4 @@
-"""Módulo P11 — SOLUÇÃO COMENTADA
+"""Módulo 16 — SOLUÇÃO COMENTADA
 
 Execute com: python modules/16-operacoes/exercises_solution.py
 
@@ -563,7 +563,7 @@ def run_all():
              test_05_ab_testing]
     
     console.print(Panel("🧪 Exercícios Práticos — IMPLEMENTE os TODOs!",
-                        title="[bold cyan]P11: Produção e Operações[/bold cyan]",
+                        title="[bold cyan]Módulo 16 — Produção e Operações[/bold cyan]",
                         border_style="cyan"))
     
     passed = failed = 0

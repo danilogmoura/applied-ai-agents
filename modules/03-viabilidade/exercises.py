@@ -1,4 +1,4 @@
-"""Módulo P1 — Exercícios Práticos
+"""Módulo 03 — Exercícios Práticos
 
 Execute com: python modules/03-viabilidade/exercises.py
 
@@ -215,7 +215,7 @@ def run_all():
              test_05_scalability_analysis]
     
     console.print(Panel("🧪 Exercícios Práticos — IMPLEMENTE os TODOs!",
-                        title="[bold cyan]P1: Viabilidade[/bold cyan]",
+                        title="[bold cyan]Módulo 03 — Viabilidade[/bold cyan]",
                         border_style="cyan"))
     
     passed = failed = 0

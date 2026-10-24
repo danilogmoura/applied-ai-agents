@@ -1,5 +1,5 @@
 """
-Módulo P2 — Pipeline RAG (Recuperação de Contexto)
+Módulo 04 — Pipeline RAG (Recuperação de Contexto)
 
 Construção de pipeline completo para busca em documentos locais.
 Foco: embeddings, vetor store (ChromaDB), latência e contagem de tokens.
@@ -422,7 +422,7 @@ RESPOSTA:"""
 def main():
     """Executa demonstração completa do pipeline RAG."""
     console.print(Panel.fit(
-        "[bold yellow]MÓDULO P2 — Pipeline RAG[/]\n\n"
+        "[bold yellow]MÓDULO 04 — Pipeline RAG[/]\n\n"
         "Recuperação de contexto em documentos locais.\n"
         "Embeddings + ChromaDB + Geração com LLM.",
         title="📚 AI Agents Course",
@@ -470,7 +470,7 @@ def main():
         border_style="green",
     ))
     
-    console.print("\n[dim]💡 Próximo passo: Módulo P3a-1 — Autoavaliação e reflexão[/]")
+    console.print("\n[dim]💡 Próximo passo: Módulo 05 — Autoavaliação e reflexão[/]")
 
 
 if __name__ == "__main__":

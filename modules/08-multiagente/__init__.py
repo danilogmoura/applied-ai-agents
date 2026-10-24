@@ -1,2 +1,2 @@
-"""Módulo P3b — Sistema Multiagente."""
-"""Módulo P3b — Sistema Multiagente."""
+"""Módulo 08 — Sistema Multiagente."""
+"""Módulo 08 — Sistema Multiagente."""

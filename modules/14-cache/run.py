@@ -1,5 +1,5 @@
 """
-Módulo P9 — Cache e Otimização de Custo
+Módulo 14 — Cache e Otimização de Custo
 
 Sistema completo de caching para respostas de LLM com Redis simulado,
 model routing (caminhos baratos vs caros), prompt compression e
@@ -475,7 +475,7 @@ class OptimizedAgent:
 def main():
     """Executa demonstração completa de cache e otimização."""
     console.print(Panel.fit(
-        "[bold yellow]MÓDULO P9 — Cache e Otimização de Custo[/]\n\n"
+        "[bold yellow]MÓDULO 14 — Cache e Otimização de Custo[/]\n\n"
         "Response cache, model routing, prompt compression,\n"
         "e monitoramento de custo em tempo real.",
         title="💰 AI Agents Course",

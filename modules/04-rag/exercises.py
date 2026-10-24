@@ -1,4 +1,4 @@
-"""Módulo P2 — Exercícios Práticos
+"""Módulo 04 — Exercícios Práticos
 
 Execute com: python modules/04-rag/exercises.py
 
@@ -267,7 +267,7 @@ def run_all():
              test_05_rag_pipeline]
     
     console.print(Panel("🧪 Exercícios Práticos — IMPLEMENTE os TODOs!",
-                        title="[bold cyan]P2: RAG[/bold cyan]",
+                        title="[bold cyan]Módulo 04 — RAG[/bold cyan]",
                         border_style="cyan"))
     
     passed = failed = 0

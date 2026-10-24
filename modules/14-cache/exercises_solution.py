@@ -1,4 +1,4 @@
-"""Módulo P9 — SOLUÇÃO COMENTADA
+"""Módulo 14 — SOLUÇÃO COMENTADA
 
 Execute com: python modules/14-cache/exercises_solution.py
 
@@ -353,7 +353,7 @@ def run_all():
              test_03_cache_invalidation, test_04_cost_savings]
     
     console.print(Panel("🧪 Exercícios Práticos — IMPLEMENTE os TODOs!",
-                        title="[bold cyan]P9: Cache[/bold cyan]",
+                        title="[bold cyan]Módulo 14 — Cache[/bold cyan]",
                         border_style="cyan"))
     
     passed = failed = 0
