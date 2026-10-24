@@ -304,6 +304,49 @@ agentforge/
    - Documentação
    - Apresentação
 
+## 🪨 Travei? Pistas em camadas
+
+O projeto final não tem gabarito — ele é a soma dos 16 miniprojetos. Quando um componente travar, abra **só o próximo nível** que precisar. A regra de ouro: cada requisito do projeto já foi praticado isoladamente em um módulo; você quase nunca precisa inventar algo novo, só **conectar** peças que já construiu.
+
+> **Nível 1 — Direção.** Olhe a tabela "Correspondência Módulo ↔ Componente" lá em cima. Todo componente do projeto final é o `miniproject.md` daquele módulo costurado ao resto. Se travou num componente, volte ao miniprojeto de origem e use as "Pistas em camadas" dele — elas já resolvem a parte difícil. O trabalho aqui é integração (passar a saída de um para a entrada do outro), não lógica nova.
+
+<details>
+<summary><b>Nível 2 — Ideia por componente</b> (clique para abrir)</summary>
+
+- **API REST (M09):** o FastAPI é só o invólucro. Cada endpoint delega para a lógica que você já tem nos outros módulos — não reimplemente raciocínio dentro da rota; chame funções/agentes importados. Mantenha as rotas finas.
+- **RAG (M04):** chunk → embed → retrieve vai *antes* de montar o prompt. O contexto recuperado entra como bloco `system`/`context`, não concatenado à força na pergunta do usuário. Reaproveite seu pipeline do M04.
+- **Autoavaliação (M05):** envolva a resposta numa crítica estruturada com limite de iterações (`max_iterations`). Sem teto, o loop refina para sempre e estoura custo.
+- **Tool Calling (M06):** o núcleo é `dispatch(tool_calls)` — nome → registry → `func(**json.loads(args))`. Reuse exatamente esse esqueleto; só troque quem produz os `tool_calls` (o modelo real).
+- **Multiagente (M08):** supervisor roteia para especialistas; cada especialista é um agente enxuto com escopo único. Passe adiante só o necessário (não o histórico inteiro) para controlar tokens.
+- **Segurança (M11):** guardrails nos dois lados — sanitiza entrada *e* valida saída. Injeção de prompt se combate com separação estrita entre dados do usuário e instruções do sistema.
+- **Memória (M12):** short-term = janela deslizante (`[-max_messages:]`); long-term = dict por `session_id` com `last_accessed` p/ decay. Não misture os dois stores.
+- **Streaming (M13):** gere token-a-token via SSE e vá acumulando; o custo/latência (TTFT) melhoram porque a primeira palavra sai antes do texto completo.
+- **Cache (M14):** chaveie por hash do prompt (+ params). Acerto devolve sem chamar API; isso derruba custo e latência nas chamadas repetidas.
+- **Skills (M15):** registry `name -> handlers[version]`; compor pipeline é declarar ordem, executar resolve cada nome via handler ativo. Separe composição de execução.
+- **Operações (M16):** logs estruturados + métricas de custo/erro desde o dia 1. Rollback pressupõe versionar prompts/modelos — trate config como artefato, não como string solta.
+
+</details>
+
+<details>
+<summary><b>Nível 3 — Ordem de montagem sugerida</b> (abra só se estiver perdido no todo)</summary>
+
+Monte por fatias verticais funcionais, não por camadas horizontais:
+
+```text
+1. Rota /ask simples (M09) que só chama 1 LLM            -> você tem um "olá mundo" end-to-end
+2. Pluga RAG nessa rota (M04)                             -> respostas com contexto interno
+3. Adiciona autoavaliação em volta da resposta (M05)      -> qualidade auditável
+4. Troca o LLM puro por um agente com tools (M06)         -> ação, não só texto
+5. Envolve tudo com guardrails entrada+saída (M11)        -> seguro p/ expor
+6. Liga memória (M12) + streaming (M13) + cache (M14)     -> experiência e custo
+7. Refatora para multiagente/skills (M08/M15) se fizer sentido
+8. Observabilidade + deploy (M16)                         -> produção de verdade
+```
+
+Cada passo acima **compila e roda** antes do próximo — se quebrar, você sabe em qual costura entrou o bug. Nunca integre duas coisas novas ao mesmo tempo.
+
+</details>
+
 ## Dicas
 
 - **Comece pequeno:** Implemente um módulo por vez

@@ -234,11 +234,16 @@ Quando você usa a API da OpenAI, está usando um modelo já treinado. Não trei
 
 ---
 
-> 💡 **Modelo é exemplo, não requisito**
-> Onde este módulo usa `gpt-4o-mini`, leia "qualquer LLM de chat". O nome do modelo
-> não faz parte dos conceitos ensinados — trocar por Claude, Gemini, Qwen ou um modelo
-> local (Ollama) é só mudar a string `model=` (ou exportar `MODEL` no `.env`). Os run.py
-> já lêem `shared.security.get_model()`, que respeita `MODEL`/`DEFAULT_MODEL` do ambiente.
+> 💡 **Por que uma API "OpenAI-compatible"? Modelo é exemplo, não requisito**
+> Este curso conversa com modelos via API no formato da OpenAI porque ele virou o
+> **padrão de facto**: quase todo fornecedor (Anthropic, Google Gemini, Qwen/DashScope)
+> e todo servidor local (Ollama, vLLM) expõe um endpoint que fala esse mesmo dialeto.
+> Assim você aprende **um** jeito de chamar (`client.chat.completions.create`) e ele
+> vale para dezenas de modelos — nada aqui depende de uma versão específica.
+> Onde usamos `gpt-4o-mini`, leia "qualquer LLM de chat": trocar de fornecedor é editar
+> `LLM_PROVIDER`/`MODEL` no `.env` (ou apontar `OPENAI_BASE_URL` para um servidor local),
+> sem tocar em nenhum `run.py` — eles já lêem `shared.security.get_model()`/`get_llm_config()`,
+> que respeitam o ambiente. Ver a seção "Preso à OpenAI?" no README e o registry em `shared/security.py`.
 
 ## 3. Tokenização: Como texto vira números
 
@@ -527,7 +532,7 @@ Escolha UM dos prompts que você reescreveu na Parte A. Envie-o para um LLM (pod
 
 ### Livros em Inglês
 
-- **"Designing Machine Learning Systems"** by Chip Huyen (O'Reilly) — Capítulos sobre avaliação e monitoring
+- **"Designing Machine Learning Systems"** by Chip Huyen (O'Reilly) — capítulos do livro sobre avaliação e monitoring
 - **"The Mythical Man-Month"** by Frederick Brooks — Sobre trade-offs em engenharia
 
 ### Documentação Oficial
