@@ -129,6 +129,12 @@ Funciona como um "banco de questões" para testar o agente. Cada execução gera
 | **LLM-as-a-Judge** | Julgamento por outro LLM | Respostas complexas/abertas |
 | **Embedding Similarity** | Similaridade semântica vetorial | Paraphrase detection |
 
+> 💡 **Modelo é exemplo, não requisito**
+> Onde este módulo usa `gpt-4o-mini`, leia "qualquer LLM de chat". O nome do modelo
+> não faz parte dos conceitos ensinados — trocar por Claude, Gemini, Qwen ou um modelo
+> local (Ollama) é só mudar a string `model=` (ou exportar `MODEL` no `.env`). Os run.py
+> já lêem `shared.security.get_model()`, que respeita `MODEL`/`DEFAULT_MODEL` do ambiente.
+
 ### LLM-as-a-Judge
 
 > 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch03 —

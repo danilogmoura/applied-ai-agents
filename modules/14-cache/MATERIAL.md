@@ -212,6 +212,12 @@ put(key, value):
 
 Redis implementa LRU aproximado (`maxmemory-policy allkeys-lru`) e LFU (`allkeys-lfu`). O LRU aproximado é uma otimização: em vez de verificar TODOS os keys, sorteia N amostras e remove o menos recente delas. Trade-off entre precisão e CPU.
 
+> 💡 **Modelo é exemplo, não requisito**
+> Onde este módulo usa `gpt-4o-mini`, leia "qualquer LLM de chat". O nome do modelo
+> não faz parte dos conceitos ensinados — trocar por Claude, Gemini, Qwen ou um modelo
+> local (Ollama) é só mudar a string `model=` (ou exportar `MODEL` no `.env`). Os run.py
+> já lêem `shared.security.get_model()`, que respeita `MODEL`/`DEFAULT_MODEL` do ambiente.
+
 ### Model Routing
 
 > 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch10 —

@@ -319,6 +319,12 @@ print(response)
 > (sucedidas, custo total, tokens). É a arquitetura supervisor-especialista acontecendo
 > na sua frente.
 
+> 💡 **Modelo é exemplo, não requisito**
+> Onde este módulo usa `gpt-4o-mini`, leia "qualquer LLM de chat". O nome do modelo
+> não faz parte dos conceitos ensinados — trocar por Claude, Gemini, Qwen ou um modelo
+> local (Ollama) é só mudar a string `model=` (ou exportar `MODEL` no `.env`). Os run.py
+> já lêem `shared.security.get_model()`, que respeita `MODEL`/`DEFAULT_MODEL` do ambiente.
+
 ### Custos em Multiagente
 
 > 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c4FV —

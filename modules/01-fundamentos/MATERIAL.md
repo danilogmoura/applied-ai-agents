@@ -234,6 +234,12 @@ Quando você usa a API da OpenAI, está usando um modelo já treinado. Não trei
 
 ---
 
+> 💡 **Modelo é exemplo, não requisito**
+> Onde este módulo usa `gpt-4o-mini`, leia "qualquer LLM de chat". O nome do modelo
+> não faz parte dos conceitos ensinados — trocar por Claude, Gemini, Qwen ou um modelo
+> local (Ollama) é só mudar a string `model=` (ou exportar `MODEL` no `.env`). Os run.py
+> já lêem `shared.security.get_model()`, que respeita `MODEL`/`DEFAULT_MODEL` do ambiente.
+
 ## 3. Tokenização: Como texto vira números
 
 Computadores não entendem texto — entendem números. Antes de processar qualquer coisa, o texto é dividido em **tokens**.
