@@ -16,6 +16,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from rich.console import Console
 from rich.panel import Panel
 
+from shared.hints import format_hint
+
 console = Console()
 
 
@@ -28,6 +30,10 @@ def test_01_latency_measurement():
     TODO: Implemente uma função que mede o tempo de resposta.
     
     Regra: Para classificação de tickets, latência < 2s é aceitável.
+
+    HINT: capture um instante antes e outro depois de chamar func(*args); a
+    diferença entre eles (em segundos) é a latência. O módulo time tem duas
+    funções para isso.
     """
     import time
     
@@ -59,6 +65,9 @@ def test_02_cost_comparison():
     Cenário: 10,000 tickets/mês
     - IA (gpt-4o-mini): ~$0.00003/ticket → $0.30/mês
     - Humano: ~$0.10/ticket → $1,000/mês
+
+    HINT: custo mensal = custo por ticket × quantidade de tickets. Multiplique
+    cada custo unitário por tickets_per_month.
     """
     tickets_per_month = 10000
     
@@ -87,6 +96,9 @@ def test_03_accuracy_threshold():
     TODO: Verifique se accuracy está acima do threshold mínimo.
     
     Regra: accuracy >= 0.85 é aceitável para produção.
+
+    HINT: accuracy é a fração de acertos sobre o total. As variáveis 'correct'
+    e 'total' já estão calculadas — basta dividi-las.
     """
     ground_truth = ["URGENTE", "ALTA", "MEDIA", "BAIXA", "NORMAL"]
     predictions = ["URGENTE", "ALTA", "MEDIA", "BAIXA", "ERRADO"]
@@ -120,6 +132,10 @@ def test_04_memorando_generation():
     - 'reasoning': string explicando o porquê
     - 'risks': lista de riscos identificados
     - 'thresholds': dict com {'cost_viable': bool, 'latency_acceptable': bool}
+
+    HINT: monte um dicionário com exatamente essas 4 chaves. Em 'thresholds',
+    compare os números de 'data' contra os limites do módulo (custo e latência)
+    para produzir dois booleanos; em 'risks' liste ao menos 2 strings.
     """
     data = {
         "latency_ms": 1500,
@@ -171,6 +187,9 @@ def test_05_scalability_analysis():
     Se 1,000 tickets custam $0.03 (IA) vs $100.00 (humano):
     - Quanto custam 100,000?
     - Qual é o volume onde IA se paga (break-even)?
+
+    HINT: escala linear é custo_at_1k × scale_factor. O break-even já vem na
+    fórmula comentada acima — só falta você alimentar com os custos unitários.
     """
     costs_at_1k = {
         "ia": 0.03,
@@ -225,9 +244,13 @@ def run_all():
             passed += 1
         except AssertionError as e:
             console.print(f"[red]✗ {test_fn.__name__}: {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
         except Exception as e:
             console.print(f"[red]✗ {test_fn.__name__}: Erro — {e}[/red]")
+            if (hint := format_hint(test_fn)):
+                console.print(f"[yellow]   {hint}[/yellow]")
             failed += 1
     console.print(f"\nResultado: [bold green]{passed}/{passed+failed}[/bold green] passaram")
     if not failed:

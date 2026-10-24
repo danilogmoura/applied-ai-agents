@@ -38,6 +38,18 @@ MODULES_DIR = ROOT / "modules"
 collect_ignore_glob = ["modules/*"]
 
 
+def _extract_hint(fn) -> str | None:
+    """Retorna a pista didática declarada via ``HINT:`` no docstring do teste.
+
+    Delega para :func:`shared.hints.extract_hint`, a fonte única da convenção —
+    assim harness pytest e ``run_all()`` standalone mostram exatamente a mesma
+    dica. Módulos sem a marca retornam ``None`` (comportamento antigo).
+    """
+    from shared.hints import extract_hint
+
+    return extract_hint(fn)
+
+
 def _load_module_from_path(path: Path):
     """Importa um .py isoladamente, com nome único p/ evitar colisão."""
     mod_name = f"{path.parent.name}__{path.stem}"
@@ -70,9 +82,21 @@ class ExercisePlugin:
             try:
                 fn()
             except AssertionError as exc:
-                pytest.fail(f"{fn.__name__}: {exc}")
+                self._fail_with_hint(fn, f"{fn.__name__}: {exc}")
             except Exception as exc:  # noqa: BLE001
-                pytest.fail(f"{fn.__name__}: erro inesperado — {exc!r}")
+                self._fail_with_hint(fn, f"{fn.__name__}: erro inesperado — {exc!r}")
+
+    @staticmethod
+    def _fail_with_hint(fn, message: str) -> None:
+        """Falha o teste e, se houver ``HINT:`` no docstring, mostra a pista.
+
+        A pista orienta sem entregar a solução. No modo regressão (gabarito)
+        este caminho não é atingido, pois as soluções passam.
+        """
+        hint = _extract_hint(fn)
+        if hint:
+            pytest.fail(f"{message}\n💡 Pista ({fn.__name__}): {hint}")
+        pytest.fail(message)
 
 
 def pytest_configure(config):
@@ -93,3 +117,32 @@ def check_my_exercises() -> bool:
 def _exercise_files(kind: str) -> list[Path]:
     pattern = f"*/{kind}.py"
     return sorted(MODULES_DIR.glob(pattern))
+
+
+# ── Regressão do gabarito: SEMPRE roda ────────────────────────────────
+@pytest.mark.parametrize(
+    "sol_path",
+    _exercise_files("exercises_solution"),
+    ids=lambda p: p.parent.name,
+)
+def test_solutions_pass(sol_path: Path) -> None:
+    """A solução oficial do curso deve passar em todos os próprios testes."""
+    module = _load_module_from_path(sol_path)
+    ExercisePlugin(module).run()
+
+
+# ── Verificação do aluno: só com CHECK_MY_EXERCISES=1 ─────────────────
+_sol_paths = {p.parent.name for p in _exercise_files("exercises_solution")}
+
+
+@pytest.mark.parametrize(
+    "ex_path",
+    _exercise_files("exercises"),
+    ids=lambda p: p.parent.name,
+)
+def test_student_exercises(ex_path: Path, check_my_exercises: bool) -> None:
+    """Valida o exercises.py do aluno (TODOs preenchidos). Desligado por padrão."""
+    if not check_my_exercises:
+        pytest.skip("defina CHECK_MY_EXERCISES=1 para validar seus exercícios")
+    module = _load_module_from_path(ex_path)
+    ExercisePlugin(module).run()
