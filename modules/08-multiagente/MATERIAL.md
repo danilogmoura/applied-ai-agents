@@ -9,6 +9,43 @@ Você precisa ter concluído o módulo [Módulo 07 — Planejamento e Retomada](
 
 ---
 
+## 🗺️ Mapa do Bloco Avançado (Módulos 08 → 16)
+
+Você está entrando na **segunda metade** do curso. Até aqui (M01–M07) você aprendeu a *fazer um agente funcionar*. A partir de agora — e este Módulo 08 é a porta de entrada — o foco muda para *fazer um agente funcionar bem, em produção*: coordenação, confiabilidade, custo, segurança e operação.
+
+São **9 módulos encadeados**. Cada um pressupõe o anterior, então siga na ordem:
+
+```mermaid
+flowchart TD
+    subgraph Coord["Coordenação"]
+        M08["08 · Multiagente<br/>vários agentes colaborando"]
+    end
+    subgraph Robustez["Robustez & Entrega"]
+        M09["09 · Produção API<br/>de script a produto"]
+        M13["13 · Streaming<br/>resposta em tempo real"]
+    end
+    subgraph Confianca["Confiança"]
+        M10["10 · Avaliação<br/>medir qualidade"]
+        M11["11 · Segurança<br/>guardrails e ataques"]
+    end
+    subgraph Eficiencia["Eficiência"]
+        M12["12 · Memória<br/>reter contexto"]
+        M14["14 · Cache<br/>cortar custo"]
+    end
+    subgraph Extensibilidade["Extensibilidade & Operação"]
+        M15["15 · Skills<br/>compor capacidades"]
+        M16["16 · Operações<br/>observar e manter"]
+    end
+    M08 --> M09 --> M10 --> M11 --> M12 --> M13 --> M14 --> M15 --> M16
+```
+
+**Como ler este bloco:**
+- **Não tente decorar tudo.** Cada módulo fecha um assunto antes do próximo abrir.
+- Se travar, volte uma casa: os pré-requisitos são sempre o módulo imediatamente anterior.
+- Ao fim de M16 você terá construído o **Projeto Final Integrador** ([FINAL_PROJECT.md](../../FINAL_PROJECT.md)).
+
+---
+
 ## 📋 Sumário
 
 ### Core (obrigatório)

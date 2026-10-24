@@ -2,6 +2,8 @@
 
 ## ⚠️ Pré-requisito
 
+> 🧭 Você está no **bloco avançado** (M08→M16). Perdido na sequência? Veja o [Mapa do Bloco Avançado](../08-multiagente/MATERIAL.md#-mapa-do-bloco-avançado-módulos-08--16).
+
 Você precisa ter concluído o módulo [Módulo 14 — Cache e Otimização de Custo](../14-cache/MATERIAL.md). Especificamente, precisa saber:
 
 - Como implementar cache para reduzir custo e latência
