@@ -24,7 +24,7 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from shared.logging_config import setup_logging, measure_latency
 from shared.cost import count_tokens, estimate_cost, format_cost
-from shared.security import get_llm_config, get_model, get_provider
+from shared.security import get_llm_config, get_model, get_provider, get_thinking
 
 console = Console()
 logger = setup_logging("04-rag")
@@ -330,6 +330,7 @@ class RAGPipeline:
         from openai import OpenAI
         
         api_key, base_url, _ = get_llm_config()
+        extra_body = get_thinking(self.model)
         client = OpenAI(api_key=api_key, base_url=base_url)
         
         # Constrói prompt com contexto
@@ -354,6 +355,7 @@ RESPOSTA:"""
         with measure_latency(logger, "rag_generate") as metrics:
             response = client.chat.completions.create(
                 model=self.model,
+                extra_body=extra_body,
                 messages=messages,
                 max_tokens=500,
                 temperature=0.3,

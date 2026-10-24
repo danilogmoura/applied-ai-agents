@@ -29,7 +29,7 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from shared.logging_config import setup_logging, measure_latency
 from shared.cost import count_tokens, estimate_cost, format_cost
-from shared.security import get_llm_config
+from shared.security import get_llm_config, get_thinking
 
 console = Console()
 logger = setup_logging("10-avaliacao")
@@ -190,6 +190,7 @@ class Evaluator:
             from openai import OpenAI
             
             api_key, base_url, _ = get_llm_config()
+            extra_body = get_thinking(self.model)
             client = OpenAI(api_key=api_key, base_url=base_url)
             
             prompt = f"""Você é um juiz imparcial avaliando respostas.
@@ -209,6 +210,7 @@ NÃO explique, apenas retorne o número."""
             
             response = client.chat.completions.create(
                 model=self.model,
+                extra_body=extra_body,
                 messages=[{"role": "user", "content": prompt}],
                 max_tokens=5,
                 temperature=0,

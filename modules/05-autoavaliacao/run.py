@@ -24,7 +24,7 @@ from rich.text import Text
 
 from shared.logging_config import setup_logging
 from shared.cost import count_tokens, estimate_cost, format_cost
-from shared.security import get_llm_config, get_model, get_provider
+from shared.security import get_llm_config, get_model, get_provider, get_thinking
 
 console = Console()
 logger = setup_logging("05-autoavaliacao")
@@ -81,10 +81,12 @@ class SelfEvaluatingAgent:
         from openai import OpenAI
         
         api_key, base_url, _ = get_llm_config()
+        extra_body = get_thinking(self.model)
         client = OpenAI(api_key=api_key, base_url=base_url)
         
         response = client.chat.completions.create(
             model=self.model,
+            extra_body=extra_body,
             messages=[{"role": "user", "content": prompt}],
             max_tokens=1000,
             temperature=0.5,
@@ -166,6 +168,7 @@ FORMATO OBRIGATÓRIO (JSON apenas):
             try:
                 response = client.beta.chat.completions.parse(
                     model=self.model,
+                    extra_body=get_thinking(self.model),
                     messages=[{"role": "user", "content": eval_prompt}],
                     response_format=SelfEvaluation,
                     max_tokens=200,

@@ -15,10 +15,11 @@ import time
 
 # Modelo LLM configuravel via ambiente (EXEMPLO, nao requisito).
 # Troque de fornecedor/modelo no .env: LLM_PROVIDER=openai|qwen e MODEL=...
-from shared.security import get_llm_config, get_model
+from shared.security import get_llm_config, get_model, get_thinking
 
 try:
     _API_KEY, _BASE_URL, MODEL = get_llm_config()
+    _THINKING = get_thinking(MODEL)
 except EnvironmentError:
     # Sem chave definida: mantem o modelo por env e deixa as chamadas reais
     # falharem sozinhas (comportamento identico ao OpenAI() anterior).
@@ -90,6 +91,7 @@ def demo_temperature() -> None:
         client = OpenAI(api_key=_API_KEY, base_url=_BASE_URL)
         resp1 = client.chat.completions.create(
             model=MODEL,
+            extra_body=_THINKING,
             messages=[{"role": "user", "content": prompt_classificacao}],
             temperature=0.0,
             max_tokens=10,
@@ -98,6 +100,7 @@ def demo_temperature() -> None:
 
         resp2 = client.chat.completions.create(
             model=MODEL,
+            extra_body=_THINKING,
             messages=[{"role": "user", "content": prompt_classificacao}],
             temperature=0.0,
             max_tokens=10,
@@ -118,6 +121,7 @@ def demo_temperature() -> None:
         for i in range(3):
             resp = client.chat.completions.create(
                 model=MODEL,
+                extra_body=_THINKING,
                 messages=[{"role": "user", "content": prompt_criativo}],
                 temperature=1.0,
                 max_tokens=20,
@@ -176,6 +180,7 @@ Retorne APENAS a palavra: BAIXA, MEDIA ou ALTA""",
                 prompt_final = template.format(**ticket)
                 resp = client.chat.completions.create(
                     model=MODEL,
+                    extra_body=_THINKING,
                     messages=[{"role": "user", "content": prompt_final}],
                     temperature=0.0,
                     max_tokens=10,

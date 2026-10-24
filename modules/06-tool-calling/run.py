@@ -27,7 +27,7 @@ from rich.table import Table
 from shared.logging_config import setup_logging
 from shared.cost import count_tokens, estimate_cost, format_cost
 from shared.governance import ActionRequest, RiskLevel, require_approval, safe_execute
-from shared.security import get_llm_config, get_model, get_provider
+from shared.security import get_llm_config, get_model, get_provider, get_thinking
 
 console = Console()
 logger = setup_logging("06-tool-calling")
@@ -217,6 +217,7 @@ class ToolCallingAgent:
         
         kwargs: dict = {
             "model": self.model,
+            "extra_body": get_thinking(self.model),
             "messages": messages,
             "max_tokens": 1000,
             "temperature": 0.3,

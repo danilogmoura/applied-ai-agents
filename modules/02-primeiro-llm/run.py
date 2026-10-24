@@ -27,7 +27,7 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from shared.logging_config import setup_logging, measure_latency
 from shared.cost import count_tokens, estimate_cost, format_cost, summarize_usage
-from shared.security import get_llm_config, get_provider
+from shared.security import get_llm_config, get_provider, get_thinking
 
 console = Console()
 logger = setup_logging("02-primeiro-llm")
@@ -80,7 +80,8 @@ def classify_ticket(ticket: dict, model: str = "gpt-4o-mini") -> dict:
     from openai import OpenAI
     
     # Valida secret obrigatória
-    api_key, base_url, _ = get_llm_config()
+    api_key, base_url, _model = get_llm_config()
+    extra_body = get_thinking(_model)
     
     client = OpenAI(api_key=api_key, base_url=base_url)
     
@@ -102,6 +103,7 @@ Responda APENAS com uma destas palavras: URGENTE, NORMAL ou BAIXA."""
         with measure_latency(logger, "classify_ticket") as metrics:
             response = client.chat.completions.create(
                 model=model,
+                extra_body=extra_body,
                 messages=messages,
                 max_tokens=20,
                 temperature=0,  # ← Sempre 0 para classificação consistente

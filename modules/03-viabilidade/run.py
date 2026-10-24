@@ -26,7 +26,7 @@ from rich.table import Table
 
 from shared.logging_config import setup_logging, measure_latency
 from shared.cost import count_tokens, estimate_cost, format_cost
-from shared.security import get_llm_config
+from shared.security import get_llm_config, get_thinking
 
 console = Console()
 logger = setup_logging("03-viabilidade")
@@ -141,7 +141,8 @@ def run_benchmarks_real(n_samples: int = 5, model: str = "gpt-4o-mini") -> dict[
     """
     from openai import OpenAI
     
-    api_key, base_url, _ = get_llm_config()
+    api_key, base_url, _model = get_llm_config()
+    extra_body = get_thinking(_model)
     client = OpenAI(api_key=api_key, base_url=base_url)
     
     test_prompts = [
@@ -179,6 +180,7 @@ def run_benchmarks_real(n_samples: int = 5, model: str = "gpt-4o-mini") -> dict[
         try:
             response = client.chat.completions.create(
                 model=model,
+                extra_body=extra_body,
                 messages=[{"role": "user", "content": f"Classifique: {prompt}"}],
                 max_tokens=10,
                 temperature=0,
