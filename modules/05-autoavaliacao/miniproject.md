@@ -203,6 +203,19 @@ if __name__ == "__main__":
     print(f"Convergiu: {result['converged']}")
 ```
 
+## ✅ Critérios de Sucesso
+
+Marque cada item **só se conseguir fazer sem olhar o material**:
+
+- [ ] `generate_response()` produz uma resposta inicial para a pergunta
+- [ ] `evaluate()` pontua a resposta por critérios (claridade, precisão, completude)
+- [ ] `refine()` melhora a resposta usando o feedback da avaliação
+- [ ] `run_iteration_loop()` repete gerar→avaliar→refinar até `threshold` ou `max_iterations`
+- [ ] O loop reporta nº de iterações, tokens gastos e se convergiu
+- [ ] CLI aceita `--question`, `--max-iters` e `--threshold`
+
+> ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
+
 ## Teste seu código
 
 ```bash

@@ -175,7 +175,21 @@ python modules/02-primeiro-llm/ticket_classifier_skeleton.py --dry-run
 
 ---
 
-## Como testar
+## ✅ Critérios de Sucesso
+
+Marque cada item **só se conseguir fazer sem olhar o material**:
+
+- [ ] `__init__` cria `OpenAI(api_key=...)` corretamente
+- [ ] `classify()` usa `temperature=0`
+- [ ] `classify()` retorna dict com `category`, `confidence`, `suggested_action`
+- [ ] `estimate_batch_cost()` calcula custo real usando `shared.cost`
+- [ ] `process_batch()` tem retry com backoff exponencial
+- [ ] `dry_run()` funciona sem chamar API
+- [ ] Código roda via `python ticket_classifier_skeleton.py --dry-run`
+
+---
+
+## Teste seu código
 
 ```bash
 # Modo dry run — sem gastar tokens (recomendado para começar)
@@ -189,16 +203,6 @@ python modules/02-primeiro-llm/ticket_classifier_skeleton.py
 ```
 
 ---
-
-## Checklist de validação
-
-- [ ] `__init__` cria `OpenAI(api_key=...)` corretamente
-- [ ] `classify()` usa `temperature=0`
-- [ ] `classify()` retorna dict com `category`, `confidence`, `suggested_action`
-- [ ] `estimate_batch_cost()` calcula custo real usando `shared.cost`
-- [ ] `process_batch()` tem retry com backoff exponencial
-- [ ] `dry_run()` funciona sem chamar API
-- [ ] Código roda via `python ticket_classifier_skeleton.py --dry-run`
 
 ---
 

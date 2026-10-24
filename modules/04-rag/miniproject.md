@@ -210,6 +210,19 @@ def evaluate_retrieval(self, query: str, expected_chunk_id: str) -> dict:
     }
 ```
 
+## ✅ Critérios de Sucesso
+
+Marque cada item **só se conseguir fazer sem olhar o material**:
+
+- [ ] `chunk_document()` divide o texto respeitando `chunk_size` e `overlap`
+- [ ] `embed_text()` retorna vetor determinístico (mesmo texto → mesmo vetor)
+- [ ] `index_documents()` associa cada chunk ao seu embedding e metadados
+- [ ] `retrieve()` devolve os `top_k` chunks mais similares ao query
+- [ ] `generate_response()` usa APENAS o contexto recuperado na resposta
+- [ ] `evaluate_retrieval()` calcula `hit@k` e reciprocal rank corretamente
+
+> ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
+
 ## Teste seu código
 
 ```bash

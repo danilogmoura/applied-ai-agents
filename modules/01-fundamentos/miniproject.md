@@ -125,6 +125,19 @@ if __name__ == "__main__":
     print(result)
 ```
 
+## ✅ Critérios de Sucesso
+
+Marque cada item **só se conseguir fazer sem olhar o material**:
+
+- [ ] `estimate_tokens()` estima tokens (~4 chars/token EN, ~2 PT)
+- [ ] `calculate_cost()` aplica os preços por 1K tokens dos 3 modelos
+- [ ] `validate_prompt()` checa 1ª mensagem e content não vazio
+- [ ] `analyze()` retorna dict com tokens, custo, validação e warnings
+- [ ] CLI aceita `--text`/`--prompt-file`, `--language` e `--model`
+- [ ] Código roda via `python prompt_analyzer.py --text "..." --language pt`
+
+> ⚠️ Se marcou menos de 3 itens, releia as seções correspondentes antes de prosseguir.
+
 ## Teste seu código
 
 ```bash
@@ -138,12 +151,3 @@ python prompt_analyzer.py --prompt-file example.json --model gpt-4o
 - [ ] Exportar relatório em CSV
 - [ ] Comparar custos entre modelos lado a lado
 - [ ] Detectar prompt injection básico
-
-## Critérios de avaliação
-
-| Critério | Básico | Avançado |
-| ---------- | -------- | ---------- |
-| Tokenização | Regex simples | BPE simulado com vocabulário |
-| Custos | 3 modelos | + custom pricing |
-| Validação | Regras básicas | + regras configuráveis |
-| CLI | argparse mínimo | + subcomandos + colorido |

@@ -1,5 +1,12 @@
 # Checklist — Validação dos `miniproject.md`
 
+> **Atualização (#7 VALIDA-IA):** A auditoria anterior marcou 16/16 ✅, mas uma
+> verificação real do disco mostrou que **M04 e M05 não tinham seção de critérios**
+> e **M01/M02 usavam vocabulário divergente** ("Critérios de avaliação"/"Checklist
+> de validação"). Todos foram padronizados agora no formato canônico:
+> `## ✅ Critérios de Sucesso` + linha "só se conseguir fazer sem olhar o material",
+> posicionado entre Guia e Teste. Os 16 miniprojetos passam na verificação automática.
+
 **Objetivo:** Validar se cada `miniproject.md` tem os 4 elementos obrigatórios:
 
 1. **Descrição** — o que o aluno vai construir
