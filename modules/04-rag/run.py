@@ -24,6 +24,7 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from shared.logging_config import setup_logging, measure_latency
 from shared.cost import count_tokens, estimate_cost, format_cost
+from shared.security import get_model, get_required_secret
 
 console = Console()
 logger = setup_logging("04-rag")
@@ -328,7 +329,7 @@ class RAGPipeline:
         """
         from openai import OpenAI
         
-        api_key = __import__("shared.security").security.get_required_secret("OPENAI_API_KEY")
+        api_key = get_required_secret("OPENAI_API_KEY")
         client = OpenAI(api_key=api_key)
         
         # Constrói prompt com contexto
@@ -437,7 +438,7 @@ def main():
         console.print(f"[red]✗ {e}[/]")
         sys.exit(1)
     
-    model = __import__("shared.security").security.get_model()
+    model = get_model()
     
     # Inicializa pipeline
     pipeline = RAGPipeline(model=model, top_k=2)

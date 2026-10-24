@@ -27,6 +27,7 @@ from rich.table import Table
 from shared.logging_config import setup_logging
 from shared.cost import count_tokens, estimate_cost, format_cost
 from shared.governance import ActionRequest, RiskLevel, require_approval, safe_execute
+from shared.security import get_model, get_required_secret
 
 console = Console()
 logger = setup_logging("06-tool-calling")
@@ -211,7 +212,7 @@ class ToolCallingAgent:
         """Chamada real à API OpenAI."""
         from openai import OpenAI
         
-        api_key = __import__("shared.security").security.get_required_secret("OPENAI_API_KEY")
+        api_key = get_required_secret("OPENAI_API_KEY")
         client = OpenAI(api_key=api_key)
         
         kwargs: dict = {
@@ -386,7 +387,7 @@ def main():
         console.print(f"[red]✗ {e}[/]")
         sys.exit(1)
     
-    model = __import__("shared.security").security.get_model()
+    model = get_model()
     
     # Cria agente
     agent = ToolCallingAgent(model=model)

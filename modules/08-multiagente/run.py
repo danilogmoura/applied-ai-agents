@@ -23,6 +23,7 @@ from rich.table import Table
 
 from shared.logging_config import setup_logging
 from shared.cost import count_tokens, estimate_cost, format_cost
+from shared.security import get_model
 
 console = Console()
 logger = setup_logging("08-multiagente")
@@ -272,7 +273,7 @@ def main():
         console.print(f"[red]✗ {e}[/]")
         sys.exit(1)
     
-    model = __import__("shared.security").security.get_model()
+    model = get_model()
     
     # Cria supervisor
     supervisor = SupervisorAgent(model=model)
