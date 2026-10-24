@@ -428,6 +428,7 @@ temperature = 0.7 (criativo):
   → 5% chance de "MÉDIA"
   → Pode gerar respostas variadas
   → Útil para brainstorming, geração de texto
+```
 
 > ⚠️ **Importante:** Sempre use `temperature=0` para classificação. Isso garante consistência.
 
