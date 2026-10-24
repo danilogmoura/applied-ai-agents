@@ -94,7 +94,7 @@ Além da UX, streaming permite:
 ### Server-Sent Events (SSE)
 
 > 📖 Fonte: **[EN]** Server-Sent Events (SSE) · `fastapi-docs-en/docs/tutorial/stream-json-lines.md` —
-> "You can learn about them in the next chapter: [Server-Sent Events (SSE)](server-sent-events.md)."
+> "You can learn about them in the next chapter: [Server-Sent Events (SSE)](https://fastapi.tiangolo.com/tutorial/server-sent-events/)."
 
 > 🔬 **AVANÇADO — OPCIONAL**: SSE é um protocolo simples para enviar dados do servidor ao cliente em tempo real. Entenda como "canal de notícias unidirecional" — servidor envia, cliente recebe.
 

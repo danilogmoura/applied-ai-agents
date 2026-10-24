@@ -199,6 +199,13 @@ Resumido: "João, 30, SP, gosta de café" → IDEAL
 A qualidade do resumo depende do prompt de sumarização.
 ```
 
+> 🛑 **Checkpoint:** Pause aqui. Tente responder sem rolar para cima:
+>
+> - Por que um LLM com contexto limitado 'esquece' o início de uma conversa longa?
+> - Qual a diferença entre short-term memory (histórico) e long-term memory (persistente)?
+> - O que a sumarização automática resolve — e o que ela arrisca perder?
+> - Se você resumir demais, que tipo de detalhe costuma desaparecer primeiro?
+
 ### 🏗️ Arquitetura do Sistema de Memória
 
 > 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c2B1 —

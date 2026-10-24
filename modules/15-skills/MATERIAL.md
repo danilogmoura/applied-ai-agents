@@ -152,6 +152,13 @@ flowchart LR
     C3 --> C4["Migração gradual quando pronto"]
 ```
 
+> 🛑 **Checkpoint:** Pause aqui. Tente responder sem rolar para cima:
+>
+> - O que é uma 'skill' e como ela difere de uma simples função?
+> - Por que versionamento semântico importa quando várias pipelines dependem da mesma skill?
+> - Se eu criar SentimentSkill@v2, o que acontece com quem ainda usa @v1?
+> - Qual problema o versionamento evita numa equipe que compartilha skills?
+
 ### Pipeline Composition
 
 > 📖 Fonte: **[ZH]** Agent Skills橙皮书 · 2026 · EPUB/Text/page_1_split_58 —
