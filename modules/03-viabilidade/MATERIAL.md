@@ -158,6 +158,47 @@ Para 100.000 tickets/mês → IA se paga pela escalabilidade.
 
 ---
 
+### Demo: A Decisão em Código
+
+Toda a planilha acima cabe numa função de quatro linhas. O [`run.py`](run.py) faz exatamente isso — compara dois números medidos contra dois limites e devolve o veredito. Copie e rode para sentir a decisão acontecendo:
+
+```python
+CUSTO_LIMITE = 50.0        # USD por 10 mil chamadas
+LATENCIA_LIMITE_MS = 2000  # ms
+
+def veredito(custo_10k: float, latencia_ms: float) -> str:
+    """Decide se usar IA vale a pena, dado custo e latência medidos."""
+    custo_ok = custo_10k < CUSTO_LIMITE
+    latencia_ok = latencia_ms < LATENCIA_LIMITE_MS
+    if custo_ok and latencia_ok:
+        return "RECOMENDADO — usar IA"
+    elif custo_ok:
+        return "CONDICIONAL — IA com cache/modelo menor"
+    elif latencia_ok:
+        return "NAO RECOMENDADO — custo alto, use regras"
+    return "NAO RECOMENDADO — use regras simples"
+
+cenarios = [
+    ("Classificar ticket", 8.40, 320),
+    ("Resumo de contrato", 62.00, 1800),
+    ("Chat em tempo real", 12.00, 2400),
+]
+for nome, custo, lat in cenarios:
+    print(f"{nome:<22} custo=${custo:>6.2f}/10k  lat={lat:>4}ms  -> {veredito(custo, lat)}")
+```
+
+Saída real desta execução:
+
+```text
+Classificar ticket     custo=$  8.40/10k  lat= 320ms  -> RECOMENDADO — usar IA
+Resumo de contrato     custo=$ 62.00/10k  lat=1800ms  -> NAO RECOMENDADO — custo alto, use regras
+Chat em tempo real     custo=$ 12.00/10k  lat=2400ms  -> CONDICIONAL — IA com cache/modelo menor
+```
+
+Repare que **nenhum número decide sozinho**: é o par (custo, latência) cruzado com os limites. O mesmo modelo que é ótimo para classificar tickets vira problema em chat em tempo real — não porque ficou pior, mas porque a latência subiu acima do limite. É essa leitura conjunta que o memorando técnico formaliza a seguir.
+
+---
+
 ### Memorando Técnico
 
 Um memorando técnico é um documento de decisão baseado em dados. Ele deve conter:
