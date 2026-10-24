@@ -168,7 +168,7 @@ IA é um campo da ciência da computação que busca criar sistemas capazes de r
 ### Subáreas da IA
 
 > 📖 Fonte: **[EN]** Systems Design for the LLM Era · Sampriti Mitra · OEBPS/Text/Chapter_1 —
-> "Generative AI works by using extremely large and complex machine learning models, often called foundation models, which have been trained on massive amounts of data from the internet."
+> "This is the technology that powers self-driving cars, advanced language translation, and generative AI tools."
 
 | Área | O que faz | Exemplo prático |
 | ------ | ----------- | ----------------- |
@@ -265,7 +265,7 @@ IDs: [15496, 11, 995, 0]
 ### Comparação: palavras vs tokens
 
 > 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch01 —
-> "You can use a small number of tokens to construct a large number of distinct words, similar to how you can use a few letters in the alphabet to construct many words."
+> "Tokens balance having fewer units than words while retaining more meaning than individual characters."
 
 | Idioma | "Olá, mundo! Como vai você?" | Tokens aproximados |
 | -------- | ------------------------------ | ------------------- |
@@ -281,8 +281,8 @@ Um **prompt** é o texto que você envia ao modelo. A qualidade do prompt determ
 
 ### Estrutura de um prompt
 
-> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c160 —
-> "The prompt often determines whether the model answers correctly, follows constraints, produces output that can be parsed reliably, reasons in the right direction, and behaves consistently across interactions."
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch05 —
+> "You can experiment with different ways to structure your prompts to see which one works best."
 
 ```
 [SYSTEM PROMPT] — Define o comportamento do modelo
@@ -298,7 +298,7 @@ Prioridade: ALTA
 ### Técnicas básicas de prompt engineering
 
 > 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch05 —
-> "The importance of prompt engineering is perfectly summarized by a research manager at OpenAI that I interviewed: “The problem is not with prompt engineering."
+> "Now that we’ve discussed what a prompt is and why prompting works, let’s discuss the best practices for writing effective prompts."
 
 | Técnica | Exemplo | Efeito |
 | --------- | --------- | -------- |
@@ -421,6 +421,9 @@ Marque cada item **só se conseguir fazer sem olhar o material**:
 > ⚠️ Se marcou menos de 4 itens, releia as seções correspondentes antes de prosseguir.
 
 ### Estimativa de Custo Real
+
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch01 —
+> "You may decide to build a model in-house because it seems cheaper than paying for model providers, only to find out after three months that model providers have dropped their prices in half, making in-house the expensive option."
 
 Antes de começar a programar, saiba quanto custa brincar com IA:
 

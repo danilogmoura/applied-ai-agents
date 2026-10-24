@@ -61,8 +61,8 @@ Ao final deste módulo, você será capaz de:
 
 ### O Problema da Qualidade Invisível
 
-> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c3GH —
-> "If quality improves but latency doubles, the team needs to decide whether the trade-off fits the product."
+> 📖 Fonte: **[EN]** Systems Design for the LLM Era · Sampriti Mitra · OEBPS/Text/Chapter_2 —
+> "This gives you a quantifiable quality metric you can track over time."
 
 Sem avaliação, você está cego. Mudou o prompt? Trocou de modelo? Adicionou uma feature? Sem métricas, não sabe se melhorou ou piorou.
 
@@ -122,7 +122,7 @@ Funciona como um "banco de questões" para testar o agente. Cada execução gera
 ### Métricas de Avaliação
 
 > 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch04 —
-> "While an emphasis on stickiness and engagement metrics can lead to higher revenues, it may also cause a product to prioritize addictive features or extreme content, which can be detrimental to users."
+> "Understanding the impact of evaluation metrics on business metrics is helpful for planning."
 
 | Métrica | O que mede | Quando usar |
 | --------- | ------------ | ------------- |
@@ -133,8 +133,8 @@ Funciona como um "banco de questões" para testar o agente. Cada execução gera
 
 ### LLM-as-a-Judge
 
-> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c3GH —
-> "That sounds efficient, but it can become a feedback loop of one probabilistic system grading another probabilistic system with too little outside evidence."
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch03 —
+> "The approach of using AI to evaluate AI is called AI as a judge or LLM as a judge."
 
 Usa um LLM mais poderoso (ex: gpt-4o) para julgar a qualidade de respostas de um modelo menor (ex: gpt-4o-mini):
 
@@ -249,6 +249,9 @@ Vencedor: B (+43.5%)
 Essencial para decidir entre abordagens antes de deploy.
 
 ### Benchmarking Regressivo
+
+> 📖 Fonte: **[ZH]** Agent Skills橙皮书 · 2026 · EPUB/Text/page_1_split_62 —
+> "它读取Eval的评估结果，针对薄弱环节进行定向改进。改完之后你可以再运行一次Eval，看产出质量是否真的提升了。这就形成了一个「评估 → 改进 → 再评估」的循环。"
 
 > 🔬 **AVANÇADO — OPCIONAL**: Benchmarking regressivo salva resultados baseline e compara novas versões. Se score cai → rollback automático.
 

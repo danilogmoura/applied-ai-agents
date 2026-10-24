@@ -139,7 +139,7 @@ Com múltiplos agentes especializados:
 ### 🏗️ Arquitetura Multiagente
 
 > 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c4FV —
-> "If one agent says a finding is critical and another says it is harmless, the system needs a deterministic policy for what happens next."
+> "A multi-agent system divides responsibility across specialized components."
 
 > Referência completa: [architecture.md](architecture.md)
 
@@ -189,8 +189,8 @@ O supervisor:
 
 ### Roteamento: LLM vs Heurísticas
 
-> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c355 —
-> "As usage grows, prompts change, models evolve, prices shift, traffic patterns change, and new features are added."
+> 📖 Fonte: **[EN]** Systems Design for the LLM Era · Sampriti Mitra · OEBPS/Text/Chapter_4 —
+> "It also decides which LLMs it should serve, based on the availability of the LLMs and the response times and the use case, whether accuracy is required or low latency is more preferred."
 
 Dois approaches para decidir qual especialista chamar:
 
@@ -314,7 +314,7 @@ print(response)
 ### Custos em Multiagente
 
 > 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c4FV —
-> "If one agent says a finding is critical and another says it is harmless, the system needs a deterministic policy for what happens next."
+> "A multi-agent system divides responsibility across specialized components."
 
 Cada chamada ao LLM custa tokens. Em multiagente, temos custos adicionais porque o supervisor faz uma chamada extra para rotear antes dos especialistas:
 

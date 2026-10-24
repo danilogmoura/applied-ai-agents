@@ -115,8 +115,8 @@ Cada camada filtra ameaças diferentes — se uma falha, a próxima pode salvar.
 
 ### Prompt Injection
 
-> 📖 Fonte: **[EN]** Building LLMs for Production · Peters, Louie & Bouchard, Louis-François · 2024 · OEBPS/c198 —
-> "Prompt injection involves crafting inputs that manipulate the model into generating responses or taking actions that the original user or system did not intend."
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch05 —
+> "Prompt injection refers to a type of attack where malicious instructions are injected into user prompts."
 
 O ataque mais comum. O usuário tenta sobrescrever as instruções do sistema:
 
@@ -130,7 +130,7 @@ O LLM pode seguir a instrução maliciosa ao invés da original.
 ### Jailbreak Detection
 
 > 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch05 —
-> "If a model hasn’t been trained on these unusual strings, these strings can confuse the model, causing it to bypass its safety measurements."
+> "!” However, this attack can be easily defended against by a simple filter that blocks requests with unusual characters."
 
 > 🔬 **AVANÇADO — OPCIONAL**: Jailbreak são técnicas para burlar filtros de segurança (DAN mode, role-playing, codificação).
 
@@ -144,7 +144,7 @@ Técnicas para burlar filtros de segurança:
 ### Content Filtering
 
 > 📖 Fonte: **[EN]** Context Engineering for Multi-Agent Systems · Denis Rothman · 2025 · EPUB/Chapter_8 —
-> "Sanitize: The helper_sanitize_input function examines the retrieved text, filtering out any potentially malicious or injected instructions that could compromise the reasoning process."
+> "This pre-flight screening acts as a safety gate, vetting the input for harmful or non-compliant content."
 
 Filtragem em duas direções:
 
@@ -155,8 +155,8 @@ Filtragem em duas direções:
 
 ### Data Leakage Protection
 
-> 📖 Fonte: **[EN]** Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3H3 —
-> "Picture a backtest that gleams in slides and meetings until one morning a stitched-together alternative dataset exposes client identifiers; investors recognize their positions in leaked charts, confidence collapses, and a once-promising"
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch10 —
+> "You can use one of the many available tools that automatically detect sensitive data."
 
 Detecta e mascara automaticamente:
 
@@ -168,7 +168,7 @@ Detecta e mascara automaticamente:
 ### Principle of Least Privilege
 
 > 📖 Fonte: **[EN]** Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3HF —
-> "Map roles to concrete tasks, researcher, backtester, risk reviewer, deployment operator, and express permissions as composable, versioned policy primitives."
+> "Identity must be explicit and ephemeral: each human and machine identity should be short‑lived where possible and governed by least privilege."
 
 Cada agente deve ter apenas os mínimos necessários:
 

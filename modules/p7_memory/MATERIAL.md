@@ -69,14 +69,14 @@ Ao final deste módulo, você será capaz de:
 ### O Problema do Contexto Limitado
 
 > 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch05 —
-> "Clear instructions, such as “answer using only the provided context”, along with examples of questions it shouldn’t be able to answer, can help."
+> "This approach can nudge the model to generate only answers that are supported by the context."
 
 LLMs têm um limite de tokens que podem processar por vez (gpt-4o-mini: 128K tokens). Mas em conversas longas, esse limite é rapidamente excedido. Como gerenciar?
 
 ### Short-Term Memory = Conversation History
 
 > 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch06 —
-> "A model’s short-term capacity is, therefore, determined by how much of the context should be allocated for information retrieved from long-term memory."
+> "A model’s context can be considered its short-term memory as it doesn’t persist across tasks (queries)."
 
 ### Por que isso existe?
 
@@ -101,8 +101,8 @@ As estratégias deste módulo (sliding window, token budget, summarization) são
 
 ### Erros Comuns de Iniciantes
 
-> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c2GZ —
-> "If the system stores a weak conclusion, partial result, or incorrect summary as if it were reliable, later steps may build on that error."
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch06 —
+> "Your short-term memory contains information immediately relevant to what you’re doing, such as the name of a person you just met."
 
 | Erro | Consequência | Correção |
 | ------ | -------------- | ---------- |
@@ -132,7 +132,7 @@ Estratégias de gestão quando o contexto enche:
 ### Long-Term Memory = Persistent Knowledge
 
 > 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c2B1 —
-> "For example, a system may remember a user’s preferred language, keep a record of previous recommendations, or retain historical analysis results that later tasks can reuse."
+> "Other memory persists across sessions and longer periods of use."
 
 > 🔬 **AVANÇADO — OPCIONAL**: Memória de longo prazo persiste entre sessões. Funciona como um "vector store simplificado" — salva dados importantes e recupera quando necessário.
 
@@ -158,7 +158,7 @@ Funciona como um vector store simplificado:
 ### Summarization Automática
 
 > 📖 Fonte: **[EN]** Context Engineering for Multi-Agent Systems · Denis Rothman · 2025 · EPUB/Chapter_6 —
-> "Before writing a single line of code, we will revisit the system’s architectural blueprint and conceptually design a new capability: proactive context management."
+> "We will visualize how the Summarizer integrates into the existing framework."
 
 > 🔬 **AVANÇADO — OPCIONAL**: Quando o contexto está cheio, resume segmentos anteriores. Economia de ~99% de espaço.
 
@@ -212,7 +212,7 @@ A qualidade do resumo depende do prompt de sumarização.
 ### 🏗️ Arquitetura do Sistema de Memória
 
 > 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c2B1 —
-> "In architectural terms, it is close to execution logic rather than stored knowledge."
+> "Memory is not a single technology or one specific storage component."
 > 🔬 **AVANÇADO — OPCIONAL**: Esta seção detalha a arquitetura interna do sistema de memória (ShortTermMemory + LongTermMemory).
 > Referência completa: [architecture.md](architecture.md)
 
@@ -250,8 +250,8 @@ Custo da sumarização: cada resumo custa tokens. Se sumarizar a cada 30 mensage
 
 ### Importância e Forgetting
 
-> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c2B1 —
-> "The system has to decide which memory items are relevant now, which are too old or weak to use, which should be summarized before injection, and which should remain stored but stay out of the current prompt."
+> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c4FV —
+> "The system must decide what to store, what to discard, when to update memory, when to delete it, and how to retrieve only the part that matters."
 
 Nem tudo na memória é igualmente importante. Um sistema sofisticado precisa decidir **o que manter, o que resumir e o que deletar**:
 

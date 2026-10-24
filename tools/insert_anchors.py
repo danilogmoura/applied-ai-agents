@@ -36,10 +36,40 @@ from tools.coverage_map import (
     detect_lang,
     format_source,
 )
-from tools.query import search, verify_literal
+from tools.query import search
 
 # Marcador invisível-ish para idempotência: toda âncora gerada carrega este selo.
 ANCHOR_MARK = "📖 Fonte:"
+
+
+class _LiteralCache:
+    """
+    Verificador literal com o corpus em MEMÓRIA. verify_literal() recarrega os 5912
+    chunks do disco a CADA chamada (~12s); como testamos dezenas de frases por seção,
+    isso torna a rodada inviável. Carregamos uma vez e conferimos substring in-memory —
+    MESMA semântica byte-a-byte, ~1000x mais rápido.
+    """
+    def __init__(self, index_dir: Path) -> None:
+        from tools.build_index import ChromaStore
+        from tools.embed import QwenEmbedder
+
+        store = ChromaStore(index_dir)
+        got = store.collection.get(include=["documents"])
+        self._docs = got["documents"]
+        # UM embedder compartilhado + memoização de vetores: a mesma frase reaparece em
+        # várias seções; reconstruir QwenEmbedder() por frase era o gargalo (~49 min).
+        self._embedder = QwenEmbedder()
+        self._vec: dict[str, list[float]] = {}
+
+    def verify(self, needle: str) -> bool:
+        return any(needle in doc for doc in self._docs)
+
+    def embed(self, text: str) -> list[float]:
+        v = self._vec.get(text)
+        if v is None:
+            v = self._embedder.embed_one(text)
+            self._vec[text] = v
+        return v
 
 _BOILER = re.compile(r"telegram|t\.me|未经授权|获取更多电子书|EPUB_\d+|https?://", re.IGNORECASE)
 # Artefatos de extração do EPUB (âncoras/índices colados no texto). Se presentes na
@@ -61,21 +91,30 @@ _CHAPTER_NARRATION = re.compile(
     re.IGNORECASE,
 )
 
-# Similaridade mínima entre o EMBEDDING DA PRÓPRIA FRASE e o termo do conceito.
-# Gate de topicalidade: garante que a citação escolhida trata DO assunto da seção,
-# não apenas que veio do chunk mais parecido com a query-aumentada-por-descritor.
-_QUOTE_TOPICAL_MIN = 0.42
+# Similaridade mínima entre o EMBEDDING DA FRASE e o ASSUNTO REAL DA SEÇÃO
+# (título + descritor). Gate de topicalidade: garante que a citação trata DO que a
+# seção ensina — não apenas do termo-ponte que a trouxe. Um trecho sobre "dashboards"
+# pontua bem contra "benchmark" mas é off-topic p/ uma seção "Métricas que Importam".
+_QUOTE_TOPICAL_MIN = 0.45
 
 
-def _best_quote_for(term: str, descriptor: str, index_dir: Path, min_sim: float) -> dict | None:
+def _cosine(a: list[float], b: list[float]) -> float:
+    num = sum(x * y for x, y in zip(a, b))
+    den = (sum(x * x for x in a) ** 0.5) * (sum(y * y for y in b) ** 0.5)
+    return num / den if den > 0 else 0.0
+
+
+def _best_quote_for(
+    term: str, heading: str, descriptor: str, index_dir: Path, min_sim: float,
+    cache: "_LiteralCache",
+) -> dict | None:
     """
     Roda a escada de busca do coverage_map (termo → descritor) e devolve o melhor
     hit ACIMA do limiar cuja frase seja: (a) literal verificável byte-a-byte,
-    (b) livre de artefatos/notas-de-rodapé, e (c) TOPICAL ao termo (embedding da
-    própria frase fica perto do termo). Retorna None se nada passar nos três gates.
+    (b) livre de artefatos/notas-de-rodapé, e (c) TOPICAL ao ASSUNTO DA SEÇÃO
+    (título + descritor, NÃO o termo-ponte). Dentre as frases que passam, escolhe a
+    MAIS alinhada ao título — não a primeira acima do corte. Retorna None se nada passar.
     """
-    from tools.embed import QwenEmbedder
-
     hits = search(term, k=5, index_dir=index_dir)
     usable = [h for h in hits if h["similarity"] >= min_sim and not _quote_is_noise(h["text"])]
     if not usable and descriptor:
@@ -84,35 +123,32 @@ def _best_quote_for(term: str, descriptor: str, index_dir: Path, min_sim: float)
     if not usable:
         return None
 
-    # Prepara o embedding do termo UMA vez p/ o gate de topicalidade.
+    # Âncora de topicalidade = o que a seção REALMENTE ensina (título + descritor).
+    subject = f"{heading}. {descriptor}".strip(" .")
     try:
-        term_vec = QwenEmbedder().embed_one(term)
+        subj_vec = cache.embed(subject)
     except Exception:
-        term_vec = None
+        subj_vec = None
 
-    def _topical(quote: str) -> bool:
-        # Sem vetores disponíveis, não travamos (fallback: aceita, pois já passou
-        # no verify_literal). Com vetores, exige similaridade frase~termo.
-        if term_vec is None:
-            return True
-        try:
-            qvec = QwenEmbedder().embed_one(quote)
-        except Exception:
-            return False
-        num = sum(a * b for a, b in zip(term_vec, qvec))
-        den = (sum(a * a for a in term_vec) ** 0.5) * (sum(b * b for b in qvec) ** 0.5)
-        return den > 0 and (num / den) >= _QUOTE_TOPICAL_MIN
-
-    # ordena por similaridade decrescente; para cada hit testa TODAS as frases
-    # candidatas (não só a mais longa) e pega a primeira que passe topical+verify.
+    best: tuple[float, dict, str] | None = None  # (alinhamento, hit, frase)
     for h in sorted(usable, key=lambda x: x["similarity"], reverse=True):
         for quote in _candidate_sentences(h["text"]):
-            if not _topical(quote):
-                continue
-            if verify_literal(quote, index_dir=index_dir):
-                h["_quote"] = quote
-                return h
-    return None
+            if subj_vec is not None:
+                try:
+                    align = _cosine(subj_vec, cache.embed(quote))
+                except Exception:
+                    continue
+                if align < _QUOTE_TOPICAL_MIN:
+                    continue
+            else:
+                align = 1.0  # sem vetores: aceita (já passa no verify_literal)
+            if cache.verify(quote) and (best is None or align > best[0]):
+                best = (align, h, quote)
+    if best is None:
+        return None
+    _, h, quote = best
+    h["_quote"] = quote
+    return h
 
 
 def _candidate_sentences(text: str) -> list[str]:
@@ -155,7 +191,10 @@ def _anchor_block(hit: dict) -> str:
     )
 
 
-def insert_module(module_dir: Path, index_dir: Path, min_sim: float, dry_run: bool) -> tuple[int, int]:
+def insert_module(
+    module_dir: Path, index_dir: Path, min_sim: float, dry_run: bool,
+    cache: "_LiteralCache",
+) -> tuple[int, int]:
     """Retorna (âncoras_inseridas, candidatos_sem_cotacao)."""
     material = module_dir / "MATERIAL.md"
     sources = module_dir / "SOURCES.md"
@@ -196,7 +235,7 @@ def insert_module(module_dir: Path, index_dir: Path, min_sim: float, dry_run: bo
         if already:
             i += 1
             continue
-        hit = _best_quote_for(term, concepts.get(term, ""), index_dir, min_sim)
+        hit = _best_quote_for(term, heading, concepts.get(term, ""), index_dir, min_sim, cache)
         if not hit:
             skipped += 1
             i += 1
@@ -237,12 +276,15 @@ def main() -> None:
     else:
         dirs = sorted(d for d in MODULES_DIR.iterdir() if (d / "MATERIAL.md").exists())
 
+    # corpus em memória UMA vez — evita recarregar 5912 chunks a cada frase testada.
+    cache = _LiteralCache(args.index_dir)
+
     tot_ins = tot_skip = 0
     for d in dirs:
         if not d.exists():
             print(f"[erro] módulo não existe: {d}")
             continue
-        ins, sk = insert_module(d, args.index_dir, args.min_sim, args.dry_run)
+        ins, sk = insert_module(d, args.index_dir, args.min_sim, args.dry_run, cache)
         tot_ins += ins
         tot_skip += sk
         tag = "propostas" if args.dry_run else "inseridas"

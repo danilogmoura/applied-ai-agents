@@ -101,8 +101,8 @@ Este módulo ensina a comparar duas abordagens lado a lado:
 
 ### Métricas que Importam
 
-> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c3NZ —
-> "They should not exist only because dashboards look more professional when they contain more charts."
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch04 —
+> "The application’s metrics must be considered in the context of the business problem it’s built to solve."
 
 Ao avaliar uma solução de IA, você deve medir:
 
@@ -121,7 +121,7 @@ Ao avaliar uma solução de IA, você deve medir:
 ### Exemplo de Benchmark: IA vs Regras
 
 > 📖 Fonte: **[ZH]** Agent Skills橙皮书 · 2026 · EPUB/Text/page_1_split_62 —
-> "它的做法是优化Skill的description字段。具体来说，它会生成各种触发场景的查询语句，测试Skill是否在该触发的时候触发、不该触发的时候保持沉默。通过反复调整description的措辞，提升触发的精准度。"
+> "对于大多数个人用户来说，Benchmark模式不是必须的。但如果你发现自己的Skill经常在不该触发的时候乱入，或者该触发的时候没反应，跑一轮Benchmark能帮你把description调到比较理想的状态。"
 
 ```mermaid
 graph LR

@@ -106,8 +106,8 @@ Skills resolvem isso criando **módulos independentes** com contrato claro:
 
 ### Interface Padrão de uma Skill
 
-> 📖 Fonte: **[ZH]** Agent Skills橙皮书 · 2026 · EPUB/Text/page_1_split_29 —
-> "开放标准的意义在于：你写的一个SKILL.md，可以在Claude Code、Cursor、Codex、Gemini CLI等20多个产品上运行。学一次，到处用。这和MCP的思路一样——不是让每个产品自己造轮子，而是大家用同一套规范。"
+> 📖 Fonte: **[ZH]** Agent Skills橙皮书 · 2026 · EPUB/Text/page_1_split_80 —
+> "市场」的演进。两年前大家分享Prompt，但Prompt太碎片化了，没有结构，没有版本管理，换个模型可能就不好使了。Skill解决了这些问题，它有标准格式、有元数据、有触发条件、可以渐进式加载。Skill就是Prompt的升级版，有了固定格式、有了版本管理、有了标准。"
 
 Toda skill segue o mesmo contrato:
 

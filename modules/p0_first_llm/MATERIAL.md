@@ -167,8 +167,8 @@ O **system message** define o comportamento do modelo — como ele deve agir. O 
 
 ### A API da OpenAI
 
-> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch04 —
-> "There might be slight differences in the performance of the same model provided through different APIs, as different APIs might use different techniques to optimize this model, so make sure to run thorough tests when you switch between"
+> 📖 Fonte: **[EN]** Building LLMs for Production · Peters, Louie & Bouchard, Louis-François · 2024 · OEBPS/cCD —
+> "To generate text using LLMs like those provided by OpenAI, you first need an API key for your Python environment."
 
 A OpenAI oferece uma API RESTful para acessar seus modelos. O fluxo básico é:
 
@@ -186,7 +186,7 @@ print(response.choices[0].message.content)
 ### Alternativas à OpenAI
 
 > 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch04 —
-> "There might be slight differences in the performance of the same model provided through different APIs, as different APIs might use different techniques to optimize this model, so make sure to run thorough tests when you switch between"
+> "OpenAI is typically known for their commercial models, but they’ve also open sourced models (GPT-2, CLIP)."
 
 Este curso usa OpenAI porque é a mais documentada, mas os conceitos aplicam-se a qualquer LLM:
 
@@ -202,8 +202,8 @@ Para rodar localmente sem custo, explore [Ollama](https://ollama.ai). Para APIs 
 
 ### Estimativa de Custos
 
-> 📖 Fonte: **[EN]** Building LLMs for Production · Peters, Louie & Bouchard, Louis-François · 2024 · OEBPS/c591 —
-> "Pricing is typically calculated based on the number of tokens processed, both for input and output."
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch09 —
+> "If each request generates 200 output tokens on average, the cost for decoding 1K requests would be $1.11."
 
 Cada chamada à API tem um custo baseado no número de tokens. Tokens são pedaços de texto (palavras, partes de palavras, pontuação). A OpenAI cobra por milhão de tokens:
 
@@ -294,7 +294,7 @@ Se este teste não funcionar, **não continue** até resolver. Nenhum módulo se
 ### O Problema da Alucinação
 
 > 📖 Fonte: **[EN]** Building LLMs for Production · Peters, Louie & Bouchard, Louis-François · 2024 · OEBPS/c13B —
-> "However, “most probable” does not mean “true.” Hallucinations can also arise from this discrepancy because the primary aim of a language model is to learn a language’s word distribution patterns, not to differentiate between true and false"
+> "There are several factors contributing to hallucinations in LLMs."
 
 LLMs **inventam fatos** com confiança. Não é um bug — é consequência direta de como funcionam:
 
@@ -394,8 +394,8 @@ Tokenização de entrada:
 
 ### Temperature e Sampling: Controle de Criatividade
 
-> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/cVZ —
-> "This helps reduce the chance of selecting very unlikely tokens that may lead to noisy or strange output."
+> 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch02 —
+> "A temperature of 0.7 is often recommended for creative use cases, as it balances creativity and predictability, but you should experiment and find the temperature that works best for you."
 
 O LLM não retorna sempre a mesma resposta para o mesmo prompt. Ele **amostra** do distribution de probabilidades — e você controla isso com `temperature`:
 

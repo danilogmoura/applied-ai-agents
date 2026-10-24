@@ -59,8 +59,8 @@ Ao final deste módulo, você será capaz de:
 
 ### De Script a Produto
 
-> 📖 Fonte: **[EN]** Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3HB —
-> "Take advantage of multiplies both gains and mistakes, so your scripts must read like contracts: precise, constrained, and auditable."
+> 📖 Fonte: **[EN]** Context Engineering for Multi-Agent Systems · Denis Rothman · 2025 · EPUB/Chapter_10 —
+> "While the core logic remains unchanged, the surrounding infrastructure must evolve to meet the demands of a production environment."
 
 Até agora, executamos scripts Python isolados. Em produção, precisamos de:
 
@@ -132,7 +132,7 @@ Cada requisição passa por 4 camadas antes de chegar ao LLM.
 ### 🏗️ Arquitetura de Produção
 
 > 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c2JR —
-> "Prompts, tools, retrieval, memory, planning, evaluation, and observability are useful on their own, but they do not become a production system until their responsibilities are separated."
+> "Architecture is the discipline that keeps these parts from collapsing into one opaque workflow."
 
 > 🔬 **AVANÇADO — OPCIONAL**: Esta seção detalha a arquitetura interna. Para o módulo, foque nos conceitos de Gateway → Middleware → Router → AgentService.
 
@@ -166,9 +166,6 @@ A aplicação de produção é composta por 5 camadas independentes:
 
 ### Modelos Pydantic como Contrato
 
-> 📖 Fonte: **[EN]** Pydantic models · `fastapi-docs-en/docs/python-types.md` —
-> "Then you create an instance of that class with some values and it will validate the values, convert them to the appropriate type (if that's the case) and give you an object with all the data."
-
 > 🔬 **AVANÇADO — OPCIONAL**: Pydantic é usado para validação automática de inputs. Entenda como "formulário de cadastro" que o servidor usa para verificar se os dados estão corretos antes de processar.
 
 Os modelos definem o contrato entre cliente e servidor:
@@ -197,7 +194,7 @@ Isso garante que:
 ### Middleware de Monitoramento
 
 > 📖 Fonte: **[EN]** Systems Design for the LLM Era · Sampriti Mitra · OEBPS/Text/Chapter_6 —
-> "A robust monitoring strategy is essential for maintaining the reliability and performance (< 5 sec NFR) of the hybrid RAG system."
+> "We define a tiered approach using observability platforms (e.g."
 
 > 🔬 **AVANÇADO — OPCIONAL**: Middleware intercepta todas as requisições para adicionar observabilidade (timing, request-id, logging).
 

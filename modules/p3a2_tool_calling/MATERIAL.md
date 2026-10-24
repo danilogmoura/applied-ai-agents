@@ -111,7 +111,7 @@ A linha `sys.path.insert(0, str(Path(__file__).parent.parent))` diz ao Python pa
 ### Do Texto à Ação
 
 > 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch06 —
-> "Given a text request, the agent’s AI planner decides whether to invoke text generation, image generation, or both."
+> "An AI agent is meant to accomplish tasks typically provided by the users in the inputs."
 
 Até agora, nossos agentes só **geravam texto**. Mas no mundo real, agentes precisam:
 

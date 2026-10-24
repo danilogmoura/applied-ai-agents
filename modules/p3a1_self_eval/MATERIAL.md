@@ -104,8 +104,8 @@ A linha `sys.path.insert(0, str(Path(__file__).parent.parent))` diz ao Python pa
 
 ### O Problema da Confiança
 
-> 📖 Fonte: **[EN]** Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3J7 —
-> "Confidence turned a small parse error into a P&L event, and that gap between fluency and fidelity became a courtroom-worthy lesson."
+> 📖 Fonte: **[EN]** Building LLMs for Production · Peters, Louie & Bouchard, Louis-François · 2024 · OEBPS/c13B —
+> "LLMs aren’t designed to express uncertainty or admit a lack of information."
 
 LLMs são poderosos mas não são perfeitos. Eles podem:
 

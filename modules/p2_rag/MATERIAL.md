@@ -169,7 +169,7 @@ ChromaDB é um banco de dados vetorial open-source que:
 ### 🏗️ Arquitetura do Pipeline RAG
 
 > 📖 Fonte: **[EN]** AI Engineering · Chip Huyen · 2024 · OEBPS/ch06 —
-> "In today’s RAG systems, these two components are often trained separately, and many teams build their RAG systems using off-the-shelf retrievers and models."
+> "Now that we’ve covered the primary components, let’s consider an example of how a RAG system works."
 
 > 🔬 **AVANÇADO — OPCIONAL** — Esta seção pode ser pulada na primeira leitura. Para referência completa, veja [architecture.md](architecture.md).
 
@@ -206,6 +206,9 @@ Documentos longos devem ser divididos em chunks menores (tipicamente 200-500 tok
 | Embedding impreciso | Similaridade funciona bem | Ruído na busca |
 
 ### Tokens no Pipeline RAG
+
+> 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c4MY —
+> "Token budget — The practical limit on how many tokens can be used for prompts, retrieved context, history, and output within a request."
 
 Cada etapa consome tokens:
 
