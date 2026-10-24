@@ -229,6 +229,15 @@ Headers customizados permitem:
 - Medir latência por endpoint
 - Debugar problemas em produção
 
+> ⏸️ **Rode agora — suba a API local**
+> Antes de ler sobre Docker, coloque a API de pé:
+> ```bash
+> python modules/09-producao-api/run.py --serve
+> ```
+> Abra `http://localhost:8000/docs` no navegador e teste o endpoint `/classify` pelo
+> Swagger. Ver a API respondendo torna concreto tudo que veio antes; pare o servidor com
+> Ctrl+C quando terminar.
+
 ### Docker — Empacotamento Consistente
 
 > 🔬 **AVANÇADO — OPCIONAL**: Docker garante que o código roda igual em qualquer ambiente. Não precisa entender internals agora — foque no conceito de "container = caixa preta isolada".
@@ -293,6 +302,14 @@ services:
 ```
 
 Orquestra múltiplos serviços com dependências e volumes persistentes.
+
+> ⏸️ **Rode de novo — via Docker**
+> Com a API funcionando localmente, suba o container:
+> ```bash
+> docker-compose up --build
+> ```
+> Confirme que `http://localhost:8000/docs` responde igual. Comparar os dois jeitos
+> (script vs container) é o ponto desta seção.
 
 ## 🎬 O que você vai ver
 

@@ -253,6 +253,15 @@ flowchart TD
 
 ---
 
+> ⏸️ **Rode agora — primeira execução**
+> Antes de continuar, abra o terminal na raiz do projeto e execute:
+> ```bash
+> python modules/02-primeiro-llm/run.py
+> ```
+> Você deve ver o painel `🚀 AI Agents Course`, depois `✓ Chaves de API validadas`
+> e três tickets classificados com custo individual. Se aparecer erro de autenticação,
+> leia a seção de depuração logo abaixo — ela existe exatamente para este momento.
+
 ### 🐛 Depuração: Erros Comuns de API
 
 > 📖 Fonte: **[EN]** Handling Errors · `fastapi-docs-en/docs/tutorial/handling-errors.md` —
@@ -434,6 +443,12 @@ temperature = 0.7 (criativo):
 
 ---
 
+> ⏸️ **Rode de novo — mude uma variável**
+> Volte ao `run.py` e troque `temperature=0` por `temperature=1.0` na função
+> `classify_ticket`. Rode novamente (`python modules/02-primeiro-llm/run.py`) e compare
+> as prioridades dos mesmos 3 tickets. Você vai *sentir* o efeito da temperatura que a
+> seção acima descreveu no teoria: classificação deixa de ser determinística.
+
 ## ❓ Erros Comuns e Como Resolver
 
 | Erro | Causa | Solução |
@@ -523,6 +538,11 @@ Retorne apenas: BAIXA, MEDIA ou ALTA"""
 - Nunca exponha chaves nos logs
 
 ---
+
+> ⏸️ **Rode uma última vez — rastreie o output**
+> Execute `python modules/02-primeiro-llm/run.py` e, para cada linha impressa, aponte a
+> linha do código-fonte que a produziu. O objetivo é fechar o ciclo leitura→execução→
+> explicação antes de passar às perguntas de reflexão.
 
 ## 🧠 Reflexão Final — Autoavaliação Conceitual
 

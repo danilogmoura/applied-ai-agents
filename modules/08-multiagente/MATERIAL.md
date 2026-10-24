@@ -309,6 +309,16 @@ print(response)
 
 > 💡 **Checkpoint:** Se você entendeu o fluxo acima, está pronto para entender por que multiagente custa mais que agente único. Cada seta no diagrama = uma chamada ao LLM = tokens = dinheiro.
 
+> ⏸️ **Rode agora — observe o roteamento**
+> Execute:
+> ```bash
+> python modules/08-multiagente/run.py
+> ```
+> Acompanhe `👤 Supervisor recebe:` → `→ Roteado para: <especialista>` e, se houver falha
+> simulada, o `↻ Tentando especialista alternativo`. Depois olhe o `📊 Relatório Final`
+> (sucedidas, custo total, tokens). É a arquitetura supervisor-especialista acontecendo
+> na sua frente.
+
 ### Custos em Multiagente
 
 > 📖 Fonte: **[EN]** Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c4FV —
@@ -337,6 +347,11 @@ O supervisor faz pelo menos 1 chamada (roteamento), e cada especialista pode faz
 - Qualidade > custo (produção real)
 - Especialistas especializados reduzem erros (menos retrabalho)
 - Fallbacks previnem falhas totais (disponibilidade maior)
+
+> ⏸️ **Rode de novo — force um fallback**
+> No `run.py`, faça um especialista retornar erro propositalmente (ou aumente a taxa de
+> falha simulada) e execute outra vez. Veja o supervisor redistribuir a tarefa. Isso
+> ancora o conceito de *degradação elegante* descrito acima.
 
 ## 🎬 O que você vai ver
 

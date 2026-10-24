@@ -259,6 +259,15 @@ O modelo aprendeu durante o treino que textos com significado similar produzem v
 
 ---
 
+> ⏸️ **Rode agora — pipeline básico**
+> Antes de mergulhar nas técnicas opcionais, execute o pipeline completo:
+> ```bash
+> python modules/04-rag/run.py
+> ```
+> Você deve ver `▸ Ingerindo documentos...` → `✓ N chunks ingeridos` → a busca com
+> distâncias por documento → a resposta final com tokens e custo. Se faltar chromadb, o
+> script avisa e cai no fallback em memória — siga o aviso.
+
 ## 🔬 Técnicas Avançadas de Produção (OPCIONAL)
 
 > ⚠️ **Esta seção é para produção.** Pode ser pulada na primeira leitura.
@@ -402,6 +411,12 @@ Ganho: resposta mais precisa = menos iterações do usuário
 Perda: $0.0001 por passo conversacional
 ROI: positivo a partir de 1 iteração economizada
 ```
+
+> ⏸️ **Rode de novo — mexa na query**
+> Abra `run.py`, troque a string da pergunta de busca por outra com palavras que NÃO
+> aparecem literalmente nos documentos, e rode outra vez. Repare como a busca semântica
+> ainda recupera o documento certo mesmo sem coincidência de termos — é isso que separa
+> RAG de um `grep`.
 
 ## 🎬 O que você vai ver
 

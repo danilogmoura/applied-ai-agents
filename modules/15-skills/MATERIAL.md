@@ -247,6 +247,15 @@ class SkillPipeline:
         return current
 ```
 
+> ⏸️ **Rode agora — registre e execute skills**
+> Execute:
+> ```bash
+> python modules/15-skills/run.py
+> ```
+> Você verá `1️⃣ Registrando Skills`, `2️⃣ Executando Skills Individuais` (saída JSON de
+> sentimento/sumarização/entidades) e `3️⃣ Pipeline Composto`. É a materialização da
+> interface padrão e da composição descritas acima.
+
 ### Filtros no Pipeline
 
 > 🔬 **AVANÇADO — OPCIONAL**: Filtros aplicam regras entre steps (confiança mínima, rate limiting, conteúdo proibido). Se condição falha, pipeline aborta.
@@ -268,6 +277,11 @@ Se confiança < 0.7, pipeline aborta.
 | **Rate limiting** | Evitar sobrecarga | `calls_per_min < 60` |
 | **Conteúdo proibido** | Bloquear inputs inadequados | `has_toxicity(input) == False` |
 | **Timeout** | Abortar se demorar demais | `elapsed < 5s` |
+
+> ⏸️ **Rode de novo — acione um filtro**
+> No `run.py`, configure um filtro que bloqueie um step do pipeline e execute outra vez.
+> Observe o `⏹ Filtro '<nome>' bloqueou` interrompendo a cadeia. Sentir o bloqueio na
+> prática prepara você para a seção de tratamento de erros a seguir.
 
 ### Error Handling em Pipelines
 

@@ -289,6 +289,15 @@ Usando os custos da seção "Estimativa de Custo Real" mais abaixo:
 
 ---
 
+> ⏸️ **Rode agora — demos 1 e 2**
+> Pare a leitura e execute:
+> ```bash
+> python modules/01-fundamentos/run.py
+> ```
+> Observe a `DEMO 1: Tokenização` (textos em PT vs EN geram contagens diferentes; repare
+> que o emoji conta como token) e a `DEMO 2: Temperature` (respostas idênticas com
+> `temperature=0`). Só continue quando tiver visto os dois blocos.
+
 ## 4. Prompt Engineering: A arte de falar com LLMs
 
 Um **prompt** é o texto que você envia ao modelo. A qualidade do prompt determina diretamente a qualidade da resposta.
@@ -366,6 +375,12 @@ flowchart TD
 | **Few-shot examples** | Mostra exemplos corretos no prompt | Consistência |
 
 ---
+
+> ⏸️ **Rode de novo — demo 3**
+> Execute `python modules/01-fundamentos/run.py` outra vez e vá direto à `DEMO 3:
+> Qualidade do Prompt`. Compare o prompt VAGO com o ESPECÍFICO sobre os mesmos tickets e
+> anote qual produção foi mais estável. Isso consolida a seção de prompt engineering
+> antes de você consultar o glossário.
 
 ## 6. 📖 Glossário
 
