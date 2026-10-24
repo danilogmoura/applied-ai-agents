@@ -329,6 +329,18 @@ $ python modules/14-cache/run.py
    Custo evitado: $0.014
 ```
 
+> ⏸️ **Rode agora — cache + routing**
+>
+> Antes de ler sobre LRU vs LFU e prompt compression, execute a camada de otimização:
+>
+> ```bash
+> python modules/14-cache/run.py
+> ```
+>
+> Você deve ver o model routing escolhendo modelos diferentes por tarefa, a segunda chamada respondida do cache com custo `$0`, e o total de custo evitado no fim.
+>
+> Se a saída divergir disso, revise os pré-requisitos antes de continuar.
+
 ## Exercício Prático
 
 Execute `python modules/14-cache/run.py` e observe:

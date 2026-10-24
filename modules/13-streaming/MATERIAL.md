@@ -295,6 +295,18 @@ Quando você vê `sys.path.insert(0, str(Path(__file__).parent.parent))` no iní
 
 ---
 
+> ⏸️ **Rode agora — streaming token a token**
+>
+> Antes de estudar SSE e cancelamento, execute a geração em tempo real:
+>
+> ```bash
+> python modules/13-streaming/run.py
+> ```
+>
+> Você deve ver a resposta aparecer token a token no live display, e um exemplo de abort/cancel interrompendo a geração no meio.
+>
+> Se a saída divergir disso, revise os pré-requisitos antes de continuar.
+
 ## Exercício Prático
 
 Execute `python modules/13-streaming/run.py` e observe:

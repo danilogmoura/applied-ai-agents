@@ -204,6 +204,18 @@ $ python modules/03-viabilidade/run.py
    Justificativa: Custo-benefício 45× melhor
 ```
 
+> ⏸️ **Rode agora — análise de viabilidade**
+>
+> Antes de continuar, execute a comparação IA vs Regras:
+>
+> ```bash
+> python modules/03-viabilidade/run.py
+> ```
+>
+> Você deve ver o banner `MÓDULO 03 — Análise de Viabilidade`, os benchmarks simulados lado a lado e o memorando técnico com a recomendação final.
+>
+> Se a saída divergir disso, revise os pré-requisitos antes de continuar.
+
 ## Exercício Prático
 
 Execute `python modules/03-viabilidade/run.py` e observe:

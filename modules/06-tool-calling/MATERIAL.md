@@ -345,6 +345,18 @@ $ python modules/06-tool-calling/run.py
 
 ---
 
+> ⏸️ **Rode agora — ferramentas + HITL**
+>
+> Antes de ler as seções avançadas (🔬), execute o loop tool-calling completo:
+>
+> ```bash
+> python modules/06-tool-calling/run.py
+> ```
+>
+> Você deve ver o banner `MÓDULO 06 — Tool Calling`, as tools registradas com seus níveis de risco (`read_file (risk=medium)`, `calculate (risk=low)`), e uma aprovação human-in-the-loop pedida antes de executar qualquer ação de risco.
+>
+> Se a saída divergir disso, revise os pré-requisitos antes de continuar.
+
 ## Exercício Prático
 
 Execute `python modules/06-tool-calling/run.py` e observe:

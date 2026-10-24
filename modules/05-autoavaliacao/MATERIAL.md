@@ -297,6 +297,18 @@ $ python modules/05-autoavaliacao/run.py
 
 ---
 
+> ⏸️ **Rode agora — autoavaliação e reflexão**
+>
+> Antes de estudar Structured Outputs em detalhe, execute o loop de crítica:
+>
+> ```bash
+> python modules/05-autoavaliacao/run.py
+> ```
+>
+> Você deve ver o agente gerar uma resposta, criticar a própria saída, corrigir iterativamente e parar ao atingir o critério ou o limite de iterações.
+>
+> Se a saída divergir disso, revise os pré-requisitos antes de continuar.
+
 ## Exercício Prático
 
 Execute `python modules/05-autoavaliacao/run.py` e observe:

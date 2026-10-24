@@ -291,6 +291,18 @@ $ python modules/10-avaliacao/run.py
    Veredito: Agente vale o custo (+58% qualidade)
 ```
 
+> ⏸️ **Rode agora — pipeline de avaliação**
+>
+> Antes de mergulhar nas seções avançadas (significância estatística, A/B), execute a avaliação completa:
+>
+> ```bash
+> python modules/10-avaliacao/run.py
+> ```
+>
+> Você deve ver o golden dataset ser avaliado exemplo a exemplo (exact / fuzzy / LLM judge), o relatório estatístico (média, mediana, min, max) e o veredito do teste A/B entre heurística e agente.
+>
+> Se a saída divergir disso, revise os pré-requisitos antes de continuar.
+
 ## Exercício Prático
 
 Execute `python modules/10-avaliacao/run.py` e observe:

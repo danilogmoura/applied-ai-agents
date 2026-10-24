@@ -323,6 +323,18 @@ $ python modules/16-operacoes/run.py
 💓 Health check: todos os serviços OK
 ```
 
+> ⏸️ **Rode agora — CI/CD de prompts**
+>
+> Antes de estudar backoff com jitter e rollback, execute o pipeline de operações:
+>
+> ```bash
+> python modules/16-operacoes/run.py
+> ```
+>
+> Você deve ver os prompts registrados e testados (`✅ v1`, `✅ v2`), a comparação A/B, o deploy condicionado ao success_rate acima do threshold e o health check final (`🔎 Health check: todos os serviços OK`).
+>
+> Se a saída divergir disso, revise os pré-requisitos antes de continuar.
+
 ## Exercício Prático
 
 Execute `python modules/16-operacoes/run.py` e observe:

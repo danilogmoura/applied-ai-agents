@@ -288,6 +288,18 @@ $ python modules/07-planejamento/run.py
 💰 Custo total: $0.012 | Passos: 4 tentativas
 ```
 
+> ⏸️ **Rode agora — planejamento e retomada**
+>
+> Antes de ler sobre circuit breakers, execute o cenário de falha e retomada:
+>
+> ```bash
+> python modules/07-planejamento/run.py
+> ```
+>
+> Você deve ver o plano sendo montado em etapas, uma falha simulada de API externa disparar o circuit breaker, e o agente retomar do último checkpoint.
+>
+> Se a saída divergir disso, revise os pré-requisitos antes de continuar.
+
 ## Exercício Prático
 
 Execute `python modules/07-planejamento/run.py` e observe:

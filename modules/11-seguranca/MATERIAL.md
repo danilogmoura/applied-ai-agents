@@ -222,6 +222,18 @@ $ python modules/11-seguranca/run.py
 📋 Relatório: 3 ameaças bloqueadas, 2 dados mascarados
 ```
 
+> ⏸️ **Rode agora — guardrails de segurança**
+>
+> Antes de estudar as defesas em profundidade, execute a bateria de ataques:
+>
+> ```bash
+> python modules/11-seguranca/run.py
+> ```
+>
+> Você deve ver tentativas de prompt injection e jailbreak sendo detectadas e bloqueadas, com o content filter e a proteção contra data leakage em ação.
+>
+> Se a saída divergir disso, revise os pré-requisitos antes de continuar.
+
 ## Exercício Prático
 
 Execute `python modules/11-seguranca/run.py` e observe:

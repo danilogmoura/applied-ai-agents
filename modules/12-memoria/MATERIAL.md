@@ -313,6 +313,18 @@ $ python modules/12-memoria/run.py
    Longo prazo: 3 memórias salvas
 ```
 
+> ⏸️ **Rode agora — memória curta + longa**
+>
+> Antes de estudar a arquitetura e o forgetting, execute o sistema de memória:
+>
+> ```bash
+> python modules/12-memoria/run.py
+> ```
+>
+> Você deve ver `🗣️ Simulando conversa com memória`, as memórias sendo armazenadas (`Memória armazenada: mem_0001`), a recuperação por relevância e a summarização automática quando o contexto enche.
+>
+> Se a saída divergir disso, revise os pré-requisitos antes de continuar.
+
 ## Exercício Prático
 
 Execute `python modules/12-memoria/run.py` e observe:
