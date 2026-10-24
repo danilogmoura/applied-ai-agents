@@ -25,6 +25,9 @@ wheels/
 venv/
 ENV/
 
+# Lockfile gerado por 'uv run' ao rodar testes (artefato local, não versionar)
+uv.lock
+
 # Índice vetorial do corpus (gerado por tools/build_index.py — local, não versionar)
 .corpus_index/
 
