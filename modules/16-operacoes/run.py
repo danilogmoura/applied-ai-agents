@@ -1,5 +1,5 @@
 """
-Módulo P11 — Operations de Produção: CI/CD e Monitoramento
+Módulo 16 — Operations de Produção: CI/CD e Monitoramento
 
 Sistema completo de observabilidade para agentes em produção:
 - Prompt testing com A/B comparison
@@ -546,7 +546,7 @@ class PromptManager:
 async def main():
     """Executa demonstração completa de production ops."""
     console.print(Panel.fit(
-        "[bold yellow]MÓDULO P11 — Production Ops: CI/CD + Monitoring[/]\n\n"
+        "[bold yellow]MÓDULO 16 — Production Ops: CI/CD + Monitoring[/]\n\n"
         "Prompt testing A/B, métricas em tempo real,\n"
         "alertas, dashboard e rollback automático.",
         title="🏭 AI Agents Course",
