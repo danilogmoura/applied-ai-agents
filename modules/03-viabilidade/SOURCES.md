@@ -3,7 +3,7 @@
 > Gerado por `tools/coverage_map.py` (modo A). Ponteiros verificáveis para as
 > fontes do corpus — **não** é texto autoral nem tradução. Quotes vêm crus da fonte.
 
-_Conceitos analisados: 10 · limiar sim ≥ 0.50_
+_Conceitos analisados: 11 · limiar sim ≥ 0.50_
 
 ## Métricas que Importam
 - ✅ sim=0.62 [EN] — `Systems Thinking for Agentic AI · Ediz Najim · 2026 · OEBPS/c3NZ`
@@ -21,6 +21,10 @@ _Conceitos analisados: 10 · limiar sim ≥ 0.50_
 - ✅ sim=0.56 [EN] — `Systems Design for the LLM Era · Sampriti Mitra · OEBPS/Text/Chapter_1`
   > o pen w eights (Llama 3, Mistral) : We have full control of the data. This is required for strict air-gapped environments or for compliance. This trades operational complexity (GPU management) for compliance safety.…
 
+## Demo: A Decisão em Código
+- ✅ sim=0.54 [EN] — `How it looks · `fastapi-docs-en/docs/tutorial/security/first-steps.md``
+  > How it looks Let's first just use the code and see how it works, and then we'll come back to understand what's happening
+
 ## Memorando Técnico
 - ✅ sim=0.57 [EN] · _ponte: “Architecture Decision Record”_ — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3H7`
   > Technical choices matter only when married to plumbing that guarantees safe iteration. Architectures that separate ingestion, feature materialization, model inference, and execution orchestration reduce blast radius and…
@@ -32,10 +36,10 @@ _Conceitos analisados: 10 · limiar sim ≥ 0.50_
 ## Trade-offs na Prática
 - ✅ sim=0.52 [EN] — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3H3`
   > Transparency is a discipline, not a feature toggle. Start with minimal, auditable artifacts and iterate toward richer explanations. Instrument everything with operational metrics, constrain data exposure with access…
+- ✅ sim=0.51 [EN] — `AI Can Make You Smarter · Charles B_ Kreitzberg · 2026 · index_split_002`
+  > and enjoyment. Now let me turn it around: if you instead choose to spend the evening with friends, what would be the opportunity cost of not writing? You said: Getting the work done, so adding pressure and feeling…
 - ✅ sim=0.51 [EN] — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c0`
   > Privacy and compliance impose measurable trade-offs. Differential privacy, synthetic data, and strict minimization reduce exposure at the cost of signal fidelity. Measure that utility‑privacy frontier empirically: run…
-- ✅ sim=0.51 [EN] — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c0`
-  > That snippet turns equations into immediate diagnostics: weights, portfolio volatility, and a back-of-envelope Sharpe. Real systems wrap that core with constraints, transaction-cost models, turnover penalties, and…
 
 ## Benchmark
 - ✅ sim=0.66 [ZH] — `Agent Skills橙皮书 · 2026 · EPUB/Text/page_1_split_62`
@@ -48,10 +52,18 @@ _Conceitos analisados: 10 · limiar sim ≥ 0.50_
 ## Latência P95
 - ✅ sim=0.61 [EN] — `AI Engineering · Chip Huyen · 2024 · OEBPS/ch09`
   > It’s more helpful to look at latency in percentiles, as they tell you something about a certain percentage of your requests. The most common percentile is the 50th percentile, abbreviated as p50 (median). If the median…
+- ✅ sim=0.57 [EN] — `RAG in Practice · Hart, Nolan · 2026 · OEBPS/c175`
+  > p50 = np.median(latencies) * 1000 p99 = np.percentile(latencies, 99) * 1000 print(f"P50: {p50:.1f} ms, P99: {p99:.1f} ms") No checklist replaces a real benchmark with your data and query patterns. The code snippet above…
+- ✅ sim=0.53 [EN] — `RAG in Practice · Hart, Nolan · 2026 · OEBPS/c7R`
+  > Reranking — Pairwise scoring per candidate. The bottleneck shifts with top-k. Mitigations: prune candidates before reranking, use a lightweight cross-encoder, or cache reranking scores for frequent queries. Retrieval —…
 
 ## Threshold
 - ✅ sim=0.53 [EN] · _ponte: “decision threshold”_ — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3HV`
   > from scipy.stats import norm def z_score(live_series, backtest_series): mu_bt = backtest_series.mean() sigma_bt = backtest_series.std(ddof=1) + 1e-9 return (live_series.mean() - mu_bt) / sigma_bt def breach_prob(z):…
+- ✅ sim=0.52 [EN] · _ponte: “decision threshold”_ — `Agentic RAG Systems · Norman, Raymond · 2026 · OEBPS/c2W0`
+  > PRODUCTION INSIGHT — Tune the Threshold Against Real Production Traffic The default similarity thresholds suggested by tutorials are usually wrong for production. The right threshold depends on the embedding model, the…
+- ✅ sim=0.52 [EN] · _ponte: “decision threshold”_ — `Cracking the AI Agent Interview · Sun, Wei · 2026 · OEBPS/c644`
+  > 4 if count / len(results) >= threshold: 184 5 return winner 6 else: 7 raise NoConsensusError("No majority reached") When to use: Critical decisions where the cost of a wrong answer is high. Increases cost (N× LLM calls)…
 
 ## Memorando
 - ✅ sim=0.57 [EN] · _ponte: “Architecture Decision Record”_ — `Autonomous AI Agents for Quantitative Research · Van Der Post, Hayden · 2026 · OEBPS/c3H7`
@@ -62,12 +74,17 @@ _Conceitos analisados: 10 · limiar sim ≥ 0.50_
   > Logs aren’t enough; traces must tell causality and context. Each decision record should include the optimization objective used, data provenance flags, any overrides or human notes, and the conflict_score that…
 
 ## Break-even
-- ⚪ **Sem cobertura clara nas fontes** (melhor sim=0.40).
+- ⚪ **Sem cobertura clara nas fontes** (melhor sim=0.42).
 
 ## Heurística
-- ⚪ **Sem cobertura clara nas fontes** (melhor sim=0.42).
+- ✅ literal [EN] · _citação literal: “Heuristic”_ — `AI Engineering · Chip Huyen · 2024 · OEBPS/ch02`
+  > To avoid scrutiny from both the public and competitors, many companies have stopped disclosing this information. Some teams use heuristics to filter out low-quality data from the internet
+- ✅ literal [EN] · _citação literal: “Heuristic”_ — `AI Engineering · Chip Huyen · 2024 · OEBPS/ch02`
+  > For example, in a self-reported survey, 90% of volunteer labelers identified as male (Köpf et al., 2023). DeepMind used simple heuristics to filter for conversations from internet data to train their model Gopher
+- ✅ literal [EN] · _citação literal: “Heuristic”_ — `AI Engineering · Chip Huyen · 2024 · OEBPS/ch02`
+  > OpenAI (2021) found that sampling more outputs led to better performance, but only up to 400 outputs. You can also use application-specific heuristics to select the best response
 
 
 ---
 
-**Resumo:** 8/10 conceitos com suporte (2 sem cobertura).
+**Resumo:** 10/11 conceitos com suporte (1 sem cobertura).
